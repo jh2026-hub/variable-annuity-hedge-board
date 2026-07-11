@@ -115,6 +115,14 @@
   .ggauge{position:relative;height:28px;background:var(--panel2);border:1px solid var(--hair);border-radius:8px;overflow:hidden;margin-bottom:14px}
   .ggauge>div{height:100%;background:linear-gradient(90deg,#12A870,#4fc79a);transition:width .6s ease,background .4s}
   .ggauge>span{position:absolute;left:10px;top:5px;font-size:12px;font-weight:700;color:#0a5b3c;text-shadow:0 0 3px #fff}
+  .gchoices{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  @media(max-width:460px){.gchoices{grid-template-columns:1fr}}
+  .gchoice{display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;padding:12px 8px;border:1.5px solid var(--hair);border-radius:12px;background:var(--panel);cursor:pointer;font-family:inherit;transition:transform .1s ease,border-color .15s ease,box-shadow .15s ease}
+  .gchoice:hover{border-color:var(--pay);transform:translateY(-2px);box-shadow:0 4px 12px rgba(59,111,230,.14)}
+  .gchoice:active{transform:translateY(0)}
+  .gchoice .gci{font-size:26px;line-height:1}
+  .gchoice .gct{font-weight:800;font-size:13px;color:var(--ink)}
+  .gchoice .gcd{font-size:10.5px;color:var(--muted);line-height:1.45}
   .gbtn{margin-top:10px;padding:11px 18px;border:none;border-radius:9px;background:var(--pay);color:#fff;font-weight:800;font-size:13.5px;cursor:pointer;width:100%}
   .gbtn:active{transform:translateY(1px)} .gbtn:disabled{opacity:.45;cursor:default}
   .gres{border-radius:11px;padding:13px;margin-top:14px;animation:chipPop .45s ease;border:1px solid var(--hair)}
@@ -486,33 +494,41 @@
 
 <!-- 게임 -->
 <section class="page" id="pgame">
-  <p class="lede"><b>델타 리밸런싱</b>을 직접 해 보는 게임입니다. 헷지선은 <b>어제 자리에 그대로 남아</b> 있어, 시장이 움직이면 갭이 벌어집니다 — 매일 <b>얼마나 되맞출지</b> 정하세요(<b style="color:var(--pay)">파란 헷지선</b>을 <b>시장(검정)</b>으로). <b>안 맞추면</b> 갭이 커져 더 터지고, <b>맞추면</b> 확정손실+비용이 듭니다. 매일 <b>🔎 복기</b>로 "가만히 뒀으면/딱 맞췄으면" 결과를 비교해 학습하세요. 주가는 <b>코스피 2분기 실측</b>에서 뽑고, <b>버짓은 직접 설정</b>합니다.</p>
+  <p class="lede">🎯 <b>목표 — 예산(💰)이 바닥나지 않게 최대한 오래 버티기!</b> 시장은 매일 오르내리고, 당신은 <b>헷지를 조정할지</b> 결정합니다. 정답은 없습니다 — 헷지가 왜 어려운지 직접 느껴 보세요.</p>
   <div class="panel">
-    <div class="cap">델타 리밸런싱 게임 🎮<span>코스피 2분기 실측 · 버짓 지키며 최대한 오래</span></div>
+    <div class="cap">헷지 체험 게임 🎮<span>코스피 2분기 실측으로</span></div>
+    <details style="margin-bottom:10px"><summary style="cursor:pointer;font-size:12.5px;font-weight:700;color:var(--pay)">❓ 게임 방법 (처음이라면)</summary>
+      <div style="font-size:12px;color:var(--muted);line-height:1.75;margin-top:8px;padding:10px 12px;background:var(--panel2);border-radius:8px">
+        · <b>검은 점 = 오늘 시장 위치.</b> 곡선의 <b>꼭대기에서 멀어질수록 손실</b>이 커집니다.<br>
+        · <b>회색 선 = 어제 걸어둔 내 헷지.</b> 시장이 움직여도 그대로 남아, 벌어진 만큼이 위험입니다.<br>
+        · 매일 <b>셋 중 하나</b>를 고르세요 → 내일 시장이 밝혀지고 <b>돈을 벌거나 잃습니다</b>.<br>
+        · 아니다 싶으면 <b>↩ 되돌리기</b>로 다시. (같은 내일, 다른 선택을 비교해 보세요)
+      </div>
+    </details>
     <div id="gStatus" class="gstat"></div>
     <div style="display:flex;align-items:center;gap:9px;margin-bottom:11px;flex-wrap:wrap">
-      <span class="foot" style="margin:0;flex:0 0 auto">🎚️ 시작 버짓</span>
-      <input type="range" id="gBud0" min="30" max="150" step="10" value="50" style="flex:1 1 120px;min-width:120px">
+      <span class="foot" style="margin:0;flex:0 0 auto">🎚️ 난이도(시작 예산)</span>
+      <input type="range" id="gBud0" min="30" max="150" step="10" value="50" style="flex:1 1 110px;min-width:110px">
       <b class="mono" id="gBud0Lab" style="color:var(--pay);flex:0 0 auto">50</b>
       <button id="gStart" class="gbtn" style="width:auto;padding:8px 14px;margin:0;flex:0 0 auto">새 게임 ▶</button>
     </div>
-    <div style="font-size:11px;color:var(--muted);margin:2px 0 3px;font-weight:700">💰 잔여 버짓 <span style="font-weight:400">— 0이 되면 종료</span><span id="gProj" style="font-weight:400"></span></div>
+    <div style="font-size:11px;color:var(--muted);margin:2px 0 3px;font-weight:700">💰 남은 예산 <span style="font-weight:400">— 0이 되면 게임 끝</span><span id="gProj" style="font-weight:400"></span></div>
     <div class="ggauge"><div id="gBudFill"></div><span id="gBudLab"></span></div>
     <div class="chartwrap" style="margin-top:12px"><svg id="gCurve" viewBox="0 0 560 200" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px"></svg></div>
     <div id="gToday" style="font-size:12.5px;margin-top:8px"></div>
-    <div id="gControl" style="margin-top:8px">
-      <label class="foot" style="margin:0">리밸런싱(헷지선 이동) <b id="gHlab" class="mono" style="color:var(--pay)">100%</b> <span id="gHtag" style="color:var(--muted)">· 딱 맞춤</span></label>
-      <input type="range" id="gHedge" min="0" max="150" step="10" value="100">
-      <div style="display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted);margin-top:-2px"><span>0 안 함</span><span>100 딱 맞춤</span><span>150 오버</span></div>
-      <div style="display:flex;gap:8px;margin-top:10px">
-        <button id="gPlay" class="gbtn" style="margin-top:0;flex:1">다음 날 ▶</button>
-        <button id="gReview" class="gbtn" style="margin-top:0;flex:0 0 auto;width:auto;padding:11px 14px;background:var(--muted);display:none">↩ 행동 취소</button>
+    <div id="gControl" style="margin-top:10px">
+      <div style="font-weight:800;font-size:13px;margin-bottom:7px">오늘 어떻게 할까요?</div>
+      <div class="gchoices">
+        <button class="gchoice" data-h="0"><span class="gci">✋</span><span class="gct">그대로 두기</span><span class="gcd">헷지 안 함 · <b>비용 0</b><br>되돌아오면 이득, 이어지면 손해</span></button>
+        <button class="gchoice" data-h="1"><span class="gci">🎯</span><span class="gct">시장에 맞추기</span><span class="gcd">헷지 재조정 · <b>약간 비용</b><br>안전하게 따라감</span></button>
+        <button class="gchoice" data-h="1.4"><span class="gci">🚀</span><span class="gct">더 걸기</span><span class="gcd">추세에 베팅 · <b>비용 큼</b><br>이어지면 크게 벌고, 아니면 손해</span></button>
       </div>
+      <button id="gReview" class="gbtn" style="margin-top:10px;background:var(--muted);display:none">↩ 되돌리기 (다시 선택)</button>
     </div>
     <div id="gResult"></div>
     <div id="gLog" style="margin-top:12px"></div>
     <div id="gFinal"></div>
-    <p class="foot" style="margin-top:12px"><b>감마손실</b>(곡선 때문에 늘 발생) + <b>방향손익</b>(되맞추지 않은 델타 × 내일 이동) + <b>리밸런싱 비용</b>이 매일 <b>잔여 버짓</b>에서 정산됩니다. 되돌릴지 이어질지는 <b>알 수 없습니다</b>. (교육용 단순 모형)</p>
+    <p class="foot" style="margin-top:12px">시장 주가는 <b>코스피 2분기 실제 일간수익률</b>에서 뽑습니다. 매일 손익이 예산에서 정산되고, 내일이 오르내릴지는 <b>아무도 모릅니다</b>. (교육용 단순 모형)</p>
   </div>
 </section>
 
@@ -1370,8 +1386,6 @@ const gGauge=()=>{const f=$("gBudFill"); if(!f)return; const w=Math.max(0,Math.m
 function gProj(){ const r=GAME.log.slice(-5); if(!r.length)return''; const avg=r.reduce((a,x)=>a+x.net,0)/r.length;
   if(avg>=-0.05)return''; return ` · <span style="color:${GAME.bud/(-avg)<6?'var(--bad)':'var(--muted)'}">이 속도면 ~${Math.max(1,Math.round(GAME.bud/(-avg)))}일</span>`; }
 function gStatus(){ const gp=gGap(); if($("gStatus")) $("gStatus").innerHTML=`<div>버틴 날<b style="color:var(--pay)">${GAME.d}일</b></div><div>최고<b>${GAME.best}일</b></div><div>현재 갭<b style="color:${Math.abs(gp)>3?'var(--bad)':'var(--ink)'}">${gp>=0?'+':''}${gp.toFixed(1)}%p</b></div>`; if($("gProj"))$("gProj").innerHTML=gProj(); gGauge(); }
-function gTag(h){ return h<0.15?'· 안 함(갭 유지)':h<0.85?'· 덜 맞춤':h<=1.15?'· 딱 맞춤':'· 오버(추세 베팅)'; }
-function gHlab(){ const h=(+$("gHedge").value)/100; $("gHlab").textContent=Math.round(h*100)+'%'; $("gHtag").textContent=gTag(h); if(!GAME.over) gDrawDecide(h); }
 /* 좌표: 감마 손익곡선(∩ 아래로 볼록, 꼭대기=손익0), hx 접선(사선 세그먼트) */
 const gCL=x=>Math.max(-GV.maxX,Math.min(GV.maxX,x));
 const gPX=x=>36+(gCL(x)+GV.maxX)/(2*GV.maxX)*(GV.W-72);
@@ -1385,14 +1399,14 @@ function gBaseSVG(){ const {W,H,topY,maxX}=GV, g=[];
   g.push(`<path d="${p}" fill="none" stroke="var(--sym)" stroke-width="2.6"/>`);
   g.push(`<text x="34" y="${H-7}" class="eflabel" fill="var(--muted)">← 시장 하락</text><text x="${W-34}" y="${H-7}" class="eflabel" text-anchor="end" fill="var(--muted)">시장 상승 →</text>`);
   return g; }
-function gDrawDecide(h){ const box=$("gCurve"); if(!box)return; const g=gBaseSVG(), mkt=GAME.mkt, hx=GAME.hx, hxN=hx+h*(mkt-hx);
-  if(Math.abs(mkt-hx)>0.25) g.push(`<line x1="${gPX(mkt).toFixed(1)}" y1="${gVY(mkt).toFixed(1)}" x2="${gPX(mkt).toFixed(1)}" y2="${gTY(hx,mkt).toFixed(1)}" stroke="var(--bad)" stroke-width="2" stroke-dasharray="3 2" opacity="0.85"/>`);
+function gDrawState(hPrev){ const box=$("gCurve"); if(!box)return; const g=gBaseSVG(), mkt=GAME.mkt, hx=GAME.hx;
+  if(Math.abs(mkt-hx)>0.25) g.push(`<line x1="${gPX(mkt).toFixed(1)}" y1="${gVY(mkt).toFixed(1)}" x2="${gPX(mkt).toFixed(1)}" y2="${gTY(hx,mkt).toFixed(1)}" stroke="var(--bad)" stroke-width="2.4" stroke-dasharray="3 2" opacity="0.9"/><text x="${(gPX(mkt)+7).toFixed(1)}" y="${((gVY(mkt)+gTY(hx,mkt))/2).toFixed(1)}" class="eflabel" fill="var(--bad)" font-weight="700">위험</text>`);
   g.push(gSeg(hx,'#9AA6B8',true,3));
-  g.push(`<text x="${gPX(hx-4.5).toFixed(1)}" y="${(gTY(hx,hx-4.5)-6).toFixed(1)}" class="eflabel" fill="#8A94A6">전일 헷지선</text>`);
-  g.push(gSeg(hxN,'var(--pay)',false,3.6));
-  g.push(`<text x="${gPX(hxN+4.5).toFixed(1)}" y="${(gTY(hxN,hxN+4.5)+13).toFixed(1)}" class="eflabel" text-anchor="end" fill="var(--pay)" font-weight="700">오늘 헷지선</text>`);
-  g.push(`<circle cx="${gPX(mkt).toFixed(1)}" cy="${gVY(mkt).toFixed(1)}" r="7" fill="#16202F" stroke="#fff" stroke-width="2"><animate attributeName="r" values="7;9;7" dur="1.6s" repeatCount="indefinite"/></circle>`);
-  g.push(`<text x="${gPX(mkt).toFixed(1)}" y="${(gVY(mkt)+20).toFixed(1)}" class="eflabel" text-anchor="middle" font-weight="700">시장</text>`);
+  g.push(`<text x="${gPX(hx-4.5).toFixed(1)}" y="${(gTY(hx,hx-4.5)-6).toFixed(1)}" class="eflabel" fill="#8A94A6">어제 내 헷지</text>`);
+  if(hPrev!=null){ const hxN=hx+hPrev*(mkt-hx); g.push(gSeg(hxN,'var(--pay)',false,3.6));
+    g.push(`<text x="${gPX(hxN+4.5).toFixed(1)}" y="${(gTY(hxN,hxN+4.5)+13).toFixed(1)}" class="eflabel" text-anchor="end" fill="var(--pay)" font-weight="700">이렇게 하면</text>`); }
+  g.push(`<circle cx="${gPX(mkt).toFixed(1)}" cy="${gVY(mkt).toFixed(1)}" r="7.5" fill="#16202F" stroke="#fff" stroke-width="2"><animate attributeName="r" values="7.5;9.5;7.5" dur="1.6s" repeatCount="indefinite"/></circle>`);
+  g.push(`<text x="${gPX(mkt).toFixed(1)}" y="${(gVY(mkt)+20).toFixed(1)}" class="eflabel" text-anchor="middle" font-weight="700">오늘 시장</text>`);
   box.innerHTML=g.join("");
 }
 function gDrawReveal(){ const box=$("gCurve"), L=GAME.last; if(!box||!L)return; const g=gBaseSVG();
@@ -1411,26 +1425,30 @@ function gShowResult(L){
   const cf=(v,lab)=>`<span style="display:inline-flex;gap:4px">${lab} <b style="color:${v>=0?'var(--good)':'var(--bad)'}">${v>=0?'+':'−'}${Math.abs(v).toFixed(1)}</b></span>`;
   const lesson = L.revert ? `🔄 시장이 <b>되돌아왔습니다</b> — <b style="color:var(--good)">가만히 뒀으면 이득</b>이었죠. 맞췄다면 확정손실이었습니다.`
     : (L.trend ? `➡️ 시장이 <b>더 갔습니다</b> — <b style="color:var(--pay)">맞췄으면(딱 맞춤)</b> 방향손실을 줄였을 겁니다.` : `시장이 소폭 움직였습니다 — 감마손실만 남았습니다.`);
-  $("gResult").innerHTML=`<div class="gres" style="background:${L.net>=0?'#EAF7F1':'#FBEEF1'}">
-    <div style="display:flex;align-items:baseline;gap:10px"><div style="font-size:27px;font-weight:800;color:${L.net>=0?'var(--good)':'var(--bad)'}">${L.net>=0?'+':'−'}${Math.abs(L.net).toFixed(1)} ${L.net>=0?'💰':'💸'}</div><div style="font-size:11.5px;color:var(--muted)">${L.d}일차 · 오늘 이동 ${L.dM>=0?'+':''}${L.dM.toFixed(2)}%</div></div>
-    <div class="gbreak" style="margin-top:6px"><span>감마 <b style="color:var(--leak)">${L.gamma.toFixed(1)}</b></span><span>방향 <b style="color:${L.dir>=0?'var(--good)':'var(--bad)'}">${L.dir>=0?'+':''}${L.dir.toFixed(1)}</b></span><span>비용 <b style="color:var(--leak)">${L.cost.toFixed(1)}</b></span></div>
-    <div style="margin-top:10px;padding-top:9px;border-top:1px dashed var(--hair);font-size:12px">
-      <div style="font-weight:700;color:var(--ink);margin-bottom:4px">🔎 복기 — 같은 내일, 다른 선택이었다면</div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px 16px">${cf(L.net,'당신')}${cf(L.net0,'가만히 뒀으면')}${cf(L.net1,'딱 맞췄으면')}</div>
-      <div style="margin-top:7px;color:var(--ink);line-height:1.55">${lesson}</div>
+  const won=L.net>=0;
+  $("gResult").innerHTML=`<div class="gres" style="background:${won?'#EAF7F1':'#FBEEF1'}">
+    <div style="display:flex;align-items:baseline;gap:10px"><div style="font-size:28px;font-weight:800;color:${won?'var(--good)':'var(--bad)'}">${won?'+':'−'}${Math.abs(L.net).toFixed(1)} ${won?'💰':'💸'}</div><div style="font-size:12.5px;font-weight:700;color:${won?'var(--good)':'var(--bad)'}">${won?'벌었어요!':'잃었어요'}</div><div style="font-size:11px;color:var(--muted);margin-left:auto">${L.d}일차 · 시장 ${L.dM>=0?'+':''}${L.dM.toFixed(2)}%</div></div>
+    <div style="margin-top:8px;font-size:12.5px;color:var(--ink);line-height:1.55">${lesson}</div>
+    <div style="margin-top:9px;padding-top:8px;border-top:1px dashed var(--hair);font-size:12px">
+      <div style="font-weight:700;color:var(--ink);margin-bottom:3px">🔎 같은 내일, 다른 선택이었다면?</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px 16px">${cf(L.net,'✔ 내 선택')}${cf(L.net0,'✋ 그대로')}${cf(L.net1,'🎯 맞추기')}</div>
     </div>
+    <details style="margin-top:8px"><summary style="cursor:pointer;font-size:11px;color:var(--muted)">🔬 손익 자세히</summary>
+      <div class="gbreak" style="margin-top:5px"><span>곡선 손실(감마) <b style="color:var(--leak)">${L.gamma.toFixed(1)}</b></span><span>방향 <b style="color:${L.dir>=0?'var(--good)':'var(--bad)'}">${L.dir>=0?'+':''}${L.dir.toFixed(1)}</b></span><span>조정 비용 <b style="color:var(--leak)">${L.cost.toFixed(1)}</b></span></div>
+    </details>
   </div>`;
 }
+function gCtrl(on){ const c=$("gControl"); if(c){ c.style.opacity=on?'':'0.45'; c.style.pointerEvents=on?'':'none'; } }
 function gHint(){ const gp=gGap(), m=Math.abs(gp);
-  const st = m<0.4? '헷지가 시장과 <b>거의 맞아</b> 있습니다.' : `헷지가 <b style="color:var(--bad)">${gp>=0?'+':''}${gp.toFixed(1)}%p</b> 벌어져 있습니다 — 안 맞추면 더 커집니다.`;
-  $("gToday").innerHTML=`📍 ${st} 슬라이더로 <b style="color:var(--pay)">오늘 헷지선</b>을 <b>시장(검정)</b>에 맞추고 <b>다음 날 ▶</b>. <span style="color:var(--muted)">안 맞추면 회색 전일선에 남습니다.</span>`;
+  const st = m<0.5? '헷지가 시장과 <b>거의 맞아</b> 있습니다.' : `내 헷지가 시장과 <b style="color:var(--bad)">${gp>=0?'+':''}${gp.toFixed(1)}%p</b> 벌어졌습니다 — 그대로 두면 위험이 커집니다.`;
+  $("gToday").innerHTML=`📍 ${st} <b>오늘 어떻게 할지</b> 아래에서 고르세요.`;
   gStatus();
 }
-function gNewDay(){ $("gHedge").value=0; gDrawDecide(0); gHint(); }
-function gPlay(){
+function gNewDay(){ gCtrl(true); gDrawState(null); gHint(); }
+function gPlay(h){
   if(GAME.over)return;
-  GAME.prev={d:GAME.d,bud:GAME.bud,mkt:GAME.mkt,hx:GAME.hx,best:GAME.best,log:GAME.log.slice()};   /* 행동 취소용 스냅샷 */
-  const h=(+$("gHedge").value)/100, mkt=GAME.mkt, hx=GAME.hx, gap=mkt-hx;
+  GAME.prev={d:GAME.d,bud:GAME.bud,mkt:GAME.mkt,hx:GAME.hx,best:GAME.best,log:GAME.log.slice()};   /* 되돌리기용 스냅샷 */
+  const mkt=GAME.mkt, hx=GAME.hx, gap=mkt-hx;
   const hxN=hx+h*gap, g2=mkt-hxN, cost=-GCOST*h*Math.abs(gap), dM=gDM(GAME.d+1), mktN=mkt+dM;
   const gamma=-GAM*dM*dM, dir=-GD*g2*dM, net=cost+dir+gamma;
   const net0=(-GD*gap*dM)+gamma, net1=(-GCOST*Math.abs(gap))+gamma;
@@ -1441,17 +1459,17 @@ function gPlay(){
   GAME.log.push({d:GAME.d,revert,net}); if(GAME.d>GAME.best)GAME.best=GAME.d;
   $("gLog").innerHTML=GAME.log.slice(-12).reverse().map(r=>`<div class="glogrow"><span class="gy">${r.d}일</span><span class="gtag">${r.revert?'🔄 되돌림':'➡️ 이어짐'}</span><span class="gnet" style="color:${r.net>=0?'var(--good)':'var(--bad)'}">${r.net>=0?'+':'−'}${Math.abs(r.net).toFixed(1)}</span></div>`).join('');
   if($("gReview")) $("gReview").style.display='';
-  $("gHedge").value=0; gHint();   /* 다음 날 준비(슬라이더 초기화·안내). 그래프는 방금 결과가 남아 슬라이더를 움직이면 새 결정으로 전환 */
+  gHint();
   if(GAME.bud<=0) gFinish();
 }
 function gUndo(){ const p=GAME.prev; if(!p)return;
   GAME.d=p.d; GAME.bud=p.bud; GAME.mkt=p.mkt; GAME.hx=p.hx; GAME.best=p.best; GAME.log=p.log; GAME.last=null; GAME.over=false; GAME.prev=null;
-  $("gPlay").disabled=false; $("gResult").innerHTML=''; $("gFinal").innerHTML='';
+  $("gResult").innerHTML=''; $("gFinal").innerHTML='';
   $("gLog").innerHTML=GAME.log.slice(-12).reverse().map(r=>`<div class="glogrow"><span class="gy">${r.d}일</span><span class="gtag">${r.revert?'🔄 되돌림':'➡️ 이어짐'}</span><span class="gnet" style="color:${r.net>=0?'var(--good)':'var(--bad)'}">${r.net>=0?'+':'−'}${Math.abs(r.net).toFixed(1)}</span></div>`).join('');
   if($("gReview")) $("gReview").style.display='none';
   gNewDay(); }
 function gFinish(){
-  GAME.over=true; $("gPlay").disabled=true; $("gToday").innerHTML=`🏁 <b>${GAME.d}일</b>째에 버짓이 바닥났습니다.`;
+  GAME.over=true; gCtrl(false); $("gToday").innerHTML=`🏁 <b>${GAME.d}일</b>째에 예산이 바닥났습니다.`;
   const d=GAME.d, t=d>=30?['🏆','베테랑 트레이더']:d>=18?['🥇','노련']:d>=10?['👍','무난']:['😅','아직 연습'];
   $("gFinal").innerHTML=`<div class="gres" style="background:linear-gradient(135deg,#EEF3FE,#F4F0FD);border:1px solid #D7E0F5;margin-top:14px">
     <div style="display:flex;align-items:center;gap:12px"><div style="font-size:34px">${t[0]}</div>
@@ -1462,10 +1480,13 @@ function gFinish(){
   $("gReset").addEventListener("click",gReset);
 }
 function gReset(){GAME.d=0;GAME.bud=GAME.bud0;GAME.over=false;GAME.log=[];GAME.seq=[];GAME.hx=0;GAME.mkt=gDM(0);GAME.last=null;GAME.prev=null;
-  $("gPlay").disabled=false; $("gResult").innerHTML=''; $("gLog").innerHTML=''; $("gFinal").innerHTML=''; if($("gReview"))$("gReview").style.display='none'; gNewDay();}
+  $("gResult").innerHTML=''; $("gLog").innerHTML=''; $("gFinal").innerHTML=''; if($("gReview"))$("gReview").style.display='none'; gNewDay();}
 function gStart(){ GAME.bud0=+$("gBud0").value; gReset(); }
-if($("gHedge")){
-  $("gHedge").addEventListener("input",gHlab); $("gPlay").addEventListener("click",gPlay);
+if($("gCurve")){
+  document.querySelectorAll(".gchoice").forEach(b=>{ const h=+b.dataset.h;
+    b.addEventListener("click",()=>gPlay(h));
+    b.addEventListener("mouseenter",()=>{ if(!GAME.over) gDrawState(h); });
+    b.addEventListener("mouseleave",()=>{ if(!GAME.over) gDrawState(null); }); });
   if($("gReview")) $("gReview").addEventListener("click",gUndo);
   if($("gBud0")){ $("gBud0").addEventListener("input",()=>{$("gBud0Lab").textContent=$("gBud0").value;}); }
   if($("gStart")) $("gStart").addEventListener("click",gStart);

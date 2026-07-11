@@ -584,9 +584,9 @@
     <div class="chartwrap"><svg class="sim" id="simVol" viewBox="0 0 640 280" preserveAspectRatio="xMidYMid meet"></svg></div>
     <div class="leg">
       <span><i style="background:var(--sym)"></i>미헷지 주간손익(방향)</span>
-      <span><i style="background:var(--pay)"></i>헷지 후(현재 선택 반영)</span>
+      <span><i style="background:var(--good)"></i>헷지 후(현재 선택 반영)</span>
       <span><i style="background:var(--sym);opacity:.25"></i>±1σ 범위(미헷지)</span>
-      <span><i style="background:var(--pay);opacity:.35"></i>±1σ 범위(헷지 후)</span>
+      <span><i style="background:var(--good);opacity:.35"></i>±1σ 범위(헷지 후)</span>
     </div>
     <p class="foot"><b>미헷지</b> 선은 주가·금리 등락이 그대로 손익이 되어 <b>매주 크게 위아래로 출렁입니다</b>. <b>헷지 후</b> 선은 <b>위에서 헷지로 선택한 항목의 변동만 제거</b>합니다 — 아무것도 헷지하지 않으면 미헷지 선과 겹치고, 방향(주가·금리)을 헷지하면 0 근처로 붙습니다. 배경의 <b>음영 띠는 각 선의 ±1σ 주간 변동 범위</b>로, 넓은 띠(미헷지)가 좁은 띠(헷지 후)로 줄어드는 만큼이 헷지가 잡아낸 변동성입니다. 민감도는 <b>⑥ 입력 가정</b>에서 조정합니다.</p>
   </div>
@@ -601,7 +601,7 @@
       <span><i style="background:var(--sym)"></i>주가 RV(우축)</span>
     </div>
     <div class="chartwrap"><table class="mtx" id="simTbl"><thead><tr><th>연도</th><th>주가 RV</th><th>금리 RV</th><th>감내 시 누수</th><th>헷지 시 옵션 프리미엄</th></tr></thead><tbody></tbody></table></div>
-    <p class="foot"><b>감내(주황)</b>는 변동성이 큰 해에 누수가 급증하고, <b>헷지(청록)</b>는 매년 거의 같은 고정 <b>옵션 프리미엄</b>이다 — 감마 위험의 핵심 트레이드오프. <b>옵션 프리미엄</b>은 감마를 넘기려 <b>옵션·스왑션을 매입할 때 지불하는 가격(지출)</b>이며, 회사가 수취하는 <b>보증수수료(재원)</b>와는 다릅니다 — 이 프리미엄은 그 재원에서 지출됩니다. 주가 RV는 KOSPI 일간수익률의 연율화 표준편차(%), 금리 RV는 국고 일간변동의 연율화 표준편차(bp)입니다.</p>
+    <p class="foot"><b>감내(주황)</b>는 변동성이 큰 해에 누수가 급증하고, <b>헷지(청록)</b>도 그 해 <b>변동성이 크면 옵션 프리미엄(IV)이 함께 오릅니다</b> — 다만 감내보다 <b>변동이 작고 예측 가능</b>합니다(감마 위험의 핵심 트레이드오프). <b>옵션 프리미엄</b>은 감마를 넘기려 <b>옵션·스왑션을 매입할 때 지불하는 가격(지출)</b>이며, 회사가 수취하는 <b>보증수수료(재원)</b>와는 다릅니다 — 이 프리미엄은 그 재원에서 지출됩니다. 주가 RV는 KOSPI 일간수익률의 연율화 표준편차(%), 금리 RV는 국고 일간변동의 연율화 표준편차(bp)입니다.</p>
   </div>
   <div class="panel">
     <div class="cap">항목별 손익요소<span>현재 전략 · 연 기준</span></div>
@@ -819,18 +819,18 @@ const VOL=[
   {id:"rr",n:"금리 RV", u:"bp", v:67, s:"실현변동성(연) · 국고20년 실측 ≈67bp"},
   {id:"ir",n:"금리 IV", u:"bp", v:74, s:"스왑션 IV · RV+위험프리미엄"},
   {id:"eqd",n:"주가 민감도", u:"억/bp", v:1, s:"주가 100bp(1%)↑ → 100억(방향)"},
-  {id:"rvd",n:"금리 민감도(DV01)", u:"억/bp", v:15, s:"장기보증 듀레이션 · 금리 10bp↑ → 150억 손실(방향)"},
+  {id:"rvd",n:"금리 민감도(DV01)", u:"억/bp", v:38, s:"장기보증 듀레이션 · 금리 10bp↑ → 380억(주가와 비슷한 영향)"},
   {id:"sig",n:"잔여 흔들림 1σ", u:"%", v:1.0, s:"미헷지 손익변동성(적립금 대비)"},
 ];
 const RISK=[
-  {id:"delta", n:"주가 방향 (Δ)", exp:58, bp:3,  kind:"bp",   on:1, note:"KOSPI200 선물", cls:"PL",  grp:"방향 위험 (민감도)", diff:"easy"},
-  {id:"rho",   n:"금리 수준 (ρ)", exp:22, bp:2,  kind:"bp",   on:1, note:"국채·IRS", cls:"PL",  grp:"방향 위험 (민감도)", diff:"easy"},
+  {id:"delta", n:"주가 방향 (Δ)", exp:42, bp:3,  kind:"bp",   on:1, note:"KOSPI200 선물", cls:"PL",  grp:"방향 위험 (민감도)", diff:"easy"},
+  {id:"rho",   n:"금리 수준 (ρ)", exp:40, bp:2,  kind:"bp",   on:1, note:"국채·IRS", cls:"PL",  grp:"방향 위험 (민감도)", diff:"easy"},
   {id:"gE",    n:"주가 감마",     exp:0,  kind:"calcE", dep:"delta", on:0, note:"델타 헷지 후 잔여 · 옵션 매수", cls:"CSM", grp:"감마 위험 (곡률)", diff:"mid"},
   {id:"gR",    n:"금리 감마",     exp:0,  kind:"calcR", dep:"rho",   on:0, note:"방향 헷지 후 잔여 · 스왑션", cls:"CSM", grp:"감마 위험 (곡률)", diff:"mid"},
-  {id:"vega",  n:"변동성 (베가)", exp:5,  bp:22, kind:"bp",   on:0, note:"장기 vol 매수", cls:"CSM", grp:"변동성·행동 위험", diff:"hard"},
-  {id:"fund",  n:"펀드 불일치",   exp:3,  bp:26, kind:"bp",   on:0, note:"맞춤 OTC", cls:"CSM", grp:"변동성·행동 위험", diff:"hard"},
-  {id:"lapse", n:"해지율·행동",   exp:2.5,bp:40, kind:"bp",   on:0, note:"재보험", cls:"CSM", grp:"변동성·행동 위험", diff:"hard"},
-  {id:"model", n:"모형·제도",     exp:1.5,bp:null,kind:"na",  on:0, note:"이전 시장 없음", cls:"CSM", grp:"이전 불가", diff:"no"},
+  {id:"vega",  n:"변동성 (베가)", exp:2.5,bp:22, kind:"bp",   on:0, note:"장기 vol 매수", cls:"CSM", grp:"변동성·행동 위험", diff:"hard"},
+  {id:"fund",  n:"펀드 불일치",   exp:2,  bp:26, kind:"bp",   on:0, note:"맞춤 OTC", cls:"CSM", grp:"변동성·행동 위험", diff:"hard"},
+  {id:"lapse", n:"해지율·행동",   exp:1.5,bp:40, kind:"bp",   on:0, note:"재보험", cls:"CSM", grp:"변동성·행동 위험", diff:"hard"},
+  {id:"model", n:"모형·제도",     exp:1,  bp:null,kind:"na",  on:0, note:"이전 시장 없음", cls:"CSM", grp:"이전 불가", diff:"no"},
 ];
 const DIFF={easy:{t:"비용화 쉬움",c:"good"},mid:{t:"비용화 보통",c:"pay"},hard:{t:"비용화 어려움",c:"leak"},no:{t:"비용화 불가",c:"muted"}};
 const M95=1.7, M995=2.4;
@@ -915,7 +915,7 @@ function frontier(pts){ const s=[...pts].sort((a,b)=>a.sig-b.sig||a.cost-b.cost)
   for(const p of s){ if(p.cost<mc-1e-9){ fr.push(p); mc=p.cost; } } return fr; }
 
 /* 선택에 따른 손익 흔들림 막대 — 위험 기여를 균형 배분(주가 방향이 크나 감마·변동성·펀드도 유의미) */
-const VC={delta:1400,rho:900,gE:520,gR:460,vega:660,fund:520,lapse:420,model:320};
+const VC={delta:1000,rho:950,gE:360,gR:340,vega:280,fund:250,lapse:200,model:170};
 const VCCOL={delta:'var(--pay)',rho:'#5B8DEF',gE:'var(--sym)',gR:'#9B7BEF',vega:'var(--leak)',fund:'#EBA24A',lapse:'#F0B968',model:'#AAB4C6'};
 const _tw={};
 function tween(id,to,fmt){ const el=$(id); if(!el)return; const from=_tw[id]==null?to:_tw[id]; _tw[id]=to; let start=null;
@@ -1220,7 +1220,7 @@ function drawVolChart(){
   /* ±1σ(주간) 범위 밴드 — 변동성 크기·축소 시각화 */
   const stdU=std(wU), stdH=std(wH);
   g.push(`<rect x="${L}" y="${Y(stdU).toFixed(1)}" width="${iw}" height="${(Y(-stdU)-Y(stdU)).toFixed(1)}" fill="var(--sym)" opacity="0.09"/>`);
-  g.push(`<rect x="${L}" y="${Y(stdH).toFixed(1)}" width="${iw}" height="${Math.max(2,Y(-stdH)-Y(stdH)).toFixed(1)}" fill="var(--pay)" opacity="0.16"/>`);
+  g.push(`<rect x="${L}" y="${Y(stdH).toFixed(1)}" width="${iw}" height="${Math.max(2,Y(-stdH)-Y(stdH)).toFixed(1)}" fill="var(--good)" opacity="0.18"/>`);
   [stdU,-stdU].forEach(s=>g.push(`<line x1="${L}" y1="${Y(s).toFixed(1)}" x2="${W-R}" y2="${Y(s).toFixed(1)}" stroke="var(--sym)" stroke-width="1" stroke-dasharray="4 3" opacity="0.45"/>`));
   [1,0.5,0,-0.5,-1].forEach(f=>{ const cv=amp*f, gy=Y(cv);
     g.push(`<line x1="${L}" y1="${gy.toFixed(1)}" x2="${W-R}" y2="${gy.toFixed(1)}" stroke="${f===0?'#AAB4C6':'#EAEDF5'}" stroke-width="${f===0?1.3:1}"/>`);
@@ -1229,9 +1229,9 @@ function drawVolChart(){
   wYr.forEach((di,i)=>{ const yr=dts[di]?dts[di].slice(0,4):''; if(yr&&yr!==cy){cy=yr; g.push(`<text class="eflabel" x="${X(i).toFixed(1)}" y="${H-B+16}" text-anchor="middle">${yr}</text>`);} });
   const path=arr=>arr.map((v,i)=>(i?"L":"M")+X(i).toFixed(1)+" "+Y(v).toFixed(1)).join(" ");
   g.push(`<path d="${path(wU)}" fill="none" stroke="var(--sym)" stroke-width="1.4" opacity="0.85" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"><animate attributeName="stroke-dashoffset" from="1" to="0" dur="1.1s" fill="freeze"/></path>`);
-  g.push(`<path d="${path(wH)}" fill="none" stroke="var(--pay)" stroke-width="2.2" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"><animate attributeName="stroke-dashoffset" from="1" to="0" dur="1.1s" begin="0.35s" fill="freeze"/></path>`);
+  g.push(`<path d="${path(wH)}" fill="none" stroke="var(--good)" stroke-width="2.4" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"><animate attributeName="stroke-dashoffset" from="1" to="0" dur="1.1s" begin="0.35s" fill="freeze"/></path>`);
   g.push(`<rect x="${L+2}" y="${(Y(stdU)-13).toFixed(1)}" width="150" height="13" fill="#FFFFFF" opacity="0.7"/><text class="eflabel" x="${L+4}" y="${(Y(stdU)-3).toFixed(1)}" fill="var(--sym)">미헷지 ±1σ ${won(stdU)}억/주</text>`);
-  g.push(`<rect x="${(W-R-150).toFixed(1)}" y="${(Y(stdH)-13).toFixed(1)}" width="148" height="13" fill="#FFFFFF" opacity="0.7"/><text class="eflabel" x="${W-R-2}" y="${(Y(stdH)-3).toFixed(1)}" text-anchor="end" fill="var(--pay)">헷지 후 ±1σ ${won(stdH)}억/주</text>`);
+  g.push(`<rect x="${(W-R-150).toFixed(1)}" y="${(Y(stdH)-13).toFixed(1)}" width="148" height="13" fill="#FFFFFF" opacity="0.7"/><text class="eflabel" x="${W-R-2}" y="${(Y(stdH)-3).toFixed(1)}" text-anchor="end" fill="var(--good)">헷지 후 ±1σ ${won(stdH)}억/주</text>`);
   $("simVol").innerHTML=g.join("");
 }
 function renderSim(){
@@ -1242,13 +1242,14 @@ function renderSim(){
   const dOn=on("delta"), rOn=on("rho"), gEOn=on("gE"), gROn=on("gR");
   /* 감마는 방향(델타/로)을 헷지할 때만 존재. 감마헷지(gE/gR) 켜면 프리미엄 확정, 아니면 실현변동성 누수. */
   /* 연도별: 감내 시 누수(변동성 기반, 매년 변동) vs 헷지 시 프리미엄(고정) — 선택과 무관한 비교 */
-  const rows=ys.map(s=>({...s, leak:gam(ge,s.rvE)+gam(gr,s.rvR), prem:gam(ge,ie)+gam(gr,ir)}));
-  const avgLeak=rows.reduce((a,r)=>a+r.leak,0)/rows.length, worst=rows.reduce((a,b)=>a.leak>b.leak?a:b);
-  $("simStrat").innerHTML=`<b style="color:var(--leak)">감내</b>하면 변동성 큰 해에 누수가 급증하고, <b style="color:var(--pay)">헷지</b>하면 매년 고정 프리미엄입니다.`;
+  const re=val("re")||1, rr=val("rr")||1;   /* IV≈RV → 프리미엄도 그 해 변동성 따라 변함 */
+  const rows=ys.map(s=>({...s, leak:gam(ge,s.rvE)+gam(gr,s.rvR), prem:gam(ge,ie*s.rvE/re)+gam(gr,ir*s.rvR/rr)}));
+  const avgLeak=rows.reduce((a,r)=>a+r.leak,0)/rows.length, avgPrem=rows.reduce((a,r)=>a+r.prem,0)/rows.length, worst=rows.reduce((a,b)=>a.leak>b.leak?a:b);
+  $("simStrat").innerHTML=`<b style="color:var(--leak)">감내</b>하면 변동성 큰 해에 누수가 급증하고, <b style="color:var(--good)">헷지</b>하면 프리미엄으로 <b>훨씬 안정</b>적입니다(변동성 크면 프리미엄도 오르나 폭이 작음).`;
   $("simStat").innerHTML=`
     <div><div class="sl">감내 시 연평균 누수</div><div class="sv" style="color:var(--leak)">△${won(avgLeak)}억</div></div>
     <div><div class="sl">최대 누수(${worst.y})</div><div class="sv" style="color:var(--bad)">△${won(worst.leak)}억</div></div>
-    <div><div class="sl">헷지 시 옵션 프리미엄(연)</div><div class="sv" style="color:var(--pay)">△${won(rows[0].prem)}억</div></div>`;
+    <div><div class="sl">헷지 시 연평균 프리미엄</div><div class="sv" style="color:var(--good)">△${won(avgPrem)}억</div></div>`;
   const W=640,H=280,L=48,R=40,T=14,B=34,iw=W-L-R,ih=H-T-B,g=[];
   const yMax=Math.max(...rows.map(r=>Math.max(r.leak,r.prem)),1)*1.12, rvMax=Math.max(...rows.map(r=>r.rvE),1)*1.15;
   const bw=iw/rows.length, X=i=>L+bw*(i+0.5), YR=v=>T+ih-(v/rvMax)*ih;
@@ -1419,40 +1420,41 @@ function gStatus(){ const gp=gGap(); if($("gStatus")) $("gStatus").innerHTML=`<d
 const gScale=(...v)=>Math.max(4.5,...v.map(Math.abs))*1.4;
 function gAxpx(x,mx){ return 36+(Math.max(-mx,Math.min(mx,x))/mx+1)/2*(GV.W-72); }
 function gAypx(x,mx){ return GV.topY+Math.min(1,x*x/(mx*mx))*(GV.baseY-GV.topY); }
-function gBase(mx,g,peak){ const {W,topY,baseY}=GV;
+function gBase(mx,g){ const {W,topY,baseY}=GV;
   let p=''; for(let i=-44;i<=44;i++){const x=mx*i/44; p+=(i<=-44?'M':'L')+gAxpx(x,mx).toFixed(1)+' '+gAypx(x,mx).toFixed(1);}
   g.push(`<path d="${p}" fill="none" stroke="var(--sym)" stroke-width="2.6"/>`);
-  g.push(`<line x1="34" y1="${topY}" x2="${W-34}" y2="${topY}" stroke="#EEF1F8"/>`);
-  g.push(`<text x="34" y="${baseY+12}" class="eflabel" fill="var(--muted)">← 시장 하락</text><text x="${W-34}" y="${baseY+12}" class="eflabel" text-anchor="end" fill="var(--muted)">시장 상승 →</text>`);
-  g.push(`<circle cx="${gAxpx(0,mx).toFixed(1)}" cy="${topY}" r="4" fill="#9AA6B8"/><text x="${gAxpx(0,mx).toFixed(1)}" y="${topY-6}" class="eflabel" text-anchor="middle" fill="#8A94A6">${peak||'내 헷지 (손익 0 · 꼭대기)'}</text>`);
+  g.push(`<text x="30" y="${baseY+16}" class="eflabel" fill="var(--muted)">← 시장 하락</text><text x="${W-30}" y="${baseY+16}" class="eflabel" text-anchor="end" fill="var(--muted)">시장 상승 →</text>`);
+  g.push(`<circle cx="${gAxpx(0,mx).toFixed(1)}" cy="${topY}" r="5" fill="#12A870" stroke="#fff" stroke-width="1.5"/>`);
 }
 function gDrawState(hPrev){ const box=$("gCurve"); if(!box)return; const gap=gGap(), res=hPrev!=null?(1-hPrev)*gap:gap, mx=gScale(gap,res), g=[];
   gBase(mx,g);
-  const mxp=gAxpx(gap,mx), myp=gAypx(gap,mx);
-  if(Math.abs(gap)>0.2) g.push(`<line x1="${mxp.toFixed(1)}" y1="${myp.toFixed(1)}" x2="${mxp.toFixed(1)}" y2="${GV.topY}" stroke="var(--bad)" stroke-width="2.2" stroke-dasharray="3 2" opacity="0.8"/><text x="${(mxp+7).toFixed(1)}" y="${((myp+GV.topY)/2).toFixed(1)}" class="eflabel" fill="var(--bad)" font-weight="700">손실</text>`);
+  g.push(`<text x="30" y="20" font-size="11" font-weight="700" fill="#0a5b3c">🟢 꼭대기 = 내 헷지 (여기선 손익 0)</text>`);
+  const mxp=gAxpx(gap,mx), myp=gAypx(gap,mx), far=Math.abs(gap)>0.4;
+  if(far) g.push(`<line x1="${mxp.toFixed(1)}" y1="${myp.toFixed(1)}" x2="${mxp.toFixed(1)}" y2="${GV.topY}" stroke="var(--bad)" stroke-width="2" stroke-dasharray="3 2" opacity="0.7"/>`);
   if(hPrev!=null && Math.abs(gap-res)>0.12){ const rx=gAxpx(res,mx),ry=gAypx(res,mx);
     g.push(`<defs><marker id="gar" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="var(--pay)"/></marker></defs>`);
-    g.push(`<line x1="${mxp.toFixed(1)}" y1="${myp.toFixed(1)}" x2="${rx.toFixed(1)}" y2="${ry.toFixed(1)}" stroke="var(--pay)" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#gar)"/>`);
-    g.push(`<circle cx="${rx.toFixed(1)}" cy="${ry.toFixed(1)}" r="6" fill="var(--pay)" opacity="0.9"/><text x="${rx.toFixed(1)}" y="${(ry-9).toFixed(1)}" class="eflabel" text-anchor="middle" fill="var(--pay)" font-weight="700">이렇게 맞추면</text>`); }
-  g.push(`<circle cx="${mxp.toFixed(1)}" cy="${myp.toFixed(1)}" r="7.5" fill="#16202F" stroke="#fff" stroke-width="2"><animate attributeName="r" values="7.5;9.5;7.5" dur="1.6s" repeatCount="indefinite"/></circle>`);
-  g.push(`<text x="${mxp.toFixed(1)}" y="${(myp+20).toFixed(1)}" class="eflabel" text-anchor="middle" font-weight="700">오늘 시장</text>`);
+    g.push(`<line x1="${mxp.toFixed(1)}" y1="${myp.toFixed(1)}" x2="${rx.toFixed(1)}" y2="${ry.toFixed(1)}" stroke="var(--pay)" stroke-width="2.2" stroke-dasharray="4 3" marker-end="url(#gar)"/>`);
+    g.push(`<circle cx="${rx.toFixed(1)}" cy="${ry.toFixed(1)}" r="6" fill="var(--pay)" opacity="0.9"/><text x="${rx.toFixed(1)}" y="${(ry-9).toFixed(1)}" class="eflabel" text-anchor="middle" fill="var(--pay)" font-weight="700">여기로</text>`); }
+  g.push(`<circle cx="${mxp.toFixed(1)}" cy="${myp.toFixed(1)}" r="8" fill="#16202F" stroke="#fff" stroke-width="2"><animate attributeName="r" values="8;10;8" dur="1.6s" repeatCount="indefinite"/></circle>`);
+  g.push(`<text x="${mxp.toFixed(1)}" y="${(myp+22).toFixed(1)}" class="eflabel" text-anchor="middle" font-weight="800" font-size="11.5">오늘 시장${far?' · 손실 중':''}</text>`);
   box.innerHTML=g.join("");
 }
 function gDrawReveal(){ const box=$("gCurve"),L=GAME.last; if(!box||!L)return; const W=GV.W;
   const gap0=L.mkt0-L.hx, gN=L.mktN-L.hx, mx=gScale(gap0,gN), g=[];
   const won=L.net>=0,col=won?'var(--good)':'var(--bad)', recovered=Math.abs(gN)<Math.abs(gap0);
-  gBase(mx,g,'어제 내 헷지 (꼭대기)');
-  g.push(`<text x="34" y="30" font-size="22" font-weight="800" fill="${col}">${won?'+':'−'}${Math.abs(L.net).toFixed(1)} ${won?'💰':'💸'}</text>`);
-  g.push(`<text x="152" y="30" font-size="12.5" font-weight="700" fill="${col}">${won?'벌었어요!':'잃었어요'}</text>`);
-  g.push(`<text x="${W-34}" y="30" font-size="10.5" fill="var(--muted)" text-anchor="end">${L.d}일차 · 시장 ${L.dM>=0?'+':''}${L.dM.toFixed(2)}%</text>`);
+  gBase(mx,g);
+  g.push(`<text x="30" y="26" font-size="23" font-weight="800" fill="${col}">${won?'+':'−'}${Math.abs(L.net).toFixed(1)} ${won?'💰':'💸'}</text>`);
+  g.push(`<text x="158" y="26" font-size="12.5" font-weight="700" fill="${col}">${won?'벌었어요!':'잃었어요'}</text>`);
+  g.push(`<text x="${W-30}" y="26" font-size="10.5" fill="var(--muted)" text-anchor="end">${L.d}일차 · 시장 ${L.dM>=0?'+':''}${L.dM.toFixed(2)}%</text>`);
+  g.push(`<text x="30" y="43" font-size="10.5" font-weight="600" fill="#0a5b3c">🟢 꼭대기 = 어제 내 헷지</text>`);
   const ax=gAxpx(gap0,mx),ay=gAypx(gap0,mx), nx=gAxpx(gN,mx),ny=gAypx(gN,mx);
   g.push(`<defs><marker id="gar2" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#8A94A6"/></marker></defs>`);
-  g.push(`<circle cx="${ax.toFixed(1)}" cy="${ay.toFixed(1)}" r="5" fill="#16202F" opacity="0.28"/><text x="${ax.toFixed(1)}" y="${(ay+17).toFixed(1)}" class="eflabel" text-anchor="middle" opacity="0.5">어제 시장</text>`);
+  g.push(`<circle cx="${ax.toFixed(1)}" cy="${ay.toFixed(1)}" r="5" fill="#16202F" opacity="0.25"/>`);
   g.push(`<line x1="${ax.toFixed(1)}" y1="${ay.toFixed(1)}" x2="${nx.toFixed(1)}" y2="${ny.toFixed(1)}" stroke="#8A94A6" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#gar2)"/>`);
-  g.push(`<circle cx="${nx.toFixed(1)}" cy="${ny.toFixed(1)}" r="8.5" fill="${col}" stroke="#fff" stroke-width="2"><animate attributeName="r" from="0" to="8.5" dur="0.55s" fill="freeze"/></circle>`);
-  g.push(`<text x="${nx.toFixed(1)}" y="${(ny-11).toFixed(1)}" class="eflabel" text-anchor="middle" fill="${col}" font-weight="800">내일 시장 ${recovered?'↑꼭대기로 회복':''}</text>`);
-  const les = L.revert?'🔄 시장이 꼭대기(어제 헷지)로 되돌아왔어요 — 그대로 뒀으면 이득이었죠':(L.trend?'➡️ 시장이 꼭대기에서 더 멀어졌어요 — 맞췄으면 손실을 줄였을 거예요':'움직임이 작아 감마손실만 남았어요');
-  g.push(`<text x="34" y="${GV.baseY+30}" font-size="11.5" fill="var(--ink)" font-weight="600">${les}</text>`);
+  g.push(`<circle cx="${nx.toFixed(1)}" cy="${ny.toFixed(1)}" r="9" fill="${col}" stroke="#fff" stroke-width="2"><animate attributeName="r" from="0" to="9" dur="0.55s" fill="freeze"/></circle>`);
+  g.push(`<text x="${nx.toFixed(1)}" y="${(ny+22).toFixed(1)}" class="eflabel" text-anchor="middle" fill="${col}" font-weight="800" font-size="11.5">내일 시장${recovered?' · 회복↑':' · 더 손실'}</text>`);
+  const les = L.revert?'🔄 시장이 꼭대기로 되돌아왔어요 — 그대로 뒀으면 이득이었죠':(L.trend?'➡️ 시장이 꼭대기에서 더 멀어졌어요 — 맞췄으면 손실을 줄였을 거예요':'움직임이 작아 감마손실만 남았어요');
+  g.push(`<text x="30" y="${GV.baseY+32}" font-size="11.5" fill="var(--ink)" font-weight="600">${les}</text>`);
   box.innerHTML=g.join("");
 }
 function gShowResult(L){

@@ -392,9 +392,9 @@
     <div class="chartwrap"><svg class="sim" id="simVol" viewBox="0 0 640 280" preserveAspectRatio="xMidYMid meet"></svg></div>
     <div class="leg">
       <span><i style="background:var(--sym)"></i>미헷지 주간손익(방향)</span>
-      <span><i style="background:var(--pay)"></i>헷지 후 주간손익</span>
+      <span><i style="background:var(--pay)"></i>헷지 후(현재 선택 반영)</span>
     </div>
-    <p class="foot"><b>미헷지</b> 선은 주가·금리 등락이 그대로 손익이 되어 <b>매주 크게 위아래로 출렁인다</b>. <b>헷지 후</b> 선은 그 변동을 제거하여 0 근처에 붙는다 — 이것이 헷지가 막은 손익변동성이다. 민감도(주가·금리 1bp당 손익)는 <b>④ 입력 가정</b>에서 조정한다.</p>
+    <p class="foot"><b>미헷지</b> 선은 주가·금리 등락이 그대로 손익이 되어 <b>매주 크게 위아래로 출렁인다</b>. <b>헷지 후</b> 선은 <b>⑤ 비용·변동성에서 헷지로 선택한 항목의 변동만 제거</b>한다 — 아무것도 헷지하지 않으면 미헷지 선과 겹치고, 방향(주가·금리)을 헷지하면 0 근처로 붙는다. 민감도는 <b>⑤ 입력 가정</b>에서 조정한다.</p>
   </div>
   <div class="panel">
     <div class="cap">연도별 변동성 · 감마 손실<span>실제 시장 변동성으로 재현</span></div>
@@ -698,14 +698,15 @@ function drawVolChart(){
   const d=SIM.data, rk=SIM.rateKey, eqd=val("eqd"), rvd=val("rvd");
   const ge=val("ge"),gr=val("gr"),ie=val("ie"),ir=val("ir"), on=id=>RISK.find(r=>r.id===id).on;
   const dOn=on("delta"),rOn=on("rho"),gEOn=on("gE"),gROn=on("gR");
-  let cU=0,cH=0; const U=[],Hs=[],dU=[],dH=[],idx=[];
+  const dU=[],dH=[],idx=[];
   for(let i=1;i<d.dates.length;i++){
     const rEqBp=(d.eq[i]/d.eq[i-1]-1)*10000, dRtBp=(d[rk][i]-d[rk][i-1])*100, rEqPct=rEqBp/100;
-    const pnlDir=eqd*rEqBp - rvd*dRtBp;                 /* 주가↑ 이득, 금리↑ 손실 */
-    let cost=0;
-    if(dOn) cost += gEOn ? gam(ge,ie)/252 : gam(ge,rEqPct);
-    if(rOn) cost += gROn ? gam(gr,ir)/252 : gam(gr,dRtBp);
-    dU.push(pnlDir); dH.push(-cost); cU+=pnlDir; cH+=-cost; U.push(cU); Hs.push(cH); idx.push(i);
+    const pnlDir=eqd*rEqBp - rvd*dRtBp;                 /* 미헷지: 주가↑ 이득, 금리↑ 손실 */
+    /* 현재 선택 반영: 방향 헷지 시 방향손익 제거+감마비용, 미헷지 시 방향손익 그대로 */
+    let pnlH=0;
+    pnlH += dOn ? (gEOn ? -gam(ge,ie)/252 : -gam(ge,rEqPct)) : (eqd*rEqBp);
+    pnlH += rOn ? (gROn ? -gam(gr,ir)/252 : -gam(gr,dRtBp)) : (-rvd*dRtBp);
+    dU.push(pnlDir); dH.push(pnlH); idx.push(i);
   }
   /* 주간 집계 (5영업일) */
   const wU=[],wH=[],wYr=[];

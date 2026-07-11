@@ -399,13 +399,21 @@
 
 <!-- ③ 헷지수단 -->
 <section class="page" id="p7">
-  <p class="lede">각 위험을 헷지하는 <b>수단</b>을 비용과 효과 관점에서 비교합니다. 대체로 <b>선물·스왑은 저비용·방향 제거</b>, <b>옵션은 고비용이나 감마·변동성까지 방어</b>합니다.</p>
+  <p class="lede">위험을 넘기는 <b>도구</b>를 비용과 효과로 비교합니다. 크게 두 종류입니다 — <b>선물·스왑</b>은 값이 오르내리는 것(방향)만 반대로 걸어 <b>싸게</b> 상쇄하고, <b>옵션</b>은 보험처럼 <b>미리 값(프리미엄)을 내고</b> 급변·큰 하락까지 막습니다(비싸지만 확실).</p>
+  <div class="panel" style="background:linear-gradient(135deg,#EEF3FE,#F4F0FD);border:1px solid #D7E0F5">
+    <div class="cap">도구 3종 · 쉬운 말로</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:4px">
+      <div style="display:flex;gap:9px;align-items:flex-start"><div style="font-size:22px">📉</div><div><div style="font-weight:800;font-size:13px;color:var(--pay)">선물</div><div style="font-size:12px;color:var(--muted);line-height:1.55;margin-top:2px">가장 쌈. 값의 <b>방향만</b> 반대로 걸어 상쇄. 급변엔 조금 못 따라감.</div></div></div>
+      <div style="display:flex;gap:9px;align-items:flex-start"><div style="font-size:22px">🔁</div><div><div style="font-weight:800;font-size:13px;color:var(--pay)">스왑</div><div style="font-size:12px;color:var(--muted);line-height:1.55;margin-top:2px">맞춤형 교환 계약. 우리 펀드와 지수의 <b>차이까지</b> 맞출 수 있으나 거래상대 위험.</div></div></div>
+      <div style="display:flex;gap:9px;align-items:flex-start"><div style="font-size:22px">🛡️</div><div><div style="font-weight:800;font-size:13px;color:var(--leak)">옵션(스왑션)</div><div style="font-size:12px;color:var(--muted);line-height:1.55;margin-top:2px">보험. <b>프리미엄</b>을 내고 급변·큰 하락(꼬리)까지 확실히 방어. 비쌈.</div></div></div>
+    </div>
+  </div>
   <div class="panel">
     <div class="cap">주식 위험 수단</div>
     <table class="mtx imt">
       <thead><tr><th>수단</th><th>비용</th><th>효과</th></tr></thead>
       <tbody>
-        <tr><td>선물<small>KOSPI200</small></td><td><span class="difftag good">매우 낮음</span></td><td>방향(델타) 완전 제거 · 감마 없음(선형) · 유동성 큼</td></tr>
+        <tr><td>선물<small>KOSPI200</small></td><td><span class="difftag good">매우 낮음</span></td><td>오르내림(방향) 완전 제거 · 급변 대응은 없음 · 사고팔기 쉬움</td></tr>
         <tr><td>스왑<small>주식스왑·TRS</small></td><td><span class="difftag pay">낮음~중</span></td><td>방향 제거 + 펀드−지수 베이시스까지 맞춤 · 장외(상대방 한도)</td></tr>
         <tr><td>옵션<small>지수옵션</small></td><td><span class="difftag leak">높음(프리미엄)</span></td><td>감마·베가까지 헷지 · 하락 꼬리 방어 · 변동성을 확정비용으로 전환</td></tr>
       </tbody>
@@ -416,8 +424,8 @@
     <table class="mtx imt">
       <thead><tr><th>수단</th><th>비용</th><th>효과</th></tr></thead>
       <tbody>
-        <tr><td>채권<small>국고채 현물</small></td><td><span class="difftag pay">낮으나 자본부담</span></td><td>금리 수준(로) 헷지 + 볼록성 일부 내재 · 현물 보유로 자본·유동성 부담</td></tr>
-        <tr><td>선물<small>국채선물</small></td><td><span class="difftag good">낮음</span></td><td>방향(로) 제거 · 감마 거의 없음 · 유동성 큼 · 만기·바스켓 제약</td></tr>
+        <tr><td>채권<small>국고채 현물</small></td><td><span class="difftag pay">낮으나 자본부담</span></td><td>금리 오르내림 헷지 + 급변 대응 일부 · 현물 보유라 자본·현금 부담</td></tr>
+        <tr><td>선물<small>국채선물</small></td><td><span class="difftag good">낮음</span></td><td>금리 오르내림(방향) 제거 · 급변 대응 거의 없음 · 사고팔기 쉬움</td></tr>
         <tr><td>스왑<small>국고스왑 / IRS</small></td><td><span class="difftag pay">국고 높음·IRS 낮음</span></td><td>로 헷지 · IRS는 저비용이나 <b>국고−IRS 스프레드(basis)에 노출</b></td></tr>
         <tr><td>옵션<small>국고/IRS 옵션(스왑션)</small></td><td><span class="difftag leak">높음(프리미엄)</span></td><td>금리 감마·베가 헷지 · 볼록성을 확정비용으로 전환</td></tr>
       </tbody>

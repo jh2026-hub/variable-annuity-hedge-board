@@ -90,17 +90,8 @@
   .pobtns{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
   .pobtns button{background:var(--panel2);border:1px solid var(--hair);color:var(--muted);font-family:inherit;font-size:12px;font-weight:700;padding:9px 13px;border-radius:9px;cursor:pointer;min-height:40px}
   .pobtns button.on{background:var(--pay);color:#fff;border-color:var(--pay)}
-  .cbrow{display:flex;align-items:center;gap:10px;margin:9px 0}
-  .cblab{flex:0 0 128px;font-size:12px;font-weight:600}
   .cbtrack{flex:1 1 auto;height:20px;background:var(--panel2);border:1px solid var(--hair);border-radius:6px;overflow:hidden}
   .cbfill{height:100%;border-radius:6px;transition:width .3s}
-  .cbamt{flex:0 0 auto;font-size:12px;font-weight:700;min-width:78px;text-align:right}
-  .cbgrp{margin:12px 0;padding-bottom:9px;border-bottom:1px solid var(--hair)}
-  .cbgrp:last-child{border-bottom:none}
-  .cbtitle{font-size:12.5px;font-weight:700;margin-bottom:5px}
-  .cbrow2{display:flex;align-items:center;gap:8px;margin:3px 0}
-  .cbtag{flex:0 0 42px;font-size:10.5px;color:var(--muted)}
-  .cbtrack.sm{height:13px}
   .derived{display:grid;grid-template-columns:repeat(auto-fit,minmax(116px,1fr));gap:8px}
   .dcard{border:1px solid var(--hair);border-radius:9px;padding:8px 11px;background:var(--panel2)}
   .dt{font-size:10.5px;color:var(--muted);line-height:1.3}
@@ -260,10 +251,10 @@
   <p class="lede">변액보험은 계약자의 적립금 운용성과와 무관하게 <b>최저 수준을 보증</b>합니다. 회사는 이 보증을 제공하는 대가로 <b>보증수수료</b>를 수취하며, 이를 재원으로 시장위험을 관리합니다. 관리의 본질은 모든 위험을 없애는 것이 아니라, <b>비용과 손익변동성 사이에서 균형을 선택하는 것</b>입니다.</p>
 
   <div class="panel concept">
-    <div class="cap">헷지를 왜 하나 — 손익이 이만큼 흔들립니다<span>미헷지 주간 손익 · 실제 시장데이터</span></div>
-    <div class="chartwrap"><svg id="whyHedge" viewBox="0 0 640 260" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"><text x="320" y="130" text-anchor="middle" class="eflabel">데이터 불러오는 중…</text></svg></div>
-    <div id="whyLeg" style="display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;font-size:11.5px"></div>
-    <p style="font-size:13px;color:var(--muted);line-height:1.75;margin-top:8px"><b style="color:var(--sym)">보라색</b>은 헷지하지 않았을 때의 주간 손익입니다 — 위기마다 <b style="color:var(--ink)">수백에서 수천억씩</b> 위아래로 출렁입니다. <b style="color:var(--good)">초록색</b>은 헷지했을 때로, 같은 축에서 <b>여전히 흔들리지만 폭이 훨씬 좁습니다</b>(완전히 없어지지는 않습니다). 이 큰 변동을 재무제표가 그대로 떠안을 수 없기 때문에 헷지합니다.</p>
+    <div class="cap">도대체 헷지는 왜? — 헷지를 늘릴수록 변동폭이 줄어듭니다<span>미헷지 주간 손익 · 실제 시장데이터 · 방향 헷지 비율별</span></div>
+    <div class="chartwrap"><svg id="conceptLines" viewBox="0 0 640 280" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"><text x="320" y="140" text-anchor="middle" class="eflabel">데이터 불러오는 중…</text></svg></div>
+    <div id="conceptLeg" style="display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;font-size:11.5px"></div>
+    <p style="font-size:13px;color:var(--muted);line-height:1.75;margin-top:8px"><b style="color:var(--sym)">미헷지</b>는 주가·금리 등락이 그대로 손익이 되어 위기마다 <b style="color:var(--ink)">수백~수천억씩</b> 출렁입니다 — 이 큰 변동을 재무제표가 그대로 떠안을 수 없어 헷지합니다. 같은 축에 방향 헷지 비율을 <b>0 → 50 → 80 → 100%</b>로 올려 겹쳤는데, 비율을 높일수록 <b>밴드(변동폭)가 눈에 띄게 좁아집니다</b>(범례의 ±값이 그 크기). 다만 <b>100% 헷지해도 완전 직선은 아닙니다</b>: 델타 헷지 후 남는 <b style="color:var(--leak)">감마 누수(위기 딥)</b>와 <b>펀드 불일치·베가·해지</b> 같은 비시장 잔차로 <b>좁게 흔들립니다</b>. 헷지는 변동성을 <b>없애는 것이 아니라 크게 줄이는 것</b>입니다.</p>
   </div>
 
   <div class="panel concept">
@@ -308,13 +299,6 @@
       <circle cx="560" cy="176" r="5" fill="#E68A17"/><text x="548" y="150" fill="#E68A17" font-size="10.5" text-anchor="end" font-family="sans-serif">미헷지 · 비용 0</text>
     </svg></div>
     <p style="font-size:13px;color:var(--muted);line-height:1.75;margin-top:6px">헷지를 늘리면 <b style="color:var(--ink)">손익변동성은 줄지만 비용은 증가</b>합니다. 반대로 감내를 늘리면 비용은 줄지만 변동성이 커집니다. 최선은 <b style="color:var(--ink)">보증수수료 예산 안에서 변동성을 가장 낮추는 조합</b>이며, 이를 <b>⑤ 시뮬레이션</b> 탭에서 효율적 프론티어로 계산합니다.</p>
-  </div>
-
-  <div class="panel concept">
-    <div class="cap">헷지를 늘릴수록 변동폭이 줄어듭니다<span>실제 시장데이터 · 방향 헷지 비율별</span></div>
-    <div class="chartwrap"><svg id="conceptLines" viewBox="0 0 640 280" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"><text x="320" y="140" text-anchor="middle" class="eflabel">데이터 불러오는 중…</text></svg></div>
-    <div id="conceptLeg" style="display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;font-size:11.5px"></div>
-    <p style="font-size:13px;color:var(--muted);line-height:1.75;margin-top:8px">같은 축에 방향 헷지 비율을 <b>0 → 50 → 80 → 100%</b>로 올려 겹쳤습니다. 비율을 높일수록 <b>밴드(변동폭)가 눈에 띄게 좁아집니다</b> — 범례의 ±값이 그 크기입니다. 다만 <b>100% 헷지해도 완전 직선은 아닙니다</b>: 델타 헷지 후 남는 <b style="color:var(--leak)">감마 누수(위기 딥)</b>와 <b>펀드 불일치·베가·해지</b> 같은 비시장 잔차로 <b>좁게 흔들립니다</b>. 헷지는 변동성을 <b>없애는 것이 아니라 크게 줄이는 것</b>입니다.</p>
   </div>
 
   <div class="panel concept">
@@ -616,14 +600,13 @@ $("tabs").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)
   document.querySelectorAll(".tabs button").forEach(x=>x.classList.toggle("on",x===b));
   document.querySelectorAll(".page").forEach(p=>p.classList.toggle("on",p.id===b.dataset.p));
   window.scrollTo({top:0,behavior:"smooth"});
-  if(b.dataset.p==="p5"&&!SIM.loaded) loadMarket();
 });
 
 function numRow(o){ return `<div class="srow"><div class="lab">${o.n}<small>${o.s}</small></div>
   <input type="number" inputmode="decimal" id="in_${o.id}" value="${o.v}" step="any" min="0"><span class="unit">${o.u}</span></div>`; }
 $("sheetFin").innerHTML=FIN.map(numRow).join("");
 $("sheetVol").innerHTML=VOL.map(numRow).join("");
-[...FIN,...VOL].forEach(o=>$("in_"+o.id).addEventListener("input",e=>{o.v=parseFloat(e.target.value)||0;syncCsm2();render();if(SIM.loaded)renderSim();}));
+[...FIN,...VOL].forEach(o=>$("in_"+o.id).addEventListener("input",e=>{o.v=parseFloat(e.target.value)||0;syncCsm2();render();if(SIM.loaded){renderSim();renderConceptCombo();}}));
 
 const mtxBody=$("mtx").querySelector("tbody");
 mtxBody.innerHTML=RISK.map(r=>{
@@ -643,7 +626,7 @@ function renderSelect(){
   RISK.forEach(r=>{
     if(r.grp!==cur){ cur=r.grp; html+=`<div class="selgrp">${r.grp}</div>`; }
     const dt=DIFF[r.diff], dtag=`<span class="difftag ${dt.c}">${dt.t}</span>`;
-    if(r.kind==="na"){ html+=`<div class="selrow csmfix"><div class="sname">${r.n}<small>${r.note} · 이전 불가</small></div>${dtag}<div class="scost">완충 감내</div><span class="segfix">CSM</span></div>`; return; }
+    if(r.kind==="na"){ html+=`<div class="selrow"><div class="sname">${r.n}<small>${r.note} · 이전 불가</small></div>${dtag}<div class="scost">완충 감내</div><span class="segfix">CSM</span></div>`; return; }
     let hint;
     if(r.kind==="bp") hint = r.on? `헷지 −${won((r.bp||0)*AV)}억` : `감내(σ ${(r.exp||0).toFixed(1)})`;
     else { const {leak,prem}=leakPrem(r); const dep=r.dep?RISK.find(x=>x.id===r.dep).on:1;
@@ -825,11 +808,17 @@ async function loadMarket(){
     const r=await fetch("./data/market.json",{cache:"no-store"}); if(!r.ok) throw new Error(r.status);
     SIM.data=await r.json(); SIM.loaded=true;
     if($("simStatus")){ $("simStatus").innerHTML=`KOSPI·국고 20년 <b>${SIM.data.meta.from}–${SIM.data.meta.to}</b> (${SIM.data.meta.n.toLocaleString()}거래일) 로드 완료.`; $("simStatus").style.color="var(--muted)"; }
-    renderSim(); renderConceptCombo(); drawWhyHedge(); renderDerived();
+    renderSim(); renderConceptCombo(); renderDerived();
   }catch(e){ if($("simStatus")){$("simStatus").innerHTML=`시장데이터를 불러오지 못했습니다 (${e.message}).`; $("simStatus").style.color="var(--bad)";} }
 }
 /* 전략 조합의 연간 손익변동성(1σ, 억) — 방향·감마(시장) + 베가·펀드·해지·모형(σ가중) 합성 */
 const NM_SCALE=40;
+/* 공유 헬퍼 — 여러 차트에서 중복되던 주간집계·표준편차·비시장 잔차 노이즈 */
+const weekly=a=>{const w=[];for(let i=0;i<a.length;i+=5){let s=0;for(let j=i;j<Math.min(i+5,a.length);j++)s+=a[j];w.push(s);}return w;};
+const stdev=a=>{if(a.length<2)return 0;const m=a.reduce((x,y)=>x+y,0)/a.length;return Math.sqrt(a.reduce((x,y)=>x+(y-m)*(y-m),0)/(a.length-1));};
+const hsh=k=>{const s=Math.sin(k*127.1+31.7)*43758.5453;return s-Math.floor(s);};
+const nmWeekly=()=>Math.sqrt(['vega','fund','lapse'].reduce((s,id)=>{const r=RISK.find(x=>x.id===id);return s+Math.pow((r.exp||0)*NM_SCALE,2);},0))/Math.sqrt(52);
+const nmNoise=(i,nmW)=>(hsh(i+1)+hsh((i+1)*1.7+5)+hsh((i+1)*2.3+9)-1.5)*(nmW*2);
 function stratVol(hs){
   if(!SIM.loaded) return 0;
   const d=SIM.data, rk=SIM.rateKey, eqd=val("eqd"),rvd=val("rvd"),ge=val("ge"),gr=val("gr"),ie=val("ie"),ir=val("ir");
@@ -856,21 +845,15 @@ function renderConceptCombo(){
     LK.push(-gam(ge,rEqPct) - gam(gr,dRtBp));          /* 델타 헷지 후 감마 누수(잔여) */
     idx.push(i);
   }
-  const wk=a=>{const w=[];for(let i=0;i<a.length;i+=5){let s=0;for(let j=i;j<Math.min(i+5,a.length);j++)s+=a[j];w.push(s);}return w;};
-  const wU=wk(U),wLK=wk(LK),n=wU.length;
+  const wU=weekly(U),wLK=weekly(LK),n=wU.length;
   const wYr=[];for(let i=0;i<U.length;i+=5)wYr.push(idx[Math.min(i,idx.length-1)]);
-  /* 비시장 잔차(펀드 불일치·베가·해지) — 헷지해도 남아 잔잔히 흔들림 */
-  const nmA=Math.sqrt(['vega','fund','lapse'].reduce((a,id)=>{const r=RISK.find(x=>x.id===id);return a+Math.pow((r.exp||0)*NM_SCALE,2);},0));
-  const nmW=nmA/Math.sqrt(52);
-  const hsh=k=>{const s=Math.sin(k*127.1+31.7)*43758.5453;return s-Math.floor(s);};
-  const nz=i=>(hsh(i+1)+hsh((i+1)*1.7+5)+hsh((i+1)*2.3+9)-1.5)*(nmW*2);
-  const std=a=>{const m=a.reduce((x,y)=>x+y,0)/a.length;return Math.sqrt(a.reduce((x,y)=>x+(y-m)*(y-m),0)/(a.length-1));};
+  const nmW=nmWeekly();   /* 비시장 잔차(펀드 불일치·베가·해지) — 헷지해도 남아 잔잔히 흔들림 */
   const RAT=[
     {h:0,   n:'미헷지',        c:'var(--sym)',  lw:1.1, o:0.5},
     {h:0.5, n:'방향 50% 헷지',  c:'var(--pay)',  lw:1.6, o:0.85},
     {h:0.8, n:'방향 80% 헷지',  c:'var(--leak)', lw:1.8, o:0.95},
     {h:1,   n:'방향 100% 헷지', c:'var(--good)', lw:2.4, o:1},
-  ].map(r=>{ const arr=wU.map((u,i)=>(1-r.h)*u + r.h*wLK[i] + (r.h>0?nz(i):0)); return {...r, arr, sig:std(arr)*Math.sqrt(252/5)}; });
+  ].map(r=>{ const arr=wU.map((u,i)=>(1-r.h)*u + r.h*wLK[i] + (r.h>0?nmNoise(i,nmW):0)); return {...r, arr, sig:stdev(arr)*Math.sqrt(252/5)}; });
   const amp=Math.max(...wU.map(Math.abs),1)*1.05;
   const W=640,H=280,L=54,R=14,T=16,B=26,iw=W-L-R,ih=H-T-B,g=[];
   const X=i=>L+iw*i/(n-1), Y=v=>T+ih/2-(Math.max(-amp,Math.min(amp,v))/amp)*(ih/2);
@@ -886,43 +869,6 @@ function renderConceptCombo(){
   box.innerHTML=g.join("");
   const leg=$("conceptLeg");
   if(leg) leg.innerHTML=RAT.map(s=>`<span style="display:inline-flex;align-items:center;gap:5px"><span style="width:16px;height:3px;border-radius:2px;background:${s.c};display:inline-block"></span>${s.n} · ±${won(s.sig)}억</span>`).join("");
-}
-/* '왜 헷지하나' 도입 — 미헷지 대변동을 그 스케일 그대로 보여줌 */
-function drawWhyHedge(){
-  const box=$("whyHedge"); if(!box||!SIM.loaded)return;
-  const d=SIM.data, rk=SIM.rateKey, eqd=val("eqd"),rvd=val("rvd"),ge=val("ge"),gr=val("gr"),ie=val("ie"),ir=val("ir");
-  const U=[],Hh=[],idx=[];
-  for(let i=1;i<d.dates.length;i++){
-    const rEqBp=(d.eq[i]/d.eq[i-1]-1)*10000, dRtBp=(d[rk][i]-d[rk][i-1])*100, rEqPct=rEqBp/100;
-    U.push(eqd*rEqBp - rvd*dRtBp);                       /* 미헷지 */
-    Hh.push(-gam(ge,rEqPct) - gam(gr,dRtBp));            /* 방향 헷지 후: 감마 잔여(위기 딥) — 완전 평탄 아님 */
-    idx.push(i);
-  }
-  const wk=a=>{const w=[];for(let i=0;i<a.length;i+=5){let s=0;for(let j=i;j<Math.min(i+5,a.length);j++)s+=a[j];w.push(s);}return w;};
-  const wU=wk(U),wH=wk(Hh),n=wU.length;
-  const wYr=[];for(let i=0;i<U.length;i+=5)wYr.push(idx[Math.min(i,idx.length-1)]);
-  /* 비시장 잔차(펀드 불일치·베가·해지)로 헷지 후에도 좁게 흔들림 */
-  const nmA=Math.sqrt(['vega','fund','lapse'].reduce((a,id)=>{const r=RISK.find(x=>x.id===id);return a+Math.pow((r.exp||0)*NM_SCALE,2);},0)), nmW=nmA/Math.sqrt(52);
-  const hsh=k=>{const s=Math.sin(k*127.1+31.7)*43758.5453;return s-Math.floor(s);};
-  for(let i=0;i<n;i++) wH[i]+=(hsh(i+1)+hsh((i+1)*1.7+5)+hsh((i+1)*2.3+9)-1.5)*(nmW*2);
-  const amp=Math.max(...wU.map(Math.abs),1)*1.1;
-  const W=640,H=260,L=54,R=14,T=16,B=26,iw=W-L-R,ih=H-T-B,g=[];
-  const X=i=>L+iw*i/(n-1), Y=v=>T+ih/2-(Math.max(-amp,Math.min(amp,v))/amp)*(ih/2);
-  [1,0.5,0,-0.5,-1].forEach(f=>{const cv=amp*f,gy=Y(cv);
-    g.push(`<line x1="${L}" y1="${gy.toFixed(1)}" x2="${W-R}" y2="${gy.toFixed(1)}" stroke="${f===0?'#AAB4C6':'#EAEDF5'}" stroke-width="${f===0?1.3:1}"/>`);
-    g.push(`<text class="eflabel" x="${L-6}" y="${(gy+3).toFixed(1)}" text-anchor="end">${f>0?'+':''}${won(cv)}</text>`);});
-  let cy=null;const dts=d.dates;
-  wYr.forEach((di,i)=>{const yr=dts[di]?dts[di].slice(0,4):'';if(yr&&yr!==cy){cy=yr;g.push(`<text class="eflabel" x="${X(i).toFixed(1)}" y="${H-B+16}" text-anchor="middle">${yr}</text>`);}});
-  const path=arr=>arr.map((v,i)=>(i?"L":"M")+X(i).toFixed(1)+" "+Y(v).toFixed(1)).join(" ");
-  const draw=(dp,st,w,beg,o)=>`<path d="${dp}" fill="none" stroke="${st}" stroke-width="${w}" stroke-linejoin="round" opacity="${o}" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"><animate attributeName="stroke-dashoffset" from="1" to="0" dur="1.5s" begin="${beg}s" fill="freeze"/></path>`;
-  g.push(draw(path(wU),"var(--sym)",1.5,0,0.9));
-  g.push(draw(path(wH),"var(--good)",2.4,0.4,1));
-  box.innerHTML=g.join("");
-  const sig=stratVol({}), leg=$("whyLeg");
-  if(leg) leg.innerHTML=[
-    ['var(--sym)','미헷지 (연 1σ ±'+won(sig)+'억)'],
-    ['var(--good)','헷지 후 (좁게 흔들리나 폭이 확 작음)'],
-  ].map(([c,t])=>`<span style="display:inline-flex;align-items:center;gap:5px"><span style="width:16px;height:3px;border-radius:2px;background:${c};display:inline-block"></span>${t}</span>`).join("");
 }
 /* PL 인식 — 완충이 얇아지면 모든 요인에 헷지 압력이 커지는 것을 시각화(슬라이더+애니 파동) */
 const BUFF=[
@@ -1062,7 +1008,7 @@ function renderSim(){
     } else if(r.kind==="calcE"||r.kind==="calcR"){
       const dep=r.kind==="calcE"?dOn:rOn, rv=r.kind==="calcE"?avgRvE:avgRvR, iv=r.kind==="calcE"?ie:ir, G=r.kind==="calcE"?ge:gr;
       if(!dep){ proc='<span style="color:var(--muted)">—</span>'; el="—"; note="방향 미헷지 시 없음"; col="var(--muted)"; }
-      else if(r.on){ proc='<span class="pill pl">PL</span>'; el="−"+won(gam(G,iv))+"억"; note="프리미엄(확정)"; col="var(--pay)"; }
+      else if(r.on){ proc='<span class="pill pl">PL</span>'; el="−"+won(gam(G,iv))+"억"; note="옵션 프리미엄(확정)"; col="var(--pay)"; }
       else { proc='<span class="pill csm">CSM</span>'; el="−"+won(gam(G,rv))+"억"; note="연평균 누수(실측)"; col="var(--leak)"; }
     } else { proc='<span class="pill csm">CSM</span>'; el="σ기여 "+(r.exp||0).toFixed(1); note="이전 불가"; col="var(--muted)"; }
     return `<tr><td>${r.n}</td><td>${proc}</td><td class="mono" style="color:${col}">${el}</td><td style="color:var(--muted);font-size:10.5px">${note}</td></tr>`;
@@ -1097,7 +1043,7 @@ const VIZ={
 const FAC={
   delta:{viz:"dir", nat:"two", t:"주가가 오르내리면 보증가치도 함께 움직인다. 오르면 이득, 내리면 손실인 <b>양방향</b> 위험입니다. 선물로 반대 포지션을 잡으면 변동이 사라집니다."},
   rho:{viz:"rate", nat:"two", t:"금리 <b>커브가 위·아래로 이동</b>하면 부채가치가 움직이는 <b>양방향</b> 위험입니다. 보증은 만기가 긴 부채라 <b>커브의 장기 구간에 특히 민감</b>합니다(듀레이션). 국채·스왑으로 반대 포지션을 잡아 상쇄합니다."},
-  gE:{viz:"gamma", nat:"loss", t:"헷지는 직선(델타=접선)으로 근사하지만 실제 가치는 곡선이라, 접선이 닿지 못하는 <b>부족분이 항상 손실</b>로 남는다(비용). 시장이 움직일수록 부족분이 커집니다. 옵션을 매입하면 이 손실이 <b>미리 정해진 비용(프리미엄)</b>으로 바뀝니다."},
+  gE:{viz:"gamma", nat:"loss", t:"헷지는 직선(델타=접선)으로 근사하지만 실제 가치는 곡선이라, 접선이 닿지 못하는 <b>부족분이 항상 손실</b>로 남는다(비용). 시장이 움직일수록 부족분이 커집니다. 옵션을 매입하면 이 손실이 <b>미리 정해진 비용(옵션 프리미엄)</b>으로 바뀝니다."},
   gR:{viz:"gamma", nat:"loss", t:"금리에서도 접선의 부족분이 <b>항상 손실</b>로 발생합니다. 금리가 크게 움직일수록 커지며, 스왑션 매입으로 확정 비용으로 전환합니다."},
   vega:{viz:"vol", nat:"two", t:"변동성이 <b>커지면 부채가 늘어 손실</b>, <b>줄면 부채가 줄어 이득</b>인 양방향 위험입니다. 옵션(변동성) 매수로 줄일 수 있으나 비용이 큽니다."},
   fund:{viz:"basis", nat:"two", t:"보증 부채는 <b>실제 펀드</b> 성과를 따르지만, 헷지는 <b>지수·바스켓(수단)</b>으로 대신합니다. 둘이 어긋난 만큼이 손익입니다 — <b>펀드가 헷지 수단보다 부진하면 손실</b>, <b>수단보다 더 나으면 이익</b>인 <b>양방향</b> 괴리(추적오차)입니다. 펀드별 맞춤 복제로만 줄일 수 있고 비용이 높습니다."},
@@ -1140,9 +1086,6 @@ const FEEDBACK_ENDPOINT="https://script.google.com/macros/s/AKfycbwEqiaQ9mhEl2-4
       try{ await fetch(`https://abacus.jasoncameron.dev/hit/${CNT_NS}/feedback`); loadCounts(); }catch(_){}
     }catch(e){ msg.style.color="var(--bad)"; msg.textContent="전송 실패 — 잠시 후 다시 시도해 주세요."; } finally{ btn.disabled=false; } });
 })();
-
-/* VOL 입력이 바뀌면 시뮬 갱신 */
-[...VOL].forEach(o=>$("in_"+o.id).addEventListener("input",()=>{ if(SIM.loaded) renderSim(); }));
 
 /* ③ 헷지수단 payoff 미리보기 */
 const PO={t:"lin"};

@@ -17,6 +17,9 @@
   body{font-family:"IBM Plex Sans KR",system-ui,sans-serif;-webkit-font-smoothing:antialiased;
        padding:20px 14px 60px;max-width:860px;margin:0 auto;line-height:1.6}
   .mono{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+  .statusbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);padding:6px 2px 10px}
+  .statusbar .sbitem{font-weight:600} .statusbar .sbitem b{color:var(--pay);font-family:"IBM Plex Mono",monospace}
+  .statusbar .sbnote{margin-left:auto;opacity:.75}
   .exbanner{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:#E7EFFD;border:1px solid #9DBBF3;
     color:var(--pay);border-radius:9px;padding:9px 12px;font-size:12px;font-weight:600;margin-bottom:14px}
   .exbanner span{color:var(--muted);font-weight:400}
@@ -206,6 +209,11 @@
 </head>
 <body>
 
+<div class="statusbar">
+  <span class="sbitem">👁 접속 <b id="sbVisits">…</b></span>
+  <span class="sbitem">💬 의견 <b id="sbFeedback">…</b></span>
+  <span class="sbnote">변액보험 헷지 학습 도구</span>
+</div>
 <div class="exbanner">📊 범용 계산 도구 <span>· 적립금·부채·민감도·수수료 등 모든 값을 직접 입력하여 사용합니다. 기본값은 개념 설명용 예시이며 특정 회사와 무관합니다.</span></div>
 
 <h1>변액보험 <em>헷지</em>에 관하여</h1>
@@ -297,7 +305,11 @@
 
 <!-- ④ 비용·변동성 : 프론티어 → 선택 → 재원 → 입력 -->
 <section class="page" id="p2">
-  <p class="lede">보증수수료 예산 안에서 <b>비용</b>과 <b>손익변동성</b>을 함께 고려하여 헷지할 항목을 선택합니다. 아래 프론티어가 선택의 지도이며, 그 아래에서 항목을 고른다.</p>
+  <p class="lede">보증수수료 예산 안에서 <b>비용</b>과 <b>손익변동성</b>을 함께 고려하여 헷지할 항목을 선택합니다. 아래 프론티어가 선택의 지도이며, 그 아래에서 항목을 고릅니다.</p>
+  <div class="panel" style="border-color:#F1D7A3;background:#FDF7EC">
+    <div class="cap">⚠ 미헷지는 변동성을 없애지 않습니다</div>
+    <p style="font-size:12.5px;color:var(--muted);line-height:1.7;margin-top:2px"><b style="color:var(--pay)">헷지</b> = 비용↑·손익변동성↓ · <b style="color:var(--leak)">미헷지</b> = 비용↓·<b style="color:var(--ink)">손익변동성↑</b>. 미헷지의 큰 변동성은 사라지는 것이 아니라 <b>CSM 완충</b>이 흡수합니다. 다만 <b style="color:var(--bad)">완충이 얇으면 손실이 보험손익(PL)으로 전이</b>되므로, 얇은 CSM일수록 <b>허용 변동성(세로선)을 낮춰 더 많이 헷지</b>해야 합니다. (완충 작동은 <b>④ PL 인식</b> 참조)</p>
+  </div>
   <div class="panel">
     <div class="cap">효율적 프론티어 — 비용과 손익변동성<span>점 = 헷지 조합</span></div>
     <div class="chartwrap"><svg class="ef" id="ef" viewBox="0 0 640 340" preserveAspectRatio="xMidYMid meet"></svg></div>
@@ -513,7 +525,7 @@ const FIN=[
   {id:"av", n:"적립금", u:"조", v:30, s:"변액 계정 규모"},
   {id:"fee",n:"보증수수료", u:"bp", v:50, s:"헷지 재원 = bp × 적립금"},
   {id:"csm",n:"CSM 잔액", u:"억", v:5000, s:"손실을 먼저 흡수하는 완충"},
-  {id:"voltol",n:"변동성 허용(1σ)", u:"억", v:1200, s:"허용 손익변동성 상한(세로선)"},
+  {id:"voltol",n:"변동성 허용(1σ)", u:"억", v:1200, s:"허용 상한 · 얇은 CSM일수록 낮게(≈CSM÷1.65)"},
 ];
 const VOL=[
   {id:"ge",n:"주가 Γ", u:"억/1%", v:0.5, s:"코스피 1%당 감마"},
@@ -919,6 +931,14 @@ function renderFactorAnim(){
   }).join("");
 }
 
+/* 상태바 — 접속·의견 카운트 (abacus 무료 카운터, 별도 서버 불필요) */
+const CNT_NS="variable-annuity-hedge-board";
+async function loadCounts(){
+  try{ const v=await(await fetch(`https://abacus.jasoncameron.dev/hit/${CNT_NS}/visits`)).json(); if($("sbVisits"))$("sbVisits").textContent=(v.value||0).toLocaleString('ko-KR'); }catch(e){ if($("sbVisits"))$("sbVisits").textContent="—"; }
+  try{ const f=await(await fetch(`https://abacus.jasoncameron.dev/get/${CNT_NS}/feedback`)).json(); if($("sbFeedback"))$("sbFeedback").textContent=(f.value||0).toLocaleString('ko-KR'); }catch(e){ if($("sbFeedback"))$("sbFeedback").textContent="—"; }
+}
+loadCounts();
+
 /* 피드백 — 구글 Apps Script 웹앱(/exec)을 통해 구글 시트에 기록 */
 const FEEDBACK_ENDPOINT="https://script.google.com/macros/s/AKfycbwEqiaQ9mhEl2-4AVC8FfHPPbW1fKHVDDVPnqb5ZD5FAb8yeyHZS6OaYHicsjkvDWBs/exec";
 (function(){ const note=$("fbNote"), btn=$("fbSend"), msg=$("fbMsg");
@@ -929,6 +949,7 @@ const FEEDBACK_ENDPOINT="https://script.google.com/macros/s/AKfycbwEqiaQ9mhEl2-4
     btn.disabled=true; msg.style.color="var(--muted)"; msg.textContent="전송 중…";
     try{ await fetch(FEEDBACK_ENDPOINT,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(body)});
       msg.style.color="var(--good)"; msg.textContent="의견이 접수되었습니다. 감사합니다."; $("fbText").value="";
+      try{ await fetch(`https://abacus.jasoncameron.dev/hit/${CNT_NS}/feedback`); loadCounts(); }catch(_){}
     }catch(e){ msg.style.color="var(--bad)"; msg.textContent="전송 실패 — 잠시 후 다시 시도해 주세요."; } finally{ btn.disabled=false; } });
 })();
 

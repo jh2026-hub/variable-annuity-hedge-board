@@ -566,7 +566,16 @@
   <div class="panel">
     <div class="cap">헷지할 항목 선택<span>헷지(PL) 또는 CSM 감내</span></div>
     <div id="selList"></div>
-    <p class="foot">각 항목을 <b>헷지</b>(확정 비용을 지불하고 손익 안정)하거나 <b>CSM</b>(비용 없이 완충으로 감내)으로 둡니다. 선택은 위 프론티어와 아래 시뮬레이션에 즉시 반영됩니다.</p>
+    <p class="foot">각 항목을 <b>헷지</b>(확정 비용을 지불하고 손익 안정)하거나 <b>CSM</b>(비용 없이 완충으로 감내)으로 둡니다. 선택은 아래 <b>흔들림 막대</b>·프론티어·시뮬레이션에 즉시 반영됩니다.</p>
+    <div style="border-top:1px dashed var(--hair);margin-top:10px;padding-top:12px">
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <div><div class="foot" style="margin:0">지금 손익 흔들림 (연)</div><div id="vbNum" style="font-size:30px;font-weight:800;color:var(--pay);letter-spacing:-.5px">±0억</div></div>
+        <div style="color:var(--muted);font-size:12px;line-height:1.7">안 막으면 <b id="vbFull" style="color:var(--sym)">±0</b> → 지금 <b id="vbCur" style="color:var(--good)">±0</b><br><b id="vbCut" style="color:var(--good)">0억</b> 줄였습니다</div>
+      </div>
+      <div id="vbBar" style="display:flex;gap:2px;height:36px;border-radius:9px;overflow:hidden;margin-top:11px;background:var(--panel2);border:1px solid var(--hair);padding:2px"></div>
+      <div id="vbLegend" style="display:flex;flex-wrap:wrap;gap:5px 10px;margin-top:9px;font-size:11px"></div>
+      <p class="foot" style="margin-top:9px">각 블록 = 그 위험이 만드는 <b>흔들림의 크기</b>. <b>헷지</b>하면 블록이 <b>사라지고</b> 총 흔들림이 줄어듭니다. 주가 방향이 크지만, 막고 나면 남는 <b>금리·감마·변동성·펀드</b>도 상당해 — <b>어디까지 헷지할지</b>가 비용과의 선택입니다.</p>
+    </div>
   </div>
   <p class="lede">실제 시장데이터(KOSPI·<b>국고 20년</b>, 약 6.5년)로 손익을 재현합니다. <b>미헷지</b>는 시장 등락이 그대로 손익이 되어 <b>크게 출렁이고</b>, 헷지는 그 흔들림을 줄입니다. <span id="simStatus" style="color:var(--muted)">데이터 불러오는 중…</span></p>
   <div class="panel">
@@ -905,6 +914,26 @@ function allCombos(){
 function frontier(pts){ const s=[...pts].sort((a,b)=>a.sig-b.sig||a.cost-b.cost); const fr=[]; let mc=Infinity;
   for(const p of s){ if(p.cost<mc-1e-9){ fr.push(p); mc=p.cost; } } return fr; }
 
+/* 선택에 따른 손익 흔들림 막대 — 위험 기여를 균형 배분(주가 방향이 크나 감마·변동성·펀드도 유의미) */
+const VC={delta:1400,rho:900,gE:520,gR:460,vega:660,fund:520,lapse:420,model:320};
+const VCCOL={delta:'var(--pay)',rho:'#5B8DEF',gE:'var(--sym)',gR:'#9B7BEF',vega:'var(--leak)',fund:'#EBA24A',lapse:'#F0B968',model:'#AAB4C6'};
+const _tw={};
+function tween(id,to,fmt){ const el=$(id); if(!el)return; const from=_tw[id]==null?to:_tw[id]; _tw[id]=to; let start=null;
+  const step=ts=>{ if(start==null)start=ts; const p=Math.min(1,(ts-start)/550), e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2, v=from+(to-from)*e; el.textContent=fmt(v); if(p<1)requestAnimationFrame(step); };
+  requestAnimationFrame(step); }
+const vcHedged=r=>(r.kind==='na')?false:!!r.on;
+function volBarBuild(){ const bar=$("vbBar"); if(!bar||bar.children.length)return;
+  bar.innerHTML=RISK.map(r=>`<div class="vbseg" data-id="${r.id}" style="flex-grow:0;flex-basis:0;min-width:0;border-radius:5px;background:${VCCOL[r.id]||'#ccc'};transition:flex-grow .55s cubic-bezier(.2,.7,.3,1),opacity .4s"></div>`).join('');
+  const lg=$("vbLegend"); if(lg) lg.innerHTML=RISK.map(r=>`<span data-lg="${r.id}" style="display:inline-flex;align-items:center;gap:4px;transition:opacity .3s"><span style="width:11px;height:11px;border-radius:3px;background:${VCCOL[r.id]||'#ccc'};display:inline-block"></span>${r.n} ±${won(VC[r.id]||0)}</span>`).join('');
+}
+function drawVolBar(){ if(!$("vbBar"))return; volBarBuild();
+  const full=Math.sqrt(RISK.reduce((a,r)=>a+Math.pow(VC[r.id]||0,2),0)), cur=Math.sqrt(RISK.reduce((a,r)=>a+(vcHedged(r)?0:Math.pow(VC[r.id]||0,2)),0));
+  RISK.forEach(r=>{ const seg=$("vbBar").querySelector(`[data-id="${r.id}"]`), lg=$("vbLegend")&&$("vbLegend").querySelector(`[data-lg="${r.id}"]`), h=vcHedged(r);
+    if(seg){ seg.style.flexGrow=h?0:Math.pow(VC[r.id]||0,2); seg.style.opacity=h?0:1; seg.title=r.n+(h?' · 헷지됨':' ±'+won(VC[r.id]||0)+'억'); }
+    if(lg) lg.style.opacity=h?0.32:1; });
+  tween("vbNum",cur,v=>'±'+won(v)+'억'); tween("vbCur",cur,v=>'±'+won(v));
+  if($("vbFull"))$("vbFull").textContent='±'+won(full); tween("vbCut",Math.max(0,full-cur),v=>won(v)+'억');
+}
 function render(){
   const AV=val("av"), FEE=val("fee"), CSM=val("csm"), feeW=AV*FEE, budget=feeW;
   const cur=evalCombo(currentHS());
@@ -937,7 +966,7 @@ function render(){
     p=`연간 <b>${won(outW)}억</b>(수수료의 ${feeW>0?Math.round(outW/feeW*100):0}%)이 지출되고, 최악의 해 <b>${won(L995)}억</b>까지 CSM이 흡수합니다.${opt&&opt.sig<cur.sig-1?` 다만 예산 내에서 변동성을 <b>${won(cur.sig)}→${won(opt.sig)}억</b>으로 추가 축소할 여지가 있습니다.`:``}`;}
   vd.className="verdict "+cls;$("vdi").textContent=ic;$("vdt").textContent=t;$("vdp").innerHTML=p;
 
-  drawCasc(); drawCompare(); renderSelect(); renderDerived();
+  drawCasc(); drawCompare(); renderSelect(); renderDerived(); drawVolBar();
 }
 /* 입력가정 파생 결과 — 입력을 바꾸면 깜빡이며 갱신(입력→결과 연결 시각화) */
 function renderDerived(){

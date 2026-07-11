@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+<meta http-equiv="Pragma" content="no-cache"/>
 <title>변액보험 헷지에 관하여</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -71,15 +73,20 @@
   .selwrap .tag{font-size:9.5px;font-weight:700;font-family:"IBM Plex Mono",monospace}
   .selwrap .tag.pl{color:var(--pay)} .selwrap .tag.csm{color:var(--leak)}
   .hchk{width:30px;height:30px;accent-color:var(--pay);cursor:pointer}
-  .selrow{display:flex;align-items:center;gap:10px;padding:11px 2px;border-bottom:1px dashed var(--hair)}
-  .selrow:last-child{border-bottom:none}
-  .sname{flex:1 1 auto;font-size:13px;font-weight:600}.sname small{display:block;color:var(--muted);font-size:10.5px;font-weight:400;margin-top:1px}
-  .scost{flex:0 0 auto;font-size:11.5px;color:var(--muted);text-align:right;min-width:86px}
-  .seg2{display:inline-flex;border:1px solid var(--hair);border-radius:8px;overflow:hidden}
-  .seg2 button{background:var(--panel2);border:none;color:var(--muted);font-family:inherit;font-size:12px;font-weight:700;padding:9px 13px;cursor:pointer;min-height:42px}
-  .seg2 button.on{background:#E7EFFD;color:var(--pay)}
-  .seg2 button:last-child.on{background:#FBEAD2;color:var(--leak)}
-  .segfix{display:inline-block;padding:9px 13px;font-size:12px;font-weight:700;color:var(--leak);background:#FBEAD2;border-radius:8px}
+  .selgrp{font-size:11.5px;font-weight:700;color:var(--muted);letter-spacing:.02em;margin:16px 0 2px;padding-top:8px;border-top:1px solid var(--hair)}
+  .selgrp:first-child{border-top:none;margin-top:2px;padding-top:0}
+  .selrow{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:10px 10px;border-radius:9px;margin:3px 0;transition:background .12s}
+  .selrow.selon{background:#EEF4FE}
+  .sname{flex:1 1 130px;font-size:13px;font-weight:600}.sname small{display:block;color:var(--muted);font-size:10.5px;font-weight:400;margin-top:1px}
+  .difftag{flex:0 0 auto;font-size:10px;font-weight:700;padding:3px 9px;border-radius:99px;white-space:nowrap}
+  .difftag.good{background:#E4F6EE;color:#12A870}.difftag.pay{background:#E7EFFD;color:#3B6FE6}
+  .difftag.leak{background:#FBEAD2;color:#C7770A}.difftag.muted{background:#EEF1F8;color:#6C778C}
+  .scost{flex:0 0 auto;font-size:11.5px;color:var(--muted);text-align:right;min-width:84px}
+  .seg2{display:inline-flex;border:1px solid var(--hair);border-radius:9px;overflow:hidden;box-shadow:0 1px 2px rgba(20,32,55,.06)}
+  .seg2 button{background:#FFFFFF;border:none;color:var(--muted);font-family:inherit;font-size:12.5px;font-weight:700;padding:9px 15px;cursor:pointer;min-height:42px;transition:.12s}
+  .seg2 button.on{background:var(--pay);color:#FFFFFF;box-shadow:inset 0 0 0 1px rgba(0,0,0,.04)}
+  .seg2 button:last-child.on{background:var(--leak);color:#FFFFFF}
+  .segfix{display:inline-block;padding:9px 15px;font-size:12.5px;font-weight:700;color:#FFFFFF;background:var(--leak);border-radius:9px}
   .pill{display:inline-block;font-size:10px;font-weight:700;font-family:"IBM Plex Mono",monospace;padding:2px 7px;border-radius:99px}
   .pill.pl{background:#E7EFFD;color:var(--pay)} .pill.csm{background:#FBEAD2;color:var(--leak)}
   .chartwrap{margin-top:12px;overflow-x:auto}
@@ -271,12 +278,6 @@
     </div>
     <p class="foot">가로축은 남는 손익변동성, 세로축은 연간 비용이다. <b>왼쪽·아래</b>일수록 우수하며, 점선(예산선) 아래에서 가장 왼쪽 프론티어 점이 최적이다. 우측 끝은 미헷지, 왼쪽으로 갈수록 헷지를 더 실행한 조합이다.</p>
   </div>
-  <div class="verdict ok" id="vd"><div class="ic" id="vdi">✓</div><div><h3 id="vdt"></h3><p id="vdp"></p></div></div>
-  <div class="panel">
-    <div class="cap">헷지할 항목 선택<span>헷지(PL) 또는 CSM 감내</span></div>
-    <div id="selList"></div>
-    <p class="foot">각 항목을 <b>헷지</b>(확정 비용을 지불하고 손익 안정)하거나 <b>CSM</b>(비용 없이 완충으로 감내)으로 둔다. 선택은 위 프론티어와 <b>⑤ 시뮬레이션</b>에 즉시 반영된다.</p>
-  </div>
   <div class="fund">
     <div class="t">헷지 재원 — 보증수수료 (예산)</div>
     <div class="big mono" id="feeBig"></div>
@@ -286,6 +287,12 @@
     <div class="keys"><span><i style="background:var(--pay)"></i><span id="kPay"></span></span>
       <span><i style="background:var(--leak)"></i><span id="kLeak"></span></span>
       <span><i style="background:var(--good)"></i><span id="kRest"></span></span></div>
+  </div>
+  <div class="verdict ok" id="vd"><div class="ic" id="vdi">✓</div><div><h3 id="vdt"></h3><p id="vdp"></p></div></div>
+  <div class="panel">
+    <div class="cap">헷지할 항목 선택<span>헷지(PL) 또는 CSM 감내</span></div>
+    <div id="selList"></div>
+    <p class="foot">각 항목을 <b>헷지</b>(확정 비용을 지불하고 손익 안정)하거나 <b>CSM</b>(비용 없이 완충으로 감내)으로 둔다. 선택은 위 프론티어와 <b>⑤ 시뮬레이션</b>에 즉시 반영된다.</p>
   </div>
   <div class="panel">
     <div class="cap">입력 가정<span>규모·완충·변동성·민감도 세부</span></div>
@@ -443,15 +450,16 @@ const VOL=[
   {id:"sig",n:"잔여 흔들림 1σ", u:"%", v:1.0, s:"미헷지 손익변동성(적립금 대비)"},
 ];
 const RISK=[
-  {id:"delta", n:"주가 방향 (Δ)", exp:58, bp:3,  kind:"bp",   on:1, note:"KOSPI200 선물", cls:"PL"},
-  {id:"rho",   n:"금리 수준 (ρ)", exp:22, bp:2,  kind:"bp",   on:1, note:"국채·IRS", cls:"PL"},
-  {id:"gE",    n:"주가 감마",     exp:0,  kind:"calcE", dep:"delta", on:0, note:"옵션 매수", cls:"CSM"},
-  {id:"gR",    n:"금리 감마",     exp:0,  kind:"calcR", dep:"rho",   on:0, note:"스왑션", cls:"CSM"},
-  {id:"vega",  n:"변동성 (베가)", exp:5,  bp:22, kind:"bp",   on:0, note:"장기 vol 매수", cls:"CSM"},
-  {id:"fund",  n:"펀드 불일치",   exp:3,  bp:26, kind:"bp",   on:0, note:"맞춤 OTC", cls:"CSM"},
-  {id:"lapse", n:"해지율·행동",   exp:2.5,bp:40, kind:"bp",   on:0, note:"재보험", cls:"CSM"},
-  {id:"model", n:"모형·제도",     exp:1.5,bp:null,kind:"na",  on:0, note:"이전 시장 없음", cls:"CSM"},
+  {id:"delta", n:"주가 방향 (Δ)", exp:58, bp:3,  kind:"bp",   on:1, note:"KOSPI200 선물", cls:"PL",  grp:"방향 위험 (민감도)", diff:"easy"},
+  {id:"rho",   n:"금리 수준 (ρ)", exp:22, bp:2,  kind:"bp",   on:1, note:"국채·IRS", cls:"PL",  grp:"방향 위험 (민감도)", diff:"easy"},
+  {id:"gE",    n:"주가 감마",     exp:0,  kind:"calcE", dep:"delta", on:0, note:"옵션 매수", cls:"CSM", grp:"감마 위험 (곡률)", diff:"mid"},
+  {id:"gR",    n:"금리 감마",     exp:0,  kind:"calcR", dep:"rho",   on:0, note:"스왑션", cls:"CSM", grp:"감마 위험 (곡률)", diff:"mid"},
+  {id:"vega",  n:"변동성 (베가)", exp:5,  bp:22, kind:"bp",   on:0, note:"장기 vol 매수", cls:"CSM", grp:"변동성·행동 위험", diff:"hard"},
+  {id:"fund",  n:"펀드 불일치",   exp:3,  bp:26, kind:"bp",   on:0, note:"맞춤 OTC", cls:"CSM", grp:"변동성·행동 위험", diff:"hard"},
+  {id:"lapse", n:"해지율·행동",   exp:2.5,bp:40, kind:"bp",   on:0, note:"재보험", cls:"CSM", grp:"변동성·행동 위험", diff:"hard"},
+  {id:"model", n:"모형·제도",     exp:1.5,bp:null,kind:"na",  on:0, note:"이전 시장 없음", cls:"CSM", grp:"이전 불가", diff:"no"},
 ];
+const DIFF={easy:{t:"비용화 쉬움",c:"good"},mid:{t:"비용화 보통",c:"pay"},hard:{t:"비용화 어려움",c:"leak"},no:{t:"비용화 불가",c:"muted"}};
 const M95=1.7, M995=2.4;
 const $=i=>document.getElementById(i);
 const won=n=>Math.round(n).toLocaleString('ko-KR');
@@ -484,15 +492,20 @@ RISK.forEach(r=>{
 });
 function renderSelect(){
   const box=$("selList"); if(!box)return; const AV=val("av");
-  box.innerHTML=RISK.map(r=>{
-    if(r.kind==="na") return `<div class="selrow"><div class="sname">${r.n}<small>${r.note} · 이전 불가</small></div><div class="scost">완충 감내</div><span class="segfix">CSM</span></div>`;
+  let html="", cur=null;
+  RISK.forEach(r=>{
+    if(r.grp!==cur){ cur=r.grp; html+=`<div class="selgrp">${r.grp}</div>`; }
+    const dt=DIFF[r.diff], dtag=`<span class="difftag ${dt.c}">${dt.t}</span>`;
+    const state = r.on? `<span class="statebadge on">헷지</span>` : `<span class="statebadge off">CSM</span>`;
+    if(r.kind==="na"){ html+=`<div class="selrow csmfix"><div class="sname">${r.n}<small>${r.note} · 이전 불가</small></div>${dtag}<div class="scost">완충 감내</div><span class="segfix">CSM</span></div>`; return; }
     let hint;
     if(r.kind==="bp") hint = r.on? `헷지 −${won((r.bp||0)*AV)}억` : `감내(σ ${(r.exp||0).toFixed(1)})`;
     else { const {leak,prem}=leakPrem(r); const dep=r.dep?RISK.find(x=>x.id===r.dep).on:1;
       hint = !dep? `방향 미헷지` : r.on? `헷지 −${won(prem)}억` : `감내 −${won(leak)}억`; }
-    return `<div class="selrow"><div class="sname">${r.n}<small>${r.note}</small></div><div class="scost mono">${hint}</div>
+    html+=`<div class="selrow ${r.on?'selon':'seloff'}"><div class="sname">${r.n}<small>${r.note}</small></div>${dtag}<div class="scost mono">${hint}</div>
       <div class="seg2" data-id="${r.id}"><button class="${r.on?'on':''}" data-v="1">헷지</button><button class="${r.on?'':'on'}" data-v="0">CSM</button></div></div>`;
-  }).join("");
+  });
+  box.innerHTML=html;
   box.querySelectorAll(".seg2 button").forEach(b=>b.addEventListener("click",()=>{
     const r=RISK.find(x=>x.id===b.parentElement.dataset.id); r.on=+b.dataset.v; render(); if(SIM.loaded)renderSim();
   }));
@@ -746,7 +759,7 @@ function renderSim(){
 }
 
 /* ④ 요인별 애니메이션 설명 — 헷지 전/후 쌍 */
-const NATLAB={loss:"늘 손실",two:"양방향(손실·이득)",bear:"이전 불가"};
+const NATLAB={loss:"미헷지 시 늘 손실 → 헷지 후 완화",two:"양방향(손실·이득)",bear:"이전 불가"};
 const VIZ={
   dir:{
     b:`<svg class="anim" viewBox="0 0 120 84"><line x1="12" y1="42" x2="108" y2="42" stroke="#B7C0D2" stroke-width="1" stroke-dasharray="3 2"/><line x1="12" y1="66" x2="108" y2="18" stroke="#7A5AF0" stroke-width="2.5"/><g transform="translate(12,66)"><circle class="a-dot" r="5" fill="#7A5AF0"/></g><text x="60" y="79" fill="#6C778C" font-size="8" text-anchor="middle">오르내림 = 손익 ±</text></svg>`,
@@ -781,8 +794,9 @@ function renderFactorAnim(){
   const box=$("facAnim"); if(!box)return;
   box.innerHTML=RISK.map(r=>{ const f=FAC[r.id]; if(!f)return""; const v=VIZ[f.viz];
     const nat=`<span class="natpill ${f.nat}">${NATLAB[f.nat]}</span>`;
+    const dt=DIFF[r.diff], dtag=`<span class="difftag ${dt.c}">${dt.t}</span>`;
     const cls=r.cls==="PL"?`<span class="pill pl">보통 PL(헷지)</span>`:`<span class="pill csm">보통 CSM(감내)</span>`;
-    return `<div class="fac"><div class="facname">${r.n} ${nat} ${cls}</div>
+    return `<div class="fac"><div class="facname">${r.n} ${nat} ${dtag} ${cls}</div>
       <div class="facbody"><div class="vizpair">
         <div class="vizcol"><div class="vzlab">헷지 전</div>${v.b}</div>
         <div class="vizcol"><div class="vzlab">헷지 후</div>${v.a}</div>

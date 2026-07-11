@@ -115,7 +115,7 @@
   .ggauge{position:relative;height:28px;background:var(--panel2);border:1px solid var(--hair);border-radius:8px;overflow:hidden;margin-bottom:14px}
   .ggauge>div{height:100%;background:linear-gradient(90deg,#12A870,#4fc79a);transition:width .6s ease,background .4s}
   .ggauge>span{position:absolute;left:10px;top:5px;font-size:12px;font-weight:700;color:#0a5b3c;text-shadow:0 0 3px #fff}
-  .gchoices{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .gchoices{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
   @media(max-width:460px){.gchoices{grid-template-columns:1fr}}
   .gchoice{display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;padding:12px 8px;border:1.5px solid var(--hair);border-radius:12px;background:var(--panel);cursor:pointer;font-family:inherit;transition:transform .1s ease,border-color .15s ease,box-shadow .15s ease}
   .gchoice:hover{border-color:var(--pay);transform:translateY(-2px);box-shadow:0 4px 12px rgba(59,111,230,.14)}
@@ -527,6 +527,7 @@
         <button class="gchoice" data-h="0"><span class="gci">✋</span><span class="gct">그대로 두기</span><span class="gcd">헷지 안 함 · <b>비용 0</b><br>되돌아오면 이득, 이어지면 손해</span></button>
         <button class="gchoice" data-h="1"><span class="gci">🎯</span><span class="gct">시장에 맞추기</span><span class="gcd">헷지 재조정 · <b>약간 비용</b><br>안전하게 따라감</span></button>
         <button class="gchoice" data-h="1.4"><span class="gci">🚀</span><span class="gct">더 걸기</span><span class="gcd">추세에 베팅 · <b>비용 큼</b><br>이어지면 크게 벌고, 아니면 손해</span></button>
+        <button class="gchoice" data-h="opt" style="border-color:#cfe6dc;background:linear-gradient(135deg,#F2FAF6,#FAFDFB)"><span class="gci">🛡️</span><span class="gct">옵션 사용</span><span class="gcd">방향·곡선 손실 <b>전부 차단</b><br><b style="color:var(--bad)">프리미엄 비쌈</b> · 급변동 때만 유리</span></button>
       </div>
       <button id="gReview" class="gbtn" style="margin-top:10px;background:var(--muted);display:none">↩ 되돌리기 (다시 선택)</button>
     </div>
@@ -1408,7 +1409,7 @@ $("poX")&&$("poX").addEventListener("input",renderPayoff);
 
 /* 델타 리밸런싱 게임 — 부채곡선(볼록)+사선 헷지선(전일 기울기 유지), 시장점 이동, 매일 복기, 코스피 2분기 실측 */
 const GAME={d:0,bud:50,bud0:50,best:0,over:false,log:[],mkt:0,hx:0,last:null};
-const GD=1.4, GAM=0.6, GCOST=0.5, GV={W:560,H:235,topY:52,baseY:180,maxX:11};
+const GD=1.4, GAM=0.6, GCOST=0.5, OPT_COST=3.0, GV={W:560,H:235,topY:52,baseY:180,maxX:11};
 let GPOOL=null;
 const GSYNTH=[-1.8,-0.9,-0.4,0.3,0.7,1.1,-2.5,1.6,-0.6,0.9,2.2,-3.5,0.5,-1.2,1.3,-0.3,0.8];
 function gPool(){ if(GPOOL) return GPOOL;
@@ -1456,7 +1457,8 @@ function gDrawReveal(){ const box=$("gCurve"),L=GAME.last; if(!box||!L)return; c
   gBase(mx,g);
   g.push(`<text x="30" y="24" font-size="22" font-weight="800" fill="${col}">${won?'+':'−'}${Math.abs(L.net).toFixed(1)} ${won?'💰':'💸'}</text>`);
   g.push(`<text x="${W-30}" y="24" font-size="10.5" fill="var(--muted)" text-anchor="end">${L.d}일차 · 시장 ${L.dM>=0?'+':''}${L.dM.toFixed(2)}%</text>`);
-  g.push(`<text x="30" y="41" font-size="10.5" font-weight="700"><tspan fill="#9AA3B2">┈ 어제 헷지선</tspan> <tspan fill="var(--pay)">━ 오늘 헷지선</tspan> <tspan fill="var(--ink)">· ${adj?'기울기 바꿈 = 수량 조정 🔧':'그대로 = 수량 유지 ✋'}</tspan></text>`);
+  if(L.opt) g.push(`<text x="30" y="41" font-size="10.5" font-weight="700" fill="var(--good)">🛡️ 옵션 사용 — 방향·곡선 손실 전부 차단, 프리미엄만 지불</text>`);
+  else g.push(`<text x="30" y="41" font-size="10.5" font-weight="700"><tspan fill="#9AA3B2">┈ 어제 헷지선</tspan> <tspan fill="var(--pay)">━ 오늘 헷지선</tspan> <tspan fill="var(--ink)">· ${adj?'기울기 바꿈 = 수량 조정 🔧':'그대로 = 수량 유지 ✋'}</tspan></text>`);
   const t0=gTanLine(0,mx);   /* 어제 헷지선(수평, 회색) */
   g.push(`<line x1="${t0.x1.toFixed(1)}" y1="${t0.y1.toFixed(1)}" x2="${t0.x2.toFixed(1)}" y2="${t0.y2.toFixed(1)}" stroke="#9AA3B2" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="5 3"/>`);
   g.push(`<circle cx="${t0.cx.toFixed(1)}" cy="${t0.cy.toFixed(1)}" r="4.5" fill="#9AA3B2"/>`);
@@ -1468,19 +1470,26 @@ function gDrawReveal(){ const box=$("gCurve"),L=GAME.last; if(!box||!L)return; c
   g.push(`<circle cx="${ax.toFixed(1)}" cy="${ay.toFixed(1)}" r="5" fill="#16202F" opacity="0.22"/>`);
   g.push(`<line x1="${ax.toFixed(1)}" y1="${ay.toFixed(1)}" x2="${nx.toFixed(1)}" y2="${ny.toFixed(1)}" stroke="#8A94A6" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#gar2)"/>`);
   g.push(`<circle cx="${nx.toFixed(1)}" cy="${ny.toFixed(1)}" r="9" fill="${col}" stroke="#fff" stroke-width="2"><animate attributeName="r" from="0" to="9" dur="0.55s" fill="freeze"/></circle>`);
-  g.push(`<text x="${nx.toFixed(1)}" y="${(ny+21).toFixed(1)}" class="eflabel" text-anchor="middle" fill="${col}" font-weight="800" font-size="11.5">내일 시장${recovered?' · 회복↑':' · 더 손실'}</text>`);
-  const les = L.revert?'🔄 시장이 헷지선으로 되돌아왔어요 — 그대로 뒀으면 이득이었죠':(L.trend?'➡️ 시장이 헷지선에서 더 멀어졌어요 — 맞췄으면 손실을 줄였을 거예요':'움직임이 작아 감마손실만 남았어요');
+  g.push(`<text x="${nx.toFixed(1)}" y="${(ny+21).toFixed(1)}" class="eflabel" text-anchor="middle" fill="${col}" font-weight="800" font-size="11.5">내일 시장${L.opt?' · 🛡️보호':(recovered?' · 회복↑':' · 더 손실')}</text>`);
+  const noAdjBig=(L.h===0 && L.trend && L.dir<=-1.0);
+  const les = L.opt ? (Math.abs(L.dM)>=2.2 ? `🛡️ 급변동을 옵션이 막았어요 — 그대로 뒀다면 ${L.net0>=0?'+':'−'}${Math.abs(L.net0).toFixed(1)}, 옵션은 −${OPT_COST.toFixed(1)}` : `🛡️ 잔잔한 날 — 옵션 프리미엄(−${OPT_COST.toFixed(1)})이 좀 아까웠어요`)
+    : noAdjBig ? `⚠️ 조정을 안 해서 방향손실이 −${Math.abs(L.dir).toFixed(1)}로 커졌어요 — 갭을 안 줄인 탓이에요`
+    : L.revert ? '🔄 시장이 헷지선으로 되돌아왔어요 — 그대로 뒀으면 이득이었죠'
+    : L.trend ? '➡️ 시장이 헷지선에서 더 멀어졌어요 — 맞췄으면 손실을 줄였을 거예요'
+    : '움직임이 작아 감마손실만 남았어요';
   g.push(`<text x="30" y="${GV.baseY+34}" font-size="11.5" fill="var(--ink)" font-weight="600">${les}</text>`);
   box.innerHTML=g.join("");
 }
 function gShowResult(L){
   const cf=(v,lab)=>`<span style="display:inline-flex;gap:4px">${lab} <b style="color:${v>=0?'var(--good)':'var(--bad)'}">${v>=0?'+':'−'}${Math.abs(v).toFixed(1)}</b></span>`;
-  const lesson = L.revert ? `🔄 시장이 <b>되돌아왔습니다</b> — <b style="color:var(--good)">가만히 뒀으면 이득</b>이었죠. 맞췄다면 확정손실이었습니다.`
+  const lesson = L.opt ? (Math.abs(L.dM)>=2.2 ? `🛡️ <b>급변동</b>을 옵션이 막았습니다 — 방향·곡선 손실 전부 차단, <b>비싼 프리미엄</b>만 냈죠. 이런 날 옵션이 빛납니다.` : `🛡️ 옵션은 <b>가장 안전</b>하지만 <b style="color:var(--bad)">프리미엄이 비쌉니다</b> — 잔잔한 날엔 손해였습니다.`)
+    : (L.h===0 && L.trend && L.dir<=-1.0) ? `⚠️ <b>조정을 안 해서</b> 방향손실이 <b style="color:var(--bad)">−${Math.abs(L.dir).toFixed(1)}</b>로 커졌습니다 — 갭을 줄였다면 덜 잃었을 겁니다.`
+    : L.revert ? `🔄 시장이 <b>되돌아왔습니다</b> — <b style="color:var(--good)">가만히 뒀으면 이득</b>이었죠. 맞췄다면 확정손실이었습니다.`
     : (L.trend ? `➡️ 시장이 <b>더 갔습니다</b> — <b style="color:var(--pay)">맞췄으면(딱 맞춤)</b> 방향손실을 줄였을 겁니다.` : `시장이 소폭 움직였습니다 — 감마손실만 남았습니다.`);
   const won=L.net>=0;
   $("gResult").innerHTML=`<div class="gres" style="background:${won?'#EAF7F1':'#FBEEF1'};padding:9px 12px;margin-top:8px">
     <div style="font-weight:700;font-size:12px;color:var(--ink);margin-bottom:3px">🔎 같은 내일, 다른 선택이었다면?</div>
-    <div style="display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px">${cf(L.net,'✔ 내 선택')}${cf(L.net0,'✋ 그대로 두기')}${cf(L.net1,'🎯 시장에 맞추기')}</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px">${cf(L.net,'✔ 내 선택')}${cf(L.net0,'✋ 그대로')}${cf(L.net1,'🎯 맞추기')}${cf(L.netOpt,'🛡️ 옵션')}</div>
     <details style="margin-top:7px"><summary style="cursor:pointer;font-size:11px;color:var(--muted)">🔬 손익 자세히 (곡선·방향·비용)</summary>
       <div class="gbreak" style="margin-top:5px"><span>곡선 손실(감마) <b style="color:var(--leak)">${L.gamma.toFixed(1)}</b></span><span>방향 <b style="color:${L.dir>=0?'var(--good)':'var(--bad)'}">${L.dir>=0?'+':''}${L.dir.toFixed(1)}</b></span><span>조정 비용 <b style="color:var(--leak)">${L.cost.toFixed(1)}</b></span></div>
     </details>
@@ -1496,13 +1505,15 @@ function gNewDay(){ gCtrl(true); gDrawState(null); gHint(); }
 function gPlay(h){
   if(GAME.over)return;
   GAME.prev={d:GAME.d,bud:GAME.bud,mkt:GAME.mkt,hx:GAME.hx,best:GAME.best,log:GAME.log.slice()};   /* 되돌리기용 스냅샷 */
-  const mkt=GAME.mkt, hx=GAME.hx, gap=mkt-hx;
-  const hxN=hx+h*gap, g2=mkt-hxN, cost=-GCOST*h*Math.abs(gap), dM=gDM(GAME.d+1), mktN=mkt+dM;
-  const gamma=-GAM*dM*dM, dir=-GD*g2*dM, net=cost+dir+gamma;
-  const net0=(-GD*gap*dM)+gamma, net1=(-GCOST*Math.abs(gap))+gamma;
+  const mkt=GAME.mkt, hx=GAME.hx, gap=mkt-hx, dM=gDM(GAME.d+1), mktN=mkt+dM, opt=(h==='opt');
+  const gammaMove=-GAM*dM*dM;
+  let hxN,cost,gamma,dir,net;
+  if(opt){ hxN=hx; cost=-OPT_COST; gamma=0; dir=0; net=cost; }                 /* 옵션: 방향·곡선 전부 차단, 프리미엄만 */
+  else { hxN=hx+h*gap; const g2=mkt-hxN; cost=-GCOST*h*Math.abs(gap); gamma=gammaMove; dir=-GD*g2*dM; net=cost+dir+gamma; }
+  const net0=(-GD*gap*dM)+gammaMove, net1=(-GCOST*Math.abs(gap))+gammaMove, netOpt=-OPT_COST;
   const revert=(Math.sign(dM)!==Math.sign(gap))&&Math.abs(gap)>0.3, trend=(Math.sign(dM)===Math.sign(gap))&&Math.abs(gap)>0.3;
   GAME.bud+=net; GAME.d++; GAME.mkt=mktN; GAME.hx=hxN;
-  GAME.last={d:GAME.d,hx,hxN,mkt0:mkt,mktN,dM,net,net0,net1,gamma,dir,cost,revert,trend};
+  GAME.last={d:GAME.d,h,opt,hx,hxN,mkt0:mkt,mktN,dM,net,net0,net1,netOpt,gamma,dir,cost,revert,trend};
   gDrawReveal(); gShowResult(GAME.last);
   GAME.log.push({d:GAME.d,revert,net}); if(GAME.d>GAME.best)GAME.best=GAME.d;
   $("gLog").innerHTML=GAME.log.slice(-12).reverse().map(r=>`<div class="glogrow"><span class="gy">${r.d}일</span><span class="gtag">${r.revert?'🔄 되돌림':'➡️ 이어짐'}</span><span class="gnet" style="color:${r.net>=0?'var(--good)':'var(--bad)'}">${r.net>=0?'+':'−'}${Math.abs(r.net).toFixed(1)}</span></div>`).join('');
@@ -1531,9 +1542,9 @@ function gReset(){GAME.d=0;GAME.bud=GAME.bud0;GAME.over=false;GAME.log=[];GAME.s
   $("gResult").innerHTML=''; $("gLog").innerHTML=''; $("gFinal").innerHTML=''; if($("gReview"))$("gReview").style.display='none'; gNewDay();}
 function gStart(){ GAME.bud0=+$("gBud0").value; gReset(); }
 if($("gCurve")){
-  document.querySelectorAll(".gchoice").forEach(b=>{ const h=+b.dataset.h;
+  document.querySelectorAll(".gchoice").forEach(b=>{ const raw=b.dataset.h, h=(raw==='opt')?'opt':+raw;
     b.addEventListener("click",()=>gPlay(h));
-    b.addEventListener("mouseenter",()=>{ if(!GAME.over) gDrawState(h); });
+    b.addEventListener("mouseenter",()=>{ if(!GAME.over) gDrawState(typeof h==='number'?h:null); });
     b.addEventListener("mouseleave",()=>{ if(!GAME.over) gDrawState(null); }); });
   if($("gReview")) $("gReview").addEventListener("click",gUndo);
   if($("gBud0")){ $("gBud0").addEventListener("input",()=>{$("gBud0Lab").textContent=$("gBud0").value;}); }

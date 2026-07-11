@@ -213,6 +213,12 @@
   .a-inarrow{animation:inarrow 2.6s ease-in-out infinite}
   .a-cover{transform-origin:center bottom;animation:cover 2.8s ease-in-out infinite}
   .a-pulse{animation:fadeCyc 2.4s ease-in-out infinite}
+  @keyframes curveShift{0%,100%{transform:translateY(-6px)}50%{transform:translateY(7px)}}
+  @keyframes curveShiftOpp{0%,100%{transform:translateY(7px)}50%{transform:translateY(-6px)}}
+  @keyframes curveShiftSm{0%,100%{transform:translateY(-2.5px)}50%{transform:translateY(2.5px)}}
+  .a-curveshift{transform-origin:center;animation:curveShift 3.2s ease-in-out infinite}
+  .a-curveshift-opp{transform-origin:center;animation:curveShiftOpp 3.2s ease-in-out infinite}
+  .a-curveshift-sm{transform-origin:center;animation:curveShiftSm 3.2s ease-in-out infinite}
   @media(max-width:520px){h1{font-size:21px}.tabs button{font-size:11px}}
   .panel{box-shadow:0 1px 3px rgba(20,32,55,.05)}
   .fund{box-shadow:0 1px 3px rgba(59,111,230,.07)}
@@ -1010,12 +1016,15 @@ const VIZ={
   gamma:{
     b:`<svg class="anim" viewBox="0 0 120 84"><path d="M10 36 L110 36 L110 66 Q60 6 10 66 Z" fill="#E24A62" opacity="0.20"/><path d="M10 66 Q60 6 110 66" fill="none" stroke="#566275" stroke-width="2"/><line x1="10" y1="36" x2="110" y2="36" stroke="#7A5AF0" stroke-width="1.6" stroke-dasharray="4 3"/><text x="13" y="33" fill="#7A5AF0" font-size="7.5">접선(델타)</text><g transform="translate(88,36)"><rect class="a-gap" x="-1.5" y="0" width="3.5" height="26" fill="#E24A62"/></g><g transform="translate(46,44)"><circle class="a-spot" r="4" fill="#1B2437"/></g><text x="60" y="79" fill="#E24A62" font-size="8" text-anchor="middle" font-weight="700">부족분=손실(항상)</text></svg>`,
     a:`<svg class="anim" viewBox="0 0 120 84"><path d="M12 40 Q60 18 108 40" fill="none" stroke="#AAB4C6" stroke-width="2"/><path class="a-fade" d="M12 40 Q60 62 108 40" fill="none" stroke="#3B6FE6" stroke-width="2.5"/><line x1="12" y1="40" x2="108" y2="40" stroke="#12A870" stroke-width="3"/><text x="13" y="25" fill="#566275" font-size="7.5">부채(매도옵션)</text><text x="13" y="58" fill="#3B6FE6" font-size="7.5">매입 옵션</text><text x="60" y="79" fill="#12A870" font-size="7.5" text-anchor="middle" font-weight="700">합쳐서 평탄 · 프리미엄</text></svg>`},
+  rate:{
+    b:`<svg class="anim" viewBox="0 0 120 84"><line x1="14" y1="72" x2="108" y2="72" stroke="#AAB4C6" stroke-width="1"/><text x="16" y="82" fill="#566275" font-size="6.5">단기</text><text x="98" y="82" fill="#566275" font-size="6.5">장기(20·30년)</text><line x1="14" y1="46" x2="108" y2="46" stroke="#AAB4C6" stroke-width="0.8" stroke-dasharray="3 2"/><g class="a-curveshift"><path d="M14 52 Q46 40 108 30" fill="none" stroke="#7A5AF0" stroke-width="2.6"/><circle cx="30" cy="49" r="2.4" fill="#7A5AF0" opacity="0.55"/><circle cx="108" cy="30" r="5" fill="#7A5AF0"/></g><text x="60" y="14" fill="#566275" font-size="8" text-anchor="middle">커브가 위·아래로 → 손익 ±</text><text x="98" y="24" fill="#7A5AF0" font-size="6.5" text-anchor="end">장기일수록 크게</text></svg>`,
+    a:`<svg class="anim" viewBox="0 0 120 84"><line x1="14" y1="72" x2="108" y2="72" stroke="#AAB4C6" stroke-width="1"/><g class="a-curveshift-sm"><path d="M14 46 Q46 36 108 28" fill="none" stroke="#7A5AF0" stroke-width="1.6" opacity="0.45"/></g><g class="a-curveshift-opp"><path d="M14 58 Q46 60 108 62" fill="none" stroke="#3B6FE6" stroke-width="1.6" opacity="0.45"/></g><line x1="14" y1="52" x2="108" y2="52" stroke="#12A870" stroke-width="3"/><text x="16" y="35" fill="#7A5AF0" font-size="6.5">부채 커브</text><text x="16" y="68" fill="#3B6FE6" font-size="6.5">국채·스왑(반대)</text><text x="60" y="80" fill="#12A870" font-size="8" text-anchor="middle" font-weight="700">합쳐서 손익 0</text></svg>`},
   vol:{
     b:`<svg class="anim" viewBox="0 0 120 84"><g class="a-breathe"><path d="M14 42 Q60 12 106 42" fill="none" stroke="#E24A62" stroke-width="2"/><path d="M14 42 Q60 72 106 42" fill="none" stroke="#12A870" stroke-width="2"/></g><line x1="14" y1="42" x2="106" y2="42" stroke="#AAB4C6" stroke-width="1"/><text x="60" y="20" fill="#E24A62" font-size="8" text-anchor="middle">↑ 부채↑ 손실</text><text x="60" y="70" fill="#12A870" font-size="8" text-anchor="middle">↓ 부채↓ 이득</text></svg>`,
     a:`<svg class="anim" viewBox="0 0 120 84"><g class="a-breathe-sm"><path d="M14 42 Q60 30 106 42" fill="none" stroke="#3B6FE6" stroke-width="2"/><path d="M14 42 Q60 54 106 42" fill="none" stroke="#3B6FE6" stroke-width="2"/></g><line x1="14" y1="42" x2="106" y2="42" stroke="#AAB4C6" stroke-width="1"/><text x="60" y="79" fill="#3B6FE6" font-size="8" text-anchor="middle">변동폭 축소</text></svg>`},
   basis:{
-    b:`<svg class="anim" viewBox="0 0 120 84"><line x1="12" y1="42" x2="108" y2="42" stroke="#3B6FE6" stroke-width="2"/><path class="a-div" d="M12 42 C44 42 52 28 72 28 S96 24 108 28" fill="none" stroke="#E68A17" stroke-width="2"/><text x="60" y="79" fill="#566275" font-size="8" text-anchor="middle">펀드가 더/덜 갈 수 있음</text></svg>`,
-    a:`<svg class="anim" viewBox="0 0 120 84"><line x1="12" y1="42" x2="108" y2="42" stroke="#3B6FE6" stroke-width="2"/><path class="a-div-sm" d="M12 42 C44 42 52 38 72 38 S96 40 108 40" fill="none" stroke="#3B6FE6" stroke-width="2" stroke-dasharray="3 2"/><text x="60" y="79" fill="#3B6FE6" font-size="8" text-anchor="middle">괴리 축소</text></svg>`},
+    b:`<svg class="anim" viewBox="0 0 120 84"><line x1="12" y1="42" x2="108" y2="42" stroke="#3B6FE6" stroke-width="2.5"/><text x="14" y="38" fill="#3B6FE6" font-size="7.5">수단(지수)</text><path d="M12 42 Q62 30 108 22" fill="none" stroke="#12A870" stroke-width="2.2" opacity="0.35"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.8s" repeatCount="indefinite"/></path><path d="M12 42 Q62 54 108 62" fill="none" stroke="#E24A62" stroke-width="2.2" opacity="1"><animate attributeName="opacity" values="1;0.35;1" dur="2.8s" repeatCount="indefinite"/></path><text x="106" y="17" fill="#12A870" font-size="7.5" text-anchor="end" font-weight="700">펀드&gt;수단 = 이익</text><text x="106" y="74" fill="#E24A62" font-size="7.5" text-anchor="end" font-weight="700">펀드&lt;수단 = 손실</text></svg>`,
+    a:`<svg class="anim" viewBox="0 0 120 84"><line x1="12" y1="42" x2="108" y2="42" stroke="#3B6FE6" stroke-width="2.5"/><g class="a-breathe-sm"><path d="M12 42 Q62 37 108 39" fill="none" stroke="#12A870" stroke-width="2" opacity="0.8"/><path d="M12 42 Q62 47 108 45" fill="none" stroke="#E24A62" stroke-width="2" opacity="0.8"/></g><text x="60" y="79" fill="#3B6FE6" font-size="8" text-anchor="middle">맞춤 복제 → 괴리 축소</text></svg>`},
   behav:{
     b:`<svg class="anim" viewBox="0 0 120 84"><rect x="12" y="32" width="96" height="18" rx="4" fill="#EAEDF5"/><rect class="a-drain" x="12" y="32" width="96" height="18" rx="4" fill="#7A5AF0"/><text x="60" y="79" fill="#566275" font-size="8" text-anchor="middle">해지 증감 → 노출 변동</text></svg>`,
     a:`<svg class="anim" viewBox="0 0 120 84"><rect x="12" y="32" width="96" height="18" rx="4" fill="#EAEDF5"/><rect class="a-drain-sm" x="12" y="32" width="96" height="18" rx="4" fill="#3B6FE6"/><text x="60" y="79" fill="#3B6FE6" font-size="8" text-anchor="middle">재보험으로 완화</text></svg>`},
@@ -1025,11 +1034,11 @@ const VIZ={
 };
 const FAC={
   delta:{viz:"dir", nat:"two", t:"주가가 오르내리면 보증가치도 함께 움직인다. 오르면 이득, 내리면 손실인 <b>양방향</b> 위험입니다. 선물로 반대 포지션을 잡으면 변동이 사라집니다."},
-  rho:{viz:"dir", nat:"two", t:"금리가 오르내리면 부채가치가 움직이는 <b>양방향</b> 위험입니다. 장기부채일수록 크며, 국채·스왑으로 상쇄합니다."},
+  rho:{viz:"rate", nat:"two", t:"금리 <b>커브가 위·아래로 이동</b>하면 부채가치가 움직이는 <b>양방향</b> 위험입니다. 보증은 만기가 긴 부채라 <b>커브의 장기 구간에 특히 민감</b>합니다(듀레이션). 국채·스왑으로 반대 포지션을 잡아 상쇄합니다."},
   gE:{viz:"gamma", nat:"loss", t:"헷지는 직선(델타=접선)으로 근사하지만 실제 가치는 곡선이라, 접선이 닿지 못하는 <b>부족분이 항상 손실</b>로 남는다(비용). 시장이 움직일수록 부족분이 커집니다. 옵션을 매입하면 이 손실이 <b>미리 정해진 비용(프리미엄)</b>으로 바뀝니다."},
   gR:{viz:"gamma", nat:"loss", t:"금리에서도 접선의 부족분이 <b>항상 손실</b>로 발생합니다. 금리가 크게 움직일수록 커지며, 스왑션 매입으로 확정 비용으로 전환합니다."},
   vega:{viz:"vol", nat:"two", t:"변동성이 <b>커지면 부채가 늘어 손실</b>, <b>줄면 부채가 줄어 이득</b>인 양방향 위험입니다. 옵션(변동성) 매수로 줄일 수 있으나 비용이 큽니다."},
-  fund:{viz:"basis", nat:"two", t:"실제 펀드가 지수보다 더 갈 수도, 덜 갈 수도 있는 <b>양방향</b> 괴리(베이시스)입니다. 맞춤 거래로만 줄일 수 있고 비용이 높습니다."},
+  fund:{viz:"basis", nat:"two", t:"보증 부채는 <b>실제 펀드</b> 성과를 따르지만, 헷지는 <b>지수·바스켓(수단)</b>으로 대신합니다. 둘이 어긋난 만큼이 손익입니다 — <b>펀드가 헷지 수단보다 부진하면 손실</b>, <b>수단보다 더 나으면 이익</b>인 <b>양방향</b> 괴리(추적오차)입니다. 펀드별 맞춤 복제로만 줄일 수 있고 비용이 높습니다."},
   lapse:{viz:"behav", nat:"two", t:"계약자의 해지·인출이 예상과 달라지면 보증 노출이 <b>양방향</b>으로 변합니다. 재보험으로 일부 완화하나 비용과 잔여위험이 남습니다."},
   model:{viz:"regime", nat:"bear", t:"가정·제도의 단절적 변화로, 시장에서 헷지·이전할 수단이 사실상 없어 <b>완충으로 감내</b>합니다."},
 };

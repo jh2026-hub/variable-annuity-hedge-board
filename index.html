@@ -84,6 +84,9 @@
   table.imt{table-layout:auto} table.imt td{vertical-align:top;padding:11px 8px}
   table.imt th:last-child,table.imt td:last-child{text-align:left;font-weight:400;white-space:normal;line-height:1.55;color:var(--muted);font-size:11.5px}
   table.imt td:last-child b{color:var(--ink)} table.imt td:nth-child(2){text-align:center}
+  .pobtns{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+  .pobtns button{background:var(--panel2);border:1px solid var(--hair);color:var(--muted);font-family:inherit;font-size:12px;font-weight:700;padding:9px 13px;border-radius:9px;cursor:pointer;min-height:40px}
+  .pobtns button.on{background:var(--pay);color:#fff;border-color:var(--pay)}
   .scost{flex:0 0 auto;font-size:11.5px;color:var(--muted);text-align:right;min-width:84px}
   .seg2{display:inline-flex;border:1px solid var(--hair);border-radius:9px;overflow:hidden;box-shadow:0 1px 2px rgba(20,32,55,.06)}
   .seg2 button{background:#FFFFFF;border:none;color:var(--muted);font-family:inherit;font-size:12.5px;font-weight:700;padding:9px 15px;cursor:pointer;min-height:42px;transition:.12s}
@@ -345,6 +348,20 @@
         <tr><td>옵션<small>국고/IRS 옵션(스왑션)</small></td><td><span class="difftag leak">높음(프리미엄)</span></td><td>금리 감마·베가 헷지 · 볼록성을 확정비용으로 전환</td></tr>
       </tbody>
     </table>
+  </div>
+  <div class="panel">
+    <div class="cap">수단별 payoff 미리보기<span>바를 움직여 손익 형태를 확인</span></div>
+    <div class="pobtns" id="poBtns">
+      <button data-t="lin" class="on">선물·스왑(선형)</button>
+      <button data-t="put">풋옵션 매수</button>
+      <button data-t="call">콜옵션 매수</button>
+      <button data-t="expo">원 포지션(미헷지)</button>
+    </div>
+    <div style="margin:10px 0 2px"><label class="foot" style="margin:0">기초자산 변동 <b class="mono" id="poLab" style="color:var(--pay)">0%</b></label>
+      <input type="range" id="poX" min="-30" max="30" step="1" value="0"></div>
+    <div class="chartwrap"><svg id="poSvg" viewBox="0 0 560 220" style="width:100%;height:auto"></svg></div>
+    <div class="foot" id="poRead" style="margin-top:4px"></div>
+    <p class="foot"><b>선형(선물·스왑)</b>은 대칭 직선으로 방향을 상쇄하나 곡률(감마)이 없다. <b>옵션 매수</b>는 꺾인 선으로, 한쪽은 프리미엄만 잃고 반대쪽은 크게 방어한다(비대칭). 이 <b>꺾임(볼록성)</b>이 감마·꼬리 방어의 핵심이다. (단위는 개념적 상대값)</p>
   </div>
   <div class="panel concept">
     <div class="cap">비용 vs 효과 요약</div>
@@ -857,9 +874,34 @@ const FEEDBACK_ENDPOINT="https://script.google.com/macros/s/AKfycbwEqiaQ9mhEl2-4
     }catch(e){ msg.style.color="var(--bad)"; msg.textContent="전송 실패 — 잠시 후 다시 시도해 주세요."; } finally{ btn.disabled=false; } });
 })();
 
-/* VOL 입력·만기 선택이 바뀌면 시뮬 갱신 */
+/* VOL 입력이 바뀌면 시뮬 갱신 */
 [...VOL].forEach(o=>$("in_"+o.id).addEventListener("input",()=>{ if(SIM.loaded) renderSim(); }));
-renderFactorAnim();
+
+/* ③ 헷지수단 payoff 미리보기 */
+const PO={t:"lin"};
+function renderPayoff(){
+  if(!$("poSvg"))return; const x=parseFloat($("poX").value)||0, prem=3;
+  $("poLab").textContent=(x>0?"+":"")+x+"%";
+  const F={lin:v=>-v, put:v=>Math.max(-v,0)-prem, call:v=>Math.max(v,0)-prem, expo:v=>v}[PO.t];
+  const NAME={lin:"선물·스왑(선형)",put:"풋옵션 매수",call:"콜옵션 매수",expo:"원 포지션(미헷지)"}[PO.t];
+  const W=560,H=220,L=44,R=14,T=12,B=26,iw=W-L-R,ih=H-T-B,g=[];
+  const xMin=-30,xMax=30,yr=32, X=v=>L+(v-xMin)/(xMax-xMin)*iw, Y=v=>T+ih/2-(Math.max(-yr,Math.min(yr,v))/yr)*(ih/2);
+  for(let k=-1;k<=1;k++){ const gy=Y(k*yr);
+    g.push(`<line x1="${L}" y1="${gy.toFixed(1)}" x2="${W-R}" y2="${gy.toFixed(1)}" stroke="${k===0?'#AAB4C6':'#EAEDF5'}" stroke-width="${k===0?1.2:1}"/>`);
+    g.push(`<text class="eflabel" x="${L-6}" y="${(gy+3).toFixed(1)}" text-anchor="end">${k>0?'+':''}${k*yr}</text>`); }
+  const x0=X(0); g.push(`<line x1="${x0.toFixed(1)}" y1="${T}" x2="${x0.toFixed(1)}" y2="${T+ih}" stroke="#AAB4C6" stroke-width="1"/>`);
+  [-30,-15,0,15,30].forEach(v=>g.push(`<text class="eflabel" x="${X(v).toFixed(1)}" y="${H-B+16}" text-anchor="middle">${v>0?'+':''}${v}%</text>`));
+  let p=""; for(let v=xMin;v<=xMax;v+=1){ p+=(v===xMin?"M":"L")+X(v).toFixed(1)+" "+Y(F(v)).toFixed(1); }
+  g.push(`<path d="${p}" fill="none" stroke="var(--pay)" stroke-width="2.5"/>`);
+  const py=F(x); g.push(`<circle cx="${X(x).toFixed(1)}" cy="${Y(py).toFixed(1)}" r="5.5" fill="var(--leak)" stroke="#fff" stroke-width="2"/>`);
+  $("poSvg").innerHTML=g.join("");
+  $("poRead").innerHTML=`<b>${NAME}</b> · 기초 ${x>0?'+':''}${x}% → payoff <b style="color:${py>=0?'var(--good)':'var(--bad)'}">${py>=0?'+':''}${py.toFixed(1)}</b> <span style="opacity:.7">(개념 상대값)</span>`;
+}
+$("poBtns")&&$("poBtns").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+  PO.t=b.dataset.t; document.querySelectorAll("#poBtns button").forEach(x=>x.classList.toggle("on",x===b)); renderPayoff();});
+$("poX")&&$("poX").addEventListener("input",renderPayoff);
+
+renderFactorAnim(); renderPayoff();
 render(); syncCsm2(); drawCasc();
 </script>
 </body>

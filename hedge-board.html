@@ -101,6 +101,14 @@
   .cbrow2{display:flex;align-items:center;gap:8px;margin:3px 0}
   .cbtag{flex:0 0 42px;font-size:10.5px;color:var(--muted)}
   .cbtrack.sm{height:13px}
+  .derived{display:grid;grid-template-columns:repeat(auto-fit,minmax(116px,1fr));gap:8px}
+  .dcard{border:1px solid var(--hair);border-radius:9px;padding:8px 11px;background:var(--panel2)}
+  .dt{font-size:10.5px;color:var(--muted);line-height:1.3}
+  .dv{font-size:17px;font-weight:800;margin:3px 0;letter-spacing:-0.3px}
+  .ds{font-size:10px;color:var(--muted)}
+  @keyframes flashv{0%{box-shadow:0 0 0 2px var(--pay) inset}100%{box-shadow:0 0 0 0 transparent inset}}
+  .dcard.flash{animation:flashv .5s ease}
+  .inhdr{font-size:11px;color:var(--muted);margin:2px 0 8px;line-height:1.6}
   .scost{flex:0 0 auto;font-size:11.5px;color:var(--muted);text-align:right;min-width:84px}
   .seg2{display:inline-flex;border:1px solid var(--hair);border-radius:9px;overflow:hidden;box-shadow:0 1px 2px rgba(20,32,55,.06)}
   .seg2 button{background:#FFFFFF;border:none;color:var(--muted);font-family:inherit;font-size:12.5px;font-weight:700;padding:9px 15px;cursor:pointer;min-height:42px;transition:.12s}
@@ -240,6 +248,13 @@
   <p class="lede">변액보험은 계약자의 적립금 운용성과와 무관하게 <b>최저 수준을 보증</b>합니다. 회사는 이 보증을 제공하는 대가로 <b>보증수수료</b>를 수취하며, 이를 재원으로 시장위험을 관리합니다. 관리의 본질은 모든 위험을 없애는 것이 아니라, <b>비용과 손익변동성 사이에서 균형을 선택하는 것</b>입니다.</p>
 
   <div class="panel concept">
+    <div class="cap">헷지를 왜 하나 — 손익이 이만큼 흔들립니다<span>미헷지 주간 손익 · 실제 시장데이터</span></div>
+    <div class="chartwrap"><svg id="whyHedge" viewBox="0 0 640 260" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"><text x="320" y="130" text-anchor="middle" class="eflabel">데이터 불러오는 중…</text></svg></div>
+    <div id="whyLeg" style="display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;font-size:11.5px"></div>
+    <p style="font-size:13px;color:var(--muted);line-height:1.75;margin-top:8px"><b style="color:var(--sym)">보라색</b>은 헷지하지 않았을 때의 주간 손익입니다 — 위기마다 <b style="color:var(--ink)">수백에서 수천억씩</b> 위아래로 출렁입니다. <b style="color:var(--pay)">파란색</b>은 방향·감마를 헷지했을 때로, 같은 축에서 거의 0에 붙습니다. 이 큰 변동을 재무제표가 그대로 떠안을 수 없기 때문에 헷지합니다.</p>
+  </div>
+
+  <div class="panel concept">
     <div class="cap">보증수수료는 헷지의 재원</div>
     <div class="chartwrap"><svg viewBox="0 0 640 168" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
       <defs><marker id="ar" markerWidth="7" markerHeight="7" refX="5.5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#AAB4C6"/></marker></defs>
@@ -287,7 +302,7 @@
     <div class="cap">헷지 조합별 주간 손익<span>실제 시장데이터 · 헷지 후 스케일</span></div>
     <div class="chartwrap"><svg id="conceptLines" viewBox="0 0 640 280" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"><text x="320" y="140" text-anchor="middle" class="eflabel">데이터 불러오는 중…</text></svg></div>
     <div id="conceptLeg" style="display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;font-size:11.5px"></div>
-    <p style="font-size:13px;color:var(--muted);line-height:1.75;margin-top:8px">같은 그림에 여러 조합의 주간 손익선을 겹쳤습니다(헷지 후가 보이도록 확대 — <b>미헷지</b>는 스케일 밖이라 흐리게). <b>방향(주가·금리) 헷지</b>는 평소엔 0 근처지만 <b style="color:var(--leak)">위기 때마다 아래로 급락</b>합니다 — 감마 누수(감내 비용)입니다. <b style="color:var(--good)">감마까지 헷지</b>하면 그 급락이 사라지고 고정 프리미엄만큼 평탄하게 내려앉습니다. 이것이 <b>방향 헷지</b>와 <b>방향+감마</b>의 진짜 차이입니다.</p>
+    <p style="font-size:13px;color:var(--muted);line-height:1.75;margin-top:8px">헷지 후 선이 보이도록 확대했습니다(<b>미헷지</b>의 실제 크기는 <b style="color:var(--sym)">우상단 인셋</b> — 주당 수백~천억). 두 선 모두 <b>펀드 불일치·베가·해지</b> 같은 비시장 요인으로 늘 잔잔히 흔들립니다(방향·감마를 헷지해도 이 부분은 남습니다). 차이는 위기에서 드러납니다 — <b style="color:var(--leak)">방향만 헷지</b>하면 위기 때 <b>아래로 급락</b>(감마 누수)하지만, <b style="color:var(--good)">감마까지 헷지</b>하면 그 급락이 사라집니다. 이것이 <b>방향 헷지</b>와 <b>방향+감마</b>의 진짜 차이입니다.</p>
   </div>
 
   <div class="panel concept">
@@ -463,13 +478,26 @@
 
 <!-- ⑥ 입력 가정 -->
 <section class="page" id="p8">
-  <p class="lede">자기 회사·포트폴리오 값을 입력하면 <b>⑤ 시뮬레이션</b>에 즉시 반영됩니다.</p>
+  <p class="lede">여기의 값은 모두 <b>직접 입력하는 전제</b>입니다. 하나를 바꾸면 아래 <b>파생 결과</b> 카드와 <b>⑤ 시뮬레이션</b>이 즉시 갱신됩니다. 순서대로 ① 규모·재원 → ② 민감도 → ③ 요인별 상세로 좁혀집니다.</p>
   <div class="panel">
-    <div class="cap">입력 가정<span>규모·완충·변동성·민감도 세부</span></div>
+    <div class="cap">파생 결과<span>입력을 바꾸면 실시간 반영 · 깜빡이며 갱신</span></div>
+    <div class="derived" id="derived"></div>
+    <p class="foot">입력값들이 어떻게 이어지는지 보여줍니다 — 헷지 재원은 <b>보증수수료×적립금</b>, 감마 누수/프리미엄은 <b>Γ·변동성</b>에서 나옵니다.</p>
+  </div>
+  <div class="panel">
+    <div class="cap">① 규모·재원<span>얼마를 굴리고, 예산·완충은 얼마인가</span></div>
+    <div class="inhdr"><b>적립금</b>은 모든 bp·비율의 기준입니다 → <b>헷지 재원 = 보증수수료(bp) × 적립금</b>. <b>CSM</b>은 손실을 먼저 흡수하는 완충, <b>변동성 허용</b>은 ⑤ 프론티어의 세로 허용선입니다.</div>
     <div class="sheet" id="sheetFin"></div>
+  </div>
+  <div class="panel">
+    <div class="cap">② 방향·변동성 민감도<span>시장이 움직이면 손익이 얼마나 흔들리나</span></div>
+    <div class="inhdr"><b>민감도(Δ·DV01)</b>는 방향 손익 크기를, <b>Γ·RV·IV</b>는 감마 누수(감내)와 옵션 프리미엄(헷지)을 결정합니다. RV=실현변동성, IV=내재변동성(옵션가).</div>
     <div class="sheet" id="sheetVol"></div>
+  </div>
+  <div class="panel">
+    <div class="cap">③ 요인별 노출·헷지단가<span>각 위험의 크기와 넘기는 값</span></div>
+    <div class="inhdr">각 위험 요인의 <b>노출(σ 기여)</b>과 <b>헷지단가</b>입니다. 방향형 단가는 bp(×적립금), 감마형은 프리미엄으로 자동 계산됩니다. 처리 선택(헷지/CSM)은 <b>⑤ 시뮬레이션</b>에서 합니다.</div>
     <div class="chartwrap"><table class="mtx" id="mtx"><thead><tr><th>위험 요인</th><th>노출(σ기여)</th><th>헷지단가</th></tr></thead><tbody></tbody></table></div>
-    <p class="foot">노출·단가는 요인별 상세 가정입니다. 방향형 단가는 bp(×적립금), 감마형은 프리미엄으로 자동 계산됩니다.</p>
   </div>
 </section>
 
@@ -664,7 +692,23 @@ function render(){
     p=`연간 <b>${won(outW)}억</b>(수수료의 ${feeW>0?Math.round(outW/feeW*100):0}%)이 지출되고, 최악의 해 <b>${won(L995)}억</b>까지 CSM이 흡수합니다.${opt&&opt.sig<cur.sig-1?` 다만 예산 내에서 변동성을 <b>${won(cur.sig)}→${won(opt.sig)}억</b>으로 추가 축소할 여지가 있습니다.`:``}`;}
   vd.className="verdict "+cls;$("vdi").textContent=ic;$("vdt").textContent=t;$("vdp").innerHTML=p;
 
-  drawCasc(); drawCompare(); renderSelect();
+  drawCasc(); drawCompare(); renderSelect(); renderDerived();
+}
+/* 입력가정 파생 결과 — 입력을 바꾸면 깜빡이며 갱신(입력→결과 연결 시각화) */
+function renderDerived(){
+  const box=$("derived"); if(!box)return;
+  const av=val("av"),fee=val("fee"),csm=val("csm"),voltol=val("voltol");
+  const ge=val("ge"),re=val("re"),ie=val("ie"),gr=val("gr"),rr=val("rr"),ir=val("ir"),sig=val("sig");
+  const fund=av*fee, leak=gam(ge,re)+gam(gr,rr), prem=gam(ge,ie)+gam(gr,ir);
+  const uh=SIM.loaded?stratVol({}):sig/100*av*10000;
+  const items=[
+    ['헷지 재원 (연)', won(fund)+'억', '보증수수료 × 적립금','pay'],
+    ['미헷지 손익변동성 1σ', '±'+won(uh)+'억', '방향 노출','sym'],
+    ['감마 누수 · 감내(연)', '△'+won(leak)+'억', 'Γ × 실현변동성','leak'],
+    ['감마 프리미엄 · 헷지(연)', '△'+won(prem)+'억', 'Γ × 내재변동성','good'],
+    ['CSM 완충 / 변동성 허용', won(csm)+' / '+won(voltol)+'억', '손실 흡수 · 허용선','ink'],
+  ];
+  box.innerHTML=items.map(([t,v,s,c])=>`<div class="dcard flash"><div class="dt">${t}</div><div class="dv" style="color:var(--${c})">${v}</div><div class="ds">${s}</div></div>`).join("");
 }
 
 function drawEF(pts,fr,cur,opt,budget){
@@ -757,7 +801,7 @@ async function loadMarket(){
     const r=await fetch("./data/market.json",{cache:"no-store"}); if(!r.ok) throw new Error(r.status);
     SIM.data=await r.json(); SIM.loaded=true;
     if($("simStatus")){ $("simStatus").innerHTML=`KOSPI·국고 20년 <b>${SIM.data.meta.from}–${SIM.data.meta.to}</b> (${SIM.data.meta.n.toLocaleString()}거래일) 로드 완료.`; $("simStatus").style.color="var(--muted)"; }
-    renderSim(); renderConceptCombo();
+    renderSim(); renderConceptCombo(); drawWhyHedge(); renderDerived();
   }catch(e){ if($("simStatus")){$("simStatus").innerHTML=`시장데이터를 불러오지 못했습니다 (${e.message}).`; $("simStatus").style.color="var(--bad)";} }
 }
 /* 전략 조합의 연간 손익변동성(1σ, 억) — 방향·감마(시장) + 베가·펀드·해지·모형(σ가중) 합성 */
@@ -786,13 +830,19 @@ function renderConceptCombo(){
     const rEqBp=(d.eq[i]/d.eq[i-1]-1)*10000, dRtBp=(d[rk][i]-d[rk][i-1])*100, rEqPct=rEqBp/100;
     U.push(eqd*rEqBp - rvd*dRtBp);                     /* 미헷지: 방향 그대로 */
     DH.push(-gam(ge,rEqPct) - gam(gr,dRtBp));          /* 방향 헷지·감마 감내: 실현변동성 누수(항상 음, 위기 급락) */
-    DG.push(-gam(ge,ie)/252 - gam(gr,ir)/252);         /* 방향+감마 헷지: 고정 프리미엄(평탄) */
+    DG.push(-gam(ge,ie)/252 - gam(gr,ir)/252);         /* 방향+감마 헷지: 고정 프리미엄 */
     idx.push(i);
   }
   const wk=a=>{const w=[];for(let i=0;i<a.length;i+=5){let s=0;for(let j=i;j<Math.min(i+5,a.length);j++)s+=a[j];w.push(s);}return w;};
   const wU=wk(U),wDH=wk(DH),wDG=wk(DG),n=wU.length;
   const wYr=[];for(let i=0;i<U.length;i+=5)wYr.push(idx[Math.min(i,idx.length-1)]);
-  const amp=Math.max(Math.max(...wDH.map(Math.abs)),Math.max(...wDG.map(Math.abs)),1)*1.25;
+  /* 비시장 잔차(펀드 불일치·베가·해지) — 방향·감마를 헷지해도 남아 흔들림. 결정론적 노이즈(재현 가능). */
+  const nmA=Math.sqrt(['vega','fund','lapse'].reduce((a,id)=>{const r=RISK.find(x=>x.id===id);return a+Math.pow((r.exp||0)*NM_SCALE,2);},0));
+  const nmW=nmA/Math.sqrt(52);
+  const hsh=k=>{const s=Math.sin(k*127.1+31.7)*43758.5453;return s-Math.floor(s);};
+  const nz=i=>(hsh(i+1)+hsh((i+1)*1.7+5)+hsh((i+1)*2.3+9)-1.5)*(nmW*2);
+  for(let i=0;i<n;i++){ const e=nz(i); wDH[i]+=e; wDG[i]+=e; }   /* 같은 비시장 book → 공통 잔차, 차이는 감마뿐 */
+  const amp=Math.max(Math.max(...wDH.map(Math.abs)),Math.max(...wDG.map(Math.abs)),1)*1.2;
   const W=640,H=280,L=52,R=14,T=16,B=26,iw=W-L-R,ih=H-T-B,g=[];
   const X=i=>L+iw*i/(n-1), Y=v=>T+ih/2-(Math.max(-amp,Math.min(amp,v))/amp)*(ih/2);
   g.push(`<clipPath id="clc"><rect x="${L}" y="${T}" width="${iw}" height="${ih}"/></clipPath>`);
@@ -803,16 +853,55 @@ function renderConceptCombo(){
   wYr.forEach((di,i)=>{const yr=dts[di]?dts[di].slice(0,4):'';if(yr&&yr!==cy){cy=yr;g.push(`<text class="eflabel" x="${X(i).toFixed(1)}" y="${H-B+16}" text-anchor="middle">${yr}</text>`);}});
   const path=arr=>arr.map((v,i)=>(i?"L":"M")+X(i).toFixed(1)+" "+Y(v).toFixed(1)).join(" ");
   const draw=(dp,st,w,beg)=>`<path d="${dp}" fill="none" stroke="${st}" stroke-width="${w}" stroke-linejoin="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"><animate attributeName="stroke-dashoffset" from="1" to="0" dur="1.3s" begin="${beg}s" fill="freeze"/></path>`;
-  g.push(`<g clip-path="url(#clc)"><path d="${path(wU)}" fill="none" stroke="var(--sym)" stroke-width="1" opacity="0.22"/></g>`);
   g.push(`<g clip-path="url(#clc)">${draw(path(wDH),"var(--leak)",1.7,0)}</g>`);
-  g.push(draw(path(wDG),"var(--good)",2.4,0.5));
+  g.push(`<g clip-path="url(#clc)">${draw(path(wDG),"var(--good)",2.4,0.4)}</g>`);
+  /* 우상단 인셋 — 미헷지 실제 범위(제 스케일) */
+  const uMax=Math.max(...wU.map(Math.abs),1), ix0=W-176,iy0=T+2,iw2=150,ih2=54;
+  const IX=i=>ix0+iw2*i/(n-1), IY=v=>iy0+ih2/2-(v/(uMax*1.08))*(ih2/2);
+  g.push(`<rect x="${(ix0-6).toFixed(0)}" y="${(iy0-2).toFixed(0)}" width="${iw2+12}" height="${ih2+20}" rx="6" fill="#FFFFFF" stroke="var(--hair)"/>`);
+  g.push(`<line x1="${ix0}" y1="${(iy0+ih2/2).toFixed(1)}" x2="${ix0+iw2}" y2="${(iy0+ih2/2).toFixed(1)}" stroke="#EAEDF5"/>`);
+  g.push(`<path d="${wU.map((v,i)=>(i?"L":"M")+IX(i).toFixed(1)+" "+IY(v).toFixed(1)).join(" ")}" fill="none" stroke="var(--sym)" stroke-width="0.8" opacity="0.9"/>`);
+  g.push(`<text class="eflabel" x="${ix0}" y="${(iy0+ih2+13).toFixed(0)}" fill="var(--sym)">미헷지 실제 범위 ±${won(uMax)}억/주</text>`);
   box.innerHTML=g.join("");
   const leg=$("conceptLeg");
   if(leg) leg.innerHTML=[
-    ['var(--sym)','미헷지 (스케일 밖)','0.55'],
-    ['var(--leak)','방향 헷지 · 감마 감내 (위기 때 누수)','1'],
-    ['var(--good)','방향+감마 헷지 (고정 프리미엄·평탄)','1'],
-  ].map(([c,t,o])=>`<span style="display:inline-flex;align-items:center;gap:5px;opacity:${o}"><span style="width:16px;height:3px;border-radius:2px;background:${c};display:inline-block"></span>${t}</span>`).join("");
+    ['var(--leak)','방향 헷지 · 감마 감내 (위기 때 아래로 급락)'],
+    ['var(--good)','방향+감마 헷지 (감마 급락은 사라짐)'],
+    ['var(--sym)','미헷지 (우상단 인셋 = 실제 범위)'],
+  ].map(([c,t])=>`<span style="display:inline-flex;align-items:center;gap:5px"><span style="width:16px;height:3px;border-radius:2px;background:${c};display:inline-block"></span>${t}</span>`).join("");
+}
+/* '왜 헷지하나' 도입 — 미헷지 대변동을 그 스케일 그대로 보여줌 */
+function drawWhyHedge(){
+  const box=$("whyHedge"); if(!box||!SIM.loaded)return;
+  const d=SIM.data, rk=SIM.rateKey, eqd=val("eqd"),rvd=val("rvd"),ge=val("ge"),gr=val("gr"),ie=val("ie"),ir=val("ir");
+  const U=[],Hh=[],idx=[];
+  for(let i=1;i<d.dates.length;i++){
+    const rEqBp=(d.eq[i]/d.eq[i-1]-1)*10000, dRtBp=(d[rk][i]-d[rk][i-1])*100;
+    U.push(eqd*rEqBp - rvd*dRtBp);                       /* 미헷지 */
+    Hh.push(-gam(ge,ie)/252 - gam(gr,ir)/252);           /* 방향+감마 헷지(평탄) */
+    idx.push(i);
+  }
+  const wk=a=>{const w=[];for(let i=0;i<a.length;i+=5){let s=0;for(let j=i;j<Math.min(i+5,a.length);j++)s+=a[j];w.push(s);}return w;};
+  const wU=wk(U),wH=wk(Hh),n=wU.length;
+  const wYr=[];for(let i=0;i<U.length;i+=5)wYr.push(idx[Math.min(i,idx.length-1)]);
+  const amp=Math.max(...wU.map(Math.abs),1)*1.1;
+  const W=640,H=260,L=54,R=14,T=16,B=26,iw=W-L-R,ih=H-T-B,g=[];
+  const X=i=>L+iw*i/(n-1), Y=v=>T+ih/2-(Math.max(-amp,Math.min(amp,v))/amp)*(ih/2);
+  [1,0.5,0,-0.5,-1].forEach(f=>{const cv=amp*f,gy=Y(cv);
+    g.push(`<line x1="${L}" y1="${gy.toFixed(1)}" x2="${W-R}" y2="${gy.toFixed(1)}" stroke="${f===0?'#AAB4C6':'#EAEDF5'}" stroke-width="${f===0?1.3:1}"/>`);
+    g.push(`<text class="eflabel" x="${L-6}" y="${(gy+3).toFixed(1)}" text-anchor="end">${f>0?'+':''}${won(cv)}</text>`);});
+  let cy=null;const dts=d.dates;
+  wYr.forEach((di,i)=>{const yr=dts[di]?dts[di].slice(0,4):'';if(yr&&yr!==cy){cy=yr;g.push(`<text class="eflabel" x="${X(i).toFixed(1)}" y="${H-B+16}" text-anchor="middle">${yr}</text>`);}});
+  const path=arr=>arr.map((v,i)=>(i?"L":"M")+X(i).toFixed(1)+" "+Y(v).toFixed(1)).join(" ");
+  const draw=(dp,st,w,beg,o)=>`<path d="${dp}" fill="none" stroke="${st}" stroke-width="${w}" stroke-linejoin="round" opacity="${o}" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"><animate attributeName="stroke-dashoffset" from="1" to="0" dur="1.5s" begin="${beg}s" fill="freeze"/></path>`;
+  g.push(draw(path(wU),"var(--sym)",1.5,0,0.9));
+  g.push(draw(path(wH),"var(--pay)",2.3,0.4,1));
+  box.innerHTML=g.join("");
+  const sig=stratVol({}), leg=$("whyLeg");
+  if(leg) leg.innerHTML=[
+    ['var(--sym)','미헷지 (연 1σ ±'+won(sig)+'억)'],
+    ['var(--pay)','방향+감마 헷지 후'],
+  ].map(([c,t])=>`<span style="display:inline-flex;align-items:center;gap:5px"><span style="width:16px;height:3px;border-radius:2px;background:${c};display:inline-block"></span>${t}</span>`).join("");
 }
 function yearStats(){
   const d=SIM.data, rk=SIM.rateKey, by={}, lam=0.94;

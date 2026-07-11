@@ -219,6 +219,12 @@
   .a-curveshift{transform-origin:center;animation:curveShift 3.2s ease-in-out infinite}
   .a-curveshift-opp{transform-origin:center;animation:curveShiftOpp 3.2s ease-in-out infinite}
   .a-curveshift-sm{transform-origin:center;animation:curveShiftSm 3.2s ease-in-out infinite}
+  @keyframes waveScroll{from{transform:translateX(0)}to{transform:translateX(-96px)}}
+  .a-wave{animation:waveScroll 3.4s linear infinite}
+  @keyframes chipPop{0%{transform:scale(.7);opacity:0}60%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+  .bchip{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:20px;font-size:11.5px;font-weight:600;border:1px solid var(--hair)}
+  .bchip.on{animation:chipPop .4s ease}
+  .bchip.borne{background:var(--panel2);color:var(--muted)}
   @media(max-width:520px){h1{font-size:21px}.tabs button{font-size:11px}}
   .panel{box-shadow:0 1px 3px rgba(20,32,55,.05)}
   .fund{box-shadow:0 1px 3px rgba(59,111,230,.07)}
@@ -454,9 +460,18 @@
     <div class="casc" id="casc"></div>
     <p class="foot">상승 시 자본 증가는 CSM을 확충하여 손익에 영향이 없습니다. 하락 시 자본 감소는 CSM을 먼저 소진하며, CSM을 초과하는 부분만 당기 보험손익으로 나타납니다. <b>완충이 얇을수록 손익 전이가 빠르게 발생</b>합니다. (여기의 값은 임의 예시입니다.)</p>
   </div>
-  <div class="panel concept">
-    <div class="cap">함의</div>
-    <p>CSM 감내 전략은 "보유 완충으로 시장위험 변동을 흡수한다"는 논리에 기반합니다. 따라서 <b>잔여 CSM이 얇으면 완충력이 제한</b>되고, 큰 폭의 미헷지 손실은 곧바로 손익으로 전이됩니다. 헷지 비용이 부담스러워 미헷지·재보험을 검토하더라도, 완충 수준과 이전 비용·잔여위험 때문에 전면 적용은 제약됩니다. 결국 <b>헷지 비용, CSM 완충, 손익 안정성의 삼각 균형</b>을 관리하는 문제가 됩니다.</p>
+  <div class="panel">
+    <div class="cap">완충이 얇아지면 — 헷지 압력이 커진다<span>CSM을 줄여보세요</span></div>
+    <div style="margin-top:2px"><label class="foot" style="margin:0">CSM 완충 두께 <b class="mono" id="bufCsmLab" style="color:var(--good)"></b></label>
+      <input type="range" id="bufCsm" min="4" max="100" step="1" value="80"></div>
+    <div class="chartwrap"><svg id="bufSvg" viewBox="0 0 640 200" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"></svg></div>
+    <div id="bufChips" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-top:12px">
+      <span class="foot" style="margin:0;flex:0 0 auto">누적 헷지 비용</span>
+      <div class="cbtrack" style="flex:1 1 auto;height:15px"><div id="bufCostFill" class="cbfill" style="background:var(--leak);width:0%"></div></div>
+      <span class="mono" id="bufCostLab" style="flex:0 0 auto;font-weight:700;font-size:12px"></span>
+    </div>
+    <p class="foot" id="bufMsg" style="margin-top:10px"></p>
   </div>
 </section>
 
@@ -786,6 +801,7 @@ function drawCasc(){
       : `자산이 보증부채보다 <b style="color:var(--bad)">${won(-cap)}억</b> 부족 → <b style="color:var(--bad)">자본 잠식·보험손익(PL)</b>으로 인식.`}</div>`;
 }
 ["in_eqf","in_csm2","shock"].forEach(id=>{ const el=$(id); if(el) el.addEventListener("input",drawCasc); });
+if($("bufCsm")) $("bufCsm").addEventListener("input",drawBuffer);
 
 /* ④ 헷지 vs CSM 비교표 */
 function drawCompare(){
@@ -905,6 +921,43 @@ function drawWhyHedge(){
     ['var(--sym)','미헷지 (연 1σ ±'+won(sig)+'억)'],
     ['var(--good)','헷지 후 (좁게 흔들리나 폭이 확 작음)'],
   ].map(([c,t])=>`<span style="display:inline-flex;align-items:center;gap:5px"><span style="width:16px;height:3px;border-radius:2px;background:${c};display:inline-block"></span>${t}</span>`).join("");
+}
+/* PL 인식 — 완충이 얇아지면 모든 요인에 헷지 압력이 커지는 것을 시각화(슬라이더+애니 파동) */
+const BUFF=[
+  {k:'주식 델타',   c:'var(--pay)',  cost:3,  vr:0.42},
+  {k:'금리',        c:'var(--pay)',  cost:4,  vr:0.20},
+  {k:'감마',        c:'var(--sym)',  cost:14, vr:0.14},
+  {k:'펀드 베이시스', c:'var(--leak)', cost:12, vr:0.12},
+  {k:'베가',        c:'var(--leak)', cost:16, vr:0.08},
+  {k:'해지·행동',   c:'var(--leak)', cost:18, vr:0.04},
+];
+function drawBuffer(){
+  const sl=$("bufCsm"); if(!sl)return;
+  const csmF=(+sl.value)/100;
+  $("bufCsmLab").textContent = csmF>0.66?'두터움':csmF>0.34?'보통':'얇음';
+  const N=BUFF.length, nH=Math.round((1-csmF)*N), totVr=BUFF.reduce((s,f)=>s+f.vr,0);
+  let rem=0; for(let i=nH;i<N;i++) rem+=BUFF[i].vr;
+  const W=640,H=200,cx=64,cy=100,plotW=W-cx-16, A0=68, A=A0*Math.sqrt(rem/totVr), hb=16+csmF*66, g=[];
+  g.push(`<rect x="${cx}" y="10" width="${plotW}" height="${(cy-hb-10).toFixed(1)}" fill="var(--bad)" opacity="0.08"/>`);
+  g.push(`<rect x="${cx}" y="${(cy+hb).toFixed(1)}" width="${plotW}" height="${(H-10-(cy+hb)).toFixed(1)}" fill="var(--bad)" opacity="0.08"/>`);
+  g.push(`<rect x="${cx}" y="${(cy-hb).toFixed(1)}" width="${plotW}" height="${(hb*2).toFixed(1)}" rx="6" fill="var(--good)" opacity="0.15"/>`);
+  g.push(`<line x1="${cx}" y1="${cy}" x2="${W-16}" y2="${cy}" stroke="#AAB4C6" stroke-width="1"/>`);
+  g.push(`<text class="eflabel" x="${cx+6}" y="${(cy-4).toFixed(1)}" fill="var(--good)">CSM 완충 (감내 가능 범위)</text>`);
+  g.push(`<text class="eflabel" x="${W-18}" y="20" text-anchor="end" fill="var(--bad)">보험손익(PL) 전이 구역</text>`);
+  const wave=(amp,ph)=>{let p="";for(let x=0;x<=plotW+96;x+=6){const y=cy-amp*Math.sin((x/96)*Math.PI*2+ph);p+=(x?"L":"M")+(cx+x).toFixed(1)+" "+y.toFixed(1);}return p;};
+  g.push(`<clipPath id="bclip"><rect x="${cx}" y="6" width="${plotW}" height="${H-12}"/></clipPath>`);
+  g.push(`<g clip-path="url(#bclip)"><g class="a-wave"><path d="${wave(A0,0)}" fill="none" stroke="var(--sym)" stroke-width="1.3" opacity="0.4"/></g></g>`);
+  g.push(`<g clip-path="url(#bclip)"><g class="a-wave"><path d="${wave(A,0.7)}" fill="none" stroke="var(--good)" stroke-width="2.4"/></g></g>`);
+  $("bufSvg").innerHTML=g.join("");
+  $("bufChips").innerHTML=BUFF.map((f,i)=>{const on=i<nH;
+    return `<span class="bchip ${on?'on':'borne'}" style="${on?`border-color:${f.c};color:${f.c}`:''}">${on?'✓ 헷지':'감내'} · ${f.k}</span>`;}).join("");
+  const totCost=BUFF.reduce((s,f)=>s+f.cost,0); let cost=0; for(let i=0;i<nH;i++)cost+=BUFF[i].cost;
+  $("bufCostFill").style.width=(cost/totCost*100).toFixed(0)+"%"; $("bufCostLab").textContent=Math.round(cost/totCost*100)+"%";
+  $("bufMsg").innerHTML = csmF>0.66
+    ? '완충이 <b>두텁습니다</b> → 대부분 <b>감내(CSM이 흡수)</b>. 헷지 비용은 낮지만 손익변동성은 큽니다. <b style="color:var(--sym)">보라 파동(감내 시 변동)</b>이 완충 안에 들어옵니다.'
+    : csmF>0.34
+    ? '완충이 <b>얇아집니다</b> → 감내하면 변동이 완충을 넘어 <b style="color:var(--bad)">손익으로 샙니다</b>. <b>감마</b>까지 헷지가 강제되어(<b style="color:var(--good)">초록 파동</b>이 완충 안으로) 비용이 오릅니다.'
+    : '완충이 <b>매우 얇습니다</b> → <b style="color:var(--bad)">주식 델타뿐 아니라 감마·펀드 베이시스·베가·해지까지</b> 헷지가 강제됩니다. <b>비용을 더 치르더라도 변동성을 완충 안으로</b> 밀어넣어야 합니다.';
 }
 function yearStats(){
   const d=SIM.data, rk=SIM.rateKey, by={}, lam=0.94;
@@ -1069,7 +1122,8 @@ const FEEDBACK_ENDPOINT="https://script.google.com/macros/s/AKfycbwEqiaQ9mhEl2-4
 (function(){ const note=$("fbNote"), btn=$("fbSend"), msg=$("fbMsg");
   if(!FEEDBACK_ENDPOINT){ btn.disabled=true;
     note.innerHTML="⚙ 의견 수집 저장소가 아직 연결되지 않았다 — 배포자가 구글 Apps Script 웹앱(/exec) 주소를 설정하면 활성화됩니다. 접수된 의견은 구글 시트에 기록됩니다."; return; }
-  btn.addEventListener("click",async()=>{ const body={name:$("fbName").value.slice(0,60), text:$("fbText").value.slice(0,2000), page:location.pathname, ts:new Date().toISOString()};
+  btn.addEventListener("click",async()=>{ const at=document.querySelector(".tabs button.on"); const tab=at?((at.childNodes[0]&&at.childNodes[0].nodeValue||at.textContent)||"").trim():"";
+    const body={name:$("fbName").value.slice(0,60), text:$("fbText").value.slice(0,2000), page:tab||location.pathname, ts:new Date().toISOString()};
     if(!body.text.trim()){ msg.style.color="var(--leak)"; msg.textContent="의견을 입력해 주세요."; return; }
     btn.disabled=true; msg.style.color="var(--muted)"; msg.textContent="전송 중…";
     try{ await fetch(FEEDBACK_ENDPOINT,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(body)});
@@ -1125,7 +1179,7 @@ $("poBtns")&&$("poBtns").addEventListener("click",e=>{const b=e.target.closest("
 $("poX")&&$("poX").addEventListener("input",renderPayoff);
 
 renderFactorAnim(); renderPayoff();
-render(); syncCsm2(); drawCasc();
+render(); syncCsm2(); drawCasc(); drawBuffer();
 loadMarket();  /* 개념탭 조합차트·시뮬 모두 데이터 필요 → 로드 시 자동 반영 */
 </script>
 </body>

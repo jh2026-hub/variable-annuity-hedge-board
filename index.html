@@ -506,7 +506,7 @@
       <div style="display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted);margin-top:-2px"><span>0 안 함</span><span>100 딱 맞춤</span><span>150 오버</span></div>
       <div style="display:flex;gap:8px;margin-top:10px">
         <button id="gPlay" class="gbtn" style="margin-top:0;flex:1">다음 날 ▶</button>
-        <button id="gReview" class="gbtn" style="margin-top:0;flex:0 0 auto;width:auto;padding:11px 14px;background:var(--muted);display:none">◀ 전일 복기</button>
+        <button id="gReview" class="gbtn" style="margin-top:0;flex:0 0 auto;width:auto;padding:11px 14px;background:var(--muted);display:none">↩ 행동 취소</button>
       </div>
     </div>
     <div id="gResult"></div>
@@ -1428,6 +1428,7 @@ function gHint(){ const gp=gGap(), m=Math.abs(gp);
 function gNewDay(){ $("gHedge").value=0; gDrawDecide(0); gHint(); }
 function gPlay(){
   if(GAME.over)return;
+  GAME.prev={d:GAME.d,bud:GAME.bud,mkt:GAME.mkt,hx:GAME.hx,best:GAME.best,log:GAME.log.slice()};   /* 행동 취소용 스냅샷 */
   const h=(+$("gHedge").value)/100, mkt=GAME.mkt, hx=GAME.hx, gap=mkt-hx;
   const hxN=hx+h*gap, g2=mkt-hxN, cost=-GCOST*h*Math.abs(gap), dM=gSamp(), mktN=mkt+dM;
   const gamma=-GAM*dM*dM, dir=-GD*g2*dM, net=cost+dir+gamma;
@@ -1442,7 +1443,12 @@ function gPlay(){
   $("gHedge").value=0; gHint();   /* 다음 날 준비(슬라이더 초기화·안내). 그래프는 방금 결과가 남아 슬라이더를 움직이면 새 결정으로 전환 */
   if(GAME.bud<=0) gFinish();
 }
-function gReview(){ if(!GAME.last)return; gDrawReveal(); gShowResult(GAME.last); }
+function gUndo(){ const p=GAME.prev; if(!p)return;
+  GAME.d=p.d; GAME.bud=p.bud; GAME.mkt=p.mkt; GAME.hx=p.hx; GAME.best=p.best; GAME.log=p.log; GAME.last=null; GAME.over=false; GAME.prev=null;
+  $("gPlay").disabled=false; $("gResult").innerHTML=''; $("gFinal").innerHTML='';
+  $("gLog").innerHTML=GAME.log.slice(-12).reverse().map(r=>`<div class="glogrow"><span class="gy">${r.d}일</span><span class="gtag">${r.revert?'🔄 되돌림':'➡️ 이어짐'}</span><span class="gnet" style="color:${r.net>=0?'var(--good)':'var(--bad)'}">${r.net>=0?'+':'−'}${Math.abs(r.net).toFixed(1)}</span></div>`).join('');
+  if($("gReview")) $("gReview").style.display='none';
+  gNewDay(); }
 function gFinish(){
   GAME.over=true; $("gPlay").disabled=true; $("gToday").innerHTML=`🏁 <b>${GAME.d}일</b>째에 버짓이 바닥났습니다.`;
   const d=GAME.d, t=d>=30?['🏆','베테랑 트레이더']:d>=18?['🥇','노련']:d>=10?['👍','무난']:['😅','아직 연습'];
@@ -1454,12 +1460,12 @@ function gFinish(){
   </div>`;
   $("gReset").addEventListener("click",gReset);
 }
-function gReset(){GAME.d=0;GAME.bud=GAME.bud0;GAME.over=false;GAME.log=[];GAME.hx=0;GAME.mkt=gSamp();GAME.last=null;
+function gReset(){GAME.d=0;GAME.bud=GAME.bud0;GAME.over=false;GAME.log=[];GAME.hx=0;GAME.mkt=gSamp();GAME.last=null;GAME.prev=null;
   $("gPlay").disabled=false; $("gResult").innerHTML=''; $("gLog").innerHTML=''; $("gFinal").innerHTML=''; if($("gReview"))$("gReview").style.display='none'; gNewDay();}
 function gStart(){ GAME.bud0=+$("gBud0").value; gReset(); }
 if($("gHedge")){
   $("gHedge").addEventListener("input",gHlab); $("gPlay").addEventListener("click",gPlay);
-  if($("gReview")) $("gReview").addEventListener("click",gReview);
+  if($("gReview")) $("gReview").addEventListener("click",gUndo);
   if($("gBud0")){ $("gBud0").addEventListener("input",()=>{$("gBud0Lab").textContent=$("gBud0").value;}); }
   if($("gStart")) $("gStart").addEventListener("click",gStart);
   GAME.bud0=+($("gBud0")?.value||50); GAME.bud=GAME.bud0; GAME.hx=0; GAME.mkt=gSamp(); gNewDay();

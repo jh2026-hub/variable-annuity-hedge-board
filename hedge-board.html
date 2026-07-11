@@ -111,6 +111,19 @@
   .casc{margin-top:12px}
   .cascbar{display:flex;height:30px;border-radius:6px;overflow:hidden;background:var(--panel2);border:1px solid var(--hair);margin:8px 0}
   .cascbar div{display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--bg);transition:width .25s}
+  .stmt{border:1px solid var(--hair);border-radius:11px;overflow:hidden;margin-top:12px;box-shadow:0 1px 3px rgba(20,32,55,.05)}
+  .stmtrow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 15px;font-size:13px;font-weight:600}
+  .stmtrow+.stmtrow{border-top:1px solid var(--hair)}
+  .stmtrow .op{color:var(--muted);font-weight:700;margin-right:7px;font-family:"IBM Plex Mono",monospace}
+  .stmtrow .tag{font-size:10.5px;color:var(--muted);font-weight:400;margin-left:8px}
+  .stmtrow .amt{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:16px;white-space:nowrap}
+  .stmtrow.loss{background:#FCE7EB} .stmtrow.loss .amt{color:var(--bad)}
+  .stmtrow.csm{background:#FDF2E1} .stmtrow.csm .amt{color:var(--leak)}
+  .stmtrow.pl{background:#FBDCE2} .stmtrow.pl{font-weight:700} .stmtrow.pl .amt{color:var(--bad);font-size:18px}
+  .stmtrow.flat{background:#E4F6EE} .stmtrow.flat .amt{color:var(--good)}
+  .stmtrow.remain{background:var(--panel2)} .stmtrow.remain .amt{color:var(--muted)}
+  .stmtrow.gain{background:#E4F6EE} .stmtrow.gain .amt{color:var(--good)}
+  .stmtrow.csmup{background:#E7EFFD} .stmtrow.csmup .amt{color:var(--pay)}
   input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:28px;background:transparent;cursor:pointer}
   input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:2px;background:var(--panel2);border:1px solid var(--hair)}
   input[type=range]::-moz-range-track{height:4px;border-radius:2px;background:var(--panel2);border:1px solid var(--hair)}
@@ -641,14 +654,22 @@ function drawCasc(){
   if(!$("casc"))return;
   $("shockLab").textContent=(shock>0?"+":"")+shock+"%";
   const chg=eqf*10000*shock/100; /* 억 */
+  const sh=(shock>0?"+":"")+shock+"%";
   let html="";
   if(chg>=0){
-    html=`<div class="foot">자본 변동 <b style="color:var(--good)">+${won(chg)}억</b> → CSM 확충. 당기 손익 영향 없음.</div>
-      <div class="cascbar"><div style="width:100%;background:var(--good)">CSM +${won(chg)}억</div></div>`;
+    html=`<div class="stmt">
+      <div class="stmtrow gain"><span>시장 이익 <span class="tag">주가 ${sh}</span></span><span class="amt">+${won(chg)}억</span></div>
+      <div class="stmtrow csmup"><span><span class="op">→</span>CSM 확충 <span class="tag">미래이익 증가</span></span><span class="amt">+${won(chg)}억</span></div>
+      <div class="stmtrow flat"><span><span class="op">=</span>당기 보험손익</span><span class="amt">0</span></div>
+    </div>`;
   } else {
-    const loss=-chg, ab=Math.min(loss,CSM), pl=Math.max(0,loss-CSM), t=Math.max(loss,1);
-    html=`<div class="foot">자본 변동 <b style="color:var(--bad)">△${won(loss)}억</b> → CSM이 <b style="color:var(--leak)">${won(ab)}억</b> 흡수${pl>0?`, 초과 <b style="color:var(--bad)">${won(pl)}억</b> 보험손익 전이`:` (완충 내 흡수)`}.</div>
-      <div class="cascbar"><div style="width:${(ab/t*100).toFixed(1)}%;background:var(--leak)">CSM ${won(ab)}억</div>${pl>0?`<div style="width:${(pl/t*100).toFixed(1)}%;background:var(--bad)">PL ${won(pl)}억</div>`:``}</div>`;
+    const loss=-chg, ab=Math.min(loss,CSM), pl=Math.max(0,loss-CSM), rem=Math.max(0,CSM-loss);
+    html=`<div class="stmt">
+      <div class="stmtrow loss"><span>시장 손실 <span class="tag">주가 ${sh}</span></span><span class="amt">△${won(loss)}억</span></div>
+      <div class="stmtrow csm"><span><span class="op">−</span>CSM 완충 흡수 <span class="tag">${pl>0?'완충 소진':'미래이익 차감'}</span></span><span class="amt">△${won(ab)}억</span></div>
+      <div class="stmtrow ${pl>0?'pl':'flat'}"><span><span class="op">=</span>당기 보험손익 <span class="tag">${pl>0?'⚠ 실적 반영':'완충 내 흡수'}</span></span><span class="amt">${pl>0?'△'+won(pl):'0'}${pl>0?'억':''}</span></div>
+      ${pl>0?'':`<div class="stmtrow remain"><span>잔여 CSM 완충</span><span class="amt">${won(rem)}억</span></div>`}
+    </div>`;
   }
   $("casc").innerHTML=html;
 }

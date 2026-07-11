@@ -1354,7 +1354,7 @@ $("poBtns")&&$("poBtns").addEventListener("click",e=>{const b=e.target.closest("
 $("poX")&&$("poX").addEventListener("input",renderPayoff);
 
 /* 델타 리밸런싱 게임 — 부채곡선(볼록)+사선 헷지선(전일 기울기 유지), 시장점 이동, 매일 복기, 코스피 2분기 실측 */
-const GAME={d:0,bud:50,bud0:50,best:0,over:false,phase:'decide',log:[],mkt:0,hx:0,last:null};
+const GAME={d:0,bud:50,bud0:50,best:0,over:false,log:[],mkt:0,hx:0,last:null};
 const GD=1.4, GAM=0.6, GCOST=0.5, GV={W:560,H:200,topY:26,baseY:162,maxX:11};
 let GPOOL=null;
 const GSYNTH=[-1.8,-0.9,-0.4,0.3,0.7,1.1,-2.5,1.6,-0.6,0.9,2.2,-3.5,0.5,-1.2,1.3,-0.3,0.8];
@@ -1370,38 +1370,40 @@ function gProj(){ const r=GAME.log.slice(-5); if(!r.length)return''; const avg=r
   if(avg>=-0.05)return''; return ` · <span style="color:${GAME.bud/(-avg)<6?'var(--bad)':'var(--muted)'}">이 속도면 ~${Math.max(1,Math.round(GAME.bud/(-avg)))}일</span>`; }
 function gStatus(){ const gp=gGap(); if($("gStatus")) $("gStatus").innerHTML=`<div>버틴 날<b style="color:var(--pay)">${GAME.d}일</b></div><div>최고<b>${GAME.best}일</b></div><div>현재 갭<b style="color:${Math.abs(gp)>3?'var(--bad)':'var(--ink)'}">${gp>=0?'+':''}${gp.toFixed(1)}%p</b></div>`; if($("gProj"))$("gProj").innerHTML=gProj(); gGauge(); }
 function gTag(h){ return h<0.15?'· 안 함(갭 유지)':h<0.85?'· 덜 맞춤':h<=1.15?'· 딱 맞춤':'· 오버(추세 베팅)'; }
-function gHlab(){ const h=(+$("gHedge").value)/100; $("gHlab").textContent=Math.round(h*100)+'%'; $("gHtag").textContent=gTag(h); if(GAME.phase==='decide') gDrawDecide(h); }
-/* 좌표: 부채곡선 V(x)=x²(볼록), hx 접선(사선) */
+function gHlab(){ const h=(+$("gHedge").value)/100; $("gHlab").textContent=Math.round(h*100)+'%'; $("gHtag").textContent=gTag(h); if(!GAME.over) gDrawDecide(h); }
+/* 좌표: 감마 손익곡선(∩ 아래로 볼록, 꼭대기=손익0), hx 접선(사선 세그먼트) */
 const gCL=x=>Math.max(-GV.maxX,Math.min(GV.maxX,x));
-const gPX=x=>34+(gCL(x)+GV.maxX)/(2*GV.maxX)*(GV.W-64);
-const gVY=x=>GV.baseY-(gCL(x)*gCL(x)/(GV.maxX*GV.maxX))*(GV.baseY-GV.topY);
-const gTY=(hx,x)=>{const V=2*hx*gCL(x)-hx*hx; return GV.baseY-(V/(GV.maxX*GV.maxX))*(GV.baseY-GV.topY);};
-function gBaseSVG(){ const {W,H,maxX}=GV, g=[];
-  let p=''; for(let x=-maxX;x<=maxX;x+=0.4) p+=(x<=-maxX?'M':'L')+gPX(x).toFixed(1)+' '+gVY(x).toFixed(1);
-  g.push(`<path d="${p}" fill="none" stroke="var(--sym)" stroke-width="2.2"/>`);
-  g.push(`<text x="36" y="16" class="eflabel" fill="var(--sym)">부채(비용) 곡선 — 감마</text>`);
-  g.push(`<text x="30" y="${H-6}" class="eflabel" fill="var(--muted)">← 시장 하락</text><text x="${W-30}" y="${H-6}" class="eflabel" text-anchor="end" fill="var(--muted)">시장 상승 →</text>`);
+const gPX=x=>36+(gCL(x)+GV.maxX)/(2*GV.maxX)*(GV.W-72);
+const gVY=x=>GV.topY+(gCL(x)*gCL(x)/(GV.maxX*GV.maxX))*(GV.baseY-GV.topY);
+const gTY=(hx,x)=>GV.topY+((2*hx*gCL(x)-hx*hx)/(GV.maxX*GV.maxX))*(GV.baseY-GV.topY);
+const gSeg=(hx,col,dash,w)=>{const a=Math.max(-GV.maxX,hx-4.8),b=Math.min(GV.maxX,hx+4.8);
+  return `<line x1="${gPX(a).toFixed(1)}" y1="${gTY(hx,a).toFixed(1)}" x2="${gPX(b).toFixed(1)}" y2="${gTY(hx,b).toFixed(1)}" stroke="${col}" stroke-width="${w||3.4}" stroke-linecap="round"${dash?' stroke-dasharray="7 4"':''}/>`;};
+function gBaseSVG(){ const {W,H,topY,maxX}=GV, g=[];
+  g.push(`<line x1="34" y1="${topY}" x2="${W-34}" y2="${topY}" stroke="#EEF1F8"/><text x="38" y="${topY-4}" class="eflabel" fill="var(--muted)">손익 0 (꼭대기) · 아래로 갈수록 손실</text>`);
+  let p=''; for(let x=-maxX;x<=maxX;x+=0.35) p+=(x<=-maxX?'M':'L')+gPX(x).toFixed(1)+' '+gVY(x).toFixed(1);
+  g.push(`<path d="${p}" fill="none" stroke="var(--sym)" stroke-width="2.6"/>`);
+  g.push(`<text x="34" y="${H-7}" class="eflabel" fill="var(--muted)">← 시장 하락</text><text x="${W-34}" y="${H-7}" class="eflabel" text-anchor="end" fill="var(--muted)">시장 상승 →</text>`);
   return g; }
-const gLine=(hx,col,dash)=>`<line x1="${gPX(-GV.maxX).toFixed(1)}" y1="${gTY(hx,-GV.maxX).toFixed(1)}" x2="${gPX(GV.maxX).toFixed(1)}" y2="${gTY(hx,GV.maxX).toFixed(1)}" stroke="${col}" stroke-width="2.6"${dash?' stroke-dasharray="6 4"':''}/>`;
 function gDrawDecide(h){ const box=$("gCurve"); if(!box)return; const g=gBaseSVG(), mkt=GAME.mkt, hx=GAME.hx, hxN=hx+h*(mkt-hx);
-  g.push(gLine(hx,'#AAB4C6',true));
-  g.push(`<text x="${gPX(hx).toFixed(1)}" y="${(gVY(hx)-9).toFixed(1)}" class="eflabel" text-anchor="middle" fill="var(--muted)">전일 헷지선(어제 기울기)</text>`);
-  g.push(gLine(hxN,'var(--pay)',false));
-  g.push(`<text x="${gPX(hxN).toFixed(1)}" y="${(gTY(hxN,hxN)+15).toFixed(1)}" class="eflabel" text-anchor="middle" fill="var(--pay)" font-weight="700">오늘 헷지선</text>`);
-  if(Math.abs(mkt-hx)>0.3) g.push(`<line x1="${gPX(mkt).toFixed(1)}" y1="${gVY(mkt).toFixed(1)}" x2="${gPX(mkt).toFixed(1)}" y2="${gTY(hx,mkt).toFixed(1)}" stroke="var(--bad)" stroke-width="1.6" stroke-dasharray="3 2" opacity="0.85"/>`);
-  g.push(`<circle cx="${gPX(mkt).toFixed(1)}" cy="${gVY(mkt).toFixed(1)}" r="6.5" fill="#16202F" stroke="#fff" stroke-width="2"><animate attributeName="r" values="6.5;8;6.5" dur="1.6s" repeatCount="indefinite"/></circle>`);
-  g.push(`<text x="${gPX(mkt).toFixed(1)}" y="${(gVY(mkt)-9).toFixed(1)}" class="eflabel" text-anchor="middle" font-weight="700">시장</text>`);
+  if(Math.abs(mkt-hx)>0.25) g.push(`<line x1="${gPX(mkt).toFixed(1)}" y1="${gVY(mkt).toFixed(1)}" x2="${gPX(mkt).toFixed(1)}" y2="${gTY(hx,mkt).toFixed(1)}" stroke="var(--bad)" stroke-width="2" stroke-dasharray="3 2" opacity="0.85"/>`);
+  g.push(gSeg(hx,'#9AA6B8',true,3));
+  g.push(`<text x="${gPX(hx-4.5).toFixed(1)}" y="${(gTY(hx,hx-4.5)-6).toFixed(1)}" class="eflabel" fill="#8A94A6">전일 헷지선</text>`);
+  g.push(gSeg(hxN,'var(--pay)',false,3.6));
+  g.push(`<text x="${gPX(hxN+4.5).toFixed(1)}" y="${(gTY(hxN,hxN+4.5)+13).toFixed(1)}" class="eflabel" text-anchor="end" fill="var(--pay)" font-weight="700">오늘 헷지선</text>`);
+  g.push(`<circle cx="${gPX(mkt).toFixed(1)}" cy="${gVY(mkt).toFixed(1)}" r="7" fill="#16202F" stroke="#fff" stroke-width="2"><animate attributeName="r" values="7;9;7" dur="1.6s" repeatCount="indefinite"/></circle>`);
+  g.push(`<text x="${gPX(mkt).toFixed(1)}" y="${(gVY(mkt)+20).toFixed(1)}" class="eflabel" text-anchor="middle" font-weight="700">시장</text>`);
   box.innerHTML=g.join("");
 }
 function gDrawReveal(){ const box=$("gCurve"), L=GAME.last; if(!box||!L)return; const g=gBaseSVG();
   const recovered=Math.abs(L.mktN-L.hx)<Math.abs(L.mkt0-L.hx);
-  g.push(gLine(L.hx,'#AAB4C6',true));         /* 전일 헷지선(가만히 뒀으면) */
-  g.push(gLine(L.hxN,'var(--pay)',false));    /* 당신이 맞춘 오늘 헷지선 */
-  g.push(`<circle cx="${gPX(L.mkt0).toFixed(1)}" cy="${gVY(L.mkt0).toFixed(1)}" r="5" fill="#16202F" opacity="0.3"/><text x="${gPX(L.mkt0).toFixed(1)}" y="${(gVY(L.mkt0)+16).toFixed(1)}" class="eflabel" text-anchor="middle" opacity="0.5">어제 시장</text>`);
+  g.push(gSeg(L.hx,'#9AA6B8',true,3));
+  g.push(`<text x="${gPX(L.hx-4.5).toFixed(1)}" y="${(gTY(L.hx,L.hx-4.5)-6).toFixed(1)}" class="eflabel" fill="#8A94A6">전일 헷지선(가만히)</text>`);
+  g.push(gSeg(L.hxN,'var(--pay)',false,3.4));
+  g.push(`<circle cx="${gPX(L.mkt0).toFixed(1)}" cy="${gVY(L.mkt0).toFixed(1)}" r="5" fill="#16202F" opacity="0.3"/><text x="${gPX(L.mkt0).toFixed(1)}" y="${(gVY(L.mkt0)+18).toFixed(1)}" class="eflabel" text-anchor="middle" opacity="0.5">어제</text>`);
   g.push(`<line x1="${gPX(L.mkt0).toFixed(1)}" y1="${gVY(L.mkt0).toFixed(1)}" x2="${gPX(L.mktN).toFixed(1)}" y2="${gVY(L.mktN).toFixed(1)}" stroke="#AAB4C6" stroke-dasharray="3 3"/>`);
-  g.push(`<line x1="${gPX(L.mktN).toFixed(1)}" y1="${gVY(L.mktN).toFixed(1)}" x2="${gPX(L.mktN).toFixed(1)}" y2="${gTY(L.hx,L.mktN).toFixed(1)}" stroke="var(--bad)" stroke-width="1.5" stroke-dasharray="3 2" opacity="0.75"/>`);
-  g.push(`<circle cx="${gPX(L.mktN).toFixed(1)}" cy="${gVY(L.mktN).toFixed(1)}" r="7" fill="${recovered?'var(--good)':'var(--bad)'}" stroke="#fff" stroke-width="2"><animate attributeName="r" from="0" to="7" dur="0.5s" fill="freeze"/></circle>`);
-  g.push(`<text x="${gPX(L.mktN).toFixed(1)}" y="${(gVY(L.mktN)-9).toFixed(1)}" class="eflabel" text-anchor="middle" font-weight="700" fill="${recovered?'var(--good)':'var(--bad)'}">내일 시장${recovered?' ↑회복':''}</text>`);
+  g.push(`<line x1="${gPX(L.mktN).toFixed(1)}" y1="${gVY(L.mktN).toFixed(1)}" x2="${gPX(L.mktN).toFixed(1)}" y2="${gTY(L.hx,L.mktN).toFixed(1)}" stroke="var(--bad)" stroke-width="1.8" stroke-dasharray="3 2" opacity="0.8"/>`);
+  g.push(`<circle cx="${gPX(L.mktN).toFixed(1)}" cy="${gVY(L.mktN).toFixed(1)}" r="7.5" fill="${recovered?'var(--good)':'var(--bad)'}" stroke="#fff" stroke-width="2"><animate attributeName="r" from="0" to="7.5" dur="0.5s" fill="freeze"/></circle>`);
+  g.push(`<text x="${gPX(L.mktN).toFixed(1)}" y="${(gVY(L.mktN)+20).toFixed(1)}" class="eflabel" text-anchor="middle" font-weight="700" fill="${recovered?'var(--good)':'var(--bad)'}">내일 시장${recovered?' ↑회복':''}</text>`);
   box.innerHTML=g.join("");
 }
 function gShowResult(L){
@@ -1418,15 +1420,14 @@ function gShowResult(L){
     </div>
   </div>`;
 }
-function gNewDay(){ GAME.phase='decide'; $("gHedge").value=0; $("gHedge").disabled=false; $("gPlay").textContent='다음 날 ▶';
-  const gp=gGap(), m=Math.abs(gp);
-  const st = m<0.4? '헷지가 시장과 <b>거의 맞아</b> 있습니다.' : `헷지가 시장과 <b style="color:var(--bad)">${gp>=0?'+':''}${gp.toFixed(1)}%p 벌어져</b> 있습니다 — 안 맞추면 더 커집니다.`;
-  $("gToday").innerHTML=`📍 ${st} <b style="color:var(--pay)">파란 오늘 헷지선</b>을 <b>시장(검정)</b>에 얼마나 맞출지 정하고 <b>다음 날 ▶</b>. <span style="color:var(--muted)">안 맞추면 회색 전일 헷지선에 그대로 남습니다.</span>`;
-  gHlab(); gStatus();
+function gHint(){ const gp=gGap(), m=Math.abs(gp);
+  const st = m<0.4? '헷지가 시장과 <b>거의 맞아</b> 있습니다.' : `헷지가 <b style="color:var(--bad)">${gp>=0?'+':''}${gp.toFixed(1)}%p</b> 벌어져 있습니다 — 안 맞추면 더 커집니다.`;
+  $("gToday").innerHTML=`📍 ${st} 슬라이더로 <b style="color:var(--pay)">오늘 헷지선</b>을 <b>시장(검정)</b>에 맞추고 <b>다음 날 ▶</b>. <span style="color:var(--muted)">안 맞추면 회색 전일선에 남습니다.</span>`;
+  gStatus();
 }
+function gNewDay(){ $("gHedge").value=0; gDrawDecide(0); gHint(); }
 function gPlay(){
   if(GAME.over)return;
-  if(GAME.phase==='revealed'){ gNewDay(); return; }   /* reveal 상태에서 누르면 다음 날로 */
   const h=(+$("gHedge").value)/100, mkt=GAME.mkt, hx=GAME.hx, gap=mkt-hx;
   const hxN=hx+h*gap, g2=mkt-hxN, cost=-GCOST*h*Math.abs(gap), dM=gSamp(), mktN=mkt+dM;
   const gamma=-GAM*dM*dM, dir=-GD*g2*dM, net=cost+dir+gamma;
@@ -1438,9 +1439,8 @@ function gPlay(){
   GAME.log.push({d:GAME.d,revert,net}); if(GAME.d>GAME.best)GAME.best=GAME.d;
   $("gLog").innerHTML=GAME.log.slice(-12).reverse().map(r=>`<div class="glogrow"><span class="gy">${r.d}일</span><span class="gtag">${r.revert?'🔄 되돌림':'➡️ 이어짐'}</span><span class="gnet" style="color:${r.net>=0?'var(--good)':'var(--bad)'}">${r.net>=0?'+':'−'}${Math.abs(r.net).toFixed(1)}</span></div>`).join('');
   if($("gReview")) $("gReview").style.display='';
-  gStatus();
-  if(GAME.bud<=0){ gFinish(); return; }
-  GAME.phase='revealed'; $("gHedge").disabled=true; $("gPlay").textContent='계속 ▶ (다음 날)';
+  $("gHedge").value=0; gHint();   /* 다음 날 준비(슬라이더 초기화·안내). 그래프는 방금 결과가 남아 슬라이더를 움직이면 새 결정으로 전환 */
+  if(GAME.bud<=0) gFinish();
 }
 function gReview(){ if(!GAME.last)return; gDrawReveal(); gShowResult(GAME.last); }
 function gFinish(){

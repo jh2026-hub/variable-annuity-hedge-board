@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>헤지 보드 — 감마가 매년 얼마를 가져가나</title>
+<title>변액보험 헷지에 관하여</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,18 +13,26 @@
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{background:var(--bg);color:var(--ink)}
   body{font-family:"IBM Plex Sans KR",system-ui,sans-serif;-webkit-font-smoothing:antialiased;
-       padding:20px 14px 60px;max-width:820px;margin:0 auto;line-height:1.55}
+       padding:20px 14px 60px;max-width:860px;margin:0 auto;line-height:1.6}
   .mono{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
   .exbanner{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:#12313d;border:1px solid #2f6d85;
     color:var(--pay);border-radius:9px;padding:9px 12px;font-size:12px;font-weight:600;margin-bottom:14px}
   .exbanner span{color:var(--muted);font-weight:400}
-  h1{font-size:24px;font-weight:700;letter-spacing:-.02em;line-height:1.3;margin-bottom:10px}
-  h1 em{font-style:normal;color:var(--pay)} h1 b{color:var(--leak)}
-  .lede{color:var(--muted);font-size:14px}.lede b{color:var(--ink);font-weight:600}
-  .fund{margin-top:16px;border:1px solid #2f6d85;background:linear-gradient(90deg,#12313d,#16202C 70%);
-        border-radius:12px;padding:15px 16px}
-  .fund .t{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--pay);
-           font-family:"IBM Plex Mono",monospace;margin-bottom:6px}
+  h1{font-size:25px;font-weight:700;letter-spacing:-.02em;line-height:1.3;margin-bottom:4px}
+  h1 em{font-style:normal;color:var(--pay)}
+  .sub{color:var(--muted);font-size:13.5px;margin-bottom:16px}
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;position:sticky;top:0;background:var(--bg);padding:8px 0 10px;z-index:20;border-bottom:1px solid var(--hair);margin-bottom:4px}
+  .tabs button{flex:1 1 78px;background:var(--panel);border:1px solid var(--hair);color:var(--muted);font-family:inherit;
+    font-size:12px;font-weight:700;padding:10px 5px;border-radius:9px;cursor:pointer;line-height:1.3;min-height:50px}
+  .tabs button small{display:block;font-weight:400;font-size:9px;opacity:.75;margin-top:2px}
+  .tabs button.on{background:#12313d;border-color:#2f6d85;color:var(--pay)}
+  .page{display:none} .page.on{display:block}
+  .lede{color:var(--muted);font-size:14px;margin-top:14px}.lede b{color:var(--ink);font-weight:600}
+  .panel{background:var(--panel);border:1px solid var(--hair);border-radius:12px;padding:16px;margin-top:18px}
+  .cap{font-size:13px;font-weight:700;margin-bottom:4px}
+  .cap span{font-weight:400;color:var(--muted);font-size:12px;margin-left:6px}
+  .fund{margin-top:16px;border:1px solid #2f6d85;background:linear-gradient(90deg,#12313d,#16202C 70%);border-radius:12px;padding:15px 16px}
+  .fund .t{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--pay);font-family:"IBM Plex Mono",monospace;margin-bottom:6px}
   .fund .big{font-size:26px;font-weight:700;letter-spacing:-.02em}
   .fund .big small{font-size:13px;color:var(--muted);font-weight:500;margin-left:4px}
   .fund p{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.6}.fund p b{color:var(--ink)}
@@ -32,390 +40,568 @@
   .split div{transition:width .25s cubic-bezier(.4,0,.2,1)}
   .keys{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;font-size:10.5px;color:var(--muted);font-family:"IBM Plex Mono",monospace}
   .keys i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:-1px}
-  .panel{background:var(--panel);border:1px solid var(--hair);border-radius:12px;padding:16px;margin-top:18px}
-  .cap{font-size:13px;font-weight:700;margin-bottom:4px}
-  .cap span{font-weight:400;color:var(--muted);font-size:12px;margin-left:6px}
-  /* 감마 계산기 */
   .formula{font-family:"IBM Plex Mono",monospace;font-size:13px;background:var(--panel2);border:1px solid var(--hair);
            border-radius:8px;padding:11px 12px;margin:10px 0 4px;text-align:center;letter-spacing:.01em}
   .formula b{color:var(--leak)} .formula em{font-style:normal;color:var(--pay)}
-  .gcalc{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-  .gcard{background:var(--panel2);border:1px solid var(--hair);border-radius:9px;padding:11px}
-  .gcard h4{font-size:12px;font-weight:700;margin-bottom:8px}
-  .grow{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;font-size:11px}
-  .grow label{color:var(--muted);white-space:nowrap}
-  .grow input[type=number]{width:92px;min-height:44px;background:#0E1620;border:1px solid var(--hair);color:var(--ink);
+  .concept h3{font-size:15px;font-weight:700;margin:16px 0 5px}
+  .concept p{font-size:13px;color:var(--muted);line-height:1.75;margin-bottom:4px}.concept p b{color:var(--ink)}
+  .grpbox{border-left:3px solid var(--hair);padding:2px 0 2px 12px;margin:12px 0}
+  .grpbox.g0{border-color:var(--pay)} .grpbox.g1{border-color:var(--leak)} .grpbox.g2{border-color:var(--sym)}
+  .grpbox h4{font-size:13px;font-weight:700;margin-bottom:3px}
+  .grpbox p{font-size:12px;color:var(--muted);line-height:1.65}
+  .sheet{margin-top:12px}
+  .srow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dashed var(--hair)}
+  .srow:last-child{border-bottom:none}
+  .srow .lab{font-size:12.5px}.srow .lab small{display:block;color:var(--muted);font-size:10.5px;margin-top:1px}
+  .srow input[type=number]{width:104px;min-height:44px;background:#0E1620;border:1px solid var(--hair);color:var(--ink);
     border-radius:7px;padding:6px 10px;font-family:"IBM Plex Mono",monospace;font-size:16px;text-align:right}
-  .grow input:focus{outline:2px solid var(--pay);border-color:var(--pay)}
-  .gout{margin-top:9px;padding-top:9px;border-top:1px dashed var(--hair);display:flex;justify-content:space-between;font-size:11px}
-  .gout b{font-family:"IBM Plex Mono",monospace;font-size:13px}
-  .gleak b{color:var(--leak)} .gprem b{color:var(--pay)}
-  .gspread{margin-top:8px;font-size:11px;color:var(--muted);text-align:center;padding-top:8px;border-top:1px dashed var(--hair)}
-  .gspread b{color:var(--ink)}
-  .stress{display:flex;gap:6px;margin-top:12px}
-  .stress div{flex:1;background:var(--panel2);border:1px solid var(--hair);border-radius:8px;padding:9px;text-align:center}
-  .stress .sl{font-size:10px;color:var(--muted)}
-  .stress .sv{font-family:"IBM Plex Mono",monospace;font-size:15px;font-weight:600;color:var(--leak);margin-top:2px}
-  .seg{display:flex;gap:6px;margin-top:12px}
-  .seg button{flex:1;background:var(--panel2);border:1px solid var(--hair);color:var(--muted);font-family:inherit;
-    font-size:12px;font-weight:600;padding:11px 4px;border-radius:8px;cursor:pointer;line-height:1.35;min-height:48px}
-  .seg button small{display:block;font-weight:400;font-size:10px;opacity:.8;margin-top:1px}
-  .seg button.on{background:#12313d;border-color:#2f6d85;color:var(--pay)}
-  .grp{margin-top:16px}
-  .ghead{display:flex;align-items:baseline;gap:8px;margin-bottom:3px}
-  .gtag{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
-        padding:2px 6px;border-radius:3px;font-weight:600}
-  .g0 .gtag{background:#12313d;color:var(--pay)} .g1 .gtag{background:#3a2c12;color:var(--leak)}
-  .g2 .gtag{background:#24284a;color:var(--sym)}
-  .gname{font-size:13px;font-weight:700}
-  .gdesc{font-size:11.5px;color:var(--muted);margin-bottom:9px;line-height:1.5}.gdesc b{color:var(--ink)}
-  .card{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;background:var(--panel2);
-        border:1px solid var(--hair);border-radius:9px;padding:10px 11px;margin-bottom:7px;cursor:pointer;
-        transition:border-color .12s,background .12s}
-  .card:hover{border-color:#3f5568}
-  .card.on{background:#122b36;border-color:#2f6d85}
-  .card.na{opacity:.5;cursor:not-allowed}
-  .cname{font-size:12.5px;font-weight:700}
-  .cdesc{font-size:10.5px;color:var(--muted);margin-top:1px;line-height:1.4}
-  .spec{margin-top:7px}
-  .spectrack{position:relative;height:16px}
-  .spectrack .zero{position:absolute;left:50%;top:0;bottom:0;width:1px;background:#3d4c5c}
-  .specband{position:absolute;top:5px;height:6px;border-radius:3px;transition:all .25s cubic-bezier(.4,0,.2,1)}
-  .specdot{position:absolute;top:3px;width:10px;height:10px;border-radius:50%;border:2px solid var(--bg);transition:left .25s}
-  .speclab{display:flex;justify-content:space-between;font-size:9px;color:#55677a;font-family:"IBM Plex Mono",monospace;margin-top:1px}
-  .cright{text-align:right;min-width:98px}
-  .cval{font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;white-space:nowrap}
-  .cvlab{font-size:9.5px;color:var(--muted);margin-top:1px}
-  .sw{display:inline-block;width:34px;height:19px;border-radius:99px;background:#0E1620;border:1px solid var(--hair);
-      position:relative;margin-top:7px;transition:.15s}
-  .sw::after{content:"";position:absolute;width:13px;height:13px;border-radius:50%;background:var(--muted);top:2px;left:2px;transition:.15s}
-  .card.on .sw{background:#12313d;border-color:#2f6d85}
-  .card.on .sw::after{left:17px;background:var(--pay)}
-  .meter{margin-top:16px}
-  .mhead{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px;margin-bottom:6px}
-  .mhead .num{font-family:"IBM Plex Mono",monospace;font-size:15px;font-weight:600}
-  .track{position:relative;height:26px;border-radius:6px;background:var(--panel2);border:1px solid var(--hair);overflow:hidden}
-  .fill{position:absolute;top:0;bottom:0;transition:all .25s cubic-bezier(.4,0,.2,1)}
-  .capline{position:absolute;top:-3px;bottom:-3px;width:0;border-left:2px dashed var(--line);transition:left .25s}
-  .msub{font-size:11px;color:var(--muted);margin-top:5px}.msub b{color:var(--ink)}
-  .flow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-  .fbox{background:var(--panel2);border:1px solid var(--hair);border-radius:10px;padding:12px}
-  .fbox .ft{font-size:11.5px;font-weight:700}
-  .fbox .fs{font-size:10px;color:var(--muted);margin-bottom:8px}
-  .lossbar{display:flex;height:13px;border-radius:4px;overflow:hidden;background:var(--panel);margin-bottom:9px;border:1px solid var(--hair)}
-  .lossbar div{transition:width .25s}
-  .step{display:flex;gap:9px;align-items:flex-start;padding:6px 0}
-  .step+.step{border-top:1px dashed var(--hair)}
-  .step .ico{width:16px;flex:0 0 16px;font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--muted)}
-  .step .lab{flex:1;font-size:10.5px;line-height:1.45;color:var(--muted)}
-  .step .lab b{display:block;color:var(--ink);font-size:11.5px}
-  .step .amt{font-family:"IBM Plex Mono",monospace;font-size:12.5px;font-weight:600;white-space:nowrap}
-  .amt.z{color:var(--muted)}.amt.h{color:var(--leak)}.amt.b{color:var(--bad)}.amt.g{color:var(--good)}
-  .verdict{margin-top:18px;border-radius:12px;padding:16px;border:1px solid;display:flex;gap:12px;align-items:flex-start}
-  .verdict .ic{font-size:22px}
-  .verdict h3{font-size:15px;font-weight:700;margin-bottom:4px}
+  .srow input:focus{outline:2px solid var(--pay);border-color:var(--pay)}
+  .unit{color:var(--muted);font-size:11px;font-family:"IBM Plex Mono",monospace;width:44px;text-align:left;flex:0 0 44px}
+  table.mtx{width:100%;border-collapse:collapse;margin-top:10px;font-size:11.5px}
+  table.mtx th,table.mtx td{padding:7px 6px;border-bottom:1px solid var(--hair);text-align:right}
+  table.mtx th{color:var(--muted);font-weight:600;font-size:10.5px;text-align:right}
+  table.mtx th:first-child,table.mtx td:first-child{text-align:left}
+  table.mtx td:first-child{font-weight:600}
+  table.mtx td small{display:block;color:var(--muted);font-weight:400;font-size:10px}
+  table.mtx input{width:64px;min-height:38px;background:#0E1620;border:1px solid var(--hair);color:var(--ink);
+    border-radius:6px;padding:4px 7px;font-family:"IBM Plex Mono",monospace;font-size:14px;text-align:right}
+  table.mtx input:focus{outline:2px solid var(--pay);border-color:var(--pay)}
+  .hchk{width:22px;height:22px;accent-color:var(--pay)}
+  .pill{display:inline-block;font-size:10px;font-weight:700;font-family:"IBM Plex Mono",monospace;padding:2px 7px;border-radius:99px}
+  .pill.pl{background:#12313d;color:var(--pay)} .pill.csm{background:#3a2c12;color:var(--leak)}
+  .chartwrap{margin-top:12px;overflow-x:auto}
+  svg.ef,svg.sim{width:100%;display:block}
+  svg.ef{height:340px;min-width:340px} svg.sim{height:280px;min-width:360px}
+  .eflabel{font-family:"IBM Plex Mono",monospace;font-size:10px;fill:var(--muted)}
+  .eftip{position:fixed;pointer-events:none;background:#0b1219;border:1px solid var(--hair);border-radius:7px;
+    padding:7px 9px;font-size:11px;color:var(--ink);z-index:50;opacity:0;transition:opacity .1s;max-width:220px;line-height:1.5}
+  .eftip b{font-family:"IBM Plex Mono",monospace}
+  .leg{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;font-size:11px;color:var(--muted)}
+  .leg i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+  .leg .dash{display:inline-block;width:16px;border-top:2px dashed var(--line);margin-right:5px;vertical-align:4px}
+  .verdict{margin-top:16px;border-radius:12px;padding:15px;border:1px solid;display:flex;gap:12px;align-items:flex-start}
+  .verdict .ic{font-size:20px}.verdict h3{font-size:14.5px;font-weight:700;margin-bottom:4px}
   .verdict p{font-size:12.5px;line-height:1.7;color:var(--ink)}
   .verdict.ok{border-color:#2c6249;background:#10291f;color:var(--good)}
   .verdict.warn{border-color:#6a5128;background:#2e2410;color:var(--leak)}
   .verdict.bad{border-color:#6e2b2f;background:#301114;color:var(--bad)}
-  details{margin-top:18px;border-top:1px solid var(--hair);padding-top:12px}
-  summary{font-size:12px;color:var(--muted);cursor:pointer;font-weight:600;list-style:none}
-  summary::-webkit-details-marker{display:none}
-  summary::before{content:"▸ "}details[open] summary::before{content:"▾ "}
-  .adv{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}
-  .adv label{display:block;font-size:11.5px;font-weight:600;margin-bottom:2px}
-  .adv .rv{float:right;font-family:"IBM Plex Mono",monospace;color:var(--pay);font-weight:500}
+  .casc{margin-top:12px}
+  .cascbar{display:flex;height:30px;border-radius:6px;overflow:hidden;background:var(--panel2);border:1px solid var(--hair);margin:8px 0}
+  .cascbar div{display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--bg);transition:width .25s}
   input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:28px;background:transparent;cursor:pointer}
   input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:2px;background:var(--panel2);border:1px solid var(--hair)}
   input[type=range]::-moz-range-track{height:4px;border-radius:2px;background:var(--panel2);border:1px solid var(--hair)}
-  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;margin-top:-10px;border-radius:50%;
-    background:var(--ink);border:6px solid var(--bg);box-shadow:0 0 0 1px var(--ink)}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;margin-top:-10px;border-radius:50%;background:var(--ink);border:6px solid var(--bg);box-shadow:0 0 0 1px var(--ink)}
   input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--ink);border:4px solid var(--bg);box-shadow:0 0 0 1px var(--ink)}
+  .fb textarea,.fb input[type=text]{width:100%;background:#0E1620;border:1px solid var(--hair);color:var(--ink);
+    border-radius:8px;padding:10px 12px;font-family:inherit;font-size:14px;margin-top:8px}
+  .fb textarea{min-height:84px;resize:vertical} .fb input:focus,.fb textarea:focus{outline:2px solid var(--pay);border-color:var(--pay)}
+  .fb button{margin-top:10px;background:#12313d;border:1px solid #2f6d85;color:var(--pay);font-family:inherit;font-weight:700;
+    font-size:14px;padding:11px 18px;border-radius:8px;cursor:pointer;min-height:46px}
+  .fb button:disabled{opacity:.5;cursor:not-allowed}
+  .fbnote{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.6}.fbmsg{font-size:12px;margin-top:8px}
+  .refs h3{font-size:14px;font-weight:700;margin:14px 0 4px;color:var(--ink)}
+  .refs p{font-size:12.5px;color:var(--muted);line-height:1.7;margin-bottom:4px}.refs p b{color:var(--ink)}
+  .refs ol{margin:8px 0 4px 18px} .refs li{font-size:11.5px;color:var(--muted);line-height:1.6;margin-bottom:5px}
+  .refs a{color:var(--pay);text-decoration:none;word-break:break-all} .refs a:hover{text-decoration:underline}
   .foot{font-size:11.5px;color:var(--muted);line-height:1.75;margin-top:14px}.foot b{color:var(--ink)}
-  @media(max-width:460px){h1{font-size:20px}.flow,.gcalc{grid-template-columns:1fr}.cright{min-width:86px}}
+  .stat{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+  .stat div{flex:1 1 110px;background:var(--panel2);border:1px solid var(--hair);border-radius:9px;padding:10px 12px}
+  .stat .sl{font-size:10.5px;color:var(--muted)}.stat .sv{font-family:"IBM Plex Mono",monospace;font-size:17px;font-weight:600;margin-top:2px}
+  select{background:#0E1620;border:1px solid var(--hair);color:var(--ink);border-radius:7px;padding:8px 10px;font-family:inherit;font-size:13px;min-height:40px}
+  /* 요인 설명 애니메이션 */
+  details.fac{border:1px solid var(--hair);border-radius:9px;margin-top:8px;background:var(--panel2);overflow:hidden}
+  details.fac>summary{padding:11px 13px;font-size:12.5px;font-weight:700;cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px}
+  details.fac>summary::-webkit-details-marker{display:none}
+  details.fac>summary::before{content:"▸";color:var(--muted);font-size:11px}
+  details.fac[open]>summary::before{content:"▾"}
+  .facbody{padding:0 13px 13px;display:flex;gap:13px;flex-wrap:wrap;align-items:center}
+  .facbody .viz{flex:0 0 132px}
+  .facbody .txt{flex:1 1 200px;font-size:12px;color:var(--muted);line-height:1.65}.facbody .txt b{color:var(--ink)}
+  svg.anim{width:132px;height:96px;background:#0E1620;border:1px solid var(--hair);border-radius:8px}
+  @keyframes slideDot{0%{transform:translate(0,28px)}50%{transform:translate(96px,-28px)}100%{transform:translate(0,28px)}}
+  @keyframes gapPulse{0%,100%{transform:translateX(0)}50%{transform:translateX(72px)}}
+  @keyframes gapBar{0%,100%{height:0;y:48px}50%{height:34px;y:14px}}
+  @keyframes breathe{0%,100%{transform:scaleY(.35)}50%{transform:scaleY(1)}}
+  @keyframes diverge{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+  @keyframes drain{0%{width:104px}100%{width:22px}}
+  @keyframes stepjump{0%,45%{transform:translateY(0)}55%,100%{transform:translateY(-26px)}}
+  .a-dot{animation:slideDot 3.2s ease-in-out infinite}
+  .a-spot{animation:gapPulse 3s ease-in-out infinite}
+  .a-gap{animation:gapBar 3s ease-in-out infinite}
+  .a-breathe{transform-origin:center;animation:breathe 2.6s ease-in-out infinite}
+  .a-div{animation:diverge 2.8s ease-in-out infinite}
+  .a-drain{animation:drain 2.4s ease-in-out infinite alternate}
+  .a-step{animation:stepjump 2.6s steps(1) infinite}
+  @media(max-width:520px){h1{font-size:21px}.tabs button{font-size:11px}}
 </style>
 </head>
 <body>
 
-<div class="exbanner">📊 범용 계산 도구 <span>· 적립금·보증수수료·CSM·감마 등 모든 값을 직접 입력해 쓰세요. 기본값은 설명용 예시일 뿐 특정 회사와 무관합니다.</span></div>
+<div class="exbanner">📊 범용 계산 도구 <span>· 적립금·부채·민감도·수수료 등 모든 값을 직접 입력하여 사용한다. 기본값은 개념 설명용 예시이며 특정 회사와 무관하다.</span></div>
 
-<h1>감마는 <b>매년</b><br><em>얼마를 가져가는가</em></h1>
-<p class="lede">델타·금리 헤지는 프리미엄이 없어 거의 공짜입니다. 문제는 <b>그 순간 따라붙는 감마</b> — 시장이 움직이기만 하면 <b>방향과 무관하게 손실</b>이 나고, 크기는 <b>변동성의 제곱</b>에 비례합니다.</p>
+<h1>변액보험 <em>헷지</em>에 관하여</h1>
+<div class="sub">보증(GMxB) 헤지의 구조, 보증수수료·비용·손익변동성의 관계, CSM 완충의 역할을 입력값과 실제 시장데이터로 살펴본다.</div>
 
-<div class="fund">
-  <div class="t">헤지 재원 — 보증수수료</div>
-  <div class="big mono" id="feeBig"></div>
-  <p>여기서 <b>헤지비용</b>이 나가고, <b>감내한 감마의 누수</b>도 나갑니다. 남는 게 이익입니다.</p>
-  <div class="split">
-    <div id="spPay" style="background:var(--pay)"></div>
-    <div id="spLeak" style="background:var(--leak)"></div>
-    <div id="spRest" style="background:#2c6249"></div>
-    <div id="spOver" style="background:var(--bad)"></div>
-  </div>
-  <div class="keys">
-    <span><i style="background:var(--pay)"></i><span id="kPay"></span></span>
-    <span><i style="background:var(--leak)"></i><span id="kLeak"></span></span>
-    <span><i style="background:#2c6249"></i><span id="kRest"></span></span>
-  </div>
+<div class="tabs" id="tabs">
+  <button data-p="p1" class="on">① 개념<small>왜·무엇을</small></button>
+  <button data-p="p2">② 비용·변동성<small>보증수수료</small></button>
+  <button data-p="p3">③ CSM 완충<small>흡수·소진</small></button>
+  <button data-p="p4">④ 헷지 vs CSM<small>항목별</small></button>
+  <button data-p="p5">⑤ 시뮬레이션<small>시장데이터</small></button>
+  <button data-p="p6">⑥ 이론<small>참고문헌</small></button>
 </div>
 
-<div class="panel">
-  <div class="cap">감마 계산기<span>그릭에서 곧바로 금액이 나옵니다</span></div>
-  <div class="formula">연간 감마 손익 = ½ × <b>Γ</b> × <em>변동성</em><sup>2</sup></div>
-  <div class="gcalc">
-    <div class="gcard">
-      <h4 style="color:var(--leak)">주가 감마</h4>
-      <div class="grow"><label>Γ (억 / 코스피 1%)</label><input type="number" inputmode="decimal" id="ge" value="0.5" step="0.1" min="0"></div>
-      <div class="grow"><label>실현변동성 RV (%)</label><input type="number" inputmode="decimal" id="re" value="18" step="1" min="0"></div>
-      <div class="grow"><label>내재변동성 IV (%)</label><input type="number" inputmode="decimal" id="ie" value="22" step="1" min="0"></div>
-      <div class="gout gleak"><span>감내 시 <b>새는 손실</b></span><b id="leakE"></b></div>
-      <div class="gout gprem"><span>헤지 시 <b>옵션 프리미엄</b></span><b id="premE"></b></div>
-      <div class="gspread" id="spE"></div>
+<!-- ① 개념 -->
+<section class="page on" id="p1">
+  <p class="lede">변액보증 헤지의 목적은 모든 위험을 제거하는 것이 아니라, <b>비용을 최소화하면서 감내 가능한 손익변동성을 남기는 것</b>이다. 위험은 성격에 따라 세 갈래로 나뉜다 — 방향(헤지가 저렴), 감마(움직이면 손실), 양방향(대개 감내).</p>
+  <div class="panel concept">
+    <div class="cap">감마가 매년 발생시키는 비용</div>
+    <p>델타·금리 헤지는 프리미엄이 없어 <b>거래비용 수준으로 저렴</b>하다. 다만 헤지를 실행하는 순간 <b>감마(볼록성)</b>가 따라온다. 시장이 어느 방향으로든 움직이면 리밸런싱 과정에서 손실이 발생하며, 그 크기는 <b>변동성의 제곱</b>에 비례한다.</p>
+    <div class="formula">연간 감마 손익 ≈ ½ × <b>Γ</b> × <em>변동성</em><sup>2</sup></div>
+    <p>제곱 구조 때문에 <b>변동성이 2배가 되면 손실은 4배</b>가 된다. 감마 누수는 평온한 해에는 드러나지 않다가 변동성이 큰 해에 집중적으로 발생한다. 옵션을 매입하면 이 손실은 <b>확정 프리미엄</b>으로 전환되며, 내재변동성(IV)과 실현변동성(RV)의 차이가 그 대가에 해당한다.</p>
+  </div>
+  <div class="panel concept">
+    <div class="cap">위험의 세 갈래</div>
+    <div class="grpbox g0"><h4>그룹 1 · 방향 위험 — 헤지가 저렴</h4>
+      <p>주가 방향(델타)·금리 수준(로). 선물·스왑은 프리미엄이 없어 거래비용만으로 변동을 제거한다. 미실행 시 손익은 양방향으로 크게 변동하나 기댓값은 0이므로, 실행이 합리적이다.</p></div>
+    <div class="grpbox g1"><h4>그룹 2 · 감마 — 움직이면 손실</h4>
+      <p>델타·금리 헤지를 실행하면 함께 발생한다. 방향과 무관하게 리밸런싱에서 손실이 누적되며 이익이 나는 해는 없다. 제거하려면 옵션 프리미엄이라는 확정 지출이 필요하다. 결국 <b>누수되는 손실과 확정 프리미엄 중 무엇이 저렴한가</b>의 문제이다.</p></div>
+    <div class="grpbox g2"><h4>그룹 3 · 양방향 위험 — 이익도 손실도</h4>
+      <p>베가·펀드 불일치·해지율 등. 기댓값은 0이며 변동만 존재하여 이익이 발생할 수도 있다. 이전하려면 고비용 장외거래·재보험이 필요하고 일부는 이전 시장 자체가 없어, <b>대개 감내가 합리적</b>이다.</p></div>
+  </div>
+  <div class="panel concept">
+    <div class="cap">이 도구의 구성</div>
+    <p><b>② 입력·비용·변동성</b>에서 자산·부채·민감도와 재무 가정을 입력하면 헤지 조합별 비용과 잔여 변동성을 효율적 프론티어로 제시하고, 보증수수료를 예산선으로 표시한다. <b>③ CSM 완충</b>은 미헤지 손실이 완충을 소진하고 보험손익으로 전이되는 과정을, <b>④ 헷지 vs CSM</b>은 항목별로 헤지(확정비용)와 CSM 감내(완충 소진 위험)의 차이를, <b>⑤ 시뮬레이션</b>은 실제 시장데이터로 감마 누수를 각 연도별로 재현한다.</p>
+  </div>
+</section>
+
+<!-- ② 비용·변동성 (입력 + 프론티어) -->
+<section class="page" id="p2">
+  <p class="lede">보증수수료는 헤지의 재원이며 동시에 예산이다. 자기 회사·포트폴리오 값을 입력하면 결과가 즉시 반영된다.</p>
+  <div class="panel"><div class="cap">자산 · 부채 · 재무<span>규모와 완충</span></div><div class="sheet" id="sheetFin"></div></div>
+  <div class="panel"><div class="cap">변동성 가정<span>감마 누수 계산용</span></div><div class="sheet" id="sheetVol"></div></div>
+  <div class="panel">
+    <div class="cap">민감도 시트<span>요인별 노출·헤지단가·헤지여부</span></div>
+    <div class="chartwrap"><table class="mtx" id="mtx"><thead><tr><th>위험 요인</th><th>노출(σ기여)</th><th>헤지단가</th><th>헤지</th></tr></thead><tbody></tbody></table></div>
+    <p class="foot"><b>노출</b>은 미헤지 시 손익변동성 기여(상대 가중)이다. <b>헤지단가</b>는 방향형은 bp(×적립금), 감마형은 프리미엄(억)으로 자동 계산된다. 체크는 현재 헤지 실행 여부이며 프론티어의 "현재" 점에 대응한다.</p>
+  </div>
+  <div class="fund">
+    <div class="t">헤지 재원 — 보증수수료 (예산)</div>
+    <div class="big mono" id="feeBig"></div>
+    <p>이 재원에서 <b>헤지비용</b>과 <b>감내한 감마 누수</b>가 차감되며, 잔액이 이익이 된다.</p>
+    <div class="split"><div id="spPay" style="background:var(--pay)"></div><div id="spLeak" style="background:var(--leak)"></div>
+      <div id="spRest" style="background:#2c6249"></div><div id="spOver" style="background:var(--bad)"></div></div>
+    <div class="keys"><span><i style="background:var(--pay)"></i><span id="kPay"></span></span>
+      <span><i style="background:var(--leak)"></i><span id="kLeak"></span></span>
+      <span><i style="background:#2c6249"></i><span id="kRest"></span></span></div>
+  </div>
+  <div class="panel">
+    <div class="cap">효율적 프론티어 — 비용 대 손익변동성<span>점 = 헤지 조합</span></div>
+    <div class="chartwrap"><svg class="ef" id="ef" viewBox="0 0 640 340" preserveAspectRatio="xMidYMid meet"></svg></div>
+    <div class="leg">
+      <span><i style="background:var(--pay)"></i>효율적 프론티어</span>
+      <span><i style="background:#3d4c5c"></i>비효율(지배됨)</span>
+      <span><i style="background:var(--leak)"></i>현재 선택</span>
+      <span><i style="background:var(--good)"></i>예산 내 최적</span>
+      <span><span class="dash"></span>예산선</span>
     </div>
-    <div class="gcard">
-      <h4 style="color:var(--leak)">금리 감마 (Convexity)</h4>
-      <div class="grow"><label>Γ (억 / 1bp)</label><input type="number" inputmode="decimal" id="gr" value="0.2" step="0.05" min="0"></div>
-      <div class="grow"><label>실현변동성 RV (bp/년)</label><input type="number" inputmode="decimal" id="rr" value="60" step="5" min="0"></div>
-      <div class="grow"><label>내재변동성 IV (bp/년)</label><input type="number" inputmode="decimal" id="ir" value="70" step="5" min="0"></div>
-      <div class="gout gleak"><span>감내 시 <b>새는 손실</b></span><b id="leakR"></b></div>
-      <div class="gout gprem"><span>헤지 시 <b>스왑션 프리미엄</b></span><b id="premR"></b></div>
-      <div class="gspread" id="spR"></div>
-    </div>
-  </div>
-  <div class="stress">
-    <div><div class="sl">평온한 해 (RV ×0.7)</div><div class="sv" id="stCalm"></div></div>
-    <div><div class="sl">보통 해 (RV ×1.0)</div><div class="sv" id="stBase"></div></div>
-    <div><div class="sl">위기의 해 (RV ×2.0)</div><div class="sv" id="stCrisis"></div></div>
-  </div>
-  <p class="foot">제곱 때문에 <b>변동성이 2배면 손실은 4배</b>가 됩니다. 감마 누수는 평온한 해엔 눈에 안 띄다가 위기의 해에 CSM을 한꺼번에 가져갑니다. 옵션을 사면 이 손실이 <b>확정 프리미엄으로 바뀝니다</b> — IV와 RV의 차이가 그 값입니다.</p>
-</div>
-
-<div class="panel">
-  <div class="cap">완충장치 CSM<span>손실이 나면 여기가 먼저 깎입니다</span></div>
-  <div class="seg" id="seg">
-    <button data-c="3000">얇음<small>3,000억</small></button>
-    <button data-c="5000" class="on">보통<small>5,000억</small></button>
-    <button data-c="10000">두터움<small>1조</small></button>
-  </div>
-</div>
-
-<div class="panel">
-  <div class="cap">보드<span>스위치를 눌러 헤지로 돌려보세요</span></div>
-  <div class="grp g0">
-    <div class="ghead"><span class="gtag">그룹 1</span><span class="gname">방향 리스크 — 헤지가 거의 공짜</span></div>
-    <p class="gdesc">선물·스왑엔 <b>프리미엄이 없습니다.</b> 거래비용 몇 bp면 흔들림이 사라집니다. 안 하면 양방향으로 크게 출렁일 뿐 평균은 0. <b>안 할 이유가 없습니다.</b></p>
-    <div id="g0"></div>
-  </div>
-  <div class="grp g1">
-    <div class="ghead"><span class="gtag">그룹 2</span><span class="gname">감마 — 움직이면 무조건 손실</span></div>
-    <p class="gdesc">위 델타·금리 헤지를 켜는 순간 따라옵니다. 어느 쪽으로 움직이든 <b>리밸런싱에서 손실</b>이고, 이익 나는 해는 없습니다. 없애려면 <b>옵션 프리미엄이라는 확정 지출</b>. → <b>새는 손실 vs 확정 프리미엄</b>, 어느 쪽이 싼가.</p>
-    <div id="g1"></div>
-  </div>
-  <div class="grp g2">
-    <div class="ghead"><span class="gtag">그룹 3</span><span class="gname">양방향 리스크 — 이익도 손실도</span></div>
-    <p class="gdesc">평균 0, <b>변동만</b> 있습니다. 이익이 날 수도 있습니다. 넘기려면 비싼 OTC·재보험이 필요하고 일부는 <b>살 시장이 없습니다.</b> 대개 <b>감내가 답</b>입니다.</p>
-    <div id="g2"></div>
-  </div>
-  <p class="foot">막대 = 1년 손익 범위(90%). <span style="color:#55677a">◀ 손실 · 가운데 본전 · 이익 ▶</span> · 점 = 평균. 헤지하면 범위가 <b>한 점으로 수렴</b>하고 왼쪽(비용)에 박힙니다. 그룹 2의 점은 켜지 않아도 이미 왼쪽에 있습니다 — 그게 누수입니다.</p>
-</div>
-
-<div class="panel">
-  <div class="cap">결과</div>
-  <div class="meter">
-    <div class="mhead"><b>매년 실제로 나가는 돈</b><span class="num mono" id="n1"></span></div>
-    <div class="track"><div class="fill" id="f1a" style="background:var(--pay);left:0"></div>
-      <div class="fill" id="f1b" style="background:var(--leak)"></div>
-      <div class="fill" id="f1c" style="background:var(--bad)"></div><div class="capline" id="c1"></div></div>
-    <div class="msub" id="s1"></div>
-  </div>
-  <div class="meter">
-    <div class="mhead"><b>남은 손익 흔들림 (1σ)</b><span class="num mono" id="n2"></span></div>
-    <div class="track"><div class="fill" id="f2" style="background:var(--sym);left:0"></div></div>
-    <div class="msub" id="s2"></div>
-  </div>
-</div>
-
-<div class="panel">
-  <div class="cap">손실은 어디로 가나<span>감마 누수는 위기의 해에 폭발합니다</span></div>
-  <div class="flow">
-    <div class="fbox">
-      <div class="ft">나쁜 해 · 20년에 한 번</div>
-      <div class="fs" id="fs95"></div>
-      <div class="lossbar"><div id="b95a" style="background:var(--leak)"></div><div id="b95b" style="background:var(--bad)"></div></div>
-      <div class="step"><div class="ico">1</div><div class="lab"><b>CSM이 받는다</b>미래 보험손익이 그만큼 줄어듦</div><div class="amt h" id="a95c"></div></div>
-      <div class="step"><div class="ico">2</div><div class="lab"><b>보험손익으로 터진다</b>당기 손익 직격</div><div class="amt z" id="a95p"></div></div>
-      <div class="step"><div class="ico">3</div><div class="lab"><b>남는 CSM</b>다음 충격을 받을 여력</div><div class="amt g" id="a95r"></div></div>
-    </div>
-    <div class="fbox">
-      <div class="ft">최악의 해 · 200년에 한 번</div>
-      <div class="fs" id="fs995"></div>
-      <div class="lossbar"><div id="b995a" style="background:var(--leak)"></div><div id="b995b" style="background:var(--bad)"></div></div>
-      <div class="step"><div class="ico">1</div><div class="lab"><b>CSM이 받는다</b>미래 보험손익이 그만큼 줄어듦</div><div class="amt h" id="a995c"></div></div>
-      <div class="step"><div class="ico">2</div><div class="lab"><b>보험손익으로 터진다</b>당기 손익 직격</div><div class="amt z" id="a995p"></div></div>
-      <div class="step"><div class="ico">3</div><div class="lab"><b>남는 CSM</b>다음 충격을 받을 여력</div><div class="amt g" id="a995r"></div></div>
-    </div>
+    <p class="foot">가로축은 남는 손익변동성(1σ, 억), 세로축은 연간 비용(헤지비용＋감마누수, 억)이다. 좌·하단으로 갈수록 우수하다. <b>예산선 아래에서 가장 좌측</b>의 프론티어 점이 예산 내 최적이다. 우측 끝은 무헤지이며, 좌측으로 갈수록 헤지를 더 실행한 조합이다.</p>
   </div>
   <div class="verdict ok" id="vd"><div class="ic" id="vdi">✓</div><div><h3 id="vdt"></h3><p id="vdp"></p></div></div>
-  <p class="foot">나쁜 해엔 실현변동성이 커지므로 <b>감마 누수도 함께 커집니다</b>(RV ×1.7 → 손실 ×2.9). 옵션을 사두면 그 해의 누수가 <b>프리미엄으로 고정</b>됩니다. 이게 감마 헤지의 진짜 값어치 — 평균이 아니라 <b>꼬리에서 나옵니다.</b></p>
+</section>
+
+<!-- ③ CSM 완충 -->
+<section class="page" id="p3">
+  <p class="lede">헤지를 실행하지 않으면 시장위험은 투자손익이 아니라 <b>CSM(보험계약마진)을 조정</b>한다. CSM은 미래 이익의 저수지로서 손실을 먼저 흡수하는 완충이며, <b>완충이 소진되면 초과분이 당기 보험손익으로 인식</b>된다.</p>
+  <div class="panel">
+    <div class="cap">완충의 작동<span>주가 충격 시나리오</span></div>
+    <div class="srow"><div class="lab">주식성 자산 규모<small>충격이 적용되는 기준</small></div>
+      <input type="number" inputmode="decimal" id="in_eqf" value="20" step="1" min="0"><span class="unit">조</span></div>
+    <div class="srow"><div class="lab">CSM 완충 잔액<small>손실을 먼저 흡수</small></div>
+      <input type="number" inputmode="decimal" id="in_csm2" value="5000" step="500" min="0"><span class="unit">억</span></div>
+    <div style="margin-top:14px"><label class="foot" style="margin:0">주가 충격 <b class="mono" id="shockLab" style="color:var(--pay)"></b></label>
+      <input type="range" id="shock" min="-40" max="40" step="1" value="-30"></div>
+    <div class="casc" id="casc"></div>
+    <p class="foot">상승 시 자본 증가는 CSM을 확충하여 손익에 영향이 없다. 하락 시 자본 감소는 CSM을 먼저 소진하며, CSM을 초과하는 부분만 당기 보험손익으로 나타난다. <b>완충이 얇을수록 손익 전이가 빠르게 발생</b>한다. (여기의 값은 임의 예시이다.)</p>
+  </div>
+  <div class="panel concept">
+    <div class="cap">함의</div>
+    <p>CSM 감내 전략은 "보유 완충으로 시장위험 변동을 흡수한다"는 논리에 기반한다. 따라서 <b>잔여 CSM이 얇으면 완충력이 제한</b>되고, 큰 폭의 미헤지 손실은 곧바로 손익으로 전이된다. 헤지 비용이 부담스러워 미헤지·재보험을 검토하더라도, 완충 수준과 이전 비용·잔여위험 때문에 전면 적용은 제약된다. 결국 <b>헤지 비용, CSM 완충, 손익 안정성의 삼각 균형</b>을 관리하는 문제가 된다.</p>
+  </div>
+</section>
+
+<!-- ④ 헷지 vs CSM -->
+<section class="page" id="p4">
+  <p class="lede">각 위험 항목은 <b>헤지하여 투자손익(PL)으로 확정</b>하거나, <b>헤지하지 않고 CSM 완충으로 감내</b>할 수 있다. 두 경로의 성격이 다르므로 항목별로 선택이 갈린다.</p>
+  <div class="panel">
+    <div class="cap">두 경로의 성격</div>
+    <div class="grpbox g0"><h4>헤지한다 → 투자손익(PL)</h4>
+      <p>확정 비용(거래비용·프리미엄)을 지불하고 변동을 제거한다. 손익은 예측 가능해지나, 비용은 회수되지 않는 지출로 매년 발생한다.</p></div>
+    <div class="grpbox g1"><h4>CSM으로 보낸다 → 완충 감내</h4>
+      <p>비용 지출은 없으나 변동이 CSM을 조정한다. 평시에는 완충이 흡수하지만, 완충을 초과하면 보험손익으로 전이되어 큰 해에 손실이 집중된다.</p></div>
+  </div>
+  <div class="panel">
+    <div class="cap">항목별 비교<span>현재 입력값 기준</span></div>
+    <div class="chartwrap"><table class="mtx" id="cmpTbl"><thead><tr><th>위험 요인</th><th>헤지 시 (PL)</th><th>CSM 감내 시</th><th>일반적 분류</th></tr></thead><tbody></tbody></table></div>
+    <p class="foot">일반적으로 <b>민감도(방향)</b>는 저비용이므로 헤지하여 PL로 관리하고, <b>변동성·감마·가정 변화</b>는 비용이 크거나 이전이 어려워 완충(CSM)으로 두는 경우가 많다. 다만 실제 분류는 회사의 회계모형·완충 수준·전략에 따라 달라진다. (아래 분류는 일반적 경향의 예시이며 특정 회사와 무관하다.)</p>
+  </div>
+  <div class="panel">
+    <div class="cap">요인별 설명<span>각 항목을 열어 원리를 확인한다</span></div>
+    <div id="facAnim"></div>
+  </div>
+</section>
+
+<!-- ⑤ 시뮬레이션 -->
+<section class="page" id="p5">
+  <p class="lede">실제 시장데이터(KOSPI·국고 10년, 약 6.5년)로 <b>연도별 실현변동성</b>을 계산하고, 입력한 Γ에 대입하여 <b>감마 누수가 각 해에 얼마였을지</b> 재현한다. <span id="simStatus" style="color:var(--muted)">데이터 불러오는 중…</span></p>
+  <div class="panel">
+    <div class="cap">연도별 실현변동성 · 감마 누수<span>½Γσ²에 실측 σ 대입</span></div>
+    <div style="margin:8px 0 4px"><label class="foot" style="margin:0">금리 만기
+      <select id="rateTenor"><option value="y3">국고 3년</option><option value="y10">국고 10년</option><option value="y20" selected>국고 20년</option><option value="y30">국고 30년</option></select>
+      <span class="foot"> · 장기부채 특성상 기본값은 20년</span></label></div>
+    <div class="stat" id="simStat"></div>
+    <div class="chartwrap"><svg class="sim" id="sim" viewBox="0 0 640 280" preserveAspectRatio="xMidYMid meet"></svg></div>
+    <div class="leg">
+      <span><i style="background:var(--leak)"></i>감마 누수(미헤지)</span>
+      <span><i style="background:var(--pay)"></i>프리미엄(헤지, IV 기준)</span>
+      <span><span class="dash"></span>주가 실현변동성(우축)</span>
+    </div>
+    <div class="chartwrap"><table class="mtx" id="simTbl"><thead><tr><th>연도</th><th>주가 RV</th><th>금리 RV</th><th>감마누수(미헤지)</th><th>프리미엄(헤지)</th></tr></thead><tbody></tbody></table></div>
+    <p class="foot">주가 RV는 KOSPI 일간수익률의 연율화 표준편차(%), 금리 RV는 국고 10년 일간변동의 연율화 표준편차(bp)이다. 감마 누수 = ½Γ·RV², 프리미엄 = ½Γ·IV²(입력값). <b>변동성이 큰 해에 누수가 급증</b>하는 구조가 실측으로 드러난다. 데이터 출처는 하단에 표기한다.</p>
+  </div>
+</section>
+
+<!-- ⑥ 이론 -->
+<section class="page" id="p6">
+  <p class="lede">이 도구가 기대는 이론과 대표 문헌이다. 최저보증(GMxB)은 적립금에 내재된 <b>풋옵션형 금융보증</b>이므로, 그 관리는 옵션 복제·헤지 이론에 뿌리를 둔다.</p>
+  <div class="panel refs">
+    <div class="cap">핵심 이론</div>
+    <h3>1. 동적 헤지 (Greeks 기반 복제)</h3>
+    <p>보증을 델타·로·베가로 복제·중화한다. 완전복제는 연속 리밸런싱을 전제하나, 현실은 이산·거래비용으로 잔차가 남는다. (Brennan–Schwartz 1976; Boyle–Hardy 2003; Coleman 외 2007)</p>
+    <h3>2. 감마 P&amp;L ≈ ½Γσ²</h3>
+    <p>델타헤지 포트폴리오의 손익은 실현분산과 내재분산의 차이로 누적된다: 구간별 ½·Γ·S²·(실현변동²−내재변동²). 보증은 short-gamma이므로 변동성이 클수록 손실이 커지며 크기는 변동성의 제곱에 비례한다. 이산 헤지오차는 감마에 비례하고(Boyle–Emanuel 1980), 거래비용을 포함하면 빈도를 높여도 오차가 0으로 수렴하지 않는다(Leland 1985).</p>
+    <h3>3. 비용 대 잔여위험 — 헤지의 효율적 프론티어</h3>
+    <p>완전헤지가 불가능·고비용일 때 "비용을 얼마 쓰고 잔여위험을 얼마 남길지"의 최적화가 된다. 2차 헤지(local risk minimization, mean-variance hedging)가 이론적 토대이다. (Föllmer–Sondermann 1986; Schweizer 2001)</p>
+    <h3>4. 변동성 위험 프리미엄 (IV &gt; RV)</h3>
+    <p>내재변동성이 실현변동성을 평균적으로 상회하여, 옵션 상시 매수의 장기 기댓값은 음이다. 따라서 감마 헤지는 기대수익이 아니라 <b>꼬리 손실을 프리미엄으로 고정</b>하는 보험으로 정당화된다. (Carr–Wu 2009; Bollerslev–Tauchen–Zhou 2009)</p>
+    <h3>5. IFRS17 · CSM · 헤지회계</h3>
+    <p>변액(직접참가특성)은 변동수수료접근법(VFA)으로 측정되어 금융위험 변동이 원칙적으로 CSM에 흡수된다. 파생 헤지 시 회계 불일치가 생기며, 위험경감선택권(B115–B118)이 이를 상계한다. 손실은 먼저 CSM을 조정하고 초과분이 당기 보험손익으로 인식된다.</p>
+    <h3>6. 한국 K-ICS</h3>
+    <p>K-ICS는 주식·금리·변동성 충격 시나리오로 보증 위험액을 평가하고, 동적 헤지를 요인별 민감도 일치를 통한 상쇄로 설명한다. (금융감독원 K-ICS 해설서, 2022.12)</p>
+    <div class="cap" style="margin-top:18px">참고문헌</div>
+    <ol>
+      <li>Brennan, M. J. &amp; Schwartz, E. S. (1976). <i>The Pricing of Equity-linked Life Insurance Policies with an Asset Value Guarantee.</i> J. Financial Economics, 3(3), 195–213. doi:10.1016/0304-405X(76)90003-9</li>
+      <li>Boyle, P. P. &amp; Emanuel, D. (1980). <i>Discretely Adjusted Option Hedges.</i> J. Financial Economics, 8(3), 259–282. <a href="https://www.sciencedirect.com/science/article/abs/pii/0304405X80900033" target="_blank" rel="noopener">link</a></li>
+      <li>Leland, H. E. (1985). <i>Option Pricing and Replication with Transactions Costs.</i> J. Finance, 40(5), 1283–1301. doi:10.1111/j.1540-6261.1985.tb02383.x</li>
+      <li>Föllmer, H. &amp; Sondermann, D. (1986). <i>Hedging of Non-redundant Contingent Claims.</i> Contributions to Mathematical Economics, 205–223. North-Holland.</li>
+      <li>Schweizer, M. (2001). <i>A Guided Tour Through Quadratic Hedging Approaches.</i> Option Pricing, Interest Rates and Risk Management, 538–574. Cambridge Univ. Press. <a href="https://ideas.repec.org/p/zbw/sfb373/199996.html" target="_blank" rel="noopener">link</a></li>
+      <li>Hardy, M. R. (2003). <i>Investment Guarantees: Modeling and Risk Management for Equity-Linked Life Insurance.</i> Wiley. ISBN 0-471-39290-1.</li>
+      <li>Boyle, P. P. &amp; Hardy, M. R. (2003). <i>Guaranteed Annuity Options.</i> ASTIN Bulletin, 33(2), 125–152.</li>
+      <li>Milevsky, M. A. &amp; Salisbury, T. S. (2006). <i>Financial Valuation of Guaranteed Minimum Withdrawal Benefits.</i> Insurance: Math. &amp; Economics, 38(1), 21–38. <a href="https://www.sciencedirect.com/science/article/abs/pii/S0167668705000910" target="_blank" rel="noopener">link</a></li>
+      <li>Coleman, T. F., Kim, Y., Li, Y. &amp; Patron, M. (2007). <i>Robustly Hedging Variable Annuities with Guarantees Under Jump and Volatility Risks.</i> J. Risk and Insurance, 74(2), 347–376. doi:10.1111/j.1539-6975.2007.00216.x</li>
+      <li>Carr, P. &amp; Wu, L. (2009). <i>Variance Risk Premiums.</i> Review of Financial Studies, 22(3), 1311–1341.</li>
+      <li>Bollerslev, T., Tauchen, G. &amp; Zhou, H. (2009). <i>Expected Stock Returns and Variance Risk Premia.</i> Review of Financial Studies, 22(11), 4463–4492. <a href="https://public.econ.duke.edu/~boller/Published_Papers/rfs_09.pdf" target="_blank" rel="noopener">PDF</a></li>
+      <li>Augustyniak, M. &amp; Boudreault, M. (2017). <i>Mitigating Interest Rate Risk in Variable Annuities.</i> SSRN WP. doi:10.2139/ssrn.2769927</li>
+      <li>금융감독원 (2022). 「보험회사 신지급여력제도(K-ICS) 해설서」(2022.12).</li>
+      <li>IASB, <i>IFRS 17 Insurance Contracts</i> — 위험경감선택권(B115–B118), 변동수수료접근법(VFA).</li>
+    </ol>
+    <p class="foot">※ 링크 항목은 검색으로 실재를 확인하였다. DOI·권/호/페이지는 통상 인용값이므로 정식 인용 전 원저널 대조를 권장한다. Leland(1985)는 원논문 주정리의 결함이 후속연구에서 지적되어 "실무 근사"로 인용하는 것이 정확하다.</p>
+  </div>
+</section>
+
+<!-- 피드백 -->
+<div class="panel fb" id="fb">
+  <div class="cap">의견 남기기<span>별도 저장소에 축적하여 페이지 개선에 반영한다</span></div>
+  <input type="text" id="fbName" placeholder="이름 또는 닉네임 (선택)">
+  <textarea id="fbText" placeholder="개념·수치·구성에 대한 의견을 입력한다."></textarea>
+  <button id="fbSend">보내기</button>
+  <div class="fbmsg" id="fbMsg"></div>
+  <div class="fbnote" id="fbNote"></div>
 </div>
 
-<details open>
-  <summary>입력값 · 직접 조정 (적립금 · 보증수수료 · CSM · 변동성)</summary>
-  <div class="adv">
-    <div><label>CSM 잔액 <span class="rv mono" id="rC"></span></label>
-      <input type="range" id="iC" min="0" max="30000" step="500" value="5000"></div>
-    <div><label>보증수수료 <span class="rv mono" id="rF"></span></label>
-      <input type="range" id="iF" min="10" max="140" step="5" value="50"></div>
-    <div><label>적립금 <span class="rv mono" id="rA"></span></label>
-      <input type="range" id="iA" min="10" max="60" step="1" value="30"></div>
-    <div><label>그룹3 흔들림(1σ) <span class="rv mono" id="rS"></span></label>
-      <input type="range" id="iS" min="3" max="30" step="1" value="10"></div>
-  </div>
-  <p class="foot">감마 누수는 <b>델타·금리 헤지를 켰을 때만</b> 발생합니다 — 리밸런싱 손실은 델타헤지의 부산물이기 때문입니다. 델타를 끄면 누수는 사라지지만 흔들림이 폭발합니다. 금리 감마는 <b>1bp당 억</b> 기준(1% 기준 값이라면 10,000으로 나눠 입력).</p>
-</details>
+<p class="foot" style="text-align:center">데이터 출처 · KOSPI: Yahoo Finance(^KS11) · 국고 10년: 한국은행 ECOS. 공개 시장데이터, 참고용.</p>
+<div class="eftip" id="eftip"></div>
 
 <script>
-const B=[
- {g:0,n:"주가 방향 (Delta)",d:"코스피 1% → 순자산 변동 · KOSPI200 선물",r:58,bp:3,on:1},
- {g:0,n:"금리 수준 (Rho)",d:"금리 1bp → 순자산 변동 · 국채·IRS",r:22,bp:2,on:1},
- {g:1,n:"주가 감마",d:"Γ=½·Γ·RV² 만큼 매년 리밸런싱 손실",r:6,calc:"E",dep:0,on:0},
- {g:1,n:"금리 감마 (Convexity)",d:"금리가 튈 때마다 손실 · 스왑션",r:2,calc:"R",dep:1,on:0},
- {g:2,n:"변동성 확대 (베가)",d:"불안하면 손실, 잠잠하면 이익 · 장기 vol 매수",r:5,bp:22,on:0},
- {g:2,n:"펀드-헤지 불일치",d:"펀드가 더 갈 수도, 덜 갈 수도 · 맞춤 OTC",r:3,bp:26,on:0},
- {g:2,n:"해지율·고객행동",d:"덜 해지하면 손실, 더 하면 이익 · 재보험",r:2.5,bp:40,on:0},
- {g:2,n:"모형·제도 변경",d:"가정·규제 변경 · 넘길 시장이 없음",r:1.5,bp:null,on:0},
+const FIN=[
+  {id:"av", n:"적립금", u:"조", v:30, s:"변액 계정 규모"},
+  {id:"fee",n:"보증수수료", u:"bp", v:50, s:"헤지 재원 = bp × 적립금"},
+  {id:"csm",n:"CSM 잔액", u:"억", v:5000, s:"손실을 먼저 흡수하는 완충"},
 ];
-const TR=B.reduce((a,b)=>a+b.r,0);
+const VOL=[
+  {id:"ge",n:"주가 Γ", u:"억/1%", v:0.5, s:"코스피 1%당 감마"},
+  {id:"re",n:"주가 RV", u:"%", v:18, s:"실현변동성(연)"},
+  {id:"ie",n:"주가 IV", u:"%", v:22, s:"내재변동성(옵션가)"},
+  {id:"gr",n:"금리 Γ", u:"억/bp", v:0.2, s:"1bp당 컨벡시티"},
+  {id:"rr",n:"금리 RV", u:"bp", v:60, s:"실현변동성(연)"},
+  {id:"ir",n:"금리 IV", u:"bp", v:70, s:"스왑션 IV"},
+  {id:"sig",n:"잔여 흔들림 1σ", u:"%", v:1.0, s:"미헤지 손익변동성(적립금 대비)"},
+];
+const RISK=[
+  {id:"delta", n:"주가 방향 (Δ)", exp:58, bp:3,  kind:"bp",   on:1, note:"KOSPI200 선물", cls:"PL"},
+  {id:"rho",   n:"금리 수준 (ρ)", exp:22, bp:2,  kind:"bp",   on:1, note:"국채·IRS", cls:"PL"},
+  {id:"gE",    n:"주가 감마",     exp:0,  kind:"calcE", dep:"delta", on:0, note:"옵션 매수", cls:"CSM"},
+  {id:"gR",    n:"금리 감마",     exp:0,  kind:"calcR", dep:"rho",   on:0, note:"스왑션", cls:"CSM"},
+  {id:"vega",  n:"변동성 (베가)", exp:5,  bp:22, kind:"bp",   on:0, note:"장기 vol 매수", cls:"CSM"},
+  {id:"fund",  n:"펀드 불일치",   exp:3,  bp:26, kind:"bp",   on:0, note:"맞춤 OTC", cls:"CSM"},
+  {id:"lapse", n:"해지율·행동",   exp:2.5,bp:40, kind:"bp",   on:0, note:"재보험", cls:"CSM"},
+  {id:"model", n:"모형·제도",     exp:1.5,bp:null,kind:"na",  on:0, note:"이전 시장 없음", cls:"CSM"},
+];
+const M95=1.7, M995=2.4;
 const $=i=>document.getElementById(i);
-const N=i=>parseFloat($(i).value)||0;
-const iC=$("iC"),iF=$("iF"),iA=$("iA"),iS=$("iS");
 const won=n=>Math.round(n).toLocaleString('ko-KR');
-const money=n=>n>=10000?(n/10000).toFixed(1).replace(/\.0$/,'')+"조":won(n)+"억";
-const DOM=3600;
-const M95=1.7, M995=2.4;   /* 나쁜 해 / 최악의 해 실현변동성 배수 */
+const val=id=>{const o=[...FIN,...VOL].find(x=>x.id===id); return o?o.v:0;};
 
-const cards=B.map((b,i)=>{
-  const el=document.createElement("div");
-  el.className="card"+(b.bp===null?" na":""); el.tabIndex=b.bp===null?-1:0; el.setAttribute("role","button");
-  el.innerHTML=`<div><div class="cname">${b.n}</div><div class="cdesc">${b.d}</div>
-    <div class="spec"><div class="spectrack"><div class="zero"></div><div class="specband"></div><div class="specdot"></div></div>
-      <div class="speclab"><span>−${(DOM/10000).toFixed(2)}조</span><span>본전</span><span>+${(DOM/10000).toFixed(2)}조</span></div></div></div>
-    <div class="cright"><div class="cval" data-v></div><div class="cvlab" data-l></div><div class="sw"></div></div>`;
-  if(b.bp!==null||b.calc){
-    const flip=()=>{B[i].on=1-B[i].on;render();};
-    el.addEventListener("click",flip);
-    el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();flip();}});
-  }
-  return el;
+$("tabs").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+  document.querySelectorAll(".tabs button").forEach(x=>x.classList.toggle("on",x===b));
+  document.querySelectorAll(".page").forEach(p=>p.classList.toggle("on",p.id===b.dataset.p));
+  window.scrollTo({top:0,behavior:"smooth"});
+  if(b.dataset.p==="p5"&&!SIM.loaded) loadMarket();
 });
-[0,1,2].forEach(g=>B.forEach((b,i)=>{if(b.g===g)$("g"+g).appendChild(cards[i]);}));
-$("seg").addEventListener("click",e=>{const c=e.target.closest("button")?.dataset.c;if(!c)return;iC.value=+c;render();});
-["iC","iF","iA","iS","ge","re","ie","gr","rr","ir"].forEach(id=>$(id).addEventListener("input",render));
+
+function numRow(o){ return `<div class="srow"><div class="lab">${o.n}<small>${o.s}</small></div>
+  <input type="number" inputmode="decimal" id="in_${o.id}" value="${o.v}" step="any" min="0"><span class="unit">${o.u}</span></div>`; }
+$("sheetFin").innerHTML=FIN.map(numRow).join("");
+$("sheetVol").innerHTML=VOL.map(numRow).join("");
+[...FIN,...VOL].forEach(o=>$("in_"+o.id).addEventListener("input",e=>{o.v=parseFloat(e.target.value)||0;render();syncCsm2();}));
+
+const mtxBody=$("mtx").querySelector("tbody");
+mtxBody.innerHTML=RISK.map(r=>{
+  const costCell = r.kind==="bp" ? `<input type="number" inputmode="decimal" id="bp_${r.id}" value="${r.bp}" step="0.5" min="0"> bp`
+    : r.kind==="na" ? `<span class="mono" style="color:var(--muted)">불가</span>` : `<span class="mono" style="color:var(--muted)">프리미엄</span>`;
+  const chk = r.kind==="na" ? "" : `<input type="checkbox" class="hchk" id="on_${r.id}" ${r.on?"checked":""}>`;
+  const expCell = r.kind.startsWith("calc") ? `<span class="mono" style="color:var(--muted)">½Γσ²</span>`
+    : `<input type="number" inputmode="decimal" id="ex_${r.id}" value="${r.exp}" step="0.5" min="0">`;
+  return `<tr><td>${r.n}<small>${r.note}</small></td><td>${expCell}</td><td>${costCell}</td><td>${chk}</td></tr>`;
+}).join("");
+RISK.forEach(r=>{
+  if($("ex_"+r.id)) $("ex_"+r.id).addEventListener("input",e=>{r.exp=parseFloat(e.target.value)||0;render();});
+  if($("bp_"+r.id)) $("bp_"+r.id).addEventListener("input",e=>{r.bp=parseFloat(e.target.value)||0;render();});
+  if($("on_"+r.id)) $("on_"+r.id).addEventListener("change",e=>{r.on=e.target.checked?1:0;render();});
+});
+
+const gam=(G,v)=>0.5*G*v*v;
+function leakPrem(r){
+  if(r.kind==="calcE") return {leak:gam(val("ge"),val("re")), prem:gam(val("ge"),val("ie"))};
+  if(r.kind==="calcR") return {leak:gam(val("gr"),val("rr")), prem:gam(val("gr"),val("ir"))};
+  return {leak:0,prem:0};
+}
+const TRexp=()=>RISK.reduce((a,r)=>a+(r.exp||0),0)||1;
+function evalCombo(hs){
+  const AV=val("av"), sig0=AV*val("sig")/100*10000, TR=TRexp(); let cost=0, resid=0;
+  RISK.forEach(r=>{
+    const depOn = r.dep ? (hs[r.dep]?1:0) : 1, on=(r.kind==="na")?0:(hs[r.id]?1:0);
+    if(r.kind==="bp"){ if(on) cost+=(r.bp||0)*AV; else resid+=r.exp||0; }
+    else if(r.kind.startsWith("calc")){ const {leak,prem}=leakPrem(r); if(depOn) cost+=on?prem:leak; }
+    else resid+=r.exp||0;
+  });
+  return {cost, sig: sig0*Math.sqrt(resid/TR)};
+}
+const currentHS=()=>{const h={};RISK.forEach(r=>h[r.id]=r.on);return h;};
+const TOGGLE=["delta","rho","vega","fund","lapse","gE","gR"];
+function allCombos(){
+  const out=[]; for(let m=0;m<(1<<TOGGLE.length);m++){ const hs={}; TOGGLE.forEach((id,i)=>hs[id]=(m>>i)&1);
+    if(hs.gE&&!hs.delta) continue; if(hs.gR&&!hs.rho) continue; out.push({hs, ...evalCombo(hs)}); } return out;
+}
+function frontier(pts){ const s=[...pts].sort((a,b)=>a.sig-b.sig||a.cost-b.cost); const fr=[]; let mc=Infinity;
+  for(const p of s){ if(p.cost<mc-1e-9){ fr.push(p); mc=p.cost; } } return fr; }
 
 function render(){
-  const AV=+iA.value, FEE=+iF.value, CSM=+iC.value, SIG=+iS.value/10;
-  const feeW=AV*FEE, budget=feeW*0.75, sig0=AV*SIG/100*10000;
-
-  /* 감마: ½ΓΣ(Δ)² */
-  const gam=(G,v)=>0.5*G*v*v;
-  const leakE=gam(N("ge"),N("re")),  premE=gam(N("ge"),N("ie"));
-  const leakR=gam(N("gr"),N("rr")),  premR=gam(N("gr"),N("ir"));
-  $("leakE").textContent="−"+won(leakE)+"억"; $("premE").textContent="−"+won(premE)+"억";
-  $("leakR").textContent="−"+won(leakR)+"억"; $("premR").textContent="−"+won(premR)+"억";
-  const sp=(p,l,id)=>{const d=p-l; $(id).innerHTML = d>0
-    ? `헤지가 <b>${won(d)}억</b> 더 비쌈 <span style="opacity:.7">(IV &gt; RV)</span>`
-    : `헤지가 <b style="color:var(--good)">${won(-d)}억</b> 더 쌈 <span style="opacity:.7">(IV &lt; RV)</span>`;};
-  sp(premE,leakE,"spE"); sp(premR,leakR,"spR");
-  const leakBase=leakE+leakR;
-  $("stCalm").textContent="−"+won(leakBase*0.49)+"억";
-  $("stBase").textContent="−"+won(leakBase)+"억";
-  $("stCrisis").textContent="−"+won(leakBase*4)+"억";
-
-  const COST=B.map((b,i)=> b.calc ? (b.calc==="E"?premE:premR) : (b.bp===null?null:b.bp*AV));
-  const LEAKB=B.map((b,i)=> b.calc ? (b.calc==="E"?leakE:leakR) : 0);
-  const active=B.map((b,i)=> (!b.on && LEAKB[i]>0 && (b.dep===undefined||B[b.dep].on)) ? 1 : 0);
-  const leakW=LEAKB.reduce((a,x,i)=>a+(active[i]?x:0),0);
-  const payW=B.reduce((a,b,i)=>a+(b.on?COST[i]:0),0);
+  const AV=val("av"), FEE=val("fee"), CSM=val("csm"), feeW=AV*FEE, budget=feeW;
+  const cur=evalCombo(currentHS());
+  let payW=0, leakW=0;
+  RISK.forEach(r=>{ const on=(r.kind==="na")?0:r.on, depOn=r.dep?(RISK.find(x=>x.id===r.dep).on?1:0):1;
+    if(r.kind==="bp"&&on) payW+=(r.bp||0)*AV;
+    if(r.kind.startsWith("calc")&&depOn){ const {leak,prem}=leakPrem(r); payW+=on?prem:0; leakW+=on?0:leak; } });
   const outW=payW+leakW;
-  const rv=B.reduce((a,b)=>a+(b.on?0:b.r),0);
-  const vol=Math.sqrt(rv/TR), sig=sig0*vol;
-  const L95=leakW*M95*M95+1.645*sig, L995=leakW*M995*M995+2.576*sig;
-
-  $("rC").textContent=money(CSM);$("rF").textContent=FEE+"bp";$("rA").textContent=AV+"조";$("rS").textContent=SIG.toFixed(1)+"%";
-  document.querySelectorAll("#seg button").forEach(b=>b.classList.toggle("on",+b.dataset.c===CSM));
-
-  /* 카드 */
-  B.forEach((b,i)=>{
-    const el=cards[i]; el.classList.toggle("on",!!b.on);
-    const si=sig0*Math.sqrt(b.r/TR);
-    let mean,half;
-    if(b.on){ mean=-COST[i]; half=si*0.06; }
-    else { mean=-(active[i]?LEAKB[i]:0); half=1.645*si; }
-    const pcx=v=>50+Math.max(-50,Math.min(50,v/DOM*50));
-    const lo=pcx(mean-half), hi=pcx(mean+half);
-    const band=el.querySelector(".specband"), dot=el.querySelector(".specdot");
-    const col=b.on?"var(--pay)":(b.g===1?"var(--leak)":"var(--sym)");
-    band.style.left=lo+"%"; band.style.width=Math.max(1.2,hi-lo)+"%"; band.style.background=col;
-    dot.style.left="calc("+pcx(mean)+"% - 5px)"; dot.style.background=col;
-    const v=el.querySelector("[data-v]"), l=el.querySelector("[data-l]");
-    if(b.bp===null&&!b.calc){ v.textContent="이전 불가"; v.style.color="var(--muted)"; l.textContent="양방향 · 평균 0"; }
-    else if(b.on){ v.textContent="−"+won(COST[i])+"억"; v.style.color="var(--pay)"; l.textContent=b.calc?"확정 프리미엄":"확정 비용"; }
-    else if(LEAKB[i]>0){ v.textContent=active[i]?"−"+won(LEAKB[i])+"억":"−0억";
-      v.style.color=active[i]?"var(--leak)":"var(--muted)";
-      l.textContent=active[i]?"매년 새는 손실":"델타헤지 꺼짐 → 누수 없음"; }
-    else { v.textContent="±"+won(1.645*si)+"억"; v.style.color="var(--sym)"; l.textContent="양방향 · 평균 0"; }
-  });
-
-  /* 재원 */
   $("feeBig").innerHTML=won(feeW)+`억<small>/년 · ${FEE}bp × 적립금 ${AV}조</small>`;
   const base=Math.max(feeW,outW,1), over=Math.max(0,outW-feeW), inFee=Math.min(outW,feeW);
   const payIn=Math.min(payW,inFee), leakIn=Math.max(0,inFee-payIn);
   $("spPay").style.width=(payIn/base*100)+"%"; $("spLeak").style.width=(leakIn/base*100)+"%";
   $("spRest").style.width=(Math.max(0,feeW-outW)/base*100)+"%"; $("spOver").style.width=(over/base*100)+"%";
-  $("kPay").textContent="헤지비용 "+won(payW)+"억";
-  $("kLeak").textContent="감마 누수 "+won(leakW)+"억";
+  $("kPay").textContent="헤지비용 "+won(payW)+"억"; $("kLeak").textContent="감마 누수 "+won(leakW)+"억";
   $("kRest").innerHTML= over>0?`<span style="color:var(--bad)">재원 초과 ${won(over)}억</span>`:"남는 재원 "+won(feeW-outW)+"억";
 
-  /* 미터 */
-  const sc=Math.max(feeW*1.12,outW*1.05,1), P=v=>Math.min(100,v/sc*100);
-  $("n1").textContent=won(outW)+"억";
-  $("f1a").style.width=P(payW)+"%";
-  $("f1b").style.left=P(payW)+"%"; $("f1b").style.width=P(Math.min(leakW,Math.max(0,feeW-payW)))+"%";
-  $("f1c").style.left=P(Math.min(outW,feeW))+"%"; $("f1c").style.width=P(over)+"%";
-  $("c1").style.left=P(budget)+"%";
-  $("s1").innerHTML=`헤지비용 <b>${won(payW)}억</b> + 감마 누수 <b style="color:var(--leak)">${won(leakW)}억</b>. `
-    +(outW<=budget?`헤지예산 <b>${won(budget)}억</b> 안(점선). 남는 재원 <b>${won(feeW-outW)}억</b>.`
-      :outW<=feeW?`헤지예산을 <b style="color:var(--leak)">${won(outW-budget)}억 초과</b>.`
-      :`보증수수료를 <b style="color:var(--bad)">${won(over)}억 초과</b> — 재원이 없습니다.`);
-  $("n2").textContent=won(sig)+"억";
-  $("f2").style.width=(vol*100)+"%";
-  $("s2").innerHTML=`무헤지 <b>${won(sig0)}억</b> → 지금 <b>${won(sig)}억</b>. 여기에 <b style="color:var(--leak)">매년 새는 ${won(leakW)}억</b>이 얹힙니다.`;
+  const pts=allCombos(), fr=frontier(pts), affordFr=fr.filter(p=>p.cost<=budget);
+  const opt = affordFr.length? affordFr.reduce((a,b)=>a.sig<b.sig?a:b) : null;
+  drawEF(pts,fr,cur,opt,budget);
 
-  /* 흐름 */
-  [["95",L95,M95],["995",L995,M995]].forEach(([k,L,m])=>{
-    const gl=leakW*m*m, ab=Math.min(L,CSM), bu=Math.max(0,L-CSM), lf=Math.max(0,CSM-L), t=Math.max(L,1);
-    $("fs"+k).innerHTML=`손실 <span class="mono">${won(L)}억</span> <span style="opacity:.7">(감마 ${won(gl)}억 + 흔들림 ${won(L-gl)}억)</span>`;
-    $("b"+k+"a").style.width=(ab/t*100)+"%"; $("b"+k+"b").style.width=(bu/t*100)+"%";
-    $("a"+k+"c").textContent=won(ab)+"억";
-    const p=$("a"+k+"p"); p.textContent=bu>0?won(bu)+"억":"0"; p.className="amt "+(bu>0?"b":"z");
-    const r=$("a"+k+"r"); r.textContent=won(lf)+"억"; r.className="amt "+(lf>0?"g":"b");
-  });
-
-  /* 판정 */
+  const L95=leakW*M95*M95+1.645*cur.sig, L995=leakW*M995*M995+2.576*cur.sig;
   const vd=$("vd"); let cls,ic,t,p;
-  const spread=(premE-leakE)+(premR-leakR);
-  if(outW>feeW){cls="bad";ic="✕";t="재원이 없습니다";
-    p=`나가는 돈 <b>${won(outW)}억</b>이 보증수수료 <b>${won(feeW)}억</b>을 넘습니다. 수수료 인상이나 보증 축소 없이는 지속 불가.`;}
-  else if(L95>CSM){cls="bad";ic="!";t="평시에도 보험손익이 터집니다";
-    p=`나쁜 해 손실 <b>${won(L95)}억</b> → CSM <b>${won(CSM)}억</b>을 다 쓰고 <b>${won(L95-CSM)}억이 보험손익으로</b> 나옵니다. 이 해엔 감마 누수만 <b>${won(leakW*M95*M95)}억</b>입니다 — 평시의 ${(M95*M95).toFixed(1)}배. 답은 <b>감마 헤지 또는 수수료·보증 구조</b>입니다.`;}
-  else if(L995>CSM){cls="warn";ic="~";t="평시는 버팁니다. 극단은 손익으로";
-    p=`나쁜 해 <b>${won(L95)}억</b>은 CSM이 흡수(미래 이익이 그만큼 줄어듦). 최악의 해엔 <b>${won(L995-CSM)}억이 보험손익으로</b> 터집니다. 감마를 사두면 그 해 누수 <b>${won(leakW*M995*M995)}억</b>이 프리미엄 <b>${won(premE+premR)}억</b>으로 고정됩니다.`;}
-  else{cls="ok";ic="✓";t="지금 조합이면 손익은 조용합니다";
-    p=`매년 <b>${won(outW)}억</b>(수수료의 ${Math.round(outW/feeW*100)}%)이 나가고, 최악의 해 <b>${won(L995)}억</b>까지 CSM이 받아냅니다. `
-      +(leakW>0?`다만 감마에서 매년 <b style="color:var(--leak)">${won(leakW)}억</b>이 조용히 샙니다. 지금은 프리미엄이 <b>${won(spread)}억</b> 더 비싸 안 사는 게 이득이지만, <b>위기의 해엔 ${won(leakW*M995*M995)}억</b>까지 뜁니다.`:`감마 누수도 없습니다.`);}
+  if(outW>feeW){cls="bad";ic="✕";t="재원이 부족하다";
+    p=`현재 조합의 연간 비용 <b>${won(outW)}억</b>이 보증수수료 <b>${won(feeW)}억</b>을 초과한다. 헤지를 축소하거나 수수료·보증 구조의 조정이 필요하다.`;}
+  else if(L95>CSM){cls="bad";ic="!";t="나쁜 해에 보험손익이 발생한다";
+    p=`20년 빈도의 손실 <b>${won(L95)}억</b>이 CSM <b>${won(CSM)}억</b>을 초과하여 <b>${won(L95-CSM)}억</b>이 당기 손익으로 전이된다. 감마 헤지 강화 또는 완충 확대가 요구된다.`;}
+  else if(L995>CSM){cls="warn";ic="~";t="평시는 버티나 극단은 손익으로 전이된다";
+    p=`나쁜 해 <b>${won(L95)}억</b>은 CSM이 흡수하나, 최악의 해(200년 빈도) <b>${won(L995-CSM)}억</b>이 당기 손익으로 전이된다.${opt?` 예산 내 최적 조합은 변동성을 <b>${won(opt.sig)}억</b>까지 축소한다(현재 ${won(cur.sig)}억).`:``}`;}
+  else{cls="ok";ic="✓";t="현재 조합에서 손익은 안정적이다";
+    p=`연간 <b>${won(outW)}억</b>(수수료의 ${Math.round(outW/feeW*100)}%)이 지출되고, 최악의 해 <b>${won(L995)}억</b>까지 CSM이 흡수한다.${opt&&opt.sig<cur.sig-1?` 다만 예산 내에서 변동성을 <b>${won(cur.sig)}→${won(opt.sig)}억</b>으로 추가 축소할 여지가 있다.`:``}`;}
   vd.className="verdict "+cls;$("vdi").textContent=ic;$("vdt").textContent=t;$("vdp").innerHTML=p;
+
+  drawCasc(); drawCompare();
 }
-render();
+
+function drawEF(pts,fr,cur,opt,budget){
+  const W=640,H=340, L=52,R=16,T=16,B=42, iw=W-L-R, ih=H-T-B;
+  const xMax=(Math.max(...pts.map(p=>p.sig),cur.sig)||1)*1.06, yMax=(Math.max(...pts.map(p=>p.cost),cur.cost,budget)||1)*1.08;
+  const X=v=>L+(v/xMax)*iw, Y=v=>T+ih-(v/yMax)*ih, g=[];
+  for(let i=0;i<=4;i++){ const gy=T+ih*i/4;
+    g.push(`<line x1="${L}" y1="${gy.toFixed(1)}" x2="${W-R}" y2="${gy.toFixed(1)}" stroke="#22303e" stroke-width="1"/>`);
+    g.push(`<text class="eflabel" x="${L-6}" y="${(gy+3).toFixed(1)}" text-anchor="end">${won(yMax*(1-i/4))}</text>`); }
+  for(let i=0;i<=4;i++){ g.push(`<text class="eflabel" x="${(L+iw*i/4).toFixed(1)}" y="${H-B+16}" text-anchor="middle">${won(xMax*i/4)}</text>`); }
+  g.push(`<text class="eflabel" x="${L+iw/2}" y="${H-4}" text-anchor="middle">남는 손익변동성 1σ (억)</text>`);
+  g.push(`<text class="eflabel" x="14" y="${T+ih/2}" text-anchor="middle" transform="rotate(-90 14 ${T+ih/2})">연간 비용 (억)</text>`);
+  const by=Y(budget);
+  g.push(`<line x1="${L}" y1="${by.toFixed(1)}" x2="${W-R}" y2="${by.toFixed(1)}" stroke="var(--line)" stroke-width="2" stroke-dasharray="5 4" opacity="0.7"/>`);
+  g.push(`<text class="eflabel" x="${W-R}" y="${(by-5).toFixed(1)}" text-anchor="end" fill="var(--line)">예산 ${won(budget)}억</text>`);
+  const frSet=new Set(fr.map(p=>p.sig+"|"+p.cost));
+  pts.forEach(p=>{ if(frSet.has(p.sig+"|"+p.cost))return;
+    g.push(`<circle class="pt" data-sig="${p.sig}" data-cost="${p.cost}" cx="${X(p.sig).toFixed(1)}" cy="${Y(p.cost).toFixed(1)}" r="3" fill="#3d4c5c"/>`); });
+  g.push(`<path d="${fr.map((p,i)=>(i?"L":"M")+X(p.sig).toFixed(1)+" "+Y(p.cost).toFixed(1)).join(" ")}" fill="none" stroke="var(--pay)" stroke-width="2"/>`);
+  fr.forEach(p=>g.push(`<circle class="pt" data-sig="${p.sig}" data-cost="${p.cost}" data-fr="1" cx="${X(p.sig).toFixed(1)}" cy="${Y(p.cost).toFixed(1)}" r="4" fill="var(--pay)" stroke="var(--bg)" stroke-width="1.5"/>`));
+  if(opt) g.push(`<circle cx="${X(opt.sig).toFixed(1)}" cy="${Y(opt.cost).toFixed(1)}" r="7" fill="none" stroke="var(--good)" stroke-width="2.5"/>`);
+  g.push(`<circle cx="${X(cur.sig).toFixed(1)}" cy="${Y(cur.cost).toFixed(1)}" r="6" fill="var(--leak)" stroke="var(--bg)" stroke-width="2"/>`);
+  g.push(`<text class="eflabel" x="${(X(cur.sig)+9).toFixed(1)}" y="${(Y(cur.cost)+3).toFixed(1)}" fill="var(--leak)">현재</text>`);
+  $("ef").innerHTML=g.join("");
+  const tip=$("eftip");
+  $("ef").querySelectorAll(".pt").forEach(el=>{ el.style.cursor="pointer";
+    el.addEventListener("mouseenter",()=>{ tip.innerHTML=`${el.dataset.fr?"<b style='color:var(--pay)'>프론티어</b>":"지배됨"}<br>변동성 <b>${won(+el.dataset.sig)}억</b><br>비용 <b>${won(+el.dataset.cost)}억</b>`; tip.style.opacity=1; });
+    el.addEventListener("mousemove",ev=>{ tip.style.left=Math.min(ev.clientX+12,innerWidth-230)+"px"; tip.style.top=(ev.clientY+12)+"px"; });
+    el.addEventListener("mouseleave",()=>tip.style.opacity=0); });
+}
+
+/* ③ CSM 완충 cascade */
+function syncCsm2(){ if($("in_csm2")) $("in_csm2").value=val("csm"); }
+function drawCasc(){
+  const eqf=parseFloat($("in_eqf")?.value)||0, CSM=parseFloat($("in_csm2")?.value)||0;
+  const shock=parseFloat($("shock")?.value)||0;
+  if(!$("casc"))return;
+  $("shockLab").textContent=(shock>0?"+":"")+shock+"%";
+  const chg=eqf*10000*shock/100; /* 억 */
+  let html="";
+  if(chg>=0){
+    html=`<div class="foot">자본 변동 <b style="color:var(--good)">+${won(chg)}억</b> → CSM 확충. 당기 손익 영향 없음.</div>
+      <div class="cascbar"><div style="width:100%;background:var(--good)">CSM +${won(chg)}억</div></div>`;
+  } else {
+    const loss=-chg, ab=Math.min(loss,CSM), pl=Math.max(0,loss-CSM), t=Math.max(loss,1);
+    html=`<div class="foot">자본 변동 <b style="color:var(--bad)">△${won(loss)}억</b> → CSM이 <b style="color:var(--leak)">${won(ab)}억</b> 흡수${pl>0?`, 초과 <b style="color:var(--bad)">${won(pl)}억</b> 보험손익 전이`:` (완충 내 흡수)`}.</div>
+      <div class="cascbar"><div style="width:${(ab/t*100).toFixed(1)}%;background:var(--leak)">CSM ${won(ab)}억</div>${pl>0?`<div style="width:${(pl/t*100).toFixed(1)}%;background:var(--bad)">PL ${won(pl)}억</div>`:``}</div>`;
+  }
+  $("casc").innerHTML=html;
+}
+["in_eqf","in_csm2","shock"].forEach(id=>{ const el=$(id); if(el) el.addEventListener("input",drawCasc); });
+
+/* ④ 헷지 vs CSM 비교표 */
+function drawCompare(){
+  const AV=val("av"), body=$("cmpTbl")?.querySelector("tbody"); if(!body)return;
+  body.innerHTML=RISK.map(r=>{
+    let hedged, borne;
+    if(r.kind==="bp"){ hedged="−"+won((r.bp||0)*AV)+"억"; borne="σ기여 "+(r.exp||0).toFixed(1); }
+    else if(r.kind.startsWith("calc")){ const {leak,prem}=leakPrem(r); hedged="−"+won(prem)+"억"; borne="누수 "+won(leak)+"억"; }
+    else { hedged="—"; borne="σ기여 "+(r.exp||0).toFixed(1); }
+    const pill=r.cls==="PL"?`<span class="pill pl">PL</span>`:`<span class="pill csm">CSM</span>`;
+    return `<tr><td>${r.n}<small>${r.note}</small></td><td class="mono" style="color:var(--pay)">${hedged}</td><td class="mono" style="color:var(--leak)">${borne}</td><td>${pill}</td></tr>`;
+  }).join("");
+}
+
+/* ⑤ 시뮬레이션 — 정적 시장데이터 */
+const SIM={loaded:false,data:null,rateKey:"y20"};
+async function loadMarket(){
+  try{
+    const r=await fetch("./data/market.json",{cache:"no-store"}); if(!r.ok) throw new Error(r.status);
+    SIM.data=await r.json(); SIM.loaded=true;
+    $("simStatus").innerHTML=`KOSPI·국고(3·10·20·30년) <b>${SIM.data.meta.from}–${SIM.data.meta.to}</b> (${SIM.data.meta.n.toLocaleString()}거래일) 로드 완료.`;
+    $("simStatus").style.color="var(--muted)"; renderSim();
+  }catch(e){ $("simStatus").innerHTML=`시장데이터를 불러오지 못했습니다 (${e.message}).`; $("simStatus").style.color="var(--bad)"; }
+}
+function yearStats(){
+  const d=SIM.data, rk=SIM.rateKey, by={};
+  for(let i=1;i<d.dates.length;i++){
+    const y=d.dates[i].slice(0,4);
+    (by[y]=by[y]||{er:[],dr:[]});
+    const r=Math.log(d.eq[i]/d.eq[i-1]); if(isFinite(r)) by[y].er.push(r);
+    const dr=(d[rk][i]-d[rk][i-1])*100; if(isFinite(dr)) by[y].dr.push(dr); /* bp */
+  }
+  const std=a=>{ if(a.length<2)return 0; const m=a.reduce((x,y)=>x+y,0)/a.length; return Math.sqrt(a.reduce((x,y)=>x+(y-m)*(y-m),0)/(a.length-1)); };
+  return Object.keys(by).sort().map(y=>({y, rvE:std(by[y].er)*Math.sqrt(252)*100, rvR:std(by[y].dr)*Math.sqrt(252)}));
+}
+function renderSim(){
+  if(!SIM.loaded)return;
+  const ys=yearStats(), ge=val("ge"), gr=val("gr"), ie=val("ie"), ir=val("ir");
+  const rows=ys.map(s=>{ const leak=gam(ge,s.rvE)+gam(gr,s.rvR), prem=gam(ge,ie)+gam(gr,ir);
+    return {...s, leak, prem}; });
+  const avgLeak=rows.reduce((a,r)=>a+r.leak,0)/rows.length, maxLeak=Math.max(...rows.map(r=>r.leak));
+  const worst=rows.reduce((a,b)=>a.leak>b.leak?a:b);
+  $("simStat").innerHTML=`
+    <div><div class="sl">연평균 감마 누수</div><div class="sv" style="color:var(--leak)">△${won(avgLeak)}억</div></div>
+    <div><div class="sl">최대(위기해 ${worst.y})</div><div class="sv" style="color:var(--bad)">△${won(maxLeak)}억</div></div>
+    <div><div class="sl">헤지 프리미엄(연)</div><div class="sv" style="color:var(--pay)">△${won(rows[0].prem)}억</div></div>`;
+  /* 막대 + RV 라인 */
+  const W=640,H=280,L=48,R=40,T=14,B=34,iw=W-L-R,ih=H-T-B,g=[];
+  const yMax=Math.max(...rows.map(r=>Math.max(r.leak,r.prem)))*1.12||1, rvMax=Math.max(...rows.map(r=>r.rvE))*1.15||1;
+  const bw=iw/rows.length, X=i=>L+bw*(i+0.5), Y=v=>T+ih-(v/yMax)*ih, YR=v=>T+ih-(v/rvMax)*ih;
+  for(let i=0;i<=4;i++){ const gy=T+ih*i/4;
+    g.push(`<line x1="${L}" y1="${gy.toFixed(1)}" x2="${W-R}" y2="${gy.toFixed(1)}" stroke="#22303e" stroke-width="1"/>`);
+    g.push(`<text class="eflabel" x="${L-6}" y="${(gy+3).toFixed(1)}" text-anchor="end">${won(yMax*(1-i/4))}</text>`);
+    g.push(`<text class="eflabel" x="${W-R+6}" y="${(gy+3).toFixed(1)}" text-anchor="start" fill="#55677a">${(rvMax*(1-i/4)).toFixed(0)}%</text>`); }
+  rows.forEach((r,i)=>{ const w=bw*0.34;
+    g.push(`<rect x="${(X(i)-w-1).toFixed(1)}" y="${Y(r.leak).toFixed(1)}" width="${w.toFixed(1)}" height="${(T+ih-Y(r.leak)).toFixed(1)}" fill="var(--leak)" rx="2"/>`);
+    g.push(`<rect x="${(X(i)+1).toFixed(1)}" y="${Y(r.prem).toFixed(1)}" width="${w.toFixed(1)}" height="${(T+ih-Y(r.prem)).toFixed(1)}" fill="var(--pay)" rx="2"/>`);
+    g.push(`<text class="eflabel" x="${X(i).toFixed(1)}" y="${H-B+15}" text-anchor="middle">${r.y}</text>`); });
+  g.push(`<path d="${rows.map((r,i)=>(i?"L":"M")+X(i).toFixed(1)+" "+YR(r.rvE).toFixed(1)).join(" ")}" fill="none" stroke="var(--line)" stroke-width="2" stroke-dasharray="5 4" opacity="0.75"/>`);
+  rows.forEach((r,i)=>g.push(`<circle cx="${X(i).toFixed(1)}" cy="${YR(r.rvE).toFixed(1)}" r="3" fill="var(--line)"/>`));
+  $("sim").innerHTML=g.join("");
+  $("simTbl").querySelector("tbody").innerHTML=rows.map(r=>
+    `<tr><td>${r.y}</td><td class="mono">${r.rvE.toFixed(1)}%</td><td class="mono">${r.rvR.toFixed(0)}bp</td><td class="mono" style="color:var(--leak)">△${won(r.leak)}억</td><td class="mono" style="color:var(--pay)">△${won(r.prem)}억</td></tr>`).join("");
+}
+
+/* ④ 요인별 애니메이션 설명 */
+const VIZ={
+  dir:`<svg class="anim" viewBox="0 0 132 96"><line x1="8" y1="80" x2="124" y2="20" stroke="#3d4c5c" stroke-width="2"/><line x1="8" y1="50" x2="124" y2="50" stroke="#2f6d85" stroke-width="2" stroke-dasharray="4 3"/><circle class="a-dot" r="5" cx="8" cy="20" fill="#F2A03D"/><text x="66" y="92" fill="#7C8D9E" font-size="8" text-anchor="middle" font-family="monospace">헤지=평(파선)</text></svg>`,
+  gamma:`<svg class="anim" viewBox="0 0 132 96"><path d="M8 20 Q66 100 124 20" fill="none" stroke="#3d4c5c" stroke-width="2"/><line x1="8" y1="72" x2="124" y2="72" stroke="#2f6d85" stroke-width="1.5" stroke-dasharray="4 3"/><rect class="a-gap" x="64" width="5" fill="#F2545B" rx="1"/><circle class="a-spot" r="5" cx="8" cy="72" fill="#F2A03D"/><text x="66" y="92" fill="#7C8D9E" font-size="8" text-anchor="middle" font-family="monospace">½Γ(Δ)² 손실</text></svg>`,
+  vol:`<svg class="anim" viewBox="0 0 132 96"><g class="a-breathe"><path d="M8 48 Q66 6 124 48" fill="none" stroke="#8E9BE8" stroke-width="2"/><path d="M8 48 Q66 90 124 48" fill="none" stroke="#8E9BE8" stroke-width="2"/></g><line x1="8" y1="48" x2="124" y2="48" stroke="#3d4c5c" stroke-width="1"/><text x="66" y="92" fill="#7C8D9E" font-size="8" text-anchor="middle" font-family="monospace">변동성 확대·축소</text></svg>`,
+  basis:`<svg class="anim" viewBox="0 0 132 96"><path d="M8 48 C40 48 50 30 66 30 S92 20 124 24" fill="none" stroke="#4CC9E8" stroke-width="2"/><path class="a-div" d="M8 48 C40 48 50 56 66 56 S92 62 124 58" fill="none" stroke="#F2A03D" stroke-width="2"/><text x="66" y="92" fill="#7C8D9E" font-size="8" text-anchor="middle" font-family="monospace">펀드 vs 지수 괴리</text></svg>`,
+  behav:`<svg class="anim" viewBox="0 0 132 96"><rect x="8" y="34" width="104" height="22" rx="4" fill="#22303e"/><rect class="a-drain" x="8" y="34" height="22" rx="4" fill="#8E9BE8"/><text x="66" y="92" fill="#7C8D9E" font-size="8" text-anchor="middle" font-family="monospace">해지·행동 변동</text></svg>`,
+  regime:`<svg class="anim" viewBox="0 0 132 96"><g class="a-step"><line x1="8" y1="60" x2="66" y2="60" stroke="#F2545B" stroke-width="2"/><line x1="66" y1="34" x2="124" y2="34" stroke="#F2545B" stroke-width="2"/><line x1="66" y1="60" x2="66" y2="34" stroke="#F2545B" stroke-width="2" stroke-dasharray="3 2"/></g><text x="66" y="92" fill="#7C8D9E" font-size="8" text-anchor="middle" font-family="monospace">가정·제도 단절</text></svg>`,
+};
+const FAC={
+  delta:{viz:"dir", t:"주가·금리가 1단위 움직일 때 보증가치가 얼마나 변하는지를 나타내는 <b>1차 민감도</b>이다. 선물·스왑으로 반대 포지션을 잡아 상쇄하며, 프리미엄이 없어 거래비용만으로 제거된다. 헤지하면 손익선이 평평해진다."},
+  rho:{viz:"dir", t:"금리 수준 변화에 대한 부채가치의 <b>1차 민감도</b>이다. 장기부채일수록 크다. 국채·IRS로 상쇄하며 방향 위험과 동일하게 저비용으로 헤지 가능하다."},
+  gE:{viz:"gamma", t:"델타는 주가에 따라 계속 변한다(<b>볼록성=감마</b>). 델타를 일정하게 유지하려면 주가가 움직일 때마다 재조정해야 하고, 매 재조정에서 <b>½Γ(ΔS)²</b>만큼 손실이 쌓인다. 옵션 매수로 감마를 보충하면 이 손실이 프리미엄으로 확정된다."},
+  gR:{viz:"gamma", t:"금리 민감도의 볼록성이다. 금리가 급변하면 로가 변해 재조정이 필요하고 손실이 누적된다. 스왑션으로 보충하며 성격은 주가 감마와 동일하다."},
+  vega:{viz:"vol", t:"내재변동성 자체의 변화에 대한 민감도이다. 시장이 불안하면 변동성이 확대되어 보증가치가 상승(손실)한다. 장기 변동성 매수로 헤지하나 비용이 크고, 기댓값이 0에 가까워 대개 감내한다."},
+  fund:{viz:"basis", t:"실제 변액펀드 수익률과 헤지에 쓰는 지수 수익률의 <b>괴리(베이시스)</b>이다. 펀드가 지수보다 더 가거나 덜 갈 수 있어 잔차가 발생한다. 맞춤 장외거래로만 이전 가능하며 비용이 높다."},
+  lapse:{viz:"behav", t:"계약자의 해지·인출 등 <b>행동 변화</b>가 보증 노출을 바꾼다. 예상보다 덜 해지하면 보증 부담이 커진다. 재보험으로 일부 이전 가능하나 비용과 잔여위험이 남는다."},
+  model:{viz:"regime", t:"부채할인율·계리적 가정·제도 변경 등 <b>모형·가정의 단절적 변화</b>이다. 시장에서 헤지하거나 이전할 수단이 사실상 없어 완충으로 감내하는 것이 일반적이다."},
+};
+function renderFactorAnim(){
+  const box=$("facAnim"); if(!box)return;
+  box.innerHTML=RISK.map(r=>{ const f=FAC[r.id]; if(!f)return"";
+    const pill=r.cls==="PL"?`<span class="pill pl">보통 PL</span>`:`<span class="pill csm">보통 CSM</span>`;
+    return `<details class="fac"><summary>${r.n} ${pill}</summary>
+      <div class="facbody"><div class="viz">${VIZ[f.viz]}</div><div class="txt">${f.t}</div></div></details>`;
+  }).join("");
+}
+
+/* 피드백 (별도 DB) */
+const FEEDBACK_ENDPOINT=""; const FEEDBACK_HEADERS={};
+(function(){ const note=$("fbNote"), btn=$("fbSend"), msg=$("fbMsg");
+  if(!FEEDBACK_ENDPOINT){ btn.disabled=true;
+    note.innerHTML="⚙ 의견 수집 저장소(별도 DB)가 아직 연결되지 않았다 — 배포자가 <b>FEEDBACK_ENDPOINT</b>를 설정하면 활성화된다. 작성 권한은 저장소의 insert 정책·인증으로 통제한다."; return; }
+  btn.addEventListener("click",async()=>{ const body={name:$("fbName").value.slice(0,60), text:$("fbText").value.slice(0,2000), ts:new Date().toISOString()};
+    if(!body.text.trim()){ msg.style.color="var(--leak)"; msg.textContent="의견을 입력해 주세요."; return; }
+    btn.disabled=true; msg.style.color="var(--muted)"; msg.textContent="전송 중…";
+    try{ const r=await fetch(FEEDBACK_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json",...FEEDBACK_HEADERS},body:JSON.stringify(body)});
+      if(!r.ok) throw new Error(r.status); msg.style.color="var(--good)"; msg.textContent="의견이 저장되었습니다. 감사합니다."; $("fbText").value="";
+    }catch(e){ msg.style.color="var(--bad)"; msg.textContent="전송 실패 ("+e.message+")."; } finally{ btn.disabled=false; } });
+})();
+
+/* VOL 입력·만기 선택이 바뀌면 시뮬 갱신 */
+[...VOL].forEach(o=>$("in_"+o.id).addEventListener("input",()=>{ if(SIM.loaded) renderSim(); }));
+$("rateTenor").addEventListener("change",e=>{ SIM.rateKey=e.target.value; if(SIM.loaded) renderSim(); });
+renderFactorAnim();
+render(); syncCsm2(); drawCasc();
 </script>
 </body>
 </html>

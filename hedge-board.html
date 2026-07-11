@@ -87,6 +87,11 @@
   .pobtns{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
   .pobtns button{background:var(--panel2);border:1px solid var(--hair);color:var(--muted);font-family:inherit;font-size:12px;font-weight:700;padding:9px 13px;border-radius:9px;cursor:pointer;min-height:40px}
   .pobtns button.on{background:var(--pay);color:#fff;border-color:var(--pay)}
+  .cbrow{display:flex;align-items:center;gap:10px;margin:9px 0}
+  .cblab{flex:0 0 128px;font-size:12px;font-weight:600}
+  .cbtrack{flex:1 1 auto;height:20px;background:var(--panel2);border:1px solid var(--hair);border-radius:6px;overflow:hidden}
+  .cbfill{height:100%;border-radius:6px;transition:width .3s}
+  .cbamt{flex:0 0 auto;font-size:12px;font-weight:700;min-width:78px;text-align:right}
   .scost{flex:0 0 auto;font-size:11.5px;color:var(--muted);text-align:right;min-width:84px}
   .seg2{display:inline-flex;border:1px solid var(--hair);border-radius:9px;overflow:hidden;box-shadow:0 1px 2px rgba(20,32,55,.06)}
   .seg2 button{background:#FFFFFF;border:none;color:var(--muted);font-family:inherit;font-size:12.5px;font-weight:700;padding:9px 15px;cursor:pointer;min-height:42px;transition:.12s}
@@ -268,6 +273,12 @@
   </div>
 
   <div class="panel concept">
+    <div class="cap">헷지 조합에 따른 손익변동성<span>실제 시장데이터 기준</span></div>
+    <div id="comboBars"><div class="foot">데이터 불러오는 중…</div></div>
+    <p style="font-size:13px;color:var(--muted);line-height:1.75;margin-top:6px">헷지를 단계적으로 늘릴수록 연간 손익변동성(1σ)이 줄어듭니다. <b>방향(주가·금리)</b>만 헷지해도 크게 줄고, <b>감마·변동성</b>까지 헷지하면 더 줄지만 비용이 커집니다.</p>
+  </div>
+
+  <div class="panel concept">
     <div class="cap">위험의 세 갈래 · 처리 방식</div>
     <div class="grpbox g0"><h4>방향 위험 — 헷지가 저렴</h4>
       <p>주가·금리 수준의 1차 민감도. 선물·스왑으로 프리미엄 없이 제거하므로 통상 헷지하여 투자손익으로 관리합니다.</p></div>
@@ -356,14 +367,13 @@
     <div class="pobtns" id="poBtns">
       <button data-t="lin" class="on">선물·스왑(선형)</button>
       <button data-t="put">풋옵션 매수</button>
-      <button data-t="call">콜옵션 매수</button>
-      <button data-t="expo">원 포지션(미헷지)</button>
+      <button data-t="none">미헷지</button>
     </div>
     <div style="margin:10px 0 2px"><label class="foot" style="margin:0">기초자산 변동 <b class="mono" id="poLab" style="color:var(--pay)">0%</b></label>
       <input type="range" id="poX" min="-30" max="30" step="1" value="0"></div>
     <div class="chartwrap"><svg id="poSvg" viewBox="0 0 560 220" style="width:100%;height:auto"></svg></div>
     <div class="foot" id="poRead" style="margin-top:4px"></div>
-    <p class="foot"><b>선형(선물·스왑)</b>은 대칭 직선으로 방향을 상쇄하나 곡률(감마)이 없습니다. <b>옵션 매수</b>는 꺾인 선으로, 한쪽은 프리미엄만 잃고 반대쪽은 크게 방어한다(비대칭). 이 <b>꺾임(볼록성)</b>이 감마·꼬리 방어의 핵심입니다. (단위는 개념적 상대값)</p>
+    <p class="foot"><b>부채(회색)</b> 노출에 <b>수단(청록)</b>을 더하면 <b>합(초록)</b>이 됩니다. <b>선물·스왑</b>은 합이 완전히 평탄해지고(방향 완전 상쇄), <b>풋옵션</b>은 하락만 막고 상승은 유지하되 프리미엄을 냅니다(비대칭). <b>미헷지</b>는 부채 노출이 그대로 남습니다. (개념적 상대값)</p>
   </div>
   <div class="panel concept">
     <div class="cap">비용 vs 효과 요약</div>
@@ -725,9 +735,40 @@ async function loadMarket(){
   try{
     const r=await fetch("./data/market.json",{cache:"no-store"}); if(!r.ok) throw new Error(r.status);
     SIM.data=await r.json(); SIM.loaded=true;
-    $("simStatus").innerHTML=`KOSPI·국고 20년 <b>${SIM.data.meta.from}–${SIM.data.meta.to}</b> (${SIM.data.meta.n.toLocaleString()}거래일) 로드 완료.`;
-    $("simStatus").style.color="var(--muted)"; renderSim();
-  }catch(e){ $("simStatus").innerHTML=`시장데이터를 불러오지 못했습니다 (${e.message}).`; $("simStatus").style.color="var(--bad)"; }
+    if($("simStatus")){ $("simStatus").innerHTML=`KOSPI·국고 20년 <b>${SIM.data.meta.from}–${SIM.data.meta.to}</b> (${SIM.data.meta.n.toLocaleString()}거래일) 로드 완료.`; $("simStatus").style.color="var(--muted)"; }
+    renderSim(); renderConceptCombo();
+  }catch(e){ if($("simStatus")){$("simStatus").innerHTML=`시장데이터를 불러오지 못했습니다 (${e.message}).`; $("simStatus").style.color="var(--bad)";} }
+}
+/* 전략 조합의 연간 손익변동성(1σ, 억) — 방향·감마(시장) + 베가·펀드·해지·모형(σ가중) 합성 */
+const NM_SCALE=40;
+function stratVol(hs){
+  if(!SIM.loaded) return 0;
+  const d=SIM.data, rk=SIM.rateKey, eqd=val("eqd"),rvd=val("rvd"),ge=val("ge"),gr=val("gr"),ie=val("ie"),ir=val("ir");
+  const a=[];
+  for(let i=1;i<d.dates.length;i++){
+    const rEqBp=(d.eq[i]/d.eq[i-1]-1)*10000, dRtBp=(d[rk][i]-d[rk][i-1])*100, rEqPct=rEqBp/100;
+    let p=0;
+    p += hs.delta ? (hs.gE?-gam(ge,ie)/252:-gam(ge,rEqPct)) : (eqd*rEqBp);
+    p += hs.rho ? (hs.gR?-gam(gr,ir)/252:-gam(gr,dRtBp)) : (-rvd*dRtBp);
+    a.push(p);
+  }
+  const m=a.reduce((x,y)=>x+y,0)/a.length, mv=Math.sqrt(a.reduce((x,y)=>x+(y-m)*(y-m),0)/(a.length-1))*Math.sqrt(252);
+  let nm=0; ['vega','fund','lapse','model'].forEach(id=>{ const r=RISK.find(x=>x.id===id), on=(id==='model')?false:!!hs[id]; if(!on) nm+=Math.pow((r.exp||0)*NM_SCALE,2); });
+  return Math.sqrt(mv*mv+nm);
+}
+function renderConceptCombo(){
+  const box=$("comboBars"); if(!box||!SIM.loaded)return;
+  const combos=[
+    {n:"미헷지",           hs:{}},
+    {n:"방향 헷지",         hs:{delta:1,rho:1}},
+    {n:"방향+감마",         hs:{delta:1,rho:1,gE:1,gR:1}},
+    {n:"방향+감마+변동성 등", hs:{delta:1,rho:1,gE:1,gR:1,vega:1,fund:1,lapse:1}},
+  ].map(c=>({...c, v:stratVol(c.hs)}));
+  const mx=Math.max(...combos.map(c=>c.v),1);
+  box.innerHTML=combos.map((c,i)=>{
+    const w=(c.v/mx*100).toFixed(1), col=i===0?'var(--sym)':i===combos.length-1?'var(--good)':'var(--pay)';
+    return `<div class="cbrow"><div class="cblab">${c.n}</div><div class="cbtrack"><div class="cbfill" style="width:${w}%;background:${col}"></div></div><div class="cbamt mono">±${won(c.v)}억</div></div>`;
+  }).join("");
 }
 function yearStats(){
   const d=SIM.data, rk=SIM.rateKey, by={}, lam=0.94;
@@ -762,11 +803,12 @@ function drawVolChart(){
   for(let i=0;i<dU.length;i+=5){ let su=0,sh=0; for(let j=i;j<Math.min(i+5,dU.length);j++){su+=dU[j];sh+=dH[j];}
     wU.push(su); wH.push(sh); wYr.push(idx[Math.min(i,idx.length-1)]); }
   const std=a=>{const m=a.reduce((x,y)=>x+y,0)/a.length; return Math.sqrt(a.reduce((x,y)=>x+(y-m)*(y-m),0)/(a.length-1));};
-  const volU=std(dU)*Math.sqrt(252), volH=std(dH)*Math.sqrt(252);
+  const cH={}; RISK.forEach(r=>cH[r.id]=r.on);
+  const volAll=stratVol({}), volCur=stratVol(cH);   /* 전 항목 반영(방향·감마·베가·펀드·해지·모형) */
   $("volStat").innerHTML=`
-    <div><div class="sl">미헷지 주간 손익 진폭(1σ)</div><div class="sv" style="color:var(--sym)">±${won(std(wU))}억</div></div>
-    <div><div class="sl">헷지 후 주간(1σ)</div><div class="sv" style="color:var(--pay)">±${won(std(wH))}억</div></div>
-    <div><div class="sl">헷지가 막은 변동성(연 1σ)</div><div class="sv" style="color:var(--good)">${won(Math.max(0,volU-volH))}억</div></div>`;
+    <div><div class="sl">미헷지 연 손익변동성(1σ)</div><div class="sv" style="color:var(--sym)">±${won(volAll)}억</div></div>
+    <div><div class="sl">현재 전략(1σ)</div><div class="sv" style="color:var(--pay)">±${won(volCur)}억</div></div>
+    <div><div class="sl">헷지가 막은 변동성</div><div class="sv" style="color:var(--good)">${won(Math.max(0,volAll-volCur))}억</div></div>`;
   const W=640,H=280,L=52,R=14,T=14,B=26,iw=W-L-R,ih=H-T-B,g=[];
   const amp=Math.max(...wU.map(Math.abs),1)*1.1, n=wU.length;
   const X=i=>L+iw*i/(n-1), Y=v=>T+ih/2-(v/amp)*(ih/2);
@@ -896,20 +938,26 @@ const PO={t:"lin"};
 function renderPayoff(){
   if(!$("poSvg"))return; const x=parseFloat($("poX").value)||0, prem=3;
   $("poLab").textContent=(x>0?"+":"")+x+"%";
-  const F={lin:v=>-v, put:v=>Math.max(-v,0)-prem, call:v=>Math.max(v,0)-prem, expo:v=>v}[PO.t];
-  const NAME={lin:"선물·스왑(선형)",put:"풋옵션 매수",call:"콜옵션 매수",expo:"원 포지션(미헷지)"}[PO.t];
-  const W=560,H=220,L=44,R=14,T=12,B=26,iw=W-L-R,ih=H-T-B,g=[];
-  const xMin=-30,xMax=30,yr=32, X=v=>L+(v-xMin)/(xMax-xMin)*iw, Y=v=>T+ih/2-(Math.max(-yr,Math.min(yr,v))/yr)*(ih/2);
+  const NAME={lin:"선물·스왑(선형)",put:"풋옵션 매수",none:"미헷지"}[PO.t];
+  const liab=v=>v;                                             /* 부채 노출: 시장↑ 이득, ↓ 손실 */
+  const hedge={lin:v=>-v, put:v=>Math.max(-v,0)-prem, none:v=>0}[PO.t];
+  const net=v=>liab(v)+hedge(v);
+  const W=560,H=220,L=44,R=14,T=14,B=26,iw=W-L-R,ih=H-T-B,g=[];
+  const xMin=-30,xMax=30,yr=34, X=v=>L+(v-xMin)/(xMax-xMin)*iw, Y=v=>T+ih/2-(Math.max(-yr,Math.min(yr,v))/yr)*(ih/2);
   for(let k=-1;k<=1;k++){ const gy=Y(k*yr);
     g.push(`<line x1="${L}" y1="${gy.toFixed(1)}" x2="${W-R}" y2="${gy.toFixed(1)}" stroke="${k===0?'#AAB4C6':'#EAEDF5'}" stroke-width="${k===0?1.2:1}"/>`);
     g.push(`<text class="eflabel" x="${L-6}" y="${(gy+3).toFixed(1)}" text-anchor="end">${k>0?'+':''}${k*yr}</text>`); }
   const x0=X(0); g.push(`<line x1="${x0.toFixed(1)}" y1="${T}" x2="${x0.toFixed(1)}" y2="${T+ih}" stroke="#AAB4C6" stroke-width="1"/>`);
   [-30,-15,0,15,30].forEach(v=>g.push(`<text class="eflabel" x="${X(v).toFixed(1)}" y="${H-B+16}" text-anchor="middle">${v>0?'+':''}${v}%</text>`));
-  let p=""; for(let v=xMin;v<=xMax;v+=1){ p+=(v===xMin?"M":"L")+X(v).toFixed(1)+" "+Y(F(v)).toFixed(1); }
-  g.push(`<path d="${p}" fill="none" stroke="var(--pay)" stroke-width="2.5"/>`);
-  const py=F(x); g.push(`<circle cx="${X(x).toFixed(1)}" cy="${Y(py).toFixed(1)}" r="5.5" fill="var(--leak)" stroke="#fff" stroke-width="2"/>`);
+  const ln=(f,st,w,da)=>{let p=""; for(let v=xMin;v<=xMax;v+=1){p+=(v===xMin?"M":"L")+X(v).toFixed(1)+" "+Y(f(v)).toFixed(1);} return `<path d="${p}" fill="none" stroke="${st}" stroke-width="${w}"${da?' stroke-dasharray="5 4"':''}/>`;};
+  g.push(ln(liab,"#AAB4C6",2,true));      /* 부채 노출 */
+  if(PO.t!=="none") g.push(ln(hedge,"var(--pay)",2,false));  /* 헷지 수단 */
+  g.push(ln(net,"var(--good)",3,false));  /* 합(순포지션) */
+  /* 미니 범례 */
+  g.push(`<text class="eflabel" x="${L+4}" y="${T+11}" fill="#8A94A6">— 부채</text><text class="eflabel" x="${L+52}" y="${T+11}" fill="var(--pay)">— 수단</text><text class="eflabel" x="${L+100}" y="${T+11}" fill="var(--good)">— 합</text>`);
+  const nn=net(x); g.push(`<circle cx="${X(x).toFixed(1)}" cy="${Y(nn).toFixed(1)}" r="5.5" fill="var(--good)" stroke="#fff" stroke-width="2"/>`);
   $("poSvg").innerHTML=g.join("");
-  $("poRead").innerHTML=`<b>${NAME}</b> · 기초 ${x>0?'+':''}${x}% → payoff <b style="color:${py>=0?'var(--good)':'var(--bad)'}">${py>=0?'+':''}${py.toFixed(1)}</b> <span style="opacity:.7">(개념 상대값)</span>`;
+  $("poRead").innerHTML=`<b>${NAME}</b> · 기초 ${x>0?'+':''}${x}% → 부채 <b>${liab(x)>=0?'+':''}${liab(x).toFixed(1)}</b> + 수단 <b style="color:var(--pay)">${hedge(x)>=0?'+':''}${hedge(x).toFixed(1)}</b> = <b style="color:${nn>=0?'var(--good)':'var(--bad)'}">합 ${nn>=0?'+':''}${nn.toFixed(1)}</b> <span style="opacity:.7">(개념 상대값)</span>`;
 }
 $("poBtns")&&$("poBtns").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
   PO.t=b.dataset.t; document.querySelectorAll("#poBtns button").forEach(x=>x.classList.toggle("on",x===b)); renderPayoff();});
@@ -917,6 +965,7 @@ $("poX")&&$("poX").addEventListener("input",renderPayoff);
 
 renderFactorAnim(); renderPayoff();
 render(); syncCsm2(); drawCasc();
+loadMarket();  /* 개념탭 조합차트·시뮬 모두 데이터 필요 → 로드 시 자동 반영 */
 </script>
 </body>
 </html>

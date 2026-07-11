@@ -269,12 +269,12 @@
 <div class="tabs" id="tabs">
   <button data-p="p1" class="on">① 개념<small>수수료·비용·변동성</small></button>
   <button data-p="pqa">❓ Q&amp;A<small>쉬운 문답</small></button>
-  <button data-p="pgame">🎮 게임<small>헷지 체험</small></button>
   <button data-p="p4">② 항목별 설명<small>요인 원리</small></button>
   <button data-p="p7">③ 헷지수단<small>비용·효과</small></button>
   <button data-p="p3">④ PL 인식<small>CSM 완충</small></button>
   <button data-p="p2">⑤ 시뮬레이션<small>선택→결과</small></button>
   <button data-p="p8">⑥ 입력 가정<small>규모·민감도</small></button>
+  <button data-p="pgame">🎮 게임<small>헷지 체험</small></button>
   <button data-p="p6">⑦ 이론<small>참고문헌</small></button>
 </div>
 
@@ -439,6 +439,25 @@
     <ul class="qalist">
       <li><b>원칙: 막을 수 있는 위험은 최대한 막는 것</b>이 유리합니다 — 회사가 통제할 수 있는 상태로 둡니다.</li>
       <li>완충(CSM)이 <b>얇을수록</b> 방치의 위험이 커집니다 → 그만큼 <b>헷지를 더 해야 하는 압력</b>이 커집니다(④ PL 인식).</li>
+    </ul>
+  </div>
+
+  <div class="panel">
+    <div class="qah"><div class="qan">Q5</div><div class="qat">완충(CSM)이 별로 없으면 어떻게 되나요? 🪫</div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:4px 0 12px">
+      <div style="border:1.5px solid var(--good);border-radius:10px;padding:11px;background:#EAF7F1">
+        <div style="font-weight:800;color:var(--good);font-size:13px">🛡️ 완충이 두꺼우면</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px">웬만한 손실은 완충이 받아 줍니다. <b>덜 막고 감내</b>해도 버틸 여유가 있습니다.</div>
+      </div>
+      <div style="border:1.5px solid #E7B9C2;border-radius:10px;padding:11px;background:#FBEEF1">
+        <div style="font-weight:800;color:var(--bad);font-size:13px">🪫 완충이 얇으면</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px">작은 손실도 곧장 <b>손익으로 터집니다</b>. 그래서 <b>더 많이 막아야</b> 합니다.</div>
+      </div>
+    </div>
+    <ul class="qalist">
+      <li>완충이 얇으면 받아 줄 여력이 없어, <b>감내하던 위험까지 헷지해야 하는 압력</b>이 커집니다.</li>
+      <li>주가 방향뿐 아니라 <b>감마·펀드 차이·변동성까지</b> 막아야 하고, <b>비용이 더 들어도</b> 흔들림을 낮춰야 합니다.</li>
+      <li>즉 <b>완충이 얇을수록 = 헷지를 더 해야 한다</b>는 뜻입니다. 직접 움직여 보려면 <b>④ PL 인식</b> 탭의 슬라이더를 얇은 쪽으로 당겨 보세요.</li>
     </ul>
   </div>
 </section>
@@ -661,13 +680,24 @@
   <div class="panel">
     <div class="cap">③ 요인별 노출·헷지단가<span>각 위험의 크기와 넘기는 값</span></div>
     <div class="inhdr">각 위험 요인의 <b>노출(σ 기여)</b>과 <b>헷지단가</b>입니다. 방향형(Δ·ρ) 단가는 bp(×적립금)로 직접 입력합니다. <b>주가·금리 감마</b>는 직접 입력이 아니라 <b>델타(방향)를 헷지한 뒤에야 드러나는 잔여</b>입니다 — 노출은 ②의 <b>Γ·변동성에서 자동</b> 산출되고, 감내 시 실현변동성 누수·헷지 시 <b>옵션 프리미엄</b>(IV)이 됩니다. 처리 선택(헷지/CSM)은 <b>⑤ 시뮬레이션</b>에서 합니다.</div>
-    <div class="chartwrap"><table class="mtx" id="mtx"><thead><tr><th>위험 요인</th><th>노출(σ기여)</th><th>헷지단가</th></tr></thead><tbody></tbody></table></div>
+    <div class="chartwrap"><table class="mtx" id="mtx"><thead><tr><th>위험 요인</th><th>노출(흔들림 기여)</th><th>헷지단가</th></tr></thead><tbody></tbody></table></div>
   </div>
 </section>
 
 <!-- ⑦ 이론 -->
 <section class="page" id="p6">
   <p class="lede">이 도구가 기대는 이론과 대표 문헌입니다. 최저보증은 사실상 적립금에 <b>내장된 풋옵션(하락을 막아 주는 약속)</b>이므로, 그 관리는 옵션 복제·헷지 이론에 뿌리를 둡니다.</p>
+  <div class="panel" style="background:linear-gradient(135deg,#EEF3FE,#F4F0FD);border:1px solid #D7E0F5">
+    <div class="cap">쉬운 요약</div>
+    <ul class="qalist">
+      <li>보증은 <b>하락을 막아 주는 옵션</b>이라, 옵션을 다루는 이론으로 관리합니다.</li>
+      <li>선물·스왑으로 <b>방향</b>을 막아도 시장이 크게 움직이면 <b>감마</b>가 손실을 냅니다 — 아무리 자주 조정해도 완전히는 못 없앱니다.</li>
+      <li>그래서 목표는 완전 제거가 아니라 <b>비용과 남는 흔들림의 균형</b>입니다.</li>
+      <li>옵션은 평균적으로 <b>비싸서</b>, 감마 헷지는 수익이 아니라 <b>큰 손실을 막는 보험</b>으로 씁니다.</li>
+      <li>회계상 보증 변동은 <b>완충(CSM)</b>이 먼저 흡수하고, 헷지와의 어긋남은 <b>회계 특례</b>로 맞춥니다(IFRS17). 자본규제(K-ICS)도 같은 위험을 봅니다.</li>
+    </ul>
+    <p class="foot">아래는 근거 이론과 문헌(전문 용어 포함)입니다.</p>
+  </div>
   <div class="panel refs">
     <div class="cap">핵심 이론</div>
     <h3>1. 동적 헷지 (Greeks 기반 복제)</h3>
@@ -724,7 +754,7 @@ const FIN=[
   {id:"av", n:"적립금", u:"조", v:30, s:"변액 계정 규모"},
   {id:"fee",n:"보증수수료", u:"bp", v:50, s:"헷지 재원 = bp × 적립금"},
   {id:"csm",n:"CSM 잔액", u:"억", v:5000, s:"손실을 먼저 흡수하는 완충"},
-  {id:"voltol",n:"변동성 허용(1σ)", u:"억", v:1200, s:"허용 상한 · 얇은 CSM일수록 낮게(≈CSM÷1.65)"},
+  {id:"voltol",n:"손익 흔들림 허용", u:"억", v:1200, s:"참을 수 있는 연간 흔들림 상한 · 완충이 얇을수록 낮게"},
 ];
 const VOL=[
   {id:"ge",n:"주가 Γ", u:"억/1%", v:0.5, s:"코스피 1%당 감마"},
@@ -785,7 +815,7 @@ function renderSelect(){
     const dt=DIFF[r.diff], dtag=`<span class="difftag ${dt.c}">${dt.t}</span>`;
     if(r.kind==="na"){ html+=`<div class="selrow"><div class="sname">${r.n}<small>${r.note} · 이전 불가</small></div>${dtag}<div class="scost">완충 감내</div><span class="segfix">CSM</span></div>`; return; }
     let hint;
-    if(r.kind==="bp") hint = r.on? `헷지 −${won((r.bp||0)*AV)}억` : `감내(σ ${(r.exp||0).toFixed(1)})`;
+    if(r.kind==="bp") hint = r.on? `헷지 −${won((r.bp||0)*AV)}억` : `감내(흔들림 ${(r.exp||0).toFixed(1)})`;
     else { const {leak,prem}=leakPrem(r); const dep=r.dep?RISK.find(x=>x.id===r.dep).on:1;
       hint = !dep? `방향 미헷지` : r.on? `헷지 −${won(prem)}억` : `감내 −${won(leak)}억`; }
     html+=`<div class="selrow ${r.on?'selon':'seloff'}"><div class="sname">${r.n}<small>${r.note}</small></div>${dtag}<div class="scost mono">${hint}</div>
@@ -885,7 +915,7 @@ function drawEF(pts,fr,cur,opt,budget){
     g.push(`<line x1="${L}" y1="${gy.toFixed(1)}" x2="${W-R}" y2="${gy.toFixed(1)}" stroke="#EAEDF5" stroke-width="1"/>`);
     g.push(`<text class="eflabel" x="${L-6}" y="${(gy+3).toFixed(1)}" text-anchor="end">${won(yMax*(1-i/4))}</text>`); }
   for(let i=0;i<=4;i++){ g.push(`<text class="eflabel" x="${(L+iw*i/4).toFixed(1)}" y="${H-B+16}" text-anchor="middle">${won(xMax*i/4)}</text>`); }
-  g.push(`<text class="eflabel" x="${L+iw/2}" y="${H-4}" text-anchor="middle">남는 손익변동성 1σ (억)</text>`);
+  g.push(`<text class="eflabel" x="${L+iw/2}" y="${H-4}" text-anchor="middle">남는 손익 흔들림 (억, 클수록 불안정) →</text>`);
   g.push(`<text class="eflabel" x="14" y="${T+ih/2}" text-anchor="middle" transform="rotate(-90 14 ${T+ih/2})">연간 비용 (억)</text>`);
   const by=Y(budget);
   g.push(`<line x1="${L}" y1="${by.toFixed(1)}" x2="${W-R}" y2="${by.toFixed(1)}" stroke="var(--line)" stroke-width="2" stroke-dasharray="5 4" opacity="0.7"/>`);
@@ -904,7 +934,7 @@ function drawEF(pts,fr,cur,opt,budget){
   $("ef").innerHTML=g.join("");
   const tip=$("eftip");
   $("ef").querySelectorAll(".pt").forEach(el=>{ el.style.cursor="pointer";
-    el.addEventListener("mouseenter",()=>{ tip.innerHTML=`${el.dataset.fr?"<b style='color:var(--pay)'>프론티어</b>":"지배됨"}<br>변동성 <b>${won(+el.dataset.sig)}억</b><br>비용 <b>${won(+el.dataset.cost)}억</b>`; tip.style.opacity=1; });
+    el.addEventListener("mouseenter",()=>{ tip.innerHTML=`${el.dataset.fr?"<b style='color:var(--pay)'>최선 조합</b>":"더 나은 선택 있음"}<br>흔들림 <b>${won(+el.dataset.sig)}억</b><br>비용 <b>${won(+el.dataset.cost)}억</b>`; tip.style.opacity=1; });
     el.addEventListener("mousemove",ev=>{ tip.style.left=Math.min(ev.clientX+12,innerWidth-230)+"px"; tip.style.top=(ev.clientY+12)+"px"; });
     el.addEventListener("mouseleave",()=>tip.style.opacity=0); });
 }
@@ -950,9 +980,9 @@ function drawCompare(){
   const AV=val("av"), body=$("cmpTbl")?.querySelector("tbody"); if(!body)return;
   body.innerHTML=RISK.map(r=>{
     let hedged, borne;
-    if(r.kind==="bp"){ hedged="−"+won((r.bp||0)*AV)+"억"; borne="σ기여 "+(r.exp||0).toFixed(1); }
+    if(r.kind==="bp"){ hedged="−"+won((r.bp||0)*AV)+"억"; borne="흔들림 기여 "+(r.exp||0).toFixed(1); }
     else if(r.kind.startsWith("calc")){ const {leak,prem}=leakPrem(r); hedged="−"+won(prem)+"억"; borne="누수 "+won(leak)+"억"; }
-    else { hedged="—"; borne="σ기여 "+(r.exp||0).toFixed(1); }
+    else { hedged="—"; borne="흔들림 기여 "+(r.exp||0).toFixed(1); }
     const pill=r.cls==="PL"?`<span class="pill pl">PL</span>`:`<span class="pill csm">CSM</span>`;
     return `<tr><td>${r.n}<small>${r.note}</small></td><td class="mono" style="color:var(--pay)">${hedged}</td><td class="mono" style="color:var(--leak)">${borne}</td><td>${pill}</td></tr>`;
   }).join("");
@@ -1100,9 +1130,9 @@ function drawVolChart(){
   const cH={}; RISK.forEach(r=>cH[r.id]=r.on);
   const volAll=stratVol({}), volCur=stratVol(cH);   /* 전 항목 반영(방향·감마·베가·펀드·해지·모형) */
   $("volStat").innerHTML=`
-    <div><div class="sl">미헷지 연 손익변동성(1σ)</div><div class="sv" style="color:var(--sym)">±${won(volAll)}억</div></div>
-    <div><div class="sl">현재 전략(1σ)</div><div class="sv" style="color:var(--pay)">±${won(volCur)}억</div></div>
-    <div><div class="sl">헷지가 막은 변동성</div><div class="sv" style="color:var(--good)">${won(Math.max(0,volAll-volCur))}억</div></div>`;
+    <div><div class="sl">안 막을 때 손익 흔들림(연)</div><div class="sv" style="color:var(--sym)">±${won(volAll)}억</div></div>
+    <div><div class="sl">지금 전략의 흔들림(연)</div><div class="sv" style="color:var(--pay)">±${won(volCur)}억</div></div>
+    <div><div class="sl">헷지가 줄인 흔들림</div><div class="sv" style="color:var(--good)">${won(Math.max(0,volAll-volCur))}억</div></div>`;
   const W=640,H=280,L=52,R=14,T=14,B=26,iw=W-L-R,ih=H-T-B,g=[];
   const amp=Math.max(...wU.map(Math.abs),1)*1.1, n=wU.length;
   const X=i=>L+iw*i/(n-1), Y=v=>T+ih/2-(v/amp)*(ih/2);
@@ -1161,13 +1191,13 @@ function renderSim(){
   if(bd){ bd.innerHTML=RISK.map(r=>{ let proc,el,note,col;
     if(r.kind==="bp"){
       if(r.on){ proc='<span class="pill pl">PL</span>'; el="−"+won((r.bp||0)*AV)+"억"; note="헷지비용(확정)"; col="var(--pay)"; }
-      else { proc='<span class="pill csm">CSM</span>'; el="σ기여 "+(r.exp||0).toFixed(1); note="완충 감내"; col="var(--muted)"; }
+      else { proc='<span class="pill csm">CSM</span>'; el="흔들림 기여 "+(r.exp||0).toFixed(1); note="완충 감내"; col="var(--muted)"; }
     } else if(r.kind==="calcE"||r.kind==="calcR"){
       const dep=r.kind==="calcE"?dOn:rOn, rv=r.kind==="calcE"?avgRvE:avgRvR, iv=r.kind==="calcE"?ie:ir, G=r.kind==="calcE"?ge:gr;
       if(!dep){ proc='<span style="color:var(--muted)">—</span>'; el="—"; note="방향 미헷지 시 없음"; col="var(--muted)"; }
       else if(r.on){ proc='<span class="pill pl">PL</span>'; el="−"+won(gam(G,iv))+"억"; note="옵션 프리미엄(확정)"; col="var(--pay)"; }
       else { proc='<span class="pill csm">CSM</span>'; el="−"+won(gam(G,rv))+"억"; note="연평균 누수(실측)"; col="var(--leak)"; }
-    } else { proc='<span class="pill csm">CSM</span>'; el="σ기여 "+(r.exp||0).toFixed(1); note="이전 불가"; col="var(--muted)"; }
+    } else { proc='<span class="pill csm">CSM</span>'; el="흔들림 기여 "+(r.exp||0).toFixed(1); note="이전 불가"; col="var(--muted)"; }
     return `<tr><td>${r.n}</td><td>${proc}</td><td class="mono" style="color:${col}">${el}</td><td style="color:var(--muted);font-size:10.5px">${note}</td></tr>`;
   }).join(""); }
 }

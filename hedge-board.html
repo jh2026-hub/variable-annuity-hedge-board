@@ -347,74 +347,83 @@
 
 <!-- Q&A -->
 <section class="page" id="pqa">
-  <p class="lede">자주 나오는 질문을 <b>그림 위주</b>로 답합니다. 자세한 내용은 각 탭에서 볼 수 있습니다.</p>
+  <p class="lede">자주 나오는 질문을 <b>그림 위주</b>로, <b>쉬운 말로</b> 답합니다. 더 자세한 내용은 각 탭에 있습니다.</p>
 
   <div class="panel">
     <div class="qah"><div class="qan">Q1</div><div class="qat">헷지를 왜 해야 하나요? 🤔</div></div>
     <div style="display:flex;flex-direction:column;gap:9px;margin:4px 0 12px">
-      <div class="qabar"><span class="qalab">미헷지</span><div class="qatrack"><div style="width:100%;background:var(--bad)"></div></div><span class="qaval" style="color:var(--bad)">손익 변동성 큼</span></div>
-      <div class="qabar"><span class="qalab">헷지 후</span><div class="qatrack"><div style="width:20%;background:var(--good)"></div></div><span class="qaval" style="color:var(--good)">변동성 작음</span></div>
-    </div>
-    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
-      <span class="qchip">📈 펀드 자산 = 당기손익(PL)</span>
-      <span class="qchip">🧾 보증 부채 = VFA(변동을 CSM·OCI가 흡수)</span>
-      <span class="qchip">⚖️ 헷지 파생 = 당기손익</span>
+      <div class="qabar"><span class="qalab">안 하면</span><div class="qatrack"><div style="width:100%;background:var(--bad)"></div></div><span class="qaval" style="color:var(--bad)">손익이 크게 출렁</span></div>
+      <div class="qabar"><span class="qalab">하면</span><div class="qatrack"><div style="width:20%;background:var(--good)"></div></div><span class="qaval" style="color:var(--good)">흔들림이 작음</span></div>
     </div>
     <ul class="qalist">
-      <li>보증은 <b>하락을 막아 주는 옵션형 부채</b>라, 시장이 나쁠수록 부담이 급격히 커집니다.</li>
-      <li>헷지를 안 하면 이 변동이 그대로 손익이 됩니다 — <b>미헷지 변동성이 헷지비용보다 큽니다</b>(미헷지 = 변동성 자가보험).</li>
-      <li>회계상 자산·헷지는 당기손익, 보증부채는 VFA라 서로 어긋나는데, <b>위험경감옵션</b>으로 이 불일치를 맞춥니다.</li>
+      <li>회사는 고객에게 <b>"손실이 나도 최소한 이만큼은 보장"</b>을 약속했습니다. 이 약속은 <b>시장이 나쁠수록 부담이 확 커집니다</b>.</li>
+      <li>헷지를 <b>안 하면</b> 이 큰 출렁임이 그대로 회사 손익이 됩니다 — <b>안 할 때의 흔들림이 헷지 비용보다 큽니다</b>.</li>
+      <li>또 회계에서 <b>펀드·헷지 손익은 그 해 실적에 바로</b> 잡히지만 <b>보증의 변동은 완충(CSM)이 먼저 흡수</b>해, 서로 어긋납니다. 이 어긋남은 <b>회계 특례</b>로 맞춥니다.</li>
     </ul>
-    <div class="qref">근거 · IFRS17 위험경감옵션(B115–B118), VFA · 옵션 복제비용 이론 → ⑦ 이론</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">
+      <span class="qchip">📈 펀드·헷지 손익 → 그 해 실적</span>
+      <span class="qchip">🧾 보증 변동 → 완충(CSM)이 먼저 흡수</span>
+    </div>
+    <div class="qref">근거가 되는 문헌은 <b>⑦ 이론</b> 탭에 정리돼 있습니다.</div>
   </div>
 
   <div class="panel">
-    <div class="qah"><div class="qan">Q2</div><div class="qat">헷지했는데 왜 손익변동성이 0이 아닌가요? 〰️</div></div>
+    <div class="qah"><div class="qan">Q2</div><div class="qat">헷지했는데 왜 흔들림이 완전히 0이 아닌가요? 〰️</div></div>
     <div class="chartwrap"><svg viewBox="0 0 560 120" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
       <line x1="20" y1="60" x2="540" y2="60" stroke="#EAEDF5" stroke-width="1"/>
       <path d="M20 60 Q70 58 110 61 T200 40 T290 62 Q340 90 380 60 T470 45 T540 63" fill="none" stroke="var(--good)" stroke-width="2.4"/>
-      <text x="200" y="30" fill="var(--leak)" font-size="10" text-anchor="middle" font-weight="700">감마 누수(급변 딥)</text>
-      <text x="380" y="102" fill="var(--muted)" font-size="10" text-anchor="middle">펀드 성과차·베가·해지</text>
-      <text x="24" y="52" fill="var(--good)" font-size="10" font-weight="700">헷지 후: 좁게 흔들림</text>
+      <text x="200" y="30" fill="var(--leak)" font-size="10" text-anchor="middle" font-weight="700">급변 때 새는 부분</text>
+      <text x="380" y="102" fill="var(--muted)" font-size="10" text-anchor="middle">펀드 성과 차이 · 변동성 · 해지</text>
+      <text x="24" y="52" fill="var(--good)" font-size="10" font-weight="700">헷지 후: 좁게만 흔들림</text>
     </svg></div>
     <ul class="qalist">
-      <li>방향(주가·금리)은 잡아도, <b>시장이 크게 움직일 때 헷지가 못 따라가는 감마 누수</b>가 남습니다.</li>
-      <li>펀드와 지수의 <b>성과 차이</b>, 변동성 자체의 변화(<b>베가</b>), 해지율 등은 완전히 없앨 수 없습니다.</li>
-      <li>그래서 헷지의 목표는 <b>0이 아니라 "예측 가능한 좁은 밴드"</b>입니다.</li>
+      <li>값의 <b>오르내림(방향)</b>은 막아도, <b>시장이 크게 출렁일 때 헷지가 못 따라가 새는 부분</b>이 남습니다.</li>
+      <li>우리 <b>펀드와 시장(지수)의 성과 차이</b>, <b>출렁임 자체가 커지는 것</b>, 고객 <b>해지</b> 등은 완전히 없앨 수 없습니다.</li>
+      <li>그래서 목표는 <b>0이 아니라 "예측 가능한 좁은 폭"</b>으로 잡아 두는 것입니다.</li>
     </ul>
   </div>
 
   <div class="panel">
-    <div class="qah"><div class="qan">Q3</div><div class="qat">어떻게 헷지하나요? 무슨 지식·난이도? 🧗</div></div>
-    <div style="display:flex;flex-direction:column;gap:8px;margin:4px 0 12px">
-      <div class="qstep"><span class="qstepn" style="background:var(--good)">1</span><div><b>방향(델타·금리) 헷지</b> · 선물·스왑 <span class="qstar" style="color:var(--good)">★</span><small>쉬움</small></div></div>
-      <div class="qstep"><span class="qstepn" style="background:var(--pay)">2</span><div><b>곡률(감마) 헷지</b> · 옵션·스왑션 <span class="qstar" style="color:var(--pay)">★★</span><small>중간</small></div></div>
-      <div class="qstep"><span class="qstepn" style="background:var(--leak)">3</span><div><b>변동성(베가)·큰 하락 방어</b> · 옵션 <span class="qstar" style="color:var(--leak)">★★★</span><small>어려움</small></div></div>
+    <div class="qah"><div class="qan">Q3</div><div class="qat">어떻게 헷지하나요? 사람·전문성·난이도는? 🧗</div></div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:700">막는 단계 (뒤로 갈수록 어렵고 비쌈)</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin:0 0 14px">
+      <div class="qstep"><span class="qstepn" style="background:var(--good)">1</span><div><b>값의 오르내림 막기</b> · 선물·스왑 <span class="qstar" style="color:var(--good)">★</span><small>쉬움 · 거의 상시</small></div></div>
+      <div class="qstep"><span class="qstepn" style="background:var(--pay)">2</span><div><b>급변까지 막기</b> · 옵션 <span class="qstar" style="color:var(--pay)">★★</span><small>중간</small></div></div>
+      <div class="qstep"><span class="qstepn" style="background:var(--leak)">3</span><div><b>출렁임·큰 하락까지 막기</b> · 옵션 <span class="qstar" style="color:var(--leak)">★★★</span><small>어려움</small></div></div>
+    </div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:700">필요한 사람 (전담 팀)</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
+      <span class="qchip">💼 파생 트레이더 <span style="color:var(--muted)">· 헷지 실행</span></span>
+      <span class="qchip">📐 퀀트·모델러 <span style="color:var(--muted)">· 위험 계산</span></span>
+      <span class="qchip">🛡️ 리스크 관리 <span style="color:var(--muted)">· 한도·감시</span></span>
+      <span class="qchip">🧮 회계·계리 <span style="color:var(--muted)">· 결산 반영</span></span>
+      <span class="qchip">🖥️ 시스템·데이터 <span style="color:var(--muted)">· 실시간 계산</span></span>
     </div>
     <div style="font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:700">필요한 것</div>
-    <div style="display:flex;flex-wrap:wrap;gap:6px">
-      <span class="qchip">📐 옵션 가격·복제 이론</span>
-      <span class="qchip">🎛️ 실시간 리스크 시스템(그릭·시나리오)</span>
-      <span class="qchip">🧮 IFRS17·K-ICS 회계 정합</span>
-      <span class="qchip">💧 담보·유동성 운영</span>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
+      <span class="qchip">📊 옵션 계산 지식</span>
+      <span class="qchip">🎛️ 실시간 위험 관리 시스템</span>
+      <span class="qchip">📒 회계·자본규제 반영</span>
+      <span class="qchip">💧 증거금·현금 관리</span>
     </div>
+    <div style="background:#FBEEF1;border:1px solid #E7B9C2;border-radius:9px;padding:10px 12px;font-size:12.5px;color:var(--ink);line-height:1.6"><b>난이도 요약</b> — 방향 막기는 비교적 쉽지만, 급변·출렁임까지 막으려면 <b>고도 전문 인력이 상시 붙어</b> 매일 계산·조정해야 합니다. 그래서 <b>사람·시스템에 대한 지속 투자</b>가 전제입니다.</div>
   </div>
 
   <div class="panel">
     <div class="qah"><div class="qan">Q4</div><div class="qat">어떻게 관리해야 하나요? 🧭</div></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:4px 0 12px">
       <div style="border:1.5px solid var(--good);border-radius:10px;padding:11px;background:#EAF7F1">
-        <div style="font-weight:800;color:var(--good);font-size:13px">✅ 헷지 가능한 건 최대한</div>
-        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px">능동적으로 <b>관리 가능</b>. 손익이 좁은 밴드 안에 머무릅니다.</div>
+        <div style="font-weight:800;color:var(--good);font-size:13px">✅ 막을 수 있는 건 최대한 막기</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px"><b>직접 관리 가능</b>. 손익이 좁은 폭 안에서 움직입니다.</div>
       </div>
       <div style="border:1.5px solid #E7B9C2;border-radius:10px;padding:11px;background:#FBEEF1">
-        <div style="font-weight:800;color:var(--bad);font-size:13px">⚠️ CSM으로 감내(방치)</div>
-        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px"><b>관리가 아니라</b> 장기평균에 기대는 선택. 나쁜 해엔 완충을 넘어 <b>손익으로 터집니다</b>.</div>
+        <div style="font-weight:800;color:var(--bad);font-size:13px">⚠️ 완충(CSM)에 맡기고 방치</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px"><b>관리가 아니라</b> "평소 평균은 괜찮겠지"에 기대는 것. 나쁜 해엔 완충을 넘어 <b>손익으로 터집니다</b>.</div>
       </div>
     </div>
     <ul class="qalist">
-      <li><b>원칙: 넘길 수 있는 위험은 최대한 헷지</b>하는 것이 유리합니다 — 통제 가능한 상태로 둡니다.</li>
-      <li>완충(CSM)이 <b>얇을수록</b> 감내의 위험이 커집니다 → 헷지 압력이 강해집니다(④ PL 인식).</li>
+      <li><b>원칙: 막을 수 있는 위험은 최대한 막는 것</b>이 유리합니다 — 회사가 통제할 수 있는 상태로 둡니다.</li>
+      <li>완충(CSM)이 <b>얇을수록</b> 방치의 위험이 커집니다 → 그만큼 <b>헷지를 더 해야 하는 압력</b>이 커집니다(④ PL 인식).</li>
     </ul>
   </div>
 </section>

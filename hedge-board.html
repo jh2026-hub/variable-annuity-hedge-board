@@ -95,6 +95,12 @@
   .cbtrack{flex:1 1 auto;height:20px;background:var(--panel2);border:1px solid var(--hair);border-radius:6px;overflow:hidden}
   .cbfill{height:100%;border-radius:6px;transition:width .3s}
   .cbamt{flex:0 0 auto;font-size:12px;font-weight:700;min-width:78px;text-align:right}
+  .cbgrp{margin:12px 0;padding-bottom:9px;border-bottom:1px solid var(--hair)}
+  .cbgrp:last-child{border-bottom:none}
+  .cbtitle{font-size:12.5px;font-weight:700;margin-bottom:5px}
+  .cbrow2{display:flex;align-items:center;gap:8px;margin:3px 0}
+  .cbtag{flex:0 0 42px;font-size:10.5px;color:var(--muted)}
+  .cbtrack.sm{height:13px}
   .scost{flex:0 0 auto;font-size:11.5px;color:var(--muted);text-align:right;min-width:84px}
   .seg2{display:inline-flex;border:1px solid var(--hair);border-radius:9px;overflow:hidden;box-shadow:0 1px 2px rgba(20,32,55,.06)}
   .seg2 button{background:#FFFFFF;border:none;color:var(--muted);font-family:inherit;font-size:12.5px;font-weight:700;padding:9px 15px;cursor:pointer;min-height:42px;transition:.12s}
@@ -235,55 +241,52 @@
 
   <div class="panel concept">
     <div class="cap">보증수수료는 헷지의 재원</div>
-    <div class="chartwrap"><svg viewBox="0 0 640 170" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
-      <rect x="20" y="60" width="140" height="50" rx="8" fill="#E7EFFD" stroke="#9DBBF3"/>
-      <text x="90" y="82" fill="#3B6FE6" font-size="13" font-weight="700" text-anchor="middle" font-family="sans-serif">보증수수료</text>
-      <text x="90" y="99" fill="#566275" font-size="10" text-anchor="middle" font-family="sans-serif">헷지 재원</text>
-      <line x1="160" y1="85" x2="215" y2="85" stroke="#AAB4C6" stroke-width="2" marker-end="url(#ar)"/>
-      <rect x="220" y="18" width="150" height="42" rx="8" fill="#EEF1F8" stroke="#C9D2E2"/>
-      <text x="295" y="38" fill="#3B6FE6" font-size="12" font-weight="700" text-anchor="middle" font-family="sans-serif">헷지 비용</text>
-      <text x="295" y="52" fill="#566275" font-size="9.5" text-anchor="middle" font-family="sans-serif">변동을 확정 비용으로</text>
-      <rect x="220" y="70" width="150" height="42" rx="8" fill="#EEF1F8" stroke="#C9D2E2"/>
-      <text x="295" y="90" fill="#E68A17" font-size="12" font-weight="700" text-anchor="middle" font-family="sans-serif">변동성 감내</text>
-      <text x="295" y="104" fill="#566275" font-size="9.5" text-anchor="middle" font-family="sans-serif">CSM 완충으로 흡수</text>
-      <line x1="160" y1="75" x2="215" y2="40" stroke="#9DBBF3" stroke-width="1.5"/>
-      <line x1="160" y1="95" x2="215" y2="90" stroke="#F1D7A3" stroke-width="1.5"/>
-      <line x1="370" y1="39" x2="425" y2="80" stroke="#AAB4C6" stroke-width="1.5"/>
-      <line x1="370" y1="91" x2="425" y2="85" stroke="#AAB4C6" stroke-width="1.5"/>
-      <rect x="430" y="60" width="130" height="50" rx="8" fill="#E4F6EE" stroke="#A7E3C6"/>
-      <text x="495" y="82" fill="#12A870" font-size="13" font-weight="700" text-anchor="middle" font-family="sans-serif">남는 이익</text>
-      <text x="495" y="99" fill="#566275" font-size="10" text-anchor="middle" font-family="sans-serif">재원 − 비용 − 누수</text>
-      <text x="320" y="150" fill="#566275" font-size="10.5" text-anchor="middle" font-family="sans-serif">감내분은 CSM을 조정하고, 완충이 소진되면 보험손익(PL)으로 인식됩니다.</text>
-      <circle r="4.5" fill="#3B6FE6"><animate attributeName="cx" values="162;218" dur="1.8s" repeatCount="indefinite"/><animate attributeName="cy" values="85;40" dur="1.8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.2" dur="1.8s" repeatCount="indefinite"/></circle>
-      <circle r="4.5" fill="#E68A17"><animate attributeName="cx" values="162;218" dur="1.8s" begin="0.4s" repeatCount="indefinite"/><animate attributeName="cy" values="85;91" dur="1.8s" begin="0.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.2" dur="1.8s" begin="0.4s" repeatCount="indefinite"/></circle>
-      <circle r="4.5" fill="#12A870"><animate attributeName="cx" values="372;428" dur="1.8s" begin="0.9s" repeatCount="indefinite"/><animate attributeName="cy" values="65;85" dur="1.8s" begin="0.9s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.2" dur="1.8s" begin="0.9s" repeatCount="indefinite"/></circle>
-      <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#AAB4C6"/></marker></defs>
+    <div class="chartwrap"><svg viewBox="0 0 640 168" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
+      <defs><marker id="ar" markerWidth="7" markerHeight="7" refX="5.5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#AAB4C6"/></marker></defs>
+      <path d="M164 70 C196 46 196 40 216 39" fill="none" stroke="#AAB4C6" stroke-width="1.6" marker-end="url(#ar)"/>
+      <path d="M164 90 C196 91 196 91 216 91" fill="none" stroke="#AAB4C6" stroke-width="1.6" marker-end="url(#ar)"/>
+      <path d="M372 39 C404 40 404 46 424 70" fill="none" stroke="#AAB4C6" stroke-width="1.6" marker-end="url(#ar)"/>
+      <path d="M372 91 C404 91 404 91 424 90" fill="none" stroke="#AAB4C6" stroke-width="1.6" marker-end="url(#ar)"/>
+      <rect x="20" y="58" width="144" height="46" rx="9" fill="#E7EFFD" stroke="#9DBBF3"/>
+      <text x="92" y="80" fill="#3B6FE6" font-size="13" font-weight="700" text-anchor="middle" font-family="sans-serif">보증수수료</text>
+      <text x="92" y="96" fill="#566275" font-size="10" text-anchor="middle" font-family="sans-serif">헷지 재원</text>
+      <rect x="220" y="20" width="152" height="40" rx="9" fill="#EEF1F8" stroke="#C9D2E2"/>
+      <text x="296" y="38" fill="#3B6FE6" font-size="12" font-weight="700" text-anchor="middle" font-family="sans-serif">헷지 비용</text>
+      <text x="296" y="52" fill="#566275" font-size="9.5" text-anchor="middle" font-family="sans-serif">변동을 확정 비용으로</text>
+      <rect x="220" y="72" width="152" height="40" rx="9" fill="#FBF1E2" stroke="#F1D7A3"/>
+      <text x="296" y="90" fill="#E68A17" font-size="12" font-weight="700" text-anchor="middle" font-family="sans-serif">변동성 감내</text>
+      <text x="296" y="104" fill="#566275" font-size="9.5" text-anchor="middle" font-family="sans-serif">CSM 완충으로 흡수</text>
+      <rect x="428" y="58" width="136" height="46" rx="9" fill="#E4F6EE" stroke="#A7E3C6"/>
+      <text x="496" y="80" fill="#12A870" font-size="13" font-weight="700" text-anchor="middle" font-family="sans-serif">남는 이익</text>
+      <text x="496" y="96" fill="#566275" font-size="10" text-anchor="middle" font-family="sans-serif">재원 − 비용 − 누수</text>
+      <text x="320" y="146" fill="#566275" font-size="10.5" text-anchor="middle" font-family="sans-serif">감내분은 CSM을 조정하고, 완충이 소진되면 보험손익(PL)으로 인식됩니다.</text>
     </svg></div>
     <p style="font-size:13px;color:var(--muted);line-height:1.75;margin-top:6px">보증수수료라는 한정된 재원에서 <b style="color:var(--ink)">헷지 비용</b>과 <b style="color:var(--ink)">감내한 변동성의 손실</b>이 차감되고, 남는 것이 이익이 됩니다. 재원을 넘어서면 지속이 어렵습니다.</p>
   </div>
 
   <div class="panel concept">
     <div class="cap">핵심 트레이드오프 — 비용과 손익변동성</div>
-    <div class="chartwrap"><svg viewBox="0 0 640 200" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
-      <line x1="60" y1="20" x2="60" y2="165" stroke="#AAB4C6" stroke-width="1.5"/>
-      <line x1="60" y1="165" x2="600" y2="165" stroke="#AAB4C6" stroke-width="1.5"/>
-      <text x="52" y="30" fill="#566275" font-size="10" text-anchor="end" font-family="sans-serif">비용↑</text>
-      <text x="595" y="182" fill="#566275" font-size="10" text-anchor="end" font-family="sans-serif">손익변동성↑</text>
-      <path d="M100 40 C220 55 300 120 560 150" fill="none" stroke="#3B6FE6" stroke-width="2.5"/>
-      <line x1="60" y1="95" x2="600" y2="95" stroke="#1B2437" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.7"/>
-      <text x="596" y="90" fill="#1B2437" font-size="10" text-anchor="end" font-family="sans-serif">예산(보증수수료)</text>
-      <circle cx="100" cy="40" r="5" fill="#3B6FE6"/><text x="110" y="38" fill="#3B6FE6" font-size="10.5" font-family="sans-serif">완전 헷지 — 변동성↓ 비용↑</text>
-      <circle cx="560" cy="150" r="5" fill="#E68A17"/><text x="552" y="147" fill="#E68A17" font-size="10.5" text-anchor="end" font-family="sans-serif">미헷지 — 비용0 변동성↑</text>
-      <circle cx="292" cy="95" r="7" fill="none" stroke="#12A870" stroke-width="2.5"><animate attributeName="r" values="7;11;7" dur="1.9s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0.45;1" dur="1.9s" repeatCount="indefinite"/></circle><text x="300" y="112" fill="#12A870" font-size="10.5" font-family="sans-serif">예산 내 최적</text>
-      <circle r="4.5" fill="#7A5AF0"><animateMotion dur="3.4s" repeatCount="indefinite" path="M100 40 C220 55 300 120 560 150"/></circle>
+    <div class="chartwrap"><svg viewBox="0 0 640 214" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
+      <line x1="62" y1="24" x2="62" y2="182" stroke="#AAB4C6" stroke-width="1.5"/>
+      <line x1="62" y1="182" x2="602" y2="182" stroke="#AAB4C6" stroke-width="1.5"/>
+      <text x="54" y="34" fill="#566275" font-size="10" text-anchor="end" font-family="sans-serif">비용↑</text>
+      <text x="598" y="199" fill="#566275" font-size="10" text-anchor="end" font-family="sans-serif">손익변동성↑</text>
+      <line x1="62" y1="112" x2="602" y2="112" stroke="#1B2437" stroke-width="1.4" stroke-dasharray="5 4" opacity="0.65"/>
+      <text x="598" y="107" fill="#1B2437" font-size="10" text-anchor="end" font-family="sans-serif">예산(보증수수료)</text>
+      <path d="M104 52 C232 74 330 150 560 176" fill="none" stroke="#3B6FE6" stroke-width="2.5"/>
+      <circle cx="104" cy="52" r="5" fill="#3B6FE6"/><text x="116" y="50" fill="#3B6FE6" font-size="10.5" font-family="sans-serif">완전 헷지 · 변동성↓ 비용↑</text>
+      <line x1="298" y1="112" x2="352" y2="94" stroke="#12A870" stroke-width="1.2"/>
+      <circle cx="298" cy="112" r="7" fill="none" stroke="#12A870" stroke-width="2.5"><animate attributeName="r" values="7;11;7" dur="1.9s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0.45;1" dur="1.9s" repeatCount="indefinite"/></circle>
+      <text x="356" y="92" fill="#12A870" font-size="10.5" font-weight="700" font-family="sans-serif">예산 내 최적</text>
+      <circle cx="560" cy="176" r="5" fill="#E68A17"/><text x="548" y="150" fill="#E68A17" font-size="10.5" text-anchor="end" font-family="sans-serif">미헷지 · 비용 0</text>
     </svg></div>
     <p style="font-size:13px;color:var(--muted);line-height:1.75;margin-top:6px">헷지를 늘리면 <b style="color:var(--ink)">손익변동성은 줄지만 비용은 증가</b>합니다. 반대로 감내를 늘리면 비용은 줄지만 변동성이 커집니다. 최선은 <b style="color:var(--ink)">보증수수료 예산 안에서 변동성을 가장 낮추는 조합</b>이며, 이를 <b>④ 비용·변동성</b> 탭에서 효율적 프론티어로 계산합니다.</p>
   </div>
 
   <div class="panel concept">
-    <div class="cap">헷지 조합에 따른 손익변동성<span>실제 시장데이터 기준</span></div>
+    <div class="cap">헷지 조합 — 손익변동성과 비용<span>실제 시장데이터 기준</span></div>
     <div id="comboBars"><div class="foot">데이터 불러오는 중…</div></div>
-    <p style="font-size:13px;color:var(--muted);line-height:1.75;margin-top:6px">헷지를 단계적으로 늘릴수록 연간 손익변동성(1σ)이 줄어듭니다. <b>방향(주가·금리)</b>만 헷지해도 크게 줄고, <b>감마·변동성</b>까지 헷지하면 더 줄지만 비용이 커집니다.</p>
+    <p style="font-size:13px;color:var(--muted);line-height:1.75;margin-top:6px">막대는 두 축입니다 — <b style="color:var(--ink)">변동성(1σ)</b>과 <b style="color:var(--leak)">연간 비용</b>. <b>미헷지</b>는 비용은 없지만 변동성이 가장 큽니다. <b>방향(주가·금리)</b>만 헷지하면 변동성은 크게 줄지만, 그 순간 <b style="color:var(--ink)">감마가 누수 비용으로 드러납니다</b> — 방향 헷지는 공짜가 아닙니다. <b>감마까지 헷지</b>하면 누수가 확정 프리미엄으로 바뀌고(변동성 더 감소), <b>변동성 등</b>까지 헷지하면 변동성은 최소가 되나 비용이 가장 커집니다.</p>
   </div>
 
   <div class="panel concept">
@@ -400,14 +403,14 @@
     <div class="cap">수단별 payoff 미리보기<span>바를 움직여 손익 형태를 확인</span></div>
     <div class="pobtns" id="poBtns">
       <button data-t="lin" class="on">선물·스왑(선형)</button>
-      <button data-t="put">풋옵션 매수</button>
+      <button data-t="put">옵션 매수(곡률 방어)</button>
       <button data-t="none">미헷지</button>
     </div>
     <div style="margin:10px 0 2px"><label class="foot" style="margin:0">기초자산 변동 <b class="mono" id="poLab" style="color:var(--pay)">0%</b></label>
       <input type="range" id="poX" min="-30" max="30" step="1" value="0"></div>
     <div class="chartwrap"><svg id="poSvg" viewBox="0 0 560 220" style="width:100%;height:auto"></svg></div>
     <div class="foot" id="poRead" style="margin-top:4px"></div>
-    <p class="foot"><b>부채(회색)</b> 노출에 <b>수단(청록)</b>을 더하면 <b>합(초록)</b>이 됩니다. <b>선물·스왑</b>은 합이 완전히 평탄해지고(방향 완전 상쇄), <b>풋옵션</b>은 하락만 막고 상승은 유지하되 프리미엄을 냅니다(비대칭). <b>미헷지</b>는 부채 노출이 그대로 남습니다. (개념적 상대값)</p>
+    <p class="foot"><b>부채(회색)</b>는 <b>곡선</b>입니다 — 방향(기울기)뿐 아니라 <b>곡률(감마)</b>을 가집니다(보증의 옵션성). <b>선물·스왑(선형)</b>은 기울기만 상쇄해 <b>합에 곡률(감마 손실)이 남습니다</b>. <b>옵션 매수</b>는 곡률까지 잡아 합이 평탄해지지만 <b>프리미엄</b>을 냅니다. <b>미헷지</b>는 부채 곡선 그대로입니다. (개념적 상대값)</p>
   </div>
   <div class="panel concept">
     <div class="cap">비용 vs 효과 요약</div>
@@ -503,7 +506,10 @@
       <li>금융감독원 (2022). 「보험회사 신지급여력제도(K-ICS) 해설서」(2022.12).</li>
       <li>IASB, <i>IFRS 17 Insurance Contracts</i> — 위험경감선택권(B115–B118), 변동수수료접근법(VFA).</li>
     </ol>
-    <p class="foot">※ 링크 항목은 검색으로 실재를 확인하였다. DOI·권/호/페이지는 통상 인용값이므로 정식 인용 전 원저널 대조를 권장합니다. Leland(1985)는 원논문 주정리의 결함이 후속연구에서 지적되어 "실무 근사"로 인용하는 것이 정확합니다.</p>
+    <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--hair)">
+      <div style="font-size:13px;font-weight:700;color:var(--ink)">문의하실 곳</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:4px">010-2059-4228</div>
+    </div>
   </div>
 </section>
 
@@ -770,6 +776,21 @@ function stratVol(hs){
   let nm=0; ['vega','fund','lapse','model'].forEach(id=>{ const r=RISK.find(x=>x.id===id), on=(id==='model')?false:!!hs[id]; if(!on) nm+=Math.pow((r.exp||0)*NM_SCALE,2); });
   return Math.sqrt(mv*mv+nm);
 }
+/* 전략 조합의 연간 비용(억) — 방향 헷지 프리미엄≈0(선물·스왑), 감마·변동성 헷지는 프리미엄, 감내 시 감마는 실현변동성 누수 */
+function stratCost(hs){
+  if(!SIM.loaded) return 0;
+  const d=SIM.data, rk=SIM.rateKey, ge=val("ge"),gr=val("gr"),ie=val("ie"),ir=val("ir");
+  let lE=0,lR=0; const yrs=Math.max((d.dates.length-1)/252,1e-6);
+  for(let i=1;i<d.dates.length;i++){
+    const rEqPct=(d.eq[i]/d.eq[i-1]-1)*100, dRtBp=(d[rk][i]-d[rk][i-1])*100;
+    lE+=gam(ge,rEqPct); lR+=gam(gr,dRtBp);
+  }
+  let cost=0;
+  if(hs.delta) cost += hs.gE ? gam(ge,ie) : lE/yrs;   /* 감마(주가): 헷지=IV프리미엄 확정 / 감내=RV 누수 */
+  if(hs.rho)   cost += hs.gR ? gam(gr,ir) : lR/yrs;   /* 감마(금리) */
+  ['vega','fund','lapse'].forEach(id=>{ if(hs[id]){ const r=RISK.find(x=>x.id===id); cost += (r.exp||0)*NM_SCALE*0.12; } });
+  return cost;
+}
 function renderConceptCombo(){
   const box=$("comboBars"); if(!box||!SIM.loaded)return;
   const combos=[
@@ -777,11 +798,15 @@ function renderConceptCombo(){
     {n:"방향 헷지",         hs:{delta:1,rho:1}},
     {n:"방향+감마",         hs:{delta:1,rho:1,gE:1,gR:1}},
     {n:"방향+감마+변동성 등", hs:{delta:1,rho:1,gE:1,gR:1,vega:1,fund:1,lapse:1}},
-  ].map(c=>({...c, v:stratVol(c.hs)}));
-  const mx=Math.max(...combos.map(c=>c.v),1);
+  ].map(c=>({...c, v:stratVol(c.hs), c:stratCost(c.hs)}));
+  const mxV=Math.max(...combos.map(c=>c.v),1), mxC=Math.max(...combos.map(c=>c.c),1);
   box.innerHTML=combos.map((c,i)=>{
-    const w=(c.v/mx*100).toFixed(1), col=i===0?'var(--sym)':i===combos.length-1?'var(--good)':'var(--pay)';
-    return `<div class="cbrow"><div class="cblab">${c.n}</div><div class="cbtrack"><div class="cbfill" style="width:${w}%;background:${col}"></div></div><div class="cbamt mono">±${won(c.v)}억</div></div>`;
+    const wv=(c.v/mxV*100).toFixed(1), wc=(c.c/mxC*100).toFixed(1);
+    const col=i===0?'var(--sym)':i===combos.length-1?'var(--good)':'var(--pay)';
+    return `<div class="cbgrp"><div class="cbtitle">${c.n}</div>`
+      +`<div class="cbrow2"><div class="cbtag">변동성</div><div class="cbtrack sm"><div class="cbfill" style="width:${wv}%;background:${col}"></div></div><div class="cbamt mono">±${won(c.v)}억</div></div>`
+      +`<div class="cbrow2"><div class="cbtag">비용</div><div class="cbtrack sm"><div class="cbfill" style="width:${wc}%;background:var(--leak)"></div></div><div class="cbamt mono">${c.c<1?'0':won(c.c)}억</div></div>`
+      +`</div>`;
   }).join("");
 }
 function yearStats(){
@@ -961,9 +986,9 @@ const PO={t:"lin"};
 function renderPayoff(){
   if(!$("poSvg"))return; const x=parseFloat($("poX").value)||0, prem=3;
   $("poLab").textContent=(x>0?"+":"")+x+"%";
-  const NAME={lin:"선물·스왑(선형)",put:"풋옵션 매수",none:"미헷지"}[PO.t];
-  const liab=v=>v;                                             /* 부채 노출: 시장↑ 이득, ↓ 손실 */
-  const hedge={lin:v=>-v, put:v=>Math.max(-v,0)-prem, none:v=>0}[PO.t];
+  const NAME={lin:"선물·스왑(선형)",put:"옵션 매수(곡률 방어)",none:"미헷지"}[PO.t];
+  const c=0.010, liab=v=>v-c*v*v;                              /* 부채: 방향(기울기)+곡률(감마) — 옵션성 */
+  const hedge={lin:v=>-v, put:v=>-v+c*v*v-prem, none:v=>0}[PO.t];  /* 선형: 기울기만 / 풋(옵션): 곡률까지 상쇄+프리미엄 */
   const net=v=>liab(v)+hedge(v);
   const W=560,H=220,L=44,R=14,T=14,B=26,iw=W-L-R,ih=H-T-B,g=[];
   const xMin=-30,xMax=30,yr=34, X=v=>L+(v-xMin)/(xMax-xMin)*iw, Y=v=>T+ih/2-(Math.max(-yr,Math.min(yr,v))/yr)*(ih/2);

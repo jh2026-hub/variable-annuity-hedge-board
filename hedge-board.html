@@ -816,7 +816,7 @@ const FIN=[
   {id:"voltol",n:"손익 흔들림 허용", u:"억", v:1200, s:"참을 수 있는 연간 흔들림 상한 · 완충이 얇을수록 낮게"},
 ];
 const VOL=[
-  {id:"ge",n:"주가 Γ", u:"억/1%", v:0.5, s:"코스피 1%당 감마"},
+  {id:"ge",n:"주가 Γ", u:"억/1%", v:1.2, s:"코스피 1%당 감마"},
   {id:"re",n:"주가 RV", u:"%", v:26, s:"실현변동성(연) · 시장 실측 ≈26%"},
   {id:"ie",n:"주가 IV", u:"%", v:30, s:"내재변동성(옵션가) · RV+위험프리미엄"},
   {id:"gr",n:"금리 Γ", u:"억/bp", v:0.2, s:"1bp당 컨벡시티"},
@@ -1295,8 +1295,11 @@ const VIZ={
     b:`<svg class="anim" viewBox="0 0 120 84"><line x1="12" y1="42" x2="108" y2="42" stroke="#AAB4C6" stroke-width="1" stroke-dasharray="3 2"/><line x1="12" y1="66" x2="108" y2="18" stroke="#7A5AF0" stroke-width="2.5"/><g transform="translate(12,66)"><circle class="a-dot" r="5" fill="#7A5AF0"/></g><text x="60" y="79" fill="#566275" font-size="8" text-anchor="middle">오르내림 = 손익 ±</text></svg>`,
     a:`<svg class="anim" viewBox="0 0 120 84"><line x1="12" y1="44" x2="108" y2="44" stroke="#AAB4C6" stroke-width="1" stroke-dasharray="3 2"/><line x1="12" y1="66" x2="96" y2="20" stroke="#7A5AF0" stroke-width="1.5" opacity="0.5"/><line x1="12" y1="22" x2="96" y2="68" stroke="#3B6FE6" stroke-width="1.5" opacity="0.5"/><g transform="translate(12,66)"><circle class="a-dot" r="3.5" fill="#7A5AF0" opacity="0.75"/></g><g transform="translate(12,22)"><circle class="a-dot-dn" r="3.5" fill="#3B6FE6" opacity="0.75"/></g><g transform="translate(12,44)"><circle class="a-dot-flat" r="5" fill="#12A870"/></g><text x="60" y="79" fill="#12A870" font-size="8" text-anchor="middle">부채+헷지 = 손익 0</text></svg>`},
   gamma:{
-    b:`<svg class="anim" viewBox="0 0 120 84"><path d="M10 36 L110 36 L110 66 Q60 6 10 66 Z" fill="#E24A62" opacity="0.20"/><path d="M10 66 Q60 6 110 66" fill="none" stroke="#566275" stroke-width="2"/><line x1="10" y1="36" x2="110" y2="36" stroke="#7A5AF0" stroke-width="1.6" stroke-dasharray="4 3"/><text x="13" y="33" fill="#7A5AF0" font-size="7.5">접선(델타)</text><g transform="translate(88,36)"><rect class="a-gap" x="-1.5" y="0" width="3.5" height="26" fill="#E24A62"/></g><g transform="translate(46,44)"><circle class="a-spot" r="4" fill="#1B2437"/></g><text x="60" y="79" fill="#E24A62" font-size="8" text-anchor="middle" font-weight="700">부족분=손실(항상)</text></svg>`,
-    a:`<svg class="anim" viewBox="0 0 120 84"><path d="M12 40 Q60 18 108 40" fill="none" stroke="#AAB4C6" stroke-width="2"/><path class="a-fade" d="M12 40 Q60 62 108 40" fill="none" stroke="#3B6FE6" stroke-width="2.5"/><line x1="12" y1="40" x2="108" y2="40" stroke="#12A870" stroke-width="3"/><text x="13" y="25" fill="#566275" font-size="7.5">부채(매도옵션)</text><text x="13" y="58" fill="#3B6FE6" font-size="7.5">매입 옵션</text><text x="60" y="79" fill="#12A870" font-size="7.5" text-anchor="middle" font-weight="700">합쳐서 평탄 · 프리미엄</text></svg>`},
+    b:`<svg class="anim" viewBox="0 0 120 84"><path d="M10 36 L110 36 L110 66 Q60 6 10 66 Z" fill="#E24A62" opacity="0.16"/><path d="M10 66 Q60 6 110 66" fill="none" stroke="#566275" stroke-width="2"/><line x1="10" y1="36" x2="110" y2="36" stroke="#7A5AF0" stroke-width="1.6" stroke-dasharray="4 3"/><text x="13" y="33" fill="#7A5AF0" font-size="7">접선(델타)</text><circle r="3.6" fill="#1B2437"><animateMotion dur="2.2s" repeatCount="indefinite" path="M60 6 Q88 22 110 66"/></circle><g transform="translate(110,66)"><circle r="0" fill="none" stroke="#E24A62" stroke-width="2.4"><animate attributeName="r" values="0;17;0" dur="2.2s" begin="1.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0;0" dur="2.2s" begin="1.4s" repeatCount="indefinite"/></circle><text x="0" y="4.5" font-size="14" text-anchor="middle"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.6;0.66;1" dur="2.2s" repeatCount="indefinite"/>💥</text></g><text x="60" y="80" fill="#E24A62" font-size="7.5" text-anchor="middle" font-weight="700">멀어질수록 부족분↑ → 끝에서 폭발</text></svg>`,
+    a:`<svg class="anim" viewBox="0 0 120 84"><path d="M14 44 L106 44 L106 54 Q60 30 14 54 Z" fill="#12A870" opacity="0.12"/><path d="M14 54 Q60 30 106 54" fill="none" stroke="#566275" stroke-width="2"/><line x1="14" y1="44" x2="106" y2="44" stroke="#7A5AF0" stroke-width="1.4" stroke-dasharray="4 3"/><text x="15" y="41" fill="#7A5AF0" font-size="7">접선(델타)</text><circle r="3.2" fill="#12A870"><animateMotion dur="2.6s" repeatCount="indefinite" keyPoints="0.5;0;1;0.5" keyTimes="0;0.33;0.66;1" calcMode="linear" path="M14 54 Q60 30 106 54"/></circle><text x="60" y="80" fill="#12A870" font-size="7.5" text-anchor="middle" font-weight="700">폭 완화 · 폭발 없음(프리미엄 확정)</text></svg>`},
+  gammaR:{
+    b:`<svg class="anim" viewBox="0 0 120 84"><path d="M10 36 L110 36 L110 66 Q60 6 10 66 Z" fill="#3B6FE6" opacity="0.14"/><path d="M10 66 Q60 6 110 66" fill="none" stroke="#566275" stroke-width="2"/><line x1="10" y1="36" x2="110" y2="36" stroke="#3B6FE6" stroke-width="1.6" stroke-dasharray="4 3"/><text x="13" y="33" fill="#3B6FE6" font-size="7">접선(델타)</text><circle r="3.4" fill="#1B2437"><animateMotion dur="3s" repeatCount="indefinite" keyPoints="0.5;0;1;0.5" keyTimes="0;0.33;0.66;1" calcMode="linear" path="M10 66 Q60 6 110 66"/></circle><g transform="translate(10,66)"><circle r="0" fill="none" stroke="#3B6FE6" stroke-width="2.2"><animate attributeName="r" values="0;15;0" dur="3s" begin="0.7s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0;0" dur="3s" begin="0.7s" repeatCount="indefinite"/></circle><text x="0" y="4.5" font-size="13" text-anchor="middle"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.28;0.34;1" dur="3s" repeatCount="indefinite"/>💥</text></g><g transform="translate(110,66)"><circle r="0" fill="none" stroke="#3B6FE6" stroke-width="2.2"><animate attributeName="r" values="0;15;0" dur="3s" begin="2.1s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0;0" dur="3s" begin="2.1s" repeatCount="indefinite"/></circle><text x="0" y="4.5" font-size="13" text-anchor="middle"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.66;0.72;1" dur="3s" repeatCount="indefinite"/>💥</text></g><text x="60" y="80" fill="#3B6FE6" font-size="7.5" text-anchor="middle" font-weight="700">금리 양방향 급변 → 양끝에서 폭발</text></svg>`,
+    a:`<svg class="anim" viewBox="0 0 120 84"><path d="M14 44 L106 44 L106 54 Q60 30 14 54 Z" fill="#3B6FE6" opacity="0.12"/><path d="M14 54 Q60 30 106 54" fill="none" stroke="#566275" stroke-width="2"/><line x1="14" y1="44" x2="106" y2="44" stroke="#3B6FE6" stroke-width="1.4" stroke-dasharray="4 3"/><text x="15" y="41" fill="#3B6FE6" font-size="7">접선(델타)</text><circle r="3.2" fill="#12A870"><animateMotion dur="2.8s" repeatCount="indefinite" keyPoints="0.5;0;1;0.5" keyTimes="0;0.33;0.66;1" calcMode="linear" path="M14 54 Q60 30 106 54"/></circle><text x="60" y="80" fill="#12A870" font-size="7.5" text-anchor="middle" font-weight="700">폭 완화 · 폭발 없음(스왑션)</text></svg>`},
   rate:{
     b:`<svg class="anim" viewBox="0 0 120 84"><line x1="14" y1="72" x2="108" y2="72" stroke="#AAB4C6" stroke-width="1"/><text x="16" y="82" fill="#566275" font-size="6.5">단기</text><text x="98" y="82" fill="#566275" font-size="6.5">장기(20·30년)</text><line x1="14" y1="46" x2="108" y2="46" stroke="#AAB4C6" stroke-width="0.8" stroke-dasharray="3 2"/><g class="a-curveshift"><path d="M14 52 Q46 40 108 30" fill="none" stroke="#7A5AF0" stroke-width="2.6"/><circle cx="30" cy="49" r="2.4" fill="#7A5AF0" opacity="0.55"/><circle cx="108" cy="30" r="5" fill="#7A5AF0"/></g><text x="60" y="14" fill="#566275" font-size="8" text-anchor="middle">커브가 위·아래로 → 손익 ±</text><text x="98" y="24" fill="#7A5AF0" font-size="6.5" text-anchor="end">장기일수록 크게</text></svg>`,
     a:`<svg class="anim" viewBox="0 0 120 84"><line x1="14" y1="72" x2="108" y2="72" stroke="#AAB4C6" stroke-width="1"/><g class="a-curveshift-sm"><path d="M14 46 Q46 36 108 28" fill="none" stroke="#7A5AF0" stroke-width="1.6" opacity="0.45"/></g><g class="a-curveshift-opp"><path d="M14 58 Q46 60 108 62" fill="none" stroke="#3B6FE6" stroke-width="1.6" opacity="0.45"/></g><line x1="14" y1="52" x2="108" y2="52" stroke="#12A870" stroke-width="3"/><text x="16" y="35" fill="#7A5AF0" font-size="6.5">부채 커브</text><text x="16" y="68" fill="#3B6FE6" font-size="6.5">국채·스왑(반대)</text><text x="60" y="80" fill="#12A870" font-size="8" text-anchor="middle" font-weight="700">합쳐서 손익 0</text></svg>`},
@@ -1317,7 +1320,7 @@ const FAC={
   delta:{viz:"dir", nat:"two", t:"주가가 오르내리면 보증가치도 함께 움직인다. 오르면 이득, 내리면 손실인 <b>양방향</b> 위험입니다. 선물로 반대 포지션을 잡으면 변동이 사라집니다."},
   rho:{viz:"rate", nat:"two", t:"금리 <b>커브가 위·아래로 이동</b>하면 부채가치가 움직이는 <b>양방향</b> 위험입니다. 보증은 만기가 긴 부채라 <b>커브의 장기 구간에 특히 민감</b>합니다(듀레이션). 국채·스왑으로 반대 포지션을 잡아 상쇄합니다."},
   gE:{viz:"gamma", nat:"loss", t:"헷지는 직선(델타=접선)으로 근사하지만 실제 가치는 곡선이라, 접선이 닿지 못하는 <b>부족분이 항상 손실</b>로 남는다(비용). 시장이 움직일수록 부족분이 커집니다. 옵션을 매입하면 이 손실이 <b>미리 정해진 비용(옵션 프리미엄)</b>으로 바뀝니다."},
-  gR:{viz:"gamma", nat:"loss", t:"금리에서도 접선의 부족분이 <b>항상 손실</b>로 발생합니다. 금리가 크게 움직일수록 커지며, 스왑션 매입으로 확정 비용으로 전환합니다."},
+  gR:{viz:"gammaR", nat:"loss", t:"금리에서도 접선의 부족분이 <b>항상 손실</b>로 발생합니다. 금리가 크게 움직일수록 커지며, 스왑션 매입으로 확정 비용으로 전환합니다."},
   vega:{viz:"vol", nat:"two", t:"변동성이 <b>커지면 부채가 늘어 손실</b>, <b>줄면 부채가 줄어 이득</b>인 양방향 위험입니다. 옵션(변동성) 매수로 줄일 수 있으나 비용이 큽니다."},
   fund:{viz:"basis", nat:"two", t:"보증 부채는 <b>실제 펀드</b> 성과를 따르지만, 헷지는 <b>지수·바스켓(수단)</b>으로 대신합니다. 둘이 어긋난 만큼이 손익입니다 — <b>펀드가 헷지 수단보다 부진하면 손실</b>, <b>수단보다 더 나으면 이익</b>인 <b>양방향</b> 괴리(추적오차)입니다. 펀드별 맞춤 복제로만 줄일 수 있고 비용이 높습니다."},
   lapse:{viz:"behav", nat:"two", t:"계약자의 해지·인출이 예상과 달라지면 보증 노출이 <b>양방향</b>으로 변합니다. 재보험으로 일부 완화하나 비용과 잔여위험이 남습니다."},
@@ -1428,37 +1431,46 @@ function gBase(mx,g){ const {W,topY,baseY}=GV;
   let p=''; for(let i=-44;i<=44;i++){const x=mx*i/44; p+=(i<=-44?'M':'L')+gAxpx(x,mx).toFixed(1)+' '+gAypx(x,mx).toFixed(1);}
   g.push(`<path d="${p}" fill="none" stroke="var(--sym)" stroke-width="2.6"/>`);
   g.push(`<text x="30" y="${baseY+16}" class="eflabel" fill="var(--muted)">← 시장 하락</text><text x="${W-30}" y="${baseY+16}" class="eflabel" text-anchor="end" fill="var(--muted)">시장 상승 →</text>`);
-  g.push(`<circle cx="${gAxpx(0,mx).toFixed(1)}" cy="${topY}" r="5" fill="#12A870" stroke="#fff" stroke-width="1.5"/>`);
 }
+/* 곡선 위 한 점의 접선(=헷지선). 기울기 = 보유수량(델타). 세로 과대돌출 방지로 반폭 클램프 */
+function gTanLine(x,mx){ const cx=gAxpx(x,mx), cy=gAypx(x,mx);
+  const dpx=(GV.W-72)/(2*mx), dpy=(2*Math.max(-mx,Math.min(mx,x))/(mx*mx))*(GV.baseY-GV.topY), ms=dpy/dpx;
+  const hw=Math.min(165, 72/Math.max(0.055,Math.abs(ms)));
+  return {cx,cy,ms,x1:cx-hw,y1:cy-ms*hw,x2:cx+hw,y2:cy+ms*hw}; }
 function gDrawState(hPrev){ const box=$("gCurve"); if(!box)return; const gap=gGap(), res=hPrev!=null?(1-hPrev)*gap:gap, mx=gScale(gap,res), g=[];
   gBase(mx,g);
-  g.push(`<text x="30" y="20" font-size="11" font-weight="700" fill="#0a5b3c">🟢 꼭대기 = 내 헷지 (여기선 손익 0)</text>`);
-  const mxp=gAxpx(gap,mx), myp=gAypx(gap,mx), far=Math.abs(gap)>0.4;
-  if(far) g.push(`<line x1="${mxp.toFixed(1)}" y1="${myp.toFixed(1)}" x2="${mxp.toFixed(1)}" y2="${GV.topY}" stroke="var(--bad)" stroke-width="2" stroke-dasharray="3 2" opacity="0.7"/>`);
-  if(hPrev!=null && Math.abs(gap-res)>0.12){ const rx=gAxpx(res,mx),ry=gAypx(res,mx);
-    g.push(`<defs><marker id="gar" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="var(--pay)"/></marker></defs>`);
-    g.push(`<line x1="${mxp.toFixed(1)}" y1="${myp.toFixed(1)}" x2="${rx.toFixed(1)}" y2="${ry.toFixed(1)}" stroke="var(--pay)" stroke-width="2.2" stroke-dasharray="4 3" marker-end="url(#gar)"/>`);
-    g.push(`<circle cx="${rx.toFixed(1)}" cy="${ry.toFixed(1)}" r="6" fill="var(--pay)" opacity="0.9"/><text x="${rx.toFixed(1)}" y="${(ry-9).toFixed(1)}" class="eflabel" text-anchor="middle" fill="var(--pay)" font-weight="700">여기로</text>`); }
+  const t0=gTanLine(0,mx);   /* 내 헷지선 = 꼭대기 접선(수평). 기울기 = 보유수량 */
+  g.push(`<line x1="${t0.x1.toFixed(1)}" y1="${t0.y1.toFixed(1)}" x2="${t0.x2.toFixed(1)}" y2="${t0.y2.toFixed(1)}" stroke="#0a5b3c" stroke-width="3.6" stroke-linecap="round"/>`);
+  g.push(`<circle cx="${t0.cx.toFixed(1)}" cy="${t0.cy.toFixed(1)}" r="5.5" fill="#12A870" stroke="#fff" stroke-width="1.6"/>`);
+  g.push(`<text x="30" y="20" font-size="11" font-weight="800" fill="#0a5b3c">내 헷지선 ━━ 기울기 = 보유수량</text>`);
+  const mxp=gAxpx(gap,mx), myp=gAypx(gap,mx), hy=t0.cy+t0.ms*(mxp-t0.cx), far=Math.abs(gap)>0.4;
+  if(far){ g.push(`<line x1="${mxp.toFixed(1)}" y1="${myp.toFixed(1)}" x2="${mxp.toFixed(1)}" y2="${hy.toFixed(1)}" stroke="var(--bad)" stroke-width="2" stroke-dasharray="3 2" opacity="0.75"/>`);
+    g.push(`<text x="${mxp.toFixed(1)}" y="${((myp+hy)/2).toFixed(1)}" dx="6" font-size="10" fill="var(--bad)" font-weight="700">헷지선에서 벌어짐</text>`); }
   g.push(`<circle cx="${mxp.toFixed(1)}" cy="${myp.toFixed(1)}" r="8" fill="#16202F" stroke="#fff" stroke-width="2"><animate attributeName="r" values="8;10;8" dur="1.6s" repeatCount="indefinite"/></circle>`);
-  g.push(`<text x="${mxp.toFixed(1)}" y="${(myp+22).toFixed(1)}" class="eflabel" text-anchor="middle" font-weight="800" font-size="11.5">오늘 시장${far?' · 손실 중':''}</text>`);
+  g.push(`<text x="${mxp.toFixed(1)}" y="${(myp+22).toFixed(1)}" class="eflabel" text-anchor="middle" font-weight="800" font-size="11.5">오늘 시장${far?' · 벗어남':''}</text>`);
   box.innerHTML=g.join("");
 }
 function gDrawReveal(){ const box=$("gCurve"),L=GAME.last; if(!box||!L)return; const W=GV.W;
-  const gap0=L.mkt0-L.hx, gN=L.mktN-L.hx, mx=gScale(gap0,gN), g=[];
-  const won=L.net>=0,col=won?'var(--good)':'var(--bad)', recovered=Math.abs(gN)<Math.abs(gap0);
+  const gap0=L.mkt0-L.hx, gN=L.mktN-L.hx, nh=L.hxN-L.hx, mx=gScale(gap0,gN,nh), g=[];
+  const won=L.net>=0,col=won?'var(--good)':'var(--bad)', recovered=Math.abs(gN)<Math.abs(gap0), adj=Math.abs(nh)>0.12;
   gBase(mx,g);
-  g.push(`<text x="30" y="26" font-size="23" font-weight="800" fill="${col}">${won?'+':'−'}${Math.abs(L.net).toFixed(1)} ${won?'💰':'💸'}</text>`);
-  g.push(`<text x="158" y="26" font-size="12.5" font-weight="700" fill="${col}">${won?'벌었어요!':'잃었어요'}</text>`);
-  g.push(`<text x="${W-30}" y="26" font-size="10.5" fill="var(--muted)" text-anchor="end">${L.d}일차 · 시장 ${L.dM>=0?'+':''}${L.dM.toFixed(2)}%</text>`);
-  g.push(`<text x="30" y="43" font-size="10.5" font-weight="600" fill="#0a5b3c">🟢 꼭대기 = 어제 내 헷지</text>`);
+  g.push(`<text x="30" y="24" font-size="22" font-weight="800" fill="${col}">${won?'+':'−'}${Math.abs(L.net).toFixed(1)} ${won?'💰':'💸'}</text>`);
+  g.push(`<text x="${W-30}" y="24" font-size="10.5" fill="var(--muted)" text-anchor="end">${L.d}일차 · 시장 ${L.dM>=0?'+':''}${L.dM.toFixed(2)}%</text>`);
+  g.push(`<text x="30" y="41" font-size="10.5" font-weight="700"><tspan fill="#9AA3B2">┈ 어제 헷지선</tspan> <tspan fill="var(--pay)">━ 오늘 헷지선</tspan> <tspan fill="var(--ink)">· ${adj?'기울기 바꿈 = 수량 조정 🔧':'그대로 = 수량 유지 ✋'}</tspan></text>`);
+  const t0=gTanLine(0,mx);   /* 어제 헷지선(수평, 회색) */
+  g.push(`<line x1="${t0.x1.toFixed(1)}" y1="${t0.y1.toFixed(1)}" x2="${t0.x2.toFixed(1)}" y2="${t0.y2.toFixed(1)}" stroke="#9AA3B2" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="5 3"/>`);
+  g.push(`<circle cx="${t0.cx.toFixed(1)}" cy="${t0.cy.toFixed(1)}" r="4.5" fill="#9AA3B2"/>`);
+  const t1=gTanLine(nh,mx);   /* 오늘 헷지선(접선 at 새 헷지점, 파랑) — 기울기 변화 = 수량 조정 */
+  g.push(`<line x1="${t1.x1.toFixed(1)}" y1="${t1.y1.toFixed(1)}" x2="${t1.x2.toFixed(1)}" y2="${t1.y2.toFixed(1)}" stroke="var(--pay)" stroke-width="3.6" stroke-linecap="round"/>`);
+  g.push(`<circle cx="${t1.cx.toFixed(1)}" cy="${t1.cy.toFixed(1)}" r="5.5" fill="var(--pay)" stroke="#fff" stroke-width="1.6"/>`);
   const ax=gAxpx(gap0,mx),ay=gAypx(gap0,mx), nx=gAxpx(gN,mx),ny=gAypx(gN,mx);
   g.push(`<defs><marker id="gar2" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#8A94A6"/></marker></defs>`);
-  g.push(`<circle cx="${ax.toFixed(1)}" cy="${ay.toFixed(1)}" r="5" fill="#16202F" opacity="0.25"/>`);
+  g.push(`<circle cx="${ax.toFixed(1)}" cy="${ay.toFixed(1)}" r="5" fill="#16202F" opacity="0.22"/>`);
   g.push(`<line x1="${ax.toFixed(1)}" y1="${ay.toFixed(1)}" x2="${nx.toFixed(1)}" y2="${ny.toFixed(1)}" stroke="#8A94A6" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#gar2)"/>`);
   g.push(`<circle cx="${nx.toFixed(1)}" cy="${ny.toFixed(1)}" r="9" fill="${col}" stroke="#fff" stroke-width="2"><animate attributeName="r" from="0" to="9" dur="0.55s" fill="freeze"/></circle>`);
-  g.push(`<text x="${nx.toFixed(1)}" y="${(ny+22).toFixed(1)}" class="eflabel" text-anchor="middle" fill="${col}" font-weight="800" font-size="11.5">내일 시장${recovered?' · 회복↑':' · 더 손실'}</text>`);
-  const les = L.revert?'🔄 시장이 꼭대기로 되돌아왔어요 — 그대로 뒀으면 이득이었죠':(L.trend?'➡️ 시장이 꼭대기에서 더 멀어졌어요 — 맞췄으면 손실을 줄였을 거예요':'움직임이 작아 감마손실만 남았어요');
-  g.push(`<text x="30" y="${GV.baseY+32}" font-size="11.5" fill="var(--ink)" font-weight="600">${les}</text>`);
+  g.push(`<text x="${nx.toFixed(1)}" y="${(ny+21).toFixed(1)}" class="eflabel" text-anchor="middle" fill="${col}" font-weight="800" font-size="11.5">내일 시장${recovered?' · 회복↑':' · 더 손실'}</text>`);
+  const les = L.revert?'🔄 시장이 헷지선으로 되돌아왔어요 — 그대로 뒀으면 이득이었죠':(L.trend?'➡️ 시장이 헷지선에서 더 멀어졌어요 — 맞췄으면 손실을 줄였을 거예요':'움직임이 작아 감마손실만 남았어요');
+  g.push(`<text x="30" y="${GV.baseY+34}" font-size="11.5" fill="var(--ink)" font-weight="600">${les}</text>`);
   box.innerHTML=g.join("");
 }
 function gShowResult(L){

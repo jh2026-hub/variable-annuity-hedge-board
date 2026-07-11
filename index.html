@@ -216,8 +216,8 @@
   <button data-p="p4">② 항목별 설명<small>요인 원리</small></button>
   <button data-p="p7">③ 헷지수단<small>비용·효과</small></button>
   <button data-p="p3">④ PL 인식<small>CSM 완충</small></button>
-  <button data-p="p2">⑤ 비용·변동성<small>선택·프론티어</small></button>
-  <button data-p="p5">⑥ 시뮬레이션<small>항목별 손익</small></button>
+  <button data-p="p2">⑤ 비용·변동성·시뮬<small>선택→결과</small></button>
+  <button data-p="p8">⑥ 입력 가정<small>규모·민감도</small></button>
   <button data-p="p6">⑦ 이론<small>참고문헌</small></button>
 </div>
 
@@ -325,14 +325,36 @@
   <div class="panel">
     <div class="cap">헷지할 항목 선택<span>헷지(PL) 또는 CSM 감내</span></div>
     <div id="selList"></div>
-    <p class="foot">각 항목을 <b>헷지</b>(확정 비용을 지불하고 손익 안정)하거나 <b>CSM</b>(비용 없이 완충으로 감내)으로 둔다. 선택은 위 프론티어와 <b>⑤ 시뮬레이션</b>에 즉시 반영됩니다.</p>
+    <p class="foot">각 항목을 <b>헷지</b>(확정 비용을 지불하고 손익 안정)하거나 <b>CSM</b>(비용 없이 완충으로 감내)으로 둔다. 선택은 위 프론티어와 아래 시뮬레이션에 즉시 반영됩니다.</p>
+  </div>
+  <p class="lede">실제 시장데이터(KOSPI·<b>국고 20년</b>, 약 6.5년)로 손익을 재현합니다. <b>미헷지</b>는 주가 상승 시 이득이지만 일별 등락으로 <b>손익이 크게 출렁이며</b>, 헷지는 이 변동성을 막는다. <span id="simStatus" style="color:var(--muted)">데이터 불러오는 중…</span></p>
+  <div class="panel">
+    <div class="cap">미헷지 손익변동성 vs 헷지<span>주간 손익 (억)</span></div>
+    <div class="stat" id="volStat"></div>
+    <div class="chartwrap"><svg class="sim" id="simVol" viewBox="0 0 640 280" preserveAspectRatio="xMidYMid meet"></svg></div>
+    <div class="leg">
+      <span><i style="background:var(--sym)"></i>미헷지 주간손익(방향)</span>
+      <span><i style="background:var(--pay)"></i>헷지 후(현재 선택 반영)</span>
+    </div>
+    <p class="foot"><b>미헷지</b> 선은 주가·금리 등락이 그대로 손익이 되어 <b>매주 크게 위아래로 출렁인다</b>. <b>헷지 후</b> 선은 <b>위에서 헷지로 선택한 항목의 변동만 제거</b>한다 — 아무것도 헷지하지 않으면 미헷지 선과 겹치고, 방향(주가·금리)을 헷지하면 0 근처로 붙는다. 민감도는 <b>⑥ 입력 가정</b>에서 조정합니다.</p>
   </div>
   <div class="panel">
-    <div class="cap">입력 가정<span>규모·완충·변동성·민감도 세부</span></div>
-    <div class="sheet" id="sheetFin"></div>
-    <div class="sheet" id="sheetVol"></div>
-    <div class="chartwrap"><table class="mtx" id="mtx"><thead><tr><th>위험 요인</th><th>노출(σ기여)</th><th>헷지단가</th></tr></thead><tbody></tbody></table></div>
-    <p class="foot">노출·단가는 요인별 상세 가정입니다. 방향형 단가는 bp(×적립금), 감마형은 프리미엄으로 자동 계산됩니다.</p>
+    <div class="cap">연도별 변동성 · 감마 손실<span>실제 시장 변동성으로 재현</span></div>
+    <div class="foot" id="simStrat" style="margin-top:6px"></div>
+    <div class="stat" id="simStat"></div>
+    <div class="chartwrap"><svg class="sim" id="sim" viewBox="0 0 640 280" preserveAspectRatio="xMidYMid meet"></svg></div>
+    <div class="leg">
+      <span><i style="background:var(--leak)"></i>감내 시 누수(실현변동성)</span>
+      <span><i style="background:var(--pay)"></i>헷지 시 프리미엄(고정)</span>
+      <span><i style="background:var(--sym)"></i>주가 RV(우축)</span>
+    </div>
+    <div class="chartwrap"><table class="mtx" id="simTbl"><thead><tr><th>연도</th><th>주가 RV</th><th>금리 RV</th><th>감내 시 누수</th><th>헷지 시 프리미엄</th></tr></thead><tbody></tbody></table></div>
+    <p class="foot"><b>감내(주황)</b>는 변동성이 큰 해에 누수가 급증하고, <b>헷지(청록)</b>는 매년 거의 같은 고정 프리미엄이다 — 감마 위험의 핵심 트레이드오프. 주가 RV는 KOSPI 일간수익률의 연율화 표준편차(%), 금리 RV는 국고 일간변동의 연율화 표준편차(bp)입니다.</p>
+  </div>
+  <div class="panel">
+    <div class="cap">항목별 손익요소<span>현재 전략 · 연 기준</span></div>
+    <div class="chartwrap"><table class="mtx" id="simBreak"><thead><tr><th>위험 요인</th><th>처리</th><th>연간 손익요소</th><th>비고</th></tr></thead><tbody></tbody></table></div>
+    <p class="foot">헷지 항목은 확정 비용(음수)으로, 감내 항목 중 감마는 실현변동성 기반 <b>연평균 누수</b>로, 그 밖의 감내 항목은 손익변동성 기여(σ)로 표시합니다. 감마 관련 값은 위 시장데이터 기간의 실측 실현변동성에 기반합니다.</p>
   </div>
 </section>
 
@@ -422,40 +444,20 @@
   </div>
 </section>
 
-<!-- ⑤ 시뮬레이션 -->
-<section class="page" id="p5">
-  <p class="lede">실제 시장데이터(KOSPI·<b>국고 20년</b>, 약 6.5년)로 손익을 재현합니다. <b>미헷지</b>는 주가 상승 시 이득이지만 일별 등락으로 <b>손익이 크게 출렁이며</b>, 헷지는 이 변동성을 막는다. <span id="simStatus" style="color:var(--muted)">데이터 불러오는 중…</span></p>
+
+<!-- ⑥ 입력 가정 -->
+<section class="page" id="p8">
+  <p class="lede">자기 회사·포트폴리오 값을 입력하면 <b>⑤ 비용·변동성·시뮬</b>에 즉시 반영됩니다.</p>
   <div class="panel">
-    <div class="cap">미헷지 손익변동성 vs 헷지<span>주간 손익 (억)</span></div>
-    <div class="stat" id="volStat"></div>
-    <div class="chartwrap"><svg class="sim" id="simVol" viewBox="0 0 640 280" preserveAspectRatio="xMidYMid meet"></svg></div>
-    <div class="leg">
-      <span><i style="background:var(--sym)"></i>미헷지 주간손익(방향)</span>
-      <span><i style="background:var(--pay)"></i>헷지 후(현재 선택 반영)</span>
-    </div>
-    <p class="foot"><b>미헷지</b> 선은 주가·금리 등락이 그대로 손익이 되어 <b>매주 크게 위아래로 출렁인다</b>. <b>헷지 후</b> 선은 <b>⑤ 비용·변동성에서 헷지로 선택한 항목의 변동만 제거</b>한다 — 아무것도 헷지하지 않으면 미헷지 선과 겹치고, 방향(주가·금리)을 헷지하면 0 근처로 붙는다. 민감도는 <b>⑤ 입력 가정</b>에서 조정합니다.</p>
-  </div>
-  <div class="panel">
-    <div class="cap">연도별 변동성 · 감마 손실<span>실제 시장 변동성으로 재현</span></div>
-    <div class="foot" id="simStrat" style="margin-top:6px"></div>
-    <div class="stat" id="simStat"></div>
-    <div class="chartwrap"><svg class="sim" id="sim" viewBox="0 0 640 280" preserveAspectRatio="xMidYMid meet"></svg></div>
-    <div class="leg">
-      <span><i style="background:var(--leak)"></i>감내 시 누수(실현변동성)</span>
-      <span><i style="background:var(--pay)"></i>헷지 시 프리미엄(고정)</span>
-      <span><i style="background:var(--sym)"></i>주가 RV(우축)</span>
-    </div>
-    <div class="chartwrap"><table class="mtx" id="simTbl"><thead><tr><th>연도</th><th>주가 RV</th><th>금리 RV</th><th>감내 시 누수</th><th>헷지 시 프리미엄</th></tr></thead><tbody></tbody></table></div>
-    <p class="foot"><b>감내(주황)</b>는 변동성이 큰 해에 누수가 급증하고, <b>헷지(청록)</b>는 매년 거의 같은 고정 프리미엄이다 — 감마 위험의 핵심 트레이드오프. 주가 RV는 KOSPI 일간수익률의 연율화 표준편차(%), 금리 RV는 국고 일간변동의 연율화 표준편차(bp)입니다.</p>
-  </div>
-  <div class="panel">
-    <div class="cap">항목별 손익요소<span>현재 전략 · 연 기준</span></div>
-    <div class="chartwrap"><table class="mtx" id="simBreak"><thead><tr><th>위험 요인</th><th>처리</th><th>연간 손익요소</th><th>비고</th></tr></thead><tbody></tbody></table></div>
-    <p class="foot">헷지 항목은 확정 비용(음수)으로, 감내 항목 중 감마는 실현변동성 기반 <b>연평균 누수</b>로, 그 밖의 감내 항목은 손익변동성 기여(σ)로 표시합니다. 감마 관련 값은 위 시장데이터 기간의 실측 실현변동성에 기반합니다.</p>
+    <div class="cap">입력 가정<span>규모·완충·변동성·민감도 세부</span></div>
+    <div class="sheet" id="sheetFin"></div>
+    <div class="sheet" id="sheetVol"></div>
+    <div class="chartwrap"><table class="mtx" id="mtx"><thead><tr><th>위험 요인</th><th>노출(σ기여)</th><th>헷지단가</th></tr></thead><tbody></tbody></table></div>
+    <p class="foot">노출·단가는 요인별 상세 가정입니다. 방향형 단가는 bp(×적립금), 감마형은 프리미엄으로 자동 계산됩니다.</p>
   </div>
 </section>
 
-<!-- ⑥ 이론 -->
+<!-- ⑦ 이론 -->
 <section class="page" id="p6">
   <p class="lede">이 도구가 기대는 이론과 대표 문헌입니다. 최저보증(GMxB)은 적립금에 내재된 <b>풋옵션형 금융보증</b>이므로, 그 관리는 옵션 복제·헷지 이론에 뿌리를 둔다.</p>
   <div class="panel refs">

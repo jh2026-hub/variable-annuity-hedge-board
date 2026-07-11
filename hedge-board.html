@@ -669,17 +669,17 @@ function renderFactorAnim(){
   }).join("");
 }
 
-/* 피드백 (별도 DB) */
-const FEEDBACK_ENDPOINT=""; const FEEDBACK_HEADERS={};
+/* 피드백 — 구글 Apps Script 웹앱(/exec)을 통해 구글 시트에 기록 */
+const FEEDBACK_ENDPOINT=""; /* 여기에 Apps Script 웹앱 배포 URL(...script.google.com/macros/s/…/exec)을 넣는다 */
 (function(){ const note=$("fbNote"), btn=$("fbSend"), msg=$("fbMsg");
   if(!FEEDBACK_ENDPOINT){ btn.disabled=true;
-    note.innerHTML="⚙ 의견 수집 저장소(별도 DB)가 아직 연결되지 않았다 — 배포자가 <b>FEEDBACK_ENDPOINT</b>를 설정하면 활성화된다. 작성 권한은 저장소의 insert 정책·인증으로 통제한다."; return; }
-  btn.addEventListener("click",async()=>{ const body={name:$("fbName").value.slice(0,60), text:$("fbText").value.slice(0,2000), ts:new Date().toISOString()};
+    note.innerHTML="⚙ 의견 수집 저장소가 아직 연결되지 않았다 — 배포자가 구글 Apps Script 웹앱(/exec) 주소를 설정하면 활성화된다. 접수된 의견은 구글 시트에 기록된다."; return; }
+  btn.addEventListener("click",async()=>{ const body={name:$("fbName").value.slice(0,60), text:$("fbText").value.slice(0,2000), page:location.pathname, ts:new Date().toISOString()};
     if(!body.text.trim()){ msg.style.color="var(--leak)"; msg.textContent="의견을 입력해 주세요."; return; }
     btn.disabled=true; msg.style.color="var(--muted)"; msg.textContent="전송 중…";
-    try{ const r=await fetch(FEEDBACK_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json",...FEEDBACK_HEADERS},body:JSON.stringify(body)});
-      if(!r.ok) throw new Error(r.status); msg.style.color="var(--good)"; msg.textContent="의견이 저장되었습니다. 감사합니다."; $("fbText").value="";
-    }catch(e){ msg.style.color="var(--bad)"; msg.textContent="전송 실패 ("+e.message+")."; } finally{ btn.disabled=false; } });
+    try{ await fetch(FEEDBACK_ENDPOINT,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(body)});
+      msg.style.color="var(--good)"; msg.textContent="의견이 접수되었습니다. 감사합니다."; $("fbText").value="";
+    }catch(e){ msg.style.color="var(--bad)"; msg.textContent="전송 실패 — 잠시 후 다시 시도해 주세요."; } finally{ btn.disabled=false; } });
 })();
 
 /* VOL 입력·만기 선택이 바뀌면 시뮬 갱신 */

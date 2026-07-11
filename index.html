@@ -267,8 +267,8 @@
 <div class="sub">보증(GMxB) 헷지의 구조, 보증수수료·비용·손익변동성의 관계, CSM 완충의 역할을 입력값과 실제 시장데이터로 살펴본다.</div>
 
 <div class="tabs" id="tabs">
-  <button data-p="p1" class="on">① 개념<small>수수료·비용·변동성</small></button>
-  <button data-p="pqa">❓ Q&amp;A<small>쉬운 문답</small></button>
+  <button data-p="pqa" class="on">❓ Q&amp;A<small>쉬운 문답</small></button>
+  <button data-p="p1">① 개념<small>수수료·비용·변동성</small></button>
   <button data-p="p4">② 항목별 설명<small>요인 원리</small></button>
   <button data-p="p7">③ 헷지수단<small>비용·효과</small></button>
   <button data-p="p3">④ PL 인식<small>CSM 완충</small></button>
@@ -279,7 +279,7 @@
 </div>
 
 <!-- ① 개념 -->
-<section class="page on" id="p1">
+<section class="page" id="p1">
   <p class="lede">변액보험은 계약자의 적립금 운용성과와 무관하게 <b>최저 수준을 보증</b>합니다. 회사는 이 보증을 제공하는 대가로 <b>보증수수료</b>를 수취하며, 이를 재원으로 시장위험을 관리합니다. 관리의 본질은 모든 위험을 없애는 것이 아니라, <b>비용과 손익변동성 사이에서 균형을 선택하는 것</b>입니다.</p>
 
   <div class="panel" style="background:linear-gradient(135deg,#EEF3FE,#F4F0FD);border:1px solid #D7E0F5">
@@ -361,7 +361,7 @@
 </section>
 
 <!-- Q&A -->
-<section class="page" id="pqa">
+<section class="page on" id="pqa">
   <p class="lede">자주 나오는 질문을 <b>그림 위주</b>로, <b>쉬운 말로</b> 답합니다. 더 자세한 내용은 각 탭에 있습니다.</p>
 
   <div class="panel">
@@ -464,25 +464,24 @@
 
 <!-- 게임 -->
 <section class="page" id="pgame">
-  <p class="lede">두 한도 — <b>💰 비용 여력</b>과 <b>🛡️ 완충(손익 한도)</b> — 을 지키며 <b>몇 년까지 버티는지</b> 겨루는 게임입니다. 매년 헷지 비율을 정하면 <b>알 수 없는 미래</b>가 이익·손실·비용으로 갈립니다. <b>덜 막으면</b> 비용은 아끼나 급락에 완충이 뚫리고, <b>많이 막으면</b> 안전하나 비용 여력이 바닥납니다. 게다가 다 막아도 급변엔 일부가 샙니다(감마). <b>어디까지 갈 수 있을까요?</b></p>
+  <p class="lede"><b>델타 리밸런싱</b>을 직접 해 보는 게임입니다. 당신의 포지션은 아래로 볼록한 곡선(<b>감마 매도</b>) — 주가가 움직이면 늘 손실입니다. 매일, 틀어진 델타를 <b>얼마나 되맞출지</b> 정하세요: <b>안 함</b>(방향 노출) · <b>딱 맞춤</b>(감마손실 확정) · <b>오버</b>(추세에 베팅). <b>딱 맞췄는데 주가가 되돌아오면</b> 손실이 확정되고, <b>오버했는데 추세가 이어지면</b> 돈을 법니다. 감마손실은 매일 불가피하고 <b>버짓은 타이트</b>합니다 — 며칠이나 버틸까요?</p>
   <div class="panel">
-    <div class="cap">헷지하기 게임 🎮<span>두 한도를 지키며 최대한 오래 버티기</span></div>
+    <div class="cap">델타 리밸런싱 게임 🎮<span>타이트한 버짓으로 최대한 오래</span></div>
     <div id="gStatus" class="gstat"></div>
-    <div style="font-size:11px;color:var(--muted);margin:2px 0 3px;font-weight:700">💰 비용 여력 <span style="font-weight:400">— 0이 되면 게임 종료</span></div>
+    <div style="font-size:11px;color:var(--muted);margin:2px 0 3px;font-weight:700">💰 잔여 버짓 <span style="font-weight:400">— 0이 되면 종료</span></div>
     <div class="ggauge"><div id="gBudFill"></div><span id="gBudLab"></span></div>
-    <div style="font-size:11px;color:var(--muted);margin:9px 0 3px;font-weight:700">🛡️ 완충 CSM <span style="font-weight:400">— 0이 되면 게임 종료</span></div>
-    <div class="ggauge"><div id="gCsmFill"></div><span id="gCsmLab"></span></div>
-    <div id="gControl">
-      <div id="gForecast" style="border-radius:9px;padding:10px 12px;margin-bottom:10px;font-size:12.5px"></div>
-      <label class="foot" style="margin:0">올해 헷지 비율 <b id="gHlab" class="mono" style="color:var(--pay)">50%</b> · 예상 헷지 비용 <b id="gCostlab" class="mono" style="color:var(--leak)">−650억</b></label>
-      <input type="range" id="gHedge" min="0" max="100" step="5" value="50">
-      <div style="display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted);margin-top:-2px"><span>0% · 안 막고 베팅</span><span>100% · 다 막고 비용</span></div>
-      <button id="gPlay" class="gbtn">결정하고 한 해 넘기기 ▶</button>
+    <div class="chartwrap" style="margin-top:12px"><svg id="gCurve" viewBox="0 0 560 190" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px"></svg></div>
+    <div id="gToday" style="font-size:12.5px;margin-top:8px"></div>
+    <div id="gControl" style="margin-top:8px">
+      <label class="foot" style="margin:0">리밸런싱 <b id="gHlab" class="mono" style="color:var(--pay)">100%</b> <span id="gHtag" style="color:var(--muted)">· 딱 맞춤</span></label>
+      <input type="range" id="gHedge" min="0" max="150" step="10" value="100">
+      <div style="display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted);margin-top:-2px"><span>0 안 함</span><span>100 딱 맞춤</span><span>150 오버</span></div>
+      <button id="gPlay" class="gbtn">다음 날 ▶</button>
     </div>
     <div id="gResult"></div>
     <div id="gLog" style="margin-top:12px"></div>
     <div id="gFinal"></div>
-    <p class="foot" style="margin-top:12px">매년 보증수수료가 <b>💰 비용 여력</b>에 쌓이고, 헷지 비율만큼 비용이 빠집니다 — <b>0이 되면 종료</b>. 시장 손익은 <b>🛡️ 완충(CSM)</b>에 쌓이거나 깎이며, <b>0이 되면 종료</b>. 둘 중 하나라도 바닥나면 끝입니다. <b>장세 확률은 알아도 이번 해가 어느 쪽일지는 알 수 없습니다</b> — 예측이 아니라 확률·위험에 대비하는 게임입니다. (교육용 단순 모형)</p>
+    <p class="foot" style="margin-top:12px"><b>감마손실</b>(곡선 때문에 늘 발생) + <b>방향손익</b>(되맞추지 않은 델타 × 내일 이동) + <b>리밸런싱 비용</b>이 매일 <b>잔여 버짓</b>에서 정산됩니다. 되돌릴지 이어질지는 <b>알 수 없습니다</b>. (교육용 단순 모형)</p>
   </div>
 </section>
 
@@ -1317,85 +1316,81 @@ $("poBtns")&&$("poBtns").addEventListener("click",e=>{const b=e.target.closest("
   PO.t=b.dataset.t; document.querySelectorAll("#poBtns button").forEach(x=>x.classList.toggle("on",x===b)); renderPayoff();});
 $("poX")&&$("poX").addEventListener("input",renderPayoff);
 
-/* 헷지하기 게임 — 두 한도(비용 여력·완충)를 지키며 최대한 오래 버티기 */
-const GAME={y:0,bud:1500,bud0:1500,csm:3200,csm0:3200,best:0,over:false,log:[],pending:null};
-const GFEE=850, GMAXCOST=1200, GLEAK=0.06;
-const GSCN=[
-  {k:'평온',e:'☀️',p:0.40,lo:-300,hi:560,c:'var(--good)',bg:'#EAF7F1'},
-  {k:'출렁',e:'🌧️',p:0.35,lo:-1300,hi:1100,c:'var(--pay)',bg:'#EEF3FE'},
-  {k:'급락',e:'⛈️',p:0.25,lo:-3700,hi:-800,c:'var(--bad)',bg:'#FBEEF1'},
-];
-const gPick=()=>{let r=Math.random(),a=0;for(const s of GSCN){a+=s.p;if(r<=a)return s;}return GSCN[GSCN.length-1];};
-const gFmt=v=>(v>=0?'+':'−')+won(Math.abs(v))+'억';
-const gMkt=(shock,h)=>shock*(1-h)-Math.abs(shock)*GLEAK*h;   /* 시장손익(완충에 반영) — 헷지로 대부분 제거+감마 잔여 */
-function gGauge(id,lab,v,maxRef){ const f=$(id); if(!f)return; const w=Math.max(0,Math.min(100,v/maxRef*100));
+/* 델타 리밸런싱 게임 — 포물선(감마 매도) 위에서 매일 되맞춤 결정, 타이트한 버짓 */
+const GAME={d:0,bud:100,bud0:100,best:0,over:false,log:[],M1:0};
+const GAM=0.035, GD=0.85, GCOST=0.12;
+const GSZ=[{p:.45,v:5},{p:.37,v:12},{p:.18,v:28}];
+const gSz=()=>{let r=Math.random(),a=0;for(const s of GSZ){a+=s.p;if(r<=a)return s.v;}return 28;};
+const gGauge=()=>{const f=$("gBudFill"); if(!f)return; const w=Math.max(0,Math.min(100,GAME.bud/GAME.bud0*100));
   f.style.width=w+'%'; f.style.background=w>45?'linear-gradient(90deg,#12A870,#4fc79a)':w>18?'linear-gradient(90deg,#E68A17,#f0a94a)':'#E24A62';
-  const s=f.nextElementSibling; if(s) s.textContent=lab+' '+won(Math.max(0,v))+'억'; }
-function gStatus(){
-  if($("gStatus")) $("gStatus").innerHTML=`<div>버틴 햇수<b style="color:var(--pay)">${GAME.y}년</b></div>
-    <div>최고 기록<b>${GAME.best}년</b></div>`;
-  gGauge("gBudFill","", GAME.bud, Math.max(GAME.bud0*1.8,GAME.bud*1.1,1));
-  gGauge("gCsmFill","", GAME.csm, Math.max(GAME.csm0*1.5,GAME.csm*1.1,1));
+  const s=f.nextElementSibling; if(s) s.textContent=Math.round(GAME.bud)+' / '+GAME.bud0;};
+function gStatus(){ if($("gStatus")) $("gStatus").innerHTML=`<div>버틴 날<b style="color:var(--pay)">${GAME.d}일</b></div><div>최고 기록<b>${GAME.best}일</b></div>`; gGauge(); }
+function gTag(h){ return h<0.15?'· 안 함(방향 노출)':h<0.85?'· 덜 맞춤':h<=1.15?'· 딱 맞춤':'· 오버(추세 베팅)'; }
+function gHlab(){ const h=(+$("gHedge").value)/100; $("gHlab").textContent=Math.round(h*100)+'%'; $("gHtag").textContent=gTag(h); }
+function gCurve(M1,dM){ const box=$("gCurve"); if(!box)return; const W=560,H=190,cx=W/2,topY=40,maxX=42;
+  const k=(H-topY-30)/(maxX*maxX), PX=x=>cx+(x/maxX)*(W/2-24), Y=x=>topY+k*x*x, g=[];
+  g.push(`<line x1="20" y1="${topY}" x2="${W-20}" y2="${topY}" stroke="#EAEDF5"/><text x="24" y="${topY-5}" class="eflabel" fill="var(--muted)">손익 0 (중립)</text>`);
+  let p=''; for(let x=-maxX;x<=maxX;x+=1.5) p+=(x<=-maxX?'M':'L')+PX(x).toFixed(1)+' '+Y(x).toFixed(1);
+  g.push(`<path d="${p}" fill="none" stroke="var(--sym)" stroke-width="2.4"/>`);
+  g.push(`<text x="30" y="${H-8}" class="eflabel" fill="var(--muted)">← 주가 하락</text><text x="${W-30}" y="${H-8}" class="eflabel" text-anchor="end" fill="var(--muted)">주가 상승 →</text>`);
+  g.push(`<circle cx="${PX(0)}" cy="${Y(0)}" r="3" fill="#AAB4C6"/>`);
+  if(dM==null){ g.push(`<line x1="${PX(M1)}" y1="${topY}" x2="${PX(M1)}" y2="${Y(M1)}" stroke="#AAB4C6" stroke-dasharray="3 3"/>`);
+    g.push(`<circle cx="${PX(M1).toFixed(1)}" cy="${Y(M1).toFixed(1)}" r="6.5" fill="var(--pay)" stroke="#fff" stroke-width="2"/><text x="${PX(M1).toFixed(1)}" y="${(Y(M1)+19).toFixed(1)}" class="eflabel" text-anchor="middle" fill="var(--pay)" font-weight="700">오늘</text>`);
+  } else { const E=Math.max(-maxX,Math.min(maxX,M1+dM)), good=Math.abs(E)<Math.abs(M1);
+    g.push(`<circle cx="${PX(M1).toFixed(1)}" cy="${Y(M1).toFixed(1)}" r="5" fill="var(--pay)" opacity="0.5"/>`);
+    g.push(`<line x1="${PX(M1).toFixed(1)}" y1="${Y(M1).toFixed(1)}" x2="${PX(E).toFixed(1)}" y2="${Y(E).toFixed(1)}" stroke="#AAB4C6" stroke-dasharray="3 3"/>`);
+    g.push(`<circle cx="${PX(E).toFixed(1)}" cy="${Y(E).toFixed(1)}" r="6.5" fill="${good?'var(--good)':'var(--bad)'}" stroke="#fff" stroke-width="2"/><text x="${PX(E).toFixed(1)}" y="${(Y(E)+19).toFixed(1)}" class="eflabel" text-anchor="middle" font-weight="700">내일</text>`); }
+  box.innerHTML=g.join("");
 }
-function gCost(){const h=(+$("gHedge").value)/100; $("gHlab").textContent=Math.round(h*100)+'%'; $("gCostlab").textContent='−'+won(h*GMAXCOST)+'억';}
-function gNextRound(){
-  GAME.bud+=GFEE;   /* 올해 보증수수료가 비용 여력에 적립 */
-  const scn=gPick(), shock=scn.lo+Math.random()*(scn.hi-scn.lo);
-  GAME.pending={scn,shock};
-  $("gForecast").style.background='var(--panel2)'; $("gForecast").style.border='1px solid var(--hair)';
-  $("gForecast").innerHTML=`📊 <b>${GAME.y+1}년차</b> · 장세 확률 ${GSCN.map(s=>`<b style="color:${s.c}">${s.e}${s.k} ${Math.round(s.p*100)}%</b>`).join(' · ')} <span style="color:var(--muted)">— 확률은 알아도, 이번에 어느 게 올지는 알 수 없습니다.</span>`;
+function gNewDay(){ GAME.M1=gSz()*(Math.random()<.5?1:-1); gCurve(GAME.M1,null);
+  const dir=GAME.M1>0?'상승':'하락', sz=Math.abs(GAME.M1), lv=sz<8?'조금':sz<20?'제법':'크게';
+  $("gToday").innerHTML=`📈 오늘 주가가 <b style="color:${GAME.M1>0?'var(--good)':'var(--bad)'}">${lv} ${dir}</b>했습니다 — 델타가 틀어졌습니다. 얼마나 되맞출까요? <span style="color:var(--muted)">(포물선을 내려온 만큼이 지금 손실)</span>`;
   gStatus();
 }
 function gPlay(){
-  if(GAME.over||!GAME.pending)return;
-  const h=(+$("gHedge").value)/100, {scn,shock}=GAME.pending;
-  const cost=h*GMAXCOST, leak=Math.abs(shock)*GLEAK*h, mkt=gMkt(shock,h);
-  GAME.bud-=cost; GAME.csm+=mkt; GAME.y++;
-  const budBust=GAME.bud<0, csmBust=GAME.csm<0;
-  /* 돌아보니(hindsight) — 같은 시장에서 완충에 최선인 선택 */
-  const grid=[0,.25,.5,.75,1]; let best=grid[0]; grid.forEach(x=>{if(gMkt(shock,x)-x*GMAXCOST>gMkt(shock,best)-best*GMAXCOST)best=x;});
-  const regret=(gMkt(shock,best)-best*GMAXCOST)-(mkt-cost);
-  let hind;
-  if(regret<80) hind=`<b style="color:var(--good)">적절한 선택</b>이었습니다. 이 시장엔 이 정도가 최선에 가깝습니다.`;
-  else if(best<h) hind=`돌아보니 <b>덜 막아도</b> 됐습니다 — 헷지 비용 <b style="color:var(--leak)">${won(regret)}억</b>이 아까웠네요.`;
-  else hind=`돌아보니 <b>더 막았어야</b> 했습니다 — <b style="color:var(--bad)">${won(regret)}억</b>을 더 지킬 수 있었어요.`;
-  const gammaNote=(scn.k==='급락'&&h>=0.6)?` <span style="color:var(--muted)">다 막아도 급변엔 <b>${won(leak)}억</b>이 샜습니다(감마).</span>`:'';
-  $("gResult").innerHTML=`<div class="gres" style="background:${scn.bg}">
-    <div style="display:flex;align-items:center;gap:11px"><div class="gemoji">${scn.e}</div>
-      <div><div class="gsc" style="color:${scn.c}">${GAME.y}년차 · 실제로는 ${scn.k} 장세</div>
-      <div style="font-size:11.5px;color:var(--muted)">헷지 ${Math.round(h*100)}%로 대응</div></div></div>
+  if(GAME.over)return;
+  const h=(+$("gHedge").value)/100, M1=GAME.M1, s=Math.sign(M1)||1;
+  const trend=Math.random()<0.5, dM=gSz()*(trend?s:-s);
+  const gamma=-GAM*M1*M1, resDelta=-(1-h)*GD*M1, dir=resDelta*dM/10, cost=-GCOST*h*Math.abs(M1);
+  const net=gamma+dir+cost; GAME.bud+=net; GAME.d++;
+  const bust=GAME.bud<=0;
+  gCurve(M1,dM);
+  let insight;
+  if(trend){ insight = h<0.85?`➡️ <b>추세</b>가 이어졌습니다 — 덜 맞춰 <b style="color:var(--bad)">방향 노출로 손실</b>. 더 맞췄어야 했네요.`
+    : h>1.15?`➡️ <b>추세</b>가 이어졌습니다 — <b style="color:var(--good)">오버가 적중</b>해 방향 이익을 봤습니다.`
+    : `➡️ <b>추세</b> — 딱 맞춰 방향은 막고 <b>감마손실만 확정</b>했습니다.`; }
+  else { insight = h>1.15?`🔄 <b>되돌림</b>이 왔습니다 — <b style="color:var(--bad)">오버가 빗나가</b> 손실. 덜 했어야 했네요.`
+    : h>0.85?`🔄 <b>되돌림</b>이 왔습니다 — 딱 맞췄지만 되돌아와 <b>감마손실이 확정</b>됐습니다(관망했으면 회복됐을 것).`
+    : `🔄 <b>되돌림</b> — 덜 맞춘 게 적중해 <b style="color:var(--good)">방향이 회복</b>됐습니다.`; }
+  $("gResult").innerHTML=`<div class="gres" style="background:${net>=0?'#EAF7F1':'#FBEEF1'}">
+    <div class="gsc" style="color:${net>=0?'var(--good)':'var(--bad)'}">${GAME.d}일차 · 하루 손익 ${net>=0?'+':'−'}${Math.abs(net).toFixed(1)}</div>
     <div class="gbreak">
-      <span>💰 헷지비용 <b style="color:var(--leak)">−${won(cost)}</b></span>
-      <span>🛡️ 시장손익 <b style="color:${mkt>=0?'var(--good)':'var(--bad)'}">${gFmt(mkt)}</b></span>
-      <span>비용 여력 <b>${won(Math.max(0,GAME.bud))}억</b></span>
-      <span>완충 <b>${won(Math.max(0,GAME.csm))}억</b></span>
+      <span>감마 <b style="color:var(--leak)">${gamma.toFixed(1)}</b></span>
+      <span>방향 <b style="color:${dir>=0?'var(--good)':'var(--bad)'}">${dir>=0?'+':''}${dir.toFixed(1)}</b></span>
+      <span>비용 <b style="color:var(--leak)">${cost.toFixed(1)}</b></span>
+      <span>잔여 버짓 <b>${Math.round(Math.max(0,GAME.bud))}</b></span>
     </div>
-    <div style="margin-top:9px;font-size:12.5px;color:var(--ink);line-height:1.55">💭 ${hind}${gammaNote}</div>
+    <div style="margin-top:9px;font-size:12.5px;color:var(--ink);line-height:1.55">💭 ${insight}</div>
   </div>`;
-  GAME.log.push({y:GAME.y,scn,mkt,cost});
-  $("gLog").innerHTML=GAME.log.map(r=>`<div class="glogrow"><span class="gy">${r.y}년차</span><span class="gtag" style="color:${r.scn.c}">${r.scn.e} ${r.scn.k}</span><span class="gnet" style="color:${r.mkt>=0?'var(--good)':'var(--bad)'}">시장 ${gFmt(r.mkt)} · 비용 −${won(r.cost)}</span></div>`).join('');
-  GAME.pending=null; if(GAME.y>GAME.best) GAME.best=GAME.y; gStatus();
-  if(budBust||csmBust) gFinish(budBust,csmBust); else gNextRound();
+  GAME.log.push({d:GAME.d,trend,net}); if(GAME.d>GAME.best)GAME.best=GAME.d;
+  $("gLog").innerHTML=GAME.log.slice(-12).reverse().map(r=>`<div class="glogrow"><span class="gy">${r.d}일</span><span class="gtag">${r.trend?'➡️ 추세':'🔄 되돌림'}</span><span class="gnet" style="color:${r.net>=0?'var(--good)':'var(--bad)'}">${r.net>=0?'+':'−'}${Math.abs(r.net).toFixed(1)}</span></div>`).join('');
+  gStatus();
+  if(bust) gFinish(); else gNewDay();
 }
-function gFinish(budBust,csmBust){
-  GAME.over=true; $("gPlay").disabled=true;
-  $("gForecast").innerHTML=`🏁 ${GAME.y}년차에 종료됐습니다.`; $("gForecast").style.background='var(--panel2)';
-  const reason = budBust&&csmBust?'비용 여력과 완충이 동시에 바닥났습니다'
-    : budBust?'💰 <b>비용 여력이 바닥</b>났습니다 — 헷지에 돈을 너무 많이 썼습니다'
-    : '🛡️ <b>완충이 소진</b>됐습니다 — 급락에 손실이 완충을 넘었습니다';
-  const yr=GAME.y, tier = yr>=12?['🏆','헷지 마스터',yr]:yr>=8?['🥇','노련한 운용',yr]:yr>=5?['👍','무난',yr]:['😅','아직 연습',yr];
+function gFinish(){
+  GAME.over=true; $("gPlay").disabled=true; $("gToday").innerHTML=`🏁 <b>${GAME.d}일</b>째에 버짓이 바닥났습니다.`;
+  const d=GAME.d, t=d>=25?['🏆','베테랑 트레이더']:d>=15?['🥇','노련']:d>=8?['👍','무난']:['😅','아직 연습'];
   $("gFinal").innerHTML=`<div class="gres" style="background:linear-gradient(135deg,#EEF3FE,#F4F0FD);border:1px solid #D7E0F5;margin-top:14px">
-    <div style="display:flex;align-items:center;gap:12px"><div style="font-size:34px">${tier[0]}</div>
-      <div><div style="font-weight:800;font-size:16px;color:var(--ink)">${tier[1]} · <b style="color:var(--pay)">${yr}년</b> 생존</div>
-      <div style="font-size:12.5px;color:var(--muted);margin-top:2px">${reason}.</div></div></div>
-    <div style="font-size:12px;color:var(--muted);margin-top:9px;line-height:1.6">비용을 아끼려 <b>덜 막으면</b> 급락 한 방에 완충이 뚫리고, 안전하려 <b>많이 막으면</b> 비용 여력이 먼저 마릅니다. <b>전망을 맞히려는 게 아니라</b>, 알 수 없는 미래에 대비해 <b>꾸준히 위험을 넘기며(헷지) 두 한도 안에 머무는 균형</b> — 그것이 헷지의 어려움입니다.</div>
+    <div style="display:flex;align-items:center;gap:12px"><div style="font-size:34px">${t[0]}</div>
+      <div><div style="font-weight:800;font-size:16px;color:var(--ink)">${t[1]} · <b style="color:var(--pay)">${d}일</b> 버팀</div></div></div>
+    <div style="font-size:12px;color:var(--muted);margin-top:9px;line-height:1.6"><b>감마손실은 매일 불가피</b>합니다 — 되맞추면 확정 손실로, 안 맞추면 방향 도박으로 냅니다. 되돌릴지 이어질지 <b>알 수 없어</b> 어느 선택도 정답이 아니고, 타이트한 버짓 안에서 <b>오래 버티는 것 자체가 어렵습니다</b>. 이것이 실제 델타헷지의 매일입니다.</div>
     <button id="gReset" class="gbtn" style="margin-top:12px;background:var(--ink)">다시 도전 ↻</button>
   </div>`;
   $("gReset").addEventListener("click",gReset);
 }
-function gReset(){GAME.y=0;GAME.bud=GAME.bud0;GAME.csm=GAME.csm0;GAME.over=false;GAME.log=[];GAME.pending=null;
-  $("gPlay").disabled=false; $("gResult").innerHTML=''; $("gLog").innerHTML=''; $("gFinal").innerHTML=''; gNextRound();}
-if($("gHedge")){ $("gHedge").addEventListener("input",gCost); $("gPlay").addEventListener("click",gPlay); gCost(); gNextRound(); }
+function gReset(){GAME.d=0;GAME.bud=GAME.bud0;GAME.over=false;GAME.log=[];
+  $("gPlay").disabled=false; $("gResult").innerHTML=''; $("gLog").innerHTML=''; $("gFinal").innerHTML=''; gNewDay();}
+if($("gHedge")){ $("gHedge").addEventListener("input",gHlab); $("gPlay").addEventListener("click",gPlay); gHlab(); gNewDay(); }
 
 renderFactorAnim(); renderPayoff();
 render(); syncCsm2(); drawCasc(); drawBuffer();

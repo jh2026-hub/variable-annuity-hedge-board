@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{--bg:#F4F6FB;--panel:#FFFFFF;--panel2:#EEF1F8;--hair:#E2E7F1;--ink:#1B2437;--muted:#6C778C;
+  :root{--bg:#E9ECF3;--panel:#FFFFFF;--panel2:#EEF1F7;--hair:#DEE3EE;--ink:#16202F;--muted:#566275;
         --pay:#3B6FE6;--leak:#E68A17;--sym:#7A5AF0;--bad:#E24A62;--good:#12A870;--line:#1B2437}
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{background:var(--bg);color:var(--ink)}
@@ -80,7 +80,7 @@
   .sname{flex:1 1 130px;font-size:13px;font-weight:600}.sname small{display:block;color:var(--muted);font-size:10.5px;font-weight:400;margin-top:1px}
   .difftag{flex:0 0 auto;font-size:10px;font-weight:700;padding:3px 9px;border-radius:99px;white-space:nowrap}
   .difftag.good{background:#E4F6EE;color:#12A870}.difftag.pay{background:#E7EFFD;color:#3B6FE6}
-  .difftag.leak{background:#FBEAD2;color:#C7770A}.difftag.muted{background:#EEF1F8;color:#6C778C}
+  .difftag.leak{background:#FBEAD2;color:#C7770A}.difftag.muted{background:#EEF1F8;color:#566275}
   .scost{flex:0 0 auto;font-size:11.5px;color:var(--muted);text-align:right;min-width:84px}
   .seg2{display:inline-flex;border:1px solid var(--hair);border-radius:9px;overflow:hidden;box-shadow:0 1px 2px rgba(20,32,55,.06)}
   .seg2 button{background:#FFFFFF;border:none;color:var(--muted);font-family:inherit;font-size:12.5px;font-weight:700;padding:9px 15px;cursor:pointer;min-height:42px;transition:.12s}
@@ -205,26 +205,26 @@
     <div class="chartwrap"><svg viewBox="0 0 640 170" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
       <rect x="20" y="60" width="140" height="50" rx="8" fill="#E7EFFD" stroke="#9DBBF3"/>
       <text x="90" y="82" fill="#3B6FE6" font-size="13" font-weight="700" text-anchor="middle" font-family="sans-serif">보증수수료</text>
-      <text x="90" y="99" fill="#6C778C" font-size="10" text-anchor="middle" font-family="sans-serif">헷지 재원</text>
-      <line x1="160" y1="85" x2="215" y2="85" stroke="#B7C0D2" stroke-width="2" marker-end="url(#ar)"/>
+      <text x="90" y="99" fill="#566275" font-size="10" text-anchor="middle" font-family="sans-serif">헷지 재원</text>
+      <line x1="160" y1="85" x2="215" y2="85" stroke="#AAB4C6" stroke-width="2" marker-end="url(#ar)"/>
       <rect x="220" y="18" width="150" height="42" rx="8" fill="#EEF1F8" stroke="#C9D2E2"/>
       <text x="295" y="38" fill="#3B6FE6" font-size="12" font-weight="700" text-anchor="middle" font-family="sans-serif">헷지 비용</text>
-      <text x="295" y="52" fill="#6C778C" font-size="9.5" text-anchor="middle" font-family="sans-serif">변동을 확정 비용으로</text>
+      <text x="295" y="52" fill="#566275" font-size="9.5" text-anchor="middle" font-family="sans-serif">변동을 확정 비용으로</text>
       <rect x="220" y="70" width="150" height="42" rx="8" fill="#EEF1F8" stroke="#C9D2E2"/>
       <text x="295" y="90" fill="#E68A17" font-size="12" font-weight="700" text-anchor="middle" font-family="sans-serif">변동성 감내</text>
-      <text x="295" y="104" fill="#6C778C" font-size="9.5" text-anchor="middle" font-family="sans-serif">CSM 완충으로 흡수</text>
+      <text x="295" y="104" fill="#566275" font-size="9.5" text-anchor="middle" font-family="sans-serif">CSM 완충으로 흡수</text>
       <line x1="160" y1="75" x2="215" y2="40" stroke="#9DBBF3" stroke-width="1.5"/>
       <line x1="160" y1="95" x2="215" y2="90" stroke="#F1D7A3" stroke-width="1.5"/>
-      <line x1="370" y1="39" x2="425" y2="80" stroke="#B7C0D2" stroke-width="1.5"/>
-      <line x1="370" y1="91" x2="425" y2="85" stroke="#B7C0D2" stroke-width="1.5"/>
+      <line x1="370" y1="39" x2="425" y2="80" stroke="#AAB4C6" stroke-width="1.5"/>
+      <line x1="370" y1="91" x2="425" y2="85" stroke="#AAB4C6" stroke-width="1.5"/>
       <rect x="430" y="60" width="130" height="50" rx="8" fill="#E4F6EE" stroke="#A7E3C6"/>
       <text x="495" y="82" fill="#12A870" font-size="13" font-weight="700" text-anchor="middle" font-family="sans-serif">남는 이익</text>
-      <text x="495" y="99" fill="#6C778C" font-size="10" text-anchor="middle" font-family="sans-serif">재원 − 비용 − 누수</text>
-      <text x="320" y="150" fill="#6C778C" font-size="10.5" text-anchor="middle" font-family="sans-serif">감내분은 CSM을 조정하고, 완충이 소진되면 보험손익(PL)으로 인식된다.</text>
+      <text x="495" y="99" fill="#566275" font-size="10" text-anchor="middle" font-family="sans-serif">재원 − 비용 − 누수</text>
+      <text x="320" y="150" fill="#566275" font-size="10.5" text-anchor="middle" font-family="sans-serif">감내분은 CSM을 조정하고, 완충이 소진되면 보험손익(PL)으로 인식된다.</text>
       <circle r="4.5" fill="#3B6FE6"><animate attributeName="cx" values="162;218" dur="1.8s" repeatCount="indefinite"/><animate attributeName="cy" values="85;40" dur="1.8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.2" dur="1.8s" repeatCount="indefinite"/></circle>
       <circle r="4.5" fill="#E68A17"><animate attributeName="cx" values="162;218" dur="1.8s" begin="0.4s" repeatCount="indefinite"/><animate attributeName="cy" values="85;91" dur="1.8s" begin="0.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.2" dur="1.8s" begin="0.4s" repeatCount="indefinite"/></circle>
       <circle r="4.5" fill="#12A870"><animate attributeName="cx" values="372;428" dur="1.8s" begin="0.9s" repeatCount="indefinite"/><animate attributeName="cy" values="65;85" dur="1.8s" begin="0.9s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.2" dur="1.8s" begin="0.9s" repeatCount="indefinite"/></circle>
-      <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#B7C0D2"/></marker></defs>
+      <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#AAB4C6"/></marker></defs>
     </svg></div>
     <p style="font-size:13px;color:var(--muted);line-height:1.75;margin-top:6px">보증수수료라는 한정된 재원에서 <b style="color:var(--ink)">헷지 비용</b>과 <b style="color:var(--ink)">감내한 변동성의 손실</b>이 차감되고, 남는 것이 이익이 된다. 재원을 넘어서면 지속이 어렵다.</p>
   </div>
@@ -232,10 +232,10 @@
   <div class="panel concept">
     <div class="cap">핵심 트레이드오프 — 비용과 손익변동성</div>
     <div class="chartwrap"><svg viewBox="0 0 640 200" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
-      <line x1="60" y1="20" x2="60" y2="165" stroke="#B7C0D2" stroke-width="1.5"/>
-      <line x1="60" y1="165" x2="600" y2="165" stroke="#B7C0D2" stroke-width="1.5"/>
-      <text x="52" y="30" fill="#6C778C" font-size="10" text-anchor="end" font-family="sans-serif">비용↑</text>
-      <text x="595" y="182" fill="#6C778C" font-size="10" text-anchor="end" font-family="sans-serif">손익변동성↑</text>
+      <line x1="60" y1="20" x2="60" y2="165" stroke="#AAB4C6" stroke-width="1.5"/>
+      <line x1="60" y1="165" x2="600" y2="165" stroke="#AAB4C6" stroke-width="1.5"/>
+      <text x="52" y="30" fill="#566275" font-size="10" text-anchor="end" font-family="sans-serif">비용↑</text>
+      <text x="595" y="182" fill="#566275" font-size="10" text-anchor="end" font-family="sans-serif">손익변동성↑</text>
       <path d="M100 40 C220 55 300 120 560 150" fill="none" stroke="#3B6FE6" stroke-width="2.5"/>
       <line x1="60" y1="95" x2="600" y2="95" stroke="#1B2437" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.7"/>
       <text x="596" y="90" fill="#1B2437" font-size="10" text-anchor="end" font-family="sans-serif">예산(보증수수료)</text>
@@ -351,14 +351,14 @@
     <select id="rateTenor"><option value="y3">국고 3년</option><option value="y10">국고 10년</option><option value="y20" selected>국고 20년</option><option value="y30">국고 30년</option></select>
     <span class="foot"> · 장기부채 특성상 기본값 20년</span></label></div>
   <div class="panel">
-    <div class="cap">미헷지 손익변동성 vs 헷지<span>누적 손익 (억)</span></div>
+    <div class="cap">미헷지 손익변동성 vs 헷지<span>주간 손익 (억)</span></div>
     <div class="stat" id="volStat"></div>
     <div class="chartwrap"><svg class="sim" id="simVol" viewBox="0 0 640 280" preserveAspectRatio="xMidYMid meet"></svg></div>
     <div class="leg">
-      <span><i style="background:var(--sym)"></i>미헷지 누적손익(방향)</span>
-      <span><i style="background:var(--pay)"></i>헷지 후 누적손익</span>
+      <span><i style="background:var(--sym)"></i>미헷지 주간손익(방향)</span>
+      <span><i style="background:var(--pay)"></i>헷지 후 주간손익</span>
     </div>
-    <p class="foot"><b>미헷지</b> 선은 주가·금리 일별 등락이 그대로 손익이 되어 크게 출렁인다(주가 상승기엔 오르지만 변동성이 크다). <b>헷지 후</b> 선은 그 변동을 제거하여 완만하며, 대신 헷지 비용만큼 서서히 내려간다. 민감도(주가·금리 1bp당 손익)는 <b>④ 입력 가정</b>에서 조정한다.</p>
+    <p class="foot"><b>미헷지</b> 선은 주가·금리 등락이 그대로 손익이 되어 <b>매주 크게 위아래로 출렁인다</b>. <b>헷지 후</b> 선은 그 변동을 제거하여 0 근처에 붙는다 — 이것이 헷지가 막은 손익변동성이다. 민감도(주가·금리 1bp당 손익)는 <b>④ 입력 가정</b>에서 조정한다.</p>
   </div>
   <div class="panel">
     <div class="cap">연도별 변동성 · 감마 손실<span>실제 시장 변동성으로 재현</span></div>
@@ -366,13 +366,12 @@
     <div class="stat" id="simStat"></div>
     <div class="chartwrap"><svg class="sim" id="sim" viewBox="0 0 640 280" preserveAspectRatio="xMidYMid meet"></svg></div>
     <div class="leg">
-      <span><i style="background:var(--leak)"></i>미헷지분 누수(실현)</span>
-      <span><i style="background:var(--pay)"></i>헷지분 프리미엄(확정)</span>
+      <span><i style="background:var(--leak)"></i>감내 시 누수(실현변동성)</span>
+      <span><i style="background:var(--pay)"></i>헷지 시 프리미엄(고정)</span>
       <span><i style="background:var(--sym)"></i>주가 RV(우축)</span>
-      <span><span class="dash"></span>미헷지 시 총누수(참조)</span>
     </div>
-    <div class="chartwrap"><table class="mtx" id="simTbl"><thead><tr><th>연도</th><th>주가 RV</th><th>금리 RV</th><th>현재 전략 감마비용</th><th>미헷지 시</th></tr></thead><tbody></tbody></table></div>
-    <p class="foot">막대는 <b>④ 비용·변동성의 헷지 선택</b>을 반영한다 — 감마를 헷지하면 프리미엄(확정, 청록)으로, 헷지하지 않으면 실현변동성 기반 누수(주황)로 나타난다. 파선은 감마를 전혀 헷지하지 않았을 때의 총누수 참조선이다. 주가 RV는 KOSPI 일간수익률의 연율화 표준편차(%), 금리 RV는 선택한 국고 만기의 일간변동 연율화 표준편차(bp)이다.</p>
+    <div class="chartwrap"><table class="mtx" id="simTbl"><thead><tr><th>연도</th><th>주가 RV</th><th>금리 RV</th><th>감내 시 누수</th><th>헷지 시 프리미엄</th></tr></thead><tbody></tbody></table></div>
+    <p class="foot"><b>감내(주황)</b>는 변동성이 큰 해에 누수가 급증하고, <b>헷지(청록)</b>는 매년 거의 같은 고정 프리미엄이다 — 감마 위험의 핵심 트레이드오프. 주가 RV는 KOSPI 일간수익률의 연율화 표준편차(%), 금리 RV는 국고 일간변동의 연율화 표준편차(bp)이다.</p>
   </div>
   <div class="panel">
     <div class="cap">항목별 손익요소<span>현재 전략 · 연 기준</span></div>
@@ -587,7 +586,7 @@ function drawEF(pts,fr,cur,opt,budget){
   g.push(`<text class="eflabel" x="${W-R}" y="${(by-5).toFixed(1)}" text-anchor="end" fill="var(--line)">예산 ${won(budget)}억</text>`);
   const frSet=new Set(fr.map(p=>p.sig+"|"+p.cost));
   pts.forEach(p=>{ if(frSet.has(p.sig+"|"+p.cost))return;
-    g.push(`<circle class="pt" data-sig="${p.sig}" data-cost="${p.cost}" cx="${X(p.sig).toFixed(1)}" cy="${Y(p.cost).toFixed(1)}" r="3" fill="#B7C0D2"/>`); });
+    g.push(`<circle class="pt" data-sig="${p.sig}" data-cost="${p.cost}" cx="${X(p.sig).toFixed(1)}" cy="${Y(p.cost).toFixed(1)}" r="3" fill="#AAB4C6"/>`); });
   g.push(`<path d="${fr.map((p,i)=>(i?"L":"M")+X(p.sig).toFixed(1)+" "+Y(p.cost).toFixed(1)).join(" ")}" fill="none" stroke="var(--pay)" stroke-width="2"/>`);
   fr.forEach(p=>g.push(`<circle class="pt" data-sig="${p.sig}" data-cost="${p.cost}" data-fr="1" cx="${X(p.sig).toFixed(1)}" cy="${Y(p.cost).toFixed(1)}" r="4" fill="var(--pay)" stroke="var(--bg)" stroke-width="1.5"/>`));
   if(opt) g.push(`<circle cx="${X(opt.sig).toFixed(1)}" cy="${Y(opt.cost).toFixed(1)}" r="7" fill="none" stroke="var(--good)" stroke-width="2.5"/>`);
@@ -672,26 +671,27 @@ function drawVolChart(){
     if(rOn) cost += gROn ? gam(gr,ir)/252 : gam(gr,dRtBp);
     dU.push(pnlDir); dH.push(-cost); cU+=pnlDir; cH+=-cost; U.push(cU); Hs.push(cH); idx.push(i);
   }
+  /* 주간 집계 (5영업일) */
+  const wU=[],wH=[],wYr=[];
+  for(let i=0;i<dU.length;i+=5){ let su=0,sh=0; for(let j=i;j<Math.min(i+5,dU.length);j++){su+=dU[j];sh+=dH[j];}
+    wU.push(su); wH.push(sh); wYr.push(idx[Math.min(i,idx.length-1)]); }
   const std=a=>{const m=a.reduce((x,y)=>x+y,0)/a.length; return Math.sqrt(a.reduce((x,y)=>x+(y-m)*(y-m),0)/(a.length-1));};
   const volU=std(dU)*Math.sqrt(252), volH=std(dH)*Math.sqrt(252);
   $("volStat").innerHTML=`
-    <div><div class="sl">미헷지 연 손익변동성(1σ)</div><div class="sv" style="color:var(--sym)">±${won(volU)}억</div></div>
-    <div><div class="sl">헷지 후 잔여(1σ)</div><div class="sv" style="color:var(--pay)">±${won(volH)}억</div></div>
-    <div><div class="sl">헷지가 막은 변동성</div><div class="sv" style="color:var(--good)">${won(Math.max(0,volU-volH))}억</div></div>`;
-  const W=640,H=280,L=56,R=14,T=14,B=26,iw=W-L-R,ih=H-T-B,g=[];
-  const all=U.concat(Hs), yMax=Math.max(...all,1)*1.08, yMin=Math.min(...all,-1)*1.08;
-  const n=U.length, X=i=>L+iw*i/(n-1), Y=v=>T+ih-(v-yMin)/(yMax-yMin)*ih;
-  for(let k=0;k<=4;k++){ const gy=T+ih*k/4, cv=yMax-(yMax-yMin)*k/4;
-    g.push(`<line x1="${L}" y1="${gy.toFixed(1)}" x2="${W-R}" y2="${gy.toFixed(1)}" stroke="#EAEDF5" stroke-width="1"/>`);
-    g.push(`<text class="eflabel" x="${L-6}" y="${(gy+3).toFixed(1)}" text-anchor="end">${won(cv)}</text>`); }
-  const y0=Y(0); g.push(`<line x1="${L}" y1="${y0.toFixed(1)}" x2="${W-R}" y2="${y0.toFixed(1)}" stroke="#B7C0D2" stroke-width="1.2"/>`);
-  /* 연도 라벨 */
-  let cy=null; d.dates.forEach((dt,i)=>{ if(i===0)return; const j=i-1; if(j>=n)return; const yr=dt.slice(0,4);
-    if(yr!==cy){ cy=yr; g.push(`<text class="eflabel" x="${X(j).toFixed(1)}" y="${H-B+16}" text-anchor="middle">${yr}</text>`);} });
-  const step=Math.max(1,Math.ceil(n/360));
-  const path=arr=>{let p="";for(let i=0;i<n;i+=step){p+=(i?"L":"M")+X(i).toFixed(1)+" "+Y(arr[i]).toFixed(1);} p+="L"+X(n-1).toFixed(1)+" "+Y(arr[n-1]).toFixed(1); return p;};
-  g.push(`<path d="${path(U)}" fill="none" stroke="var(--sym)" stroke-width="1.6" opacity="0.9"/>`);
-  g.push(`<path d="${path(Hs)}" fill="none" stroke="var(--pay)" stroke-width="2"/>`);
+    <div><div class="sl">미헷지 주간 손익 진폭(1σ)</div><div class="sv" style="color:var(--sym)">±${won(std(wU))}억</div></div>
+    <div><div class="sl">헷지 후 주간(1σ)</div><div class="sv" style="color:var(--pay)">±${won(std(wH))}억</div></div>
+    <div><div class="sl">헷지가 막은 변동성(연 1σ)</div><div class="sv" style="color:var(--good)">${won(Math.max(0,volU-volH))}억</div></div>`;
+  const W=640,H=280,L=52,R=14,T=14,B=26,iw=W-L-R,ih=H-T-B,g=[];
+  const amp=Math.max(...wU.map(Math.abs),1)*1.1, n=wU.length;
+  const X=i=>L+iw*i/(n-1), Y=v=>T+ih/2-(v/amp)*(ih/2);
+  [1,0.5,0,-0.5,-1].forEach(f=>{ const cv=amp*f, gy=Y(cv);
+    g.push(`<line x1="${L}" y1="${gy.toFixed(1)}" x2="${W-R}" y2="${gy.toFixed(1)}" stroke="${f===0?'#AAB4C6':'#EAEDF5'}" stroke-width="${f===0?1.3:1}"/>`);
+    g.push(`<text class="eflabel" x="${L-6}" y="${(gy+3).toFixed(1)}" text-anchor="end">${f>0?'+':''}${won(cv)}</text>`); });
+  let cy=null; const dts=SIM.data.dates;
+  wYr.forEach((di,i)=>{ const yr=dts[di]?dts[di].slice(0,4):''; if(yr&&yr!==cy){cy=yr; g.push(`<text class="eflabel" x="${X(i).toFixed(1)}" y="${H-B+16}" text-anchor="middle">${yr}</text>`);} });
+  const path=arr=>arr.map((v,i)=>(i?"L":"M")+X(i).toFixed(1)+" "+Y(v).toFixed(1)).join(" ");
+  g.push(`<path d="${path(wU)}" fill="none" stroke="var(--sym)" stroke-width="1.4" opacity="0.85"/>`);
+  g.push(`<path d="${path(wH)}" fill="none" stroke="var(--pay)" stroke-width="2.2"/>`);
   $("simVol").innerHTML=g.join("");
 }
 function renderSim(){
@@ -701,45 +701,30 @@ function renderSim(){
   const on=id=>RISK.find(r=>r.id===id).on;
   const dOn=on("delta"), rOn=on("rho"), gEOn=on("gE"), gROn=on("gR");
   /* 감마는 방향(델타/로)을 헷지할 때만 존재. 감마헷지(gE/gR) 켜면 프리미엄 확정, 아니면 실현변동성 누수. */
-  const rows=ys.map(s=>{
-    const leakE = dOn&&!gEOn ? gam(ge,s.rvE) : 0;
-    const leakR = rOn&&!gROn ? gam(gr,s.rvR) : 0;
-    const premE = dOn&&gEOn ? gam(ge,ie) : 0;
-    const premR = rOn&&gROn ? gam(gr,ir) : 0;
-    const leak=leakE+leakR, prem=premE+premR, cur=leak+prem;
-    const noHedge = (dOn?gam(ge,s.rvE):0) + (rOn?gam(gr,s.rvR):0);
-    return {...s, leak, prem, cur, noHedge};
-  });
-  const avgCur=rows.reduce((a,r)=>a+r.cur,0)/rows.length;
-  const avgNo=rows.reduce((a,r)=>a+r.noHedge,0)/rows.length;
-  const worst=rows.reduce((a,b)=>a.cur>b.cur?a:b);
-  $("simStrat").innerHTML=`현재 전략 · 주가감마 <b style="color:${gEOn?'var(--pay)':'var(--leak)'}">${dOn?(gEOn?'헷지(프리미엄)':'감내(누수)'):'해당없음(방향 미헷지)'}</b> · 금리감마 <b style="color:${gROn?'var(--pay)':'var(--leak)'}">${rOn?(gROn?'헷지(프리미엄)':'감내(누수)'):'해당없음'}</b> — ③ 비용·변동성에서 변경`;
-  const diff=avgNo-avgCur;
+  /* 연도별: 감내 시 누수(변동성 기반, 매년 변동) vs 헷지 시 프리미엄(고정) — 선택과 무관한 비교 */
+  const rows=ys.map(s=>({...s, leak:gam(ge,s.rvE)+gam(gr,s.rvR), prem:gam(ge,ie)+gam(gr,ir)}));
+  const avgLeak=rows.reduce((a,r)=>a+r.leak,0)/rows.length, worst=rows.reduce((a,b)=>a.leak>b.leak?a:b);
+  $("simStrat").innerHTML=`<b style="color:var(--leak)">감내</b>하면 변동성 큰 해에 누수가 급증하고, <b style="color:var(--pay)">헷지</b>하면 매년 고정 프리미엄이다.`;
   $("simStat").innerHTML=`
-    <div><div class="sl">현재 전략 연평균</div><div class="sv" style="color:${rows[0].prem>rows[0].leak?'var(--pay)':'var(--leak)'}">△${won(avgCur)}억</div></div>
-    <div><div class="sl">최대(${worst.y})</div><div class="sv" style="color:var(--bad)">△${won(worst.cur)}억</div></div>
-    <div><div class="sl">미헷지 대비</div><div class="sv" style="color:${diff>=0?'var(--good)':'var(--bad)'}">${diff>=0?'−':'+'}${won(Math.abs(diff))}억/년</div></div>`;
+    <div><div class="sl">감내 시 연평균 누수</div><div class="sv" style="color:var(--leak)">△${won(avgLeak)}억</div></div>
+    <div><div class="sl">최대 누수(${worst.y})</div><div class="sv" style="color:var(--bad)">△${won(worst.leak)}억</div></div>
+    <div><div class="sl">헷지 시 프리미엄(연)</div><div class="sv" style="color:var(--pay)">△${won(rows[0].prem)}억</div></div>`;
   const W=640,H=280,L=48,R=40,T=14,B=34,iw=W-L-R,ih=H-T-B,g=[];
-  const yMax=Math.max(...rows.map(r=>Math.max(r.cur,r.noHedge)),1)*1.12, rvMax=Math.max(...rows.map(r=>r.rvE),1)*1.15;
-  const bw=iw/rows.length, X=i=>L+bw*(i+0.5), Y=v=>T+ih-(v/yMax)*ih, YR=v=>T+ih-(v/rvMax)*ih;
+  const yMax=Math.max(...rows.map(r=>Math.max(r.leak,r.prem)),1)*1.12, rvMax=Math.max(...rows.map(r=>r.rvE),1)*1.15;
+  const bw=iw/rows.length, X=i=>L+bw*(i+0.5), YR=v=>T+ih-(v/rvMax)*ih;
   for(let i=0;i<=4;i++){ const gy=T+ih*i/4;
     g.push(`<line x1="${L}" y1="${gy.toFixed(1)}" x2="${W-R}" y2="${gy.toFixed(1)}" stroke="#EAEDF5" stroke-width="1"/>`);
     g.push(`<text class="eflabel" x="${L-6}" y="${(gy+3).toFixed(1)}" text-anchor="end">${won(yMax*(1-i/4))}</text>`);
-    g.push(`<text class="eflabel" x="${W-R+6}" y="${(gy+3).toFixed(1)}" text-anchor="start" fill="#98A2B6">${(rvMax*(1-i/4)).toFixed(0)}%</text>`); }
-  rows.forEach((r,i)=>{ const w=bw*0.5, x=(X(i)-w/2).toFixed(1);
-    /* 스택: 누수(아래) + 프리미엄(위) = 현재 전략 */
-    const hLeak=(ih*(r.leak/yMax)), hPrem=(ih*(r.prem/yMax));
-    g.push(`<rect x="${x}" y="${(T+ih-hLeak).toFixed(1)}" width="${w.toFixed(1)}" height="${hLeak.toFixed(1)}" fill="var(--leak)" rx="1.5"/>`);
-    g.push(`<rect x="${x}" y="${(T+ih-hLeak-hPrem).toFixed(1)}" width="${w.toFixed(1)}" height="${hPrem.toFixed(1)}" fill="var(--pay)" rx="1.5"/>`);
+    g.push(`<text class="eflabel" x="${W-R+6}" y="${(gy+3).toFixed(1)}" text-anchor="start" fill="#7A8698">${(rvMax*(1-i/4)).toFixed(0)}%</text>`); }
+  rows.forEach((r,i)=>{ const w=bw*0.30, hL=ih*(r.leak/yMax), hP=ih*(r.prem/yMax);
+    g.push(`<rect x="${(X(i)-w-1.5).toFixed(1)}" y="${(T+ih-hL).toFixed(1)}" width="${w.toFixed(1)}" height="${hL.toFixed(1)}" fill="var(--leak)" rx="1.5"/>`);
+    g.push(`<rect x="${(X(i)+1.5).toFixed(1)}" y="${(T+ih-hP).toFixed(1)}" width="${w.toFixed(1)}" height="${hP.toFixed(1)}" fill="var(--pay)" rx="1.5"/>`);
     g.push(`<text class="eflabel" x="${X(i).toFixed(1)}" y="${H-B+15}" text-anchor="middle">${r.y}</text>`); });
-  /* 미헷지 참조선 */
-  g.push(`<path d="${rows.map((r,i)=>(i?"L":"M")+X(i).toFixed(1)+" "+Y(r.noHedge).toFixed(1)).join(" ")}" fill="none" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.6"/>`);
-  /* RV 라인(우축) */
   g.push(`<path d="${rows.map((r,i)=>(i?"L":"M")+X(i).toFixed(1)+" "+YR(r.rvE).toFixed(1)).join(" ")}" fill="none" stroke="var(--sym)" stroke-width="2" opacity="0.85"/>`);
   rows.forEach((r,i)=>g.push(`<circle cx="${X(i).toFixed(1)}" cy="${YR(r.rvE).toFixed(1)}" r="3" fill="var(--sym)"/>`));
   $("sim").innerHTML=g.join("");
   $("simTbl").querySelector("tbody").innerHTML=rows.map(r=>
-    `<tr><td>${r.y}</td><td class="mono">${r.rvE.toFixed(1)}%</td><td class="mono">${r.rvR.toFixed(0)}bp</td><td class="mono" style="color:${r.prem>r.leak?'var(--pay)':'var(--leak)'}">△${won(r.cur)}억</td><td class="mono" style="color:var(--muted)">△${won(r.noHedge)}억</td></tr>`).join("");
+    `<tr><td>${r.y}</td><td class="mono">${r.rvE.toFixed(1)}%</td><td class="mono">${r.rvR.toFixed(0)}bp</td><td class="mono" style="color:var(--leak)">△${won(r.leak)}억</td><td class="mono" style="color:var(--pay)">△${won(r.prem)}억</td></tr>`).join("");
 
   /* 항목별 손익요소 (현재 전략, 연 기준) */
   const AV=val("av"), avgRvE=ys.reduce((a,s)=>a+s.rvE,0)/ys.length, avgRvR=ys.reduce((a,s)=>a+s.rvR,0)/ys.length;
@@ -762,23 +747,23 @@ function renderSim(){
 const NATLAB={loss:"미헷지 시 늘 손실 → 헷지 후 완화",two:"양방향(손실·이득)",bear:"이전 불가"};
 const VIZ={
   dir:{
-    b:`<svg class="anim" viewBox="0 0 120 84"><line x1="12" y1="42" x2="108" y2="42" stroke="#B7C0D2" stroke-width="1" stroke-dasharray="3 2"/><line x1="12" y1="66" x2="108" y2="18" stroke="#7A5AF0" stroke-width="2.5"/><g transform="translate(12,66)"><circle class="a-dot" r="5" fill="#7A5AF0"/></g><text x="60" y="79" fill="#6C778C" font-size="8" text-anchor="middle">오르내림 = 손익 ±</text></svg>`,
-    a:`<svg class="anim" viewBox="0 0 120 84"><line x1="12" y1="44" x2="108" y2="44" stroke="#B7C0D2" stroke-width="1" stroke-dasharray="3 2"/><line x1="12" y1="66" x2="96" y2="20" stroke="#7A5AF0" stroke-width="1.5" opacity="0.5"/><line x1="12" y1="22" x2="96" y2="68" stroke="#3B6FE6" stroke-width="1.5" opacity="0.5"/><g transform="translate(12,66)"><circle class="a-dot" r="3.5" fill="#7A5AF0" opacity="0.75"/></g><g transform="translate(12,22)"><circle class="a-dot-dn" r="3.5" fill="#3B6FE6" opacity="0.75"/></g><g transform="translate(12,44)"><circle class="a-dot-flat" r="5" fill="#12A870"/></g><text x="60" y="79" fill="#12A870" font-size="8" text-anchor="middle">부채+헷지 = 손익 0</text></svg>`},
+    b:`<svg class="anim" viewBox="0 0 120 84"><line x1="12" y1="42" x2="108" y2="42" stroke="#AAB4C6" stroke-width="1" stroke-dasharray="3 2"/><line x1="12" y1="66" x2="108" y2="18" stroke="#7A5AF0" stroke-width="2.5"/><g transform="translate(12,66)"><circle class="a-dot" r="5" fill="#7A5AF0"/></g><text x="60" y="79" fill="#566275" font-size="8" text-anchor="middle">오르내림 = 손익 ±</text></svg>`,
+    a:`<svg class="anim" viewBox="0 0 120 84"><line x1="12" y1="44" x2="108" y2="44" stroke="#AAB4C6" stroke-width="1" stroke-dasharray="3 2"/><line x1="12" y1="66" x2="96" y2="20" stroke="#7A5AF0" stroke-width="1.5" opacity="0.5"/><line x1="12" y1="22" x2="96" y2="68" stroke="#3B6FE6" stroke-width="1.5" opacity="0.5"/><g transform="translate(12,66)"><circle class="a-dot" r="3.5" fill="#7A5AF0" opacity="0.75"/></g><g transform="translate(12,22)"><circle class="a-dot-dn" r="3.5" fill="#3B6FE6" opacity="0.75"/></g><g transform="translate(12,44)"><circle class="a-dot-flat" r="5" fill="#12A870"/></g><text x="60" y="79" fill="#12A870" font-size="8" text-anchor="middle">부채+헷지 = 손익 0</text></svg>`},
   gamma:{
-    b:`<svg class="anim" viewBox="0 0 120 84"><path d="M10 36 L110 36 L110 66 Q60 6 10 66 Z" fill="#E24A62" opacity="0.20"/><path d="M10 66 Q60 6 110 66" fill="none" stroke="#6C778C" stroke-width="2"/><line x1="10" y1="36" x2="110" y2="36" stroke="#7A5AF0" stroke-width="1.6" stroke-dasharray="4 3"/><text x="13" y="33" fill="#7A5AF0" font-size="7.5">접선(델타)</text><g transform="translate(88,36)"><rect class="a-gap" x="-1.5" y="0" width="3.5" height="26" fill="#E24A62"/></g><g transform="translate(46,44)"><circle class="a-spot" r="4" fill="#1B2437"/></g><text x="60" y="79" fill="#E24A62" font-size="8" text-anchor="middle" font-weight="700">부족분=손실(항상)</text></svg>`,
-    a:`<svg class="anim" viewBox="0 0 120 84"><path d="M10 36 L110 36 L110 66 Q60 6 10 66 Z" fill="#3B6FE6" opacity="0.18"/><path d="M10 66 Q60 6 110 66" fill="none" stroke="#6C778C" stroke-width="2"/><line x1="10" y1="36" x2="110" y2="36" stroke="#7A5AF0" stroke-width="1.6" stroke-dasharray="4 3"/><text x="13" y="33" fill="#7A5AF0" font-size="7.5">접선(델타)</text><g transform="translate(88,36)"><rect class="a-cover" x="-1.75" y="0" width="3.5" height="26" fill="#3B6FE6"/></g><g transform="translate(46,44)"><circle class="a-spot" r="4" fill="#1B2437"/></g><text x="60" y="79" fill="#3B6FE6" font-size="8" text-anchor="middle">부족분→프리미엄(확정)</text></svg>`},
+    b:`<svg class="anim" viewBox="0 0 120 84"><path d="M10 36 L110 36 L110 66 Q60 6 10 66 Z" fill="#E24A62" opacity="0.20"/><path d="M10 66 Q60 6 110 66" fill="none" stroke="#566275" stroke-width="2"/><line x1="10" y1="36" x2="110" y2="36" stroke="#7A5AF0" stroke-width="1.6" stroke-dasharray="4 3"/><text x="13" y="33" fill="#7A5AF0" font-size="7.5">접선(델타)</text><g transform="translate(88,36)"><rect class="a-gap" x="-1.5" y="0" width="3.5" height="26" fill="#E24A62"/></g><g transform="translate(46,44)"><circle class="a-spot" r="4" fill="#1B2437"/></g><text x="60" y="79" fill="#E24A62" font-size="8" text-anchor="middle" font-weight="700">부족분=손실(항상)</text></svg>`,
+    a:`<svg class="anim" viewBox="0 0 120 84"><path d="M12 40 Q60 18 108 40" fill="none" stroke="#AAB4C6" stroke-width="2"/><path class="a-fade" d="M12 40 Q60 62 108 40" fill="none" stroke="#3B6FE6" stroke-width="2.5"/><line x1="12" y1="40" x2="108" y2="40" stroke="#12A870" stroke-width="3"/><text x="13" y="25" fill="#566275" font-size="7.5">부채(매도옵션)</text><text x="13" y="58" fill="#3B6FE6" font-size="7.5">매입 옵션</text><text x="60" y="79" fill="#12A870" font-size="7.5" text-anchor="middle" font-weight="700">합쳐서 평탄 · 프리미엄</text></svg>`},
   vol:{
-    b:`<svg class="anim" viewBox="0 0 120 84"><g class="a-breathe"><path d="M14 42 Q60 12 106 42" fill="none" stroke="#E24A62" stroke-width="2"/><path d="M14 42 Q60 72 106 42" fill="none" stroke="#12A870" stroke-width="2"/></g><line x1="14" y1="42" x2="106" y2="42" stroke="#B7C0D2" stroke-width="1"/><text x="60" y="20" fill="#E24A62" font-size="8" text-anchor="middle">↑ 부채↑ 손실</text><text x="60" y="70" fill="#12A870" font-size="8" text-anchor="middle">↓ 부채↓ 이득</text></svg>`,
-    a:`<svg class="anim" viewBox="0 0 120 84"><g class="a-breathe-sm"><path d="M14 42 Q60 30 106 42" fill="none" stroke="#3B6FE6" stroke-width="2"/><path d="M14 42 Q60 54 106 42" fill="none" stroke="#3B6FE6" stroke-width="2"/></g><line x1="14" y1="42" x2="106" y2="42" stroke="#B7C0D2" stroke-width="1"/><text x="60" y="79" fill="#3B6FE6" font-size="8" text-anchor="middle">변동폭 축소</text></svg>`},
+    b:`<svg class="anim" viewBox="0 0 120 84"><g class="a-breathe"><path d="M14 42 Q60 12 106 42" fill="none" stroke="#E24A62" stroke-width="2"/><path d="M14 42 Q60 72 106 42" fill="none" stroke="#12A870" stroke-width="2"/></g><line x1="14" y1="42" x2="106" y2="42" stroke="#AAB4C6" stroke-width="1"/><text x="60" y="20" fill="#E24A62" font-size="8" text-anchor="middle">↑ 부채↑ 손실</text><text x="60" y="70" fill="#12A870" font-size="8" text-anchor="middle">↓ 부채↓ 이득</text></svg>`,
+    a:`<svg class="anim" viewBox="0 0 120 84"><g class="a-breathe-sm"><path d="M14 42 Q60 30 106 42" fill="none" stroke="#3B6FE6" stroke-width="2"/><path d="M14 42 Q60 54 106 42" fill="none" stroke="#3B6FE6" stroke-width="2"/></g><line x1="14" y1="42" x2="106" y2="42" stroke="#AAB4C6" stroke-width="1"/><text x="60" y="79" fill="#3B6FE6" font-size="8" text-anchor="middle">변동폭 축소</text></svg>`},
   basis:{
-    b:`<svg class="anim" viewBox="0 0 120 84"><line x1="12" y1="42" x2="108" y2="42" stroke="#3B6FE6" stroke-width="2"/><path class="a-div" d="M12 42 C44 42 52 28 72 28 S96 24 108 28" fill="none" stroke="#E68A17" stroke-width="2"/><text x="60" y="79" fill="#6C778C" font-size="8" text-anchor="middle">펀드가 더/덜 갈 수 있음</text></svg>`,
+    b:`<svg class="anim" viewBox="0 0 120 84"><line x1="12" y1="42" x2="108" y2="42" stroke="#3B6FE6" stroke-width="2"/><path class="a-div" d="M12 42 C44 42 52 28 72 28 S96 24 108 28" fill="none" stroke="#E68A17" stroke-width="2"/><text x="60" y="79" fill="#566275" font-size="8" text-anchor="middle">펀드가 더/덜 갈 수 있음</text></svg>`,
     a:`<svg class="anim" viewBox="0 0 120 84"><line x1="12" y1="42" x2="108" y2="42" stroke="#3B6FE6" stroke-width="2"/><path class="a-div-sm" d="M12 42 C44 42 52 38 72 38 S96 40 108 40" fill="none" stroke="#3B6FE6" stroke-width="2" stroke-dasharray="3 2"/><text x="60" y="79" fill="#3B6FE6" font-size="8" text-anchor="middle">괴리 축소</text></svg>`},
   behav:{
-    b:`<svg class="anim" viewBox="0 0 120 84"><rect x="12" y="32" width="96" height="18" rx="4" fill="#EAEDF5"/><rect class="a-drain" x="12" y="32" width="96" height="18" rx="4" fill="#7A5AF0"/><text x="60" y="79" fill="#6C778C" font-size="8" text-anchor="middle">해지 증감 → 노출 변동</text></svg>`,
+    b:`<svg class="anim" viewBox="0 0 120 84"><rect x="12" y="32" width="96" height="18" rx="4" fill="#EAEDF5"/><rect class="a-drain" x="12" y="32" width="96" height="18" rx="4" fill="#7A5AF0"/><text x="60" y="79" fill="#566275" font-size="8" text-anchor="middle">해지 증감 → 노출 변동</text></svg>`,
     a:`<svg class="anim" viewBox="0 0 120 84"><rect x="12" y="32" width="96" height="18" rx="4" fill="#EAEDF5"/><rect class="a-drain-sm" x="12" y="32" width="96" height="18" rx="4" fill="#3B6FE6"/><text x="60" y="79" fill="#3B6FE6" font-size="8" text-anchor="middle">재보험으로 완화</text></svg>`},
   regime:{
-    b:`<svg class="anim" viewBox="0 0 120 84"><g class="a-step"><line x1="14" y1="50" x2="60" y2="50" stroke="#E24A62" stroke-width="2.5"/><line x1="60" y1="28" x2="106" y2="28" stroke="#E24A62" stroke-width="2.5"/><line x1="60" y1="50" x2="60" y2="28" stroke="#E24A62" stroke-width="2" stroke-dasharray="3 2"/></g><text x="60" y="79" fill="#6C778C" font-size="8" text-anchor="middle">가정·제도 단절</text></svg>`,
-    a:`<svg class="anim" viewBox="0 0 120 84"><rect class="a-pulse" x="32" y="24" width="56" height="30" rx="6" fill="#EEF1F8" stroke="#C9D2E2"/><text x="60" y="43" fill="#6C778C" font-size="10" text-anchor="middle" font-weight="700">CSM 감내</text><text x="60" y="79" fill="#6C778C" font-size="8" text-anchor="middle">이전 시장 없음</text></svg>`},
+    b:`<svg class="anim" viewBox="0 0 120 84"><g class="a-step"><line x1="14" y1="50" x2="60" y2="50" stroke="#E24A62" stroke-width="2.5"/><line x1="60" y1="28" x2="106" y2="28" stroke="#E24A62" stroke-width="2.5"/><line x1="60" y1="50" x2="60" y2="28" stroke="#E24A62" stroke-width="2" stroke-dasharray="3 2"/></g><text x="60" y="79" fill="#566275" font-size="8" text-anchor="middle">가정·제도 단절</text></svg>`,
+    a:`<svg class="anim" viewBox="0 0 120 84"><rect class="a-pulse" x="32" y="24" width="56" height="30" rx="6" fill="#EEF1F8" stroke="#C9D2E2"/><text x="60" y="43" fill="#566275" font-size="10" text-anchor="middle" font-weight="700">CSM 감내</text><text x="60" y="79" fill="#566275" font-size="8" text-anchor="middle">이전 시장 없음</text></svg>`},
 };
 const FAC={
   delta:{viz:"dir", nat:"two", t:"주가가 오르내리면 보증가치도 함께 움직인다. 오르면 이득, 내리면 손실인 <b>양방향</b> 위험이다. 선물로 반대 포지션을 잡으면 변동이 사라진다."},

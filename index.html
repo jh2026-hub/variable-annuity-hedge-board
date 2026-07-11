@@ -376,11 +376,11 @@
     <div class="chartwrap"><svg class="sim" id="sim" viewBox="0 0 640 280" preserveAspectRatio="xMidYMid meet"></svg></div>
     <div class="leg">
       <span><i style="background:var(--leak)"></i>감내 시 누수(실현변동성)</span>
-      <span><i style="background:var(--pay)"></i>헷지 시 프리미엄(고정)</span>
+      <span><i style="background:var(--pay)"></i>헷지 시 옵션 프리미엄(고정)</span>
       <span><i style="background:var(--sym)"></i>주가 RV(우축)</span>
     </div>
-    <div class="chartwrap"><table class="mtx" id="simTbl"><thead><tr><th>연도</th><th>주가 RV</th><th>금리 RV</th><th>감내 시 누수</th><th>헷지 시 프리미엄</th></tr></thead><tbody></tbody></table></div>
-    <p class="foot"><b>감내(주황)</b>는 변동성이 큰 해에 누수가 급증하고, <b>헷지(청록)</b>는 매년 거의 같은 고정 프리미엄이다 — 감마 위험의 핵심 트레이드오프. 주가 RV는 KOSPI 일간수익률의 연율화 표준편차(%), 금리 RV는 국고 일간변동의 연율화 표준편차(bp)입니다.</p>
+    <div class="chartwrap"><table class="mtx" id="simTbl"><thead><tr><th>연도</th><th>주가 RV</th><th>금리 RV</th><th>감내 시 누수</th><th>헷지 시 옵션 프리미엄</th></tr></thead><tbody></tbody></table></div>
+    <p class="foot"><b>감내(주황)</b>는 변동성이 큰 해에 누수가 급증하고, <b>헷지(청록)</b>는 매년 거의 같은 고정 <b>옵션 프리미엄</b>이다 — 감마 위험의 핵심 트레이드오프. <b>옵션 프리미엄</b>은 감마를 넘기려 <b>옵션·스왑션을 매입할 때 지불하는 가격(지출)</b>이며, 회사가 수취하는 <b>보증수수료(재원)</b>와는 다릅니다 — 이 프리미엄은 그 재원에서 지출됩니다. 주가 RV는 KOSPI 일간수익률의 연율화 표준편차(%), 금리 RV는 국고 일간변동의 연율화 표준편차(bp)입니다.</p>
   </div>
   <div class="panel">
     <div class="cap">항목별 손익요소<span>현재 전략 · 연 기준</span></div>
@@ -496,7 +496,7 @@
   </div>
   <div class="panel">
     <div class="cap">③ 요인별 노출·헷지단가<span>각 위험의 크기와 넘기는 값</span></div>
-    <div class="inhdr">각 위험 요인의 <b>노출(σ 기여)</b>과 <b>헷지단가</b>입니다. 방향형(Δ·ρ) 단가는 bp(×적립금)로 직접 입력합니다. <b>주가·금리 감마</b>는 직접 입력이 아니라 <b>델타(방향)를 헷지한 뒤에야 드러나는 잔여</b>입니다 — 노출은 ②의 <b>Γ·변동성에서 자동</b> 산출되고, 감내 시 실현변동성 누수·헷지 시 IV 프리미엄이 됩니다. 처리 선택(헷지/CSM)은 <b>⑤ 시뮬레이션</b>에서 합니다.</div>
+    <div class="inhdr">각 위험 요인의 <b>노출(σ 기여)</b>과 <b>헷지단가</b>입니다. 방향형(Δ·ρ) 단가는 bp(×적립금)로 직접 입력합니다. <b>주가·금리 감마</b>는 직접 입력이 아니라 <b>델타(방향)를 헷지한 뒤에야 드러나는 잔여</b>입니다 — 노출은 ②의 <b>Γ·변동성에서 자동</b> 산출되고, 감내 시 실현변동성 누수·헷지 시 <b>옵션 프리미엄</b>(IV)이 됩니다. 처리 선택(헷지/CSM)은 <b>⑤ 시뮬레이션</b>에서 합니다.</div>
     <div class="chartwrap"><table class="mtx" id="mtx"><thead><tr><th>위험 요인</th><th>노출(σ기여)</th><th>헷지단가</th></tr></thead><tbody></tbody></table></div>
   </div>
 </section>
@@ -564,13 +564,13 @@ const FIN=[
 ];
 const VOL=[
   {id:"ge",n:"주가 Γ", u:"억/1%", v:0.5, s:"코스피 1%당 감마"},
-  {id:"re",n:"주가 RV", u:"%", v:18, s:"실현변동성(연)"},
-  {id:"ie",n:"주가 IV", u:"%", v:22, s:"내재변동성(옵션가)"},
+  {id:"re",n:"주가 RV", u:"%", v:26, s:"실현변동성(연) · 시장 실측 ≈26%"},
+  {id:"ie",n:"주가 IV", u:"%", v:30, s:"내재변동성(옵션가) · RV+위험프리미엄"},
   {id:"gr",n:"금리 Γ", u:"억/bp", v:0.2, s:"1bp당 컨벡시티"},
-  {id:"rr",n:"금리 RV", u:"bp", v:60, s:"실현변동성(연)"},
-  {id:"ir",n:"금리 IV", u:"bp", v:70, s:"스왑션 IV"},
-  {id:"eqd",n:"주가 민감도", u:"억/bp", v:1, s:"주가 10bp↑ → 10억(방향)"},
-  {id:"rvd",n:"금리 민감도(DV01)", u:"억/bp", v:2, s:"금리 10bp↑ → 20억 손실(방향)"},
+  {id:"rr",n:"금리 RV", u:"bp", v:67, s:"실현변동성(연) · 국고20년 실측 ≈67bp"},
+  {id:"ir",n:"금리 IV", u:"bp", v:74, s:"스왑션 IV · RV+위험프리미엄"},
+  {id:"eqd",n:"주가 민감도", u:"억/bp", v:1, s:"주가 100bp(1%)↑ → 100억(방향)"},
+  {id:"rvd",n:"금리 민감도(DV01)", u:"억/bp", v:15, s:"장기보증 듀레이션 · 금리 10bp↑ → 150억 손실(방향)"},
   {id:"sig",n:"잔여 흔들림 1σ", u:"%", v:1.0, s:"미헷지 손익변동성(적립금 대비)"},
 ];
 const RISK=[
@@ -605,7 +605,7 @@ $("sheetVol").innerHTML=VOL.map(numRow).join("");
 const mtxBody=$("mtx").querySelector("tbody");
 mtxBody.innerHTML=RISK.map(r=>{
   const costCell = r.kind==="bp" ? `<input type="number" inputmode="decimal" id="bp_${r.id}" value="${r.bp}" step="0.5" min="0"> bp`
-    : r.kind==="na" ? `<span class="mono" style="color:var(--muted)">불가</span>` : `<span class="mono" style="color:var(--muted)">프리미엄(Γ·IV)</span>`;
+    : r.kind==="na" ? `<span class="mono" style="color:var(--muted)">불가</span>` : `<span class="mono" style="color:var(--muted)">옵션 프리미엄(Γ·IV)</span>`;
   const expCell = r.kind.startsWith("calc") ? `<span class="mono" style="color:var(--muted)">잔여(Γ·변동성)</span>`
     : `<input type="number" inputmode="decimal" id="ex_${r.id}" value="${r.exp}" step="0.5" min="0">`;
   return `<tr><td>${r.n}<small>${r.note}</small></td><td>${expCell}</td><td>${costCell}</td></tr>`;
@@ -705,7 +705,7 @@ function renderDerived(){
     ['헷지 재원 (연)', won(fund)+'억', '보증수수료 × 적립금','pay'],
     ['미헷지 손익변동성 1σ', '±'+won(uh)+'억', '방향 노출','sym'],
     ['감마 누수 · 감내(연)', '△'+won(leak)+'억', 'Γ × 실현변동성','leak'],
-    ['감마 프리미엄 · 헷지(연)', '△'+won(prem)+'억', 'Γ × 내재변동성','good'],
+    ['감마 헷지 옵션 프리미엄(연)', '△'+won(prem)+'억', 'Γ × 내재변동성(옵션가)','good'],
     ['CSM 완충 / 변동성 허용', won(csm)+' / '+won(voltol)+'억', '손실 흡수 · 허용선','ink'],
   ];
   box.innerHTML=items.map(([t,v,s,c])=>`<div class="dcard flash"><div class="dt">${t}</div><div class="dv" style="color:var(--${c})">${v}</div><div class="ds">${s}</div></div>`).join("");
@@ -966,7 +966,7 @@ function renderSim(){
   $("simStat").innerHTML=`
     <div><div class="sl">감내 시 연평균 누수</div><div class="sv" style="color:var(--leak)">△${won(avgLeak)}억</div></div>
     <div><div class="sl">최대 누수(${worst.y})</div><div class="sv" style="color:var(--bad)">△${won(worst.leak)}억</div></div>
-    <div><div class="sl">헷지 시 프리미엄(연)</div><div class="sv" style="color:var(--pay)">△${won(rows[0].prem)}억</div></div>`;
+    <div><div class="sl">헷지 시 옵션 프리미엄(연)</div><div class="sv" style="color:var(--pay)">△${won(rows[0].prem)}억</div></div>`;
   const W=640,H=280,L=48,R=40,T=14,B=34,iw=W-L-R,ih=H-T-B,g=[];
   const yMax=Math.max(...rows.map(r=>Math.max(r.leak,r.prem)),1)*1.12, rvMax=Math.max(...rows.map(r=>r.rvE),1)*1.15;
   const bw=iw/rows.length, X=i=>L+bw*(i+0.5), YR=v=>T+ih-(v/rvMax)*ih;

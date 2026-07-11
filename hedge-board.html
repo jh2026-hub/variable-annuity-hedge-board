@@ -1362,6 +1362,7 @@ function gPool(){ if(GPOOL) return GPOOL;
   if(SIM.loaded){ const d=SIM.data, a=[]; for(let i=1;i<d.dates.length;i++){ const mm=d.dates[i].slice(4,6); if(mm>="04"&&mm<="06"){ const r=(d.eq[i]/d.eq[i-1]-1)*100; if(isFinite(r)) a.push(r); } } if(a.length>20){ GPOOL=a; return GPOOL; } }
   return GSYNTH; }
 const gSamp=()=>{const p=gPool();return p[Math.floor(Math.random()*p.length)];};
+function gDM(i){ if(!GAME.seq)GAME.seq=[]; while(GAME.seq.length<=i) GAME.seq.push(gSamp()); return GAME.seq[i]; }  /* 고정 시계열 — 취소·재결정해도 같은 이동 */
 const gGap=()=>GAME.mkt-GAME.hx;
 const gGauge=()=>{const f=$("gBudFill"); if(!f)return; const w=Math.max(0,Math.min(100,GAME.bud/GAME.bud0*100));
   f.style.width=w+'%'; f.style.background=w>45?'linear-gradient(90deg,#12A870,#4fc79a)':w>20?'linear-gradient(90deg,#E68A17,#f0a94a)':'#E24A62';
@@ -1430,7 +1431,7 @@ function gPlay(){
   if(GAME.over)return;
   GAME.prev={d:GAME.d,bud:GAME.bud,mkt:GAME.mkt,hx:GAME.hx,best:GAME.best,log:GAME.log.slice()};   /* 행동 취소용 스냅샷 */
   const h=(+$("gHedge").value)/100, mkt=GAME.mkt, hx=GAME.hx, gap=mkt-hx;
-  const hxN=hx+h*gap, g2=mkt-hxN, cost=-GCOST*h*Math.abs(gap), dM=gSamp(), mktN=mkt+dM;
+  const hxN=hx+h*gap, g2=mkt-hxN, cost=-GCOST*h*Math.abs(gap), dM=gDM(GAME.d+1), mktN=mkt+dM;
   const gamma=-GAM*dM*dM, dir=-GD*g2*dM, net=cost+dir+gamma;
   const net0=(-GD*gap*dM)+gamma, net1=(-GCOST*Math.abs(gap))+gamma;
   const revert=(Math.sign(dM)!==Math.sign(gap))&&Math.abs(gap)>0.3, trend=(Math.sign(dM)===Math.sign(gap))&&Math.abs(gap)>0.3;
@@ -1460,7 +1461,7 @@ function gFinish(){
   </div>`;
   $("gReset").addEventListener("click",gReset);
 }
-function gReset(){GAME.d=0;GAME.bud=GAME.bud0;GAME.over=false;GAME.log=[];GAME.hx=0;GAME.mkt=gSamp();GAME.last=null;GAME.prev=null;
+function gReset(){GAME.d=0;GAME.bud=GAME.bud0;GAME.over=false;GAME.log=[];GAME.seq=[];GAME.hx=0;GAME.mkt=gDM(0);GAME.last=null;GAME.prev=null;
   $("gPlay").disabled=false; $("gResult").innerHTML=''; $("gLog").innerHTML=''; $("gFinal").innerHTML=''; if($("gReview"))$("gReview").style.display='none'; gNewDay();}
 function gStart(){ GAME.bud0=+$("gBud0").value; gReset(); }
 if($("gHedge")){
@@ -1468,7 +1469,7 @@ if($("gHedge")){
   if($("gReview")) $("gReview").addEventListener("click",gUndo);
   if($("gBud0")){ $("gBud0").addEventListener("input",()=>{$("gBud0Lab").textContent=$("gBud0").value;}); }
   if($("gStart")) $("gStart").addEventListener("click",gStart);
-  GAME.bud0=+($("gBud0")?.value||50); GAME.bud=GAME.bud0; GAME.hx=0; GAME.mkt=gSamp(); gNewDay();
+  GAME.bud0=+($("gBud0")?.value||50); GAME.bud=GAME.bud0; GAME.seq=[]; GAME.hx=0; GAME.mkt=gDM(0); gNewDay();
 }
 
 renderFactorAnim(); renderPayoff();

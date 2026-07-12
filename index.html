@@ -377,7 +377,6 @@
 <!-- ① 개념 -->
 <section class="page" id="p1">
   <p class="lede">변액보험은 <b>최저 수준을 보증</b>하고, 그 대가로 <b>보증수수료</b>를 받아 시장위험을 관리해요. 핵심은 <b>비용과 흔들림의 균형</b>.</p>
-  <div class="callout sum"><span class="ci">📝</span><div><span class="clab">요약</span> 변액보험은 <b>자본이 흔들리는 상품</b>이에요. <b>감내</b>하면 완충(CSM)이 받아주다 <b>소진되면 자본</b>으로, <b>헷지</b>하면 <b>줄어든 변동만</b> 자본에 닿아요. 완충이 <b>얇을수록 헷지</b>.</div></div>
 
   <div class="panel">
     <div class="cap">색 읽는 법<span>이 색은 페이지 전체에서 같은 뜻이에요</span></div>
@@ -798,10 +797,6 @@
       <div class="qstep"><span class="qstepn" style="background:#0EA5A5">4</span><div><b>최적 조합 찾기</b> — 국면 프리셋·프론티어<small>맨 아래 · 심화 (선택)</small></div></div>
     </div>
   </div>
-  <div class="panel" style="border-color:#F1D7A3;background:#FDF7EC">
-    <div class="cap">⚠️ 미헷지도 변동성은 그대로</div>
-    <p style="font-size:12.5px;color:var(--muted);line-height:1.7;margin-top:2px"><b style="color:var(--pay)">헷지</b> = 비용↑·흔들림↓ · <b style="color:var(--leak)">미헷지</b> = 비용0·흔들림↑. 미헷지는 <b>CSM 완충</b>이 흡수하지만, <b style="color:var(--bad)">완충이 얇으면 손익으로 전이</b> — 얇을수록 더 헷지해야 해요. (→ <b>④ PL 인식</b>)</p>
-  </div>
   <div class="panel">
     <div class="cap">비용 · 흔들림 한눈에<span class="capb ex">개념 배분</span><span>재원 · 미헷지 vs 헷지</span></div>
     <div>
@@ -895,7 +890,7 @@
       <span><i style="background:var(--sym)"></i>주가 RV(우축)</span>
     </div>
     <div class="chartwrap"><table class="mtx" id="simTbl"><thead><tr><th>연도</th><th>주가 RV</th><th>금리 RV</th><th>감내 시 누수</th><th>헷지 시 옵션 프리미엄</th></tr></thead><tbody></tbody></table></div>
-    <p class="foot"><b>감내(주황)</b>는 변동성 큰 해에 누수가 <b>급증</b>해요(예측 못 하는 손실). <b>헷지(청록)</b>는 그 위험을 옵션 프리미엄으로 넘기는 건데, 프리미엄도 <b>변동성 따라 오르고 평균적으론 누수보다 조금 더 비싸요</b>(보험료 성격) — 대신 <b>손실이 아니라 미리 정한 비용으로 확정</b>돼 재원에서 계획적으로 나가고 <b>'터지는' 일이 없어요</b>(감마 위험의 핵심 트레이드오프: 싸게 막는 게 아니라 <b>불확실을 확정으로 바꾸는 것</b>). <b>옵션 프리미엄</b>은 감마를 넘기려 <b>옵션·스왑션을 매입할 때 내는 가격</b>이고, 회사가 받는 <b>보증수수료(재원)</b>에서 지출돼요. 주가 RV는 KOSPI 일간수익률의 연율화 변동성(%), 금리 RV는 국고 20년 일간변동의 연율화 변동성(bp, EWMA)이에요.</p>
+    <p class="foot"><b>감내(주황)</b>는 변동성 큰 해에 누수가 <b>급증</b>해요(예측 못 하는 손실). <b>헷지(파랑)</b>는 평균적으론 조금 더 비싸지만 <b>손실이 아니라 미리 정한 비용으로 확정</b>돼요 — 싸게 막는 게 아니라 <b>불확실을 확정으로</b> 바꾸는 거예요. <span style="opacity:.75">(RV = 실현변동성 실측 · 주가 %, 금리 bp)</span></p>
   </div>
   <div class="panel">
     <div class="cap">항목별 손익요소<span>현재 전략 · 연 기준</span></div>
@@ -965,11 +960,7 @@
     <div class="foot" id="poRead" style="margin-top:4px"></div>
     <p class="foot"><b>부채(회색)</b>는 <b>곡선</b>(방향+곡률=감마). <b>선물·스왑</b>은 기울기만 상쇄 → <b>곡률(감마)이 남음</b>. <b>옵션</b>은 곡률까지 잡아 평탄, 대신 <b>프리미엄</b>. <b>미헷지</b> = 곡선 그대로.</p>
   </div>
-  <div class="panel concept">
-    <div class="cap">비용 vs 효과 요약</div>
-    <p><b>방향은 선물·스왑으로 싸게, 감마·꼬리는 옵션으로</b> 조합해요. <b>감마·변동성을 확정 비용으로 막는 건 옵션뿐</b>이에요.</p>
-    <div class="callout key"><span class="ci">⭐</span><div><span class="clab">핵심</span> 방향은 <b>선물·스왑(저렴)</b>, 감마·꼬리는 <b>옵션</b> — 둘을 <b>조합</b>하는 게 정답.</div></div>
-  </div>
+  <div class="callout key"><span class="ci">⭐</span><div><span class="clab">핵심</span> 방향은 <b>선물·스왑(저렴)</b>, 감마·꼬리는 <b>옵션</b> — 둘을 <b>조합</b>하는 게 정답. <b>확정 비용으로 감마를 막는 건 옵션뿐</b>이에요.</div></div>
 </section>
 
 <!-- ④ CSM 완충 -->
@@ -992,7 +983,7 @@
         <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px"><b>완충이 불가</b>해요. 변동이 <b>전액 그 해 손익으로 즉시</b> 인식 → <b>감내라는 선택지가 없어요</b>. 사실상 <b>헷지 필수</b>.</div>
       </div>
     </div>
-    <div class="callout key" style="margin-top:9px"><span class="ci">⭐</span><div><span class="clab">핵심</span> 이 사이트의 <b>헷지 ↔ 감내 선택</b>은 <b>VFA 완충</b>이 있어 가능한 거예요. <b>PL법이면 완충이 불가</b>해 변동이 곧장 손익 — <b>선택 없이 헷지</b>해야 해요.</div></div>
+    <div class="callout key" style="margin-top:9px"><span class="ci">⭐</span><div><span class="clab">핵심</span> 완충이 있으면(<b>VFA</b>) 헷지·감내를 <b>선택</b>, 없으면(<b>PL법</b>) <b>헷지 필수</b>.</div></div>
   </div>
   <div class="panel">
     <div class="cap">완충이 손익을 지키는 2단계</div>

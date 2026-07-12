@@ -452,7 +452,8 @@
 
 <!-- Q&A -->
 <section class="page on" id="pqa">
-  <p class="lede">자주 나오는 질문을 <b>그림 위주</b>로, <b>쉬운 말로</b> 답합니다. 더 자세한 내용은 각 탭에 있습니다.</p>
+  <p class="lede">자주 나오는 질문을 <b>그림 위주</b>로, <b>쉬운 말로</b> 답해요. 더 자세한 내용은 각 탭에 있어요.</p>
+  <div class="callout sum"><span class="ci">📝</span><div><span class="clab">요약</span> 시장이 흔들리면 <b>보증 부채</b>도 흔들려요. <b>헷지</b>는 비용 내고 흔들림을 줄이고, <b>감내</b>는 완충(CSM)에 맡겨요 — 완충이 <b>얇으면 헷지</b>가 답!</div></div>
 
   <div class="panel">
     <div class="qah"><div class="qan">Q1</div><div class="qat">헷지를 왜 해야 하나요? 🤔</div></div>
@@ -643,12 +644,13 @@
 
 <!-- ④ 비용·변동성 : 프론티어 → 선택 → 재원 → 입력 -->
 <section class="page" id="p2">
-  <p class="lede"><b>예산(수수료)</b> 안에서 <b>비용</b>과 <b>흔들림</b>을 보고 헷지할 항목을 고릅니다.</p>
+  <p class="lede"><b>예산(수수료)</b> 안에서 <b>비용</b>과 <b>흔들림</b>을 보고 헷지할 항목을 골라요.</p>
   <div style="display:flex;flex-wrap:wrap;gap:6px;margin:0 0 4px">
     <span class="qchip">🌊 미헷지 = <b>변동성 큼</b></span>
     <span class="qchip">🛡️ 헷지 = <b>변동성 작음 · 비용</b></span>
     <span class="qchip">🪫 얇은 완충 = <b>헷지</b></span>
   </div>
+  <div class="callout warn"><span class="ci">⚠️</span><div><span class="clab">주의</span> 여기 숫자는 <b>개념용 예시</b>예요. 자기 회사 값은 <b>입력 가정</b> 탭에서 넣으면 즉시 반영돼요.</div></div>
   <div class="panel" style="border-color:#F1D7A3;background:#FDF7EC">
     <div class="cap">⚠ 미헷지도 변동성은 그대로</div>
     <p style="font-size:12.5px;color:var(--muted);line-height:1.7;margin-top:2px"><b style="color:var(--pay)">헷지</b> = 비용↑·흔들림↓ · <b style="color:var(--leak)">미헷지</b> = 비용0·흔들림↑. 미헷지는 <b>CSM 완충</b>이 흡수하지만, <b style="color:var(--bad)">완충이 얇으면 손익으로 전이</b> — 얇을수록 더 헷지해야 합니다. (→ <b>④ PL 인식</b>)</p>
@@ -709,7 +711,7 @@
     <div class="callout tip"><span class="ci">💡</span><div><span class="clab">팁</span> 각 항목을 눌러 <b>헷지 ↔ 감내</b>를 바꿔 보세요. 위 막대·프론티어가 즉시 반응합니다.</div></div>
     <p class="foot">각 항목을 <b>헷지</b>(확정 비용을 지불하고 손익 안정)하거나 <b>CSM</b>(비용 없이 완충으로 감내)으로 둡니다. 선택은 <b>위 흔들림 세트</b>·프론티어·시뮬레이션에 즉시 반영됩니다.</p>
   </div>
-  <p class="lede">실제 시장데이터(KOSPI·<b>국고 20년</b>, 약 6.5년)로 손익을 재현합니다. <b>미헷지</b>는 시장 등락이 그대로 손익이 되어 <b>크게 출렁이고</b>, 헷지는 그 흔들림을 줄입니다. <span id="simStatus" style="color:var(--muted)">데이터 불러오는 중…</span></p>
+  <p class="lede">실제 시장데이터(KOSPI·<b>국고 20년</b>, 약 6.5년)로 손익을 재현해요. <b>미헷지</b>는 시장 등락이 그대로 손익이 되어 <b>크게 출렁이고</b>, 헷지는 그 흔들림을 줄여요. <span id="simStatus" style="color:var(--muted)">데이터 불러오는 중…</span></p>
   <div class="panel">
     <div class="cap">미헷지 손익변동성 vs 헷지<span>주간 손익 (억)</span></div>
     <div class="stat" id="volStat"></div>
@@ -803,7 +805,7 @@
 
 <!-- ④ CSM 완충 -->
 <section class="page" id="p3">
-  <p class="lede">헷지 안 한 손실은 곧장 손익에 안 잡히고, 먼저 <b>CSM(완충)</b>을 깎아 흡수합니다. <b>완충이 바닥나면</b> 초과분이 <b>그 해 보험손익</b>으로 잡힙니다.</p>
+  <p class="lede">헷지 안 한 손실은 곧장 손익에 안 잡히고, 먼저 <b>CSM(완충)</b>을 깎아 흡수해요. <b>완충이 바닥나면</b> 초과분이 <b>그 해 보험손익</b>으로 잡혀요.</p>
   <div style="display:flex;flex-wrap:wrap;gap:6px;margin:0 0 4px">
     <span class="qchip">🌊 충격 → 🛟 <b>CSM 먼저</b></span>
     <span class="qchip">🪫 소진 → <b>손익 전이</b></span>
@@ -866,7 +868,8 @@
 
 <!-- 입력 가정 -->
 <section class="page" id="p8">
-  <p class="lede">모두 <b>직접 입력하는 전제</b>입니다. 바꾸면 아래 <b>파생 결과</b>와 <b>⑤ 시뮬레이션</b>이 즉시 갱신됩니다.</p>
+  <p class="lede">모두 <b>직접 입력하는 전제</b>예요. 바꾸면 아래 <b>파생 결과</b>와 <b>⑤ 시뮬레이션</b>이 즉시 갱신돼요.</p>
+  <div class="callout tip"><span class="ci">💡</span><div><span class="clab">팁</span> <b>자기 회사 숫자</b>를 넣어 보세요 — ⑤ 시뮬이 바로 반응해요.</div></div>
   <div class="panel">
     <div class="cap">파생 결과<span>입력을 바꾸면 실시간 반영 · 깜빡이며 갱신</span></div>
     <div class="derived" id="derived"></div>
@@ -891,13 +894,14 @@
 
 <!-- ⑥ 이론 -->
 <section class="page" id="p6">
-  <p class="lede">이 도구가 기대는 이론과 대표 문헌입니다. 최저보증은 사실상 적립금에 <b>내장된 풋옵션(하락을 막아 주는 약속)</b>이므로, 그 관리는 옵션 복제·헷지 이론에 뿌리를 둡니다.</p>
+  <p class="lede">이 도구가 기대는 이론과 대표 문헌입니다. 최저보증은 사실상 적립금에 <b>내장된 풋옵션(하락을 막아 주는 약속)</b>이라, 그 관리는 옵션 복제·헷지 이론에 뿌리를 둬요.</p>
   <div style="display:flex;flex-wrap:wrap;gap:6px;margin:0 0 4px">
     <span class="qchip">📐 보증 = <b>내장 풋옵션</b></span>
     <span class="qchip">🌀 감마 손실 ∝ <b>변동성²</b></span>
     <span class="qchip">🛡️ IV&gt;RV = <b>보험</b></span>
     <span class="qchip">🧾 CSM 완충 · <b>K-ICS</b></span>
   </div>
+  <div class="callout tip"><span class="ci">💡</span><div><span class="clab">팁</span> 숫자·수식이 어렵다면 각 항목의 <b>굵은 첫 줄</b>만 읽어도 충분해요.</div></div>
   <div class="panel" style="background:linear-gradient(135deg,#EEF3FE,#F4F0FD);border:1px solid #D7E0F5">
     <div class="cap">쉬운 요약</div>
     <ul class="qalist">

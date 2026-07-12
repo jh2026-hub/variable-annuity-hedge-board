@@ -773,7 +773,7 @@
   <div class="verdict ok" id="vd"><div class="ic" id="vdi">✓</div><div><h3 id="vdt"></h3><p id="vdp"></p></div></div>
   <div class="panel">
     <div class="cap">헷지할 항목 선택<span>헷지(PL) 또는 CSM 감내</span></div>
-    <div class="callout warn" style="margin-bottom:8px"><span class="ci">🔒</span><div><span class="clab">순서 제약</span> 헷지는 <b>방향 → 곡률 → 나머지</b> 순서로만 쌓여요. <b>방향(Δ·ρ) 없이 곡률(감마)만</b> 헷지할 순 없어요 — 감마는 <b>델타 헷지 후 잔여</b>니까요. 상위를 켜면 하위가 자동으로 켜지고, 하위를 끄면 상위가 함께 꺼져요.</div></div>
+    <div class="callout warn" style="margin-bottom:8px"><span class="ci">🔒</span><div><span class="clab">순서 제약</span> 헷지는 <b>방향 → 곡률 → 나머지</b> 순서로만 쌓여요. <b>주가·금리는 각자 따로</b> — 주가 감마는 <b>주가 방향(Δ)</b>, 금리 감마는 <b>금리 방향(ρ)</b>을 먼저 헷지해야 해요(감마는 방향 헷지 후 잔여). <b>나머지(베가·펀드·해지)</b>는 방향·곡률을 모두 헷지한 뒤예요. 켜면 선행 항목이 자동으로 켜지고, 끄면 이를 필요로 하던 항목이 함께 꺼져요.</div></div>
     <div id="selList"></div>
     <div class="callout tip"><span class="ci">💡</span><div><span class="clab">팁</span> 각 항목을 눌러 <b>헷지 ↔ 감내</b>를 바꿔 보세요. 위 막대·프론티어가 즉시 반응해요.</div></div>
     <p class="foot">각 항목 옆 <b>막대 = 그 항목의 손익 흔들림</b>. <b style="color:var(--good)">헷지</b>=비용 내고 <b style="color:var(--good)">짧게(초록)</b> / <b style="color:var(--bad)">CSM 감내</b>=비용 0이지만 <b style="color:var(--bad)">길게(빨강)</b> — 감내를 고르면 <b>변동성이 커져요</b>.</p>
@@ -1154,18 +1154,16 @@ function evalCombo(hs){
 }
 const currentHS=()=>{const h={};RISK.forEach(r=>h[r.id]=r.on);return h;};
 const TOGGLE=["delta","rho","vega","fund","lapse","gE","gR"];
-/* 헷지 순서 제약: 방향(T0) → 곡률(T1) → 나머지(T2). 하위 tier가 모두 켜져야 상위 tier 헷지 가능
-   (방향 없이 곡률만 불가 — 감마는 델타 헷지 후 잔여). */
-const HEDGE_TIERS=[["delta","rho"],["gE","gR"],["vega","fund","lapse"]];
-const tierIdx=id=>HEDGE_TIERS.findIndex(t=>t.includes(id));
-function validHedge(hs){ let lowerFull=true;
-  for(const tier of HEDGE_TIERS){ const anyOn=tier.some(id=>hs[id]);
-    if(anyOn&&!lowerFull) return false; lowerFull=lowerFull&&tier.every(id=>hs[id]); }
-  return true; }
-/* 토글 시 순서 강제: 켜면 하위 tier 자동 ON, 끄면 상위 tier 자동 OFF */
-function applyHedgeToggle(id,v){ const r=RISK.find(x=>x.id===id); if(!r)return; r.on=v; const ti=tierIdx(id); if(ti<0)return;
-  if(v){ for(let t=0;t<ti;t++) HEDGE_TIERS[t].forEach(x=>{const o=RISK.find(y=>y.id===x); if(o)o.on=1;}); }
-  else { for(let t=ti+1;t<HEDGE_TIERS.length;t++) HEDGE_TIERS[t].forEach(x=>{const o=RISK.find(y=>y.id===x); if(o)o.on=0;}); } }
+/* 헷지 순서 제약 (레인 분리): 주가·금리는 각자 방향→곡률.
+   주가 곡률(gE)=주가 방향(delta) 후 잔여 / 금리 곡률(gR)=금리 방향(rho) 후 잔여.
+   나머지(vega·fund·lapse)=방향·곡률 모두 헷지 후. 값=전이적 선행조건(closure). */
+const HEDGE_PREREQ={ delta:[], rho:[], gE:["delta"], gR:["rho"],
+  vega:["delta","rho","gE","gR"], fund:["delta","rho","gE","gR"], lapse:["delta","rho","gE","gR"] };
+function validHedge(hs){ for(const id in HEDGE_PREREQ){ if(hs[id]){ for(const p of HEDGE_PREREQ[id]) if(!hs[p]) return false; } } return true; }
+/* 토글 시 강제: 켜면 선행조건 자동 ON, 끄면 이를 필요로 하는 항목 자동 OFF */
+function applyHedgeToggle(id,v){ const set=(x,val)=>{const o=RISK.find(y=>y.id===x); if(o)o.on=val;};
+  if(v){ set(id,1); (HEDGE_PREREQ[id]||[]).forEach(p=>set(p,1)); }
+  else { set(id,0); for(const k in HEDGE_PREREQ){ if(HEDGE_PREREQ[k].includes(id)) set(k,0); } } }
 function allCombos(){
   const out=[]; for(let m=0;m<(1<<TOGGLE.length);m++){ const hs={}; TOGGLE.forEach((id,i)=>hs[id]=(m>>i)&1);
     if(!validHedge(hs)) continue; out.push({hs, ...evalCombo(hs)}); } return out;

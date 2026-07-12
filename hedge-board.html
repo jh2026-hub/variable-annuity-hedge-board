@@ -795,7 +795,7 @@
     <div class="cap">비용 · 흔들림 한눈에<span class="capb ex">예시값</span><span>재원 · 미헷지 vs 헷지</span></div>
     <div>
       <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
-        <div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:2px"><span style="font-size:16px">💰</span><b style="font-size:13.5px;color:var(--ink)">헷지 재원</b><span class="qchip" style="font-size:10px;padding:2px 7px;background:#EEF3FE;color:var(--pay)">예산 = 보증수수료</span></div><div id="feeBig" style="font-size:30px;font-weight:800;color:var(--pay);letter-spacing:-.5px"></div></div>
+        <div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:2px"><span style="font-size:16px">💰</span><b style="font-size:13.5px;color:var(--ink)">든 비용</b><span class="qchip" style="font-size:10px;padding:2px 7px;background:var(--panel2);color:var(--muted)">헷지 + 감내 누수</span></div><div id="feeBig" style="font-size:30px;font-weight:800;color:var(--ink);letter-spacing:-.5px"></div></div>
         <div style="color:var(--muted);font-size:12px;line-height:1.7" id="feeSub"></div>
       </div>
       <div id="fundBar" style="display:flex;gap:2px;height:36px;border-radius:9px;overflow:hidden;margin-top:11px;background:var(--panel2);border:1px solid var(--hair);padding:2px"></div>
@@ -1353,11 +1353,12 @@ function render(){
     if(r.kind==="bp"&&on) payW+=(r.bp||0)*AV;
     if(r.kind.startsWith("calc")&&depOn){ const {leak,prem}=leakPrem(r); payW+=on?prem:0; leakW+=on?0:leak; } });
   const outW=payW+leakW;
-  $("feeBig").innerHTML=won(feeW)+`억<small style="font-size:14px;font-weight:600;color:var(--muted)">/년 · ${FEE}bp × 적립금 ${AV}조</small>`;
   const over=Math.max(0,outW-feeW);
+  $("feeBig").style.color=over>0?'var(--bad)':'var(--ink)';
+  $("feeBig").innerHTML=won(outW)+`억<small style="font-size:14px;font-weight:600;color:var(--muted)"> / 재원 ${won(feeW)}억</small>`;
   $("feeSub").innerHTML= over>0
-    ? `쓴 비용 <b style="color:var(--ink)">${won(outW)}억</b><br><b style="color:var(--bad)">재원 ${won(over)}억 초과</b>`
-    : `쓴 비용 <b style="color:var(--ink)">${won(outW)}억</b><br>남는 재원 <b style="color:var(--good)">${won(feeW-outW)}억</b>`;
+    ? `재원 = ${FEE}bp × 적립금 ${AV}조<br><b style="color:var(--bad)">재원 ${won(over)}억 초과</b>`
+    : `재원 = ${FEE}bp × 적립금 ${AV}조<br>남는 재원 <b style="color:var(--good)">${won(feeW-outW)}억</b>`;
   drawFundBar(payW,leakW,feeW,over);
 
   let opt=null;

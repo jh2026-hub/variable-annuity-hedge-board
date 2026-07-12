@@ -724,7 +724,7 @@
       <span><span class="dash" style="border-color:var(--good)"></span>변동성 허용선(세로)</span>
       <span><i style="background:#12A870;opacity:.35"></i>둘 다 만족 구역</span>
     </div>
-    <p class="foot">가로=흔들림, 세로=비용. <b>선을 따라 왼쪽</b>=헷지↑(<span style="color:#0a7c50;font-weight:700">안전</span>·비용↑) / <b>오른쪽</b>=미헷지(<span style="color:var(--bad);font-weight:700">위험</span>·비용0). <b>초록 구역</b>(예산·변동성 OK) 안에서 가장 왼쪽이 최적 — <b style="color:#0a7c50">여기로 ✓</b> 화살표가 가리켜요.</p>
+    <p class="foot">가로=흔들림, 세로=비용. <b>왼쪽</b>=헷지↑(<span style="color:#0a7c50;font-weight:700">안전</span>·비용↑) / <b>오른쪽</b>=미헷지(<span style="color:var(--bad);font-weight:700">위험</span>·비용0). <b>초록 구역</b> 안 가장 왼쪽이 최적(<b style="color:#0a7c50">여기로 ✓</b>).<br>🖐 <b>예산선·변동성 허용선을 드래그</b>해 조절하고, <b>점을 눌러</b> 그 헷지 조합을 바로 적용해 보세요.</p>
   </div>
   <div class="panel">
     <div class="cap">비용 · 흔들림 한눈에<span>재원 · 미헷지 vs 헷지</span></div>
@@ -1258,6 +1258,9 @@ function renderDerived(){
   box.innerHTML=items.map(([t,v,s,c])=>`<div class="dcard flash"><div class="dt">${t}</div><div class="dv" style="color:var(--${c})">${v}</div><div class="ds">${s}</div></div>`).join("");
 }
 
+let EFGEO={}, efRaf=false;
+function efSvgPt(ev){ const svg=$("ef"), r=svg.getBoundingClientRect(); const cx=(ev.touches?ev.touches[0].clientX:ev.clientX), cy=(ev.touches?ev.touches[0].clientY:ev.clientY); return {x:(cx-r.left)/Math.max(1,r.width)*640, y:(cy-r.top)/Math.max(1,r.height)*340}; }
+function efSetInput(id,v){ const o=[...FIN,...VOL].find(x=>x.id===id); if(!o)return; o.v=v; const el=$("in_"+id); if(el)el.value=v; syncCsm2(); render(); if(SIM.loaded){renderSim();renderConceptCombo();} }
 function drawEF(pts,fr,cur,opt,budget){
   const W=640,H=340, L=52,R=16,T=16,B=42, iw=W-L-R, ih=H-T-B;
   const xMax=(Math.max(...pts.map(p=>p.sig),cur.sig)||1)*1.06, yMax=(Math.max(...pts.map(p=>p.cost),cur.cost,budget)||1)*1.08;
@@ -1274,32 +1277,46 @@ function drawEF(pts,fr,cur,opt,budget){
   g.push(`<text class="eflabel" x="${L+iw/2}" y="${H-4}" text-anchor="middle">남는 손익 흔들림 (억, 클수록 불안정) →</text>`);
   g.push(`<text class="eflabel" x="14" y="${T+ih/2}" text-anchor="middle" transform="rotate(-90 14 ${T+ih/2})">연간 비용 (억)</text>`);
   const by=Y(budget);
-  g.push(`<line x1="${L}" y1="${by.toFixed(1)}" x2="${W-R}" y2="${by.toFixed(1)}" stroke="var(--line)" stroke-width="2" stroke-dasharray="5 4" opacity="0.7"/>`);
-  g.push(`<text class="eflabel" x="${W-R}" y="${(by-5).toFixed(1)}" text-anchor="end" fill="var(--line)">예산 ${won(budget)}억</text>`);
+  g.push(`<line x1="${L}" y1="${by.toFixed(1)}" x2="${W-R}" y2="${by.toFixed(1)}" stroke="var(--line)" stroke-width="2.5" stroke-dasharray="6 4" opacity="0.75"/>`);
+  g.push(`<line class="efdrag" data-k="bud" x1="${L}" y1="${by.toFixed(1)}" x2="${W-R}" y2="${by.toFixed(1)}" stroke="transparent" stroke-width="18" style="cursor:ns-resize"/>`);
+  g.push(`<text class="eflabel" x="${W-R}" y="${(by-6).toFixed(1)}" text-anchor="end" fill="var(--line)" font-weight="700">예산 ${won(budget)}억 ⇕</text>`);
   if(volTol>0 && vx>L+2 && vx<W-R){
-    g.push(`<line x1="${vx.toFixed(1)}" y1="${T}" x2="${vx.toFixed(1)}" y2="${T+ih}" stroke="var(--good)" stroke-width="2" stroke-dasharray="5 4" opacity="0.8"/>`);
-    g.push(`<text class="eflabel" x="${(vx+4).toFixed(1)}" y="${(T+10)}" fill="var(--good)">변동성 허용 ${won(volTol)}억</text>`); }
+    g.push(`<line x1="${vx.toFixed(1)}" y1="${T}" x2="${vx.toFixed(1)}" y2="${T+ih}" stroke="var(--good)" stroke-width="2.5" stroke-dasharray="6 4" opacity="0.85"/>`);
+    g.push(`<line class="efdrag" data-k="vol" x1="${vx.toFixed(1)}" y1="${T}" x2="${vx.toFixed(1)}" y2="${T+ih}" stroke="transparent" stroke-width="18" style="cursor:ew-resize"/>`);
+    g.push(`<text class="eflabel" x="${(vx+4).toFixed(1)}" y="${(T+10)}" fill="var(--good)" font-weight="700">변동성 허용 ${won(volTol)}억 ⇔</text>`); }
   const frSet=new Set(fr.map(p=>p.sig+"|"+p.cost));
+  const hsAttr=p=>Object.keys(p.hs||{}).filter(k=>p.hs[k]).join(',');
   pts.forEach(p=>{ if(frSet.has(p.sig+"|"+p.cost))return;
-    g.push(`<circle class="pt" data-sig="${p.sig}" data-cost="${p.cost}" cx="${X(p.sig).toFixed(1)}" cy="${Y(p.cost).toFixed(1)}" r="2.5" fill="#C4CBD6" opacity="0.5"/>`); });
-  g.push(`<path d="${fr.map((p,i)=>(i?"L":"M")+X(p.sig).toFixed(1)+" "+Y(p.cost).toFixed(1)).join(" ")}" fill="none" stroke="url(#efGrad)" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"><animate attributeName="stroke-dashoffset" from="1" to="0" dur="1s" fill="freeze"/></path>`);
-  fr.forEach(p=>g.push(`<circle class="pt" data-sig="${p.sig}" data-cost="${p.cost}" data-fr="1" cx="${X(p.sig).toFixed(1)}" cy="${Y(p.cost).toFixed(1)}" r="3.5" fill="#fff" stroke="#7C8DA8" stroke-width="1.5"/>`));
+    g.push(`<circle class="pt" data-hs="${hsAttr(p)}" data-sig="${p.sig}" data-cost="${p.cost}" cx="${X(p.sig).toFixed(1)}" cy="${Y(p.cost).toFixed(1)}" r="3.2" fill="#C4CBD6" opacity="0.5"/>`); });
+  g.push(`<path d="${fr.map((p,i)=>(i?"L":"M")+X(p.sig).toFixed(1)+" "+Y(p.cost).toFixed(1)).join(" ")}" fill="none" stroke="url(#efGrad)" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"><animate attributeName="stroke-dashoffset" from="1" to="0" dur="1s" fill="freeze"/></path>`);
+  fr.forEach(p=>g.push(`<circle class="pt" data-hs="${hsAttr(p)}" data-sig="${p.sig}" data-cost="${p.cost}" data-fr="1" cx="${X(p.sig).toFixed(1)}" cy="${Y(p.cost).toFixed(1)}" r="5" fill="#fff" stroke="#3B6FE6" stroke-width="2"/>`));
   /* 양끝 개념 주석 — 좌상=헷지(안전), 우하=미헷지(위험) */
   g.push(`<text class="eflabel" x="${(L+6).toFixed(1)}" y="${(T+12).toFixed(1)}" fill="#0a7c50" font-weight="800">◀ 헷지 많음 · 안전</text>`);
   g.push(`<text class="eflabel" x="${(W-R-4).toFixed(1)}" y="${(T+ih-24).toFixed(1)}" text-anchor="end" fill="var(--bad)" font-weight="800">미헷지 ▶ 위험</text>`);
   if(opt && (cur.sig-opt.sig)>xMax*0.04){ const cx=X(cur.sig),cy=Y(cur.cost),ox=X(opt.sig),oy=Y(opt.cost),mx=(cx+ox)/2,my=Math.min(cy,oy)-16;
     g.push(`<path d="M${cx.toFixed(1)} ${cy.toFixed(1)} Q${mx.toFixed(1)} ${my.toFixed(1)} ${ox.toFixed(1)} ${oy.toFixed(1)}" fill="none" stroke="#0a7c50" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#efar)"/>`);
     g.push(`<text class="eflabel" x="${mx.toFixed(1)}" y="${(my-3).toFixed(1)}" text-anchor="middle" fill="#0a7c50" font-weight="800">여기로 ✓ 더 좋음</text>`); }
-  if(opt) g.push(`<circle cx="${X(opt.sig).toFixed(1)}" cy="${Y(opt.cost).toFixed(1)}" r="7" fill="none" stroke="var(--good)" stroke-width="2.5"><animate attributeName="r" values="7;11;7" dur="1.9s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;.45;1" dur="1.9s" repeatCount="indefinite"/></circle>`);
-  g.push(`<circle cx="${X(cur.sig).toFixed(1)}" cy="${Y(cur.cost).toFixed(1)}" r="7" fill="none" stroke="var(--leak)" stroke-width="2" opacity="0.5"><animate attributeName="r" values="7;15;7" dur="1.9s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0;0.5" dur="1.9s" repeatCount="indefinite"/></circle>`);
-  g.push(`<circle cx="${X(cur.sig).toFixed(1)}" cy="${Y(cur.cost).toFixed(1)}" r="7" fill="var(--leak)" stroke="#fff" stroke-width="2.5"><animate attributeName="r" values="7;8.5;7" dur="1.6s" repeatCount="indefinite"/></circle>`);
-  g.push(`<text class="eflabel" x="${(X(cur.sig)+9).toFixed(1)}" y="${(Y(cur.cost)+3).toFixed(1)}" fill="var(--leak)">현재</text>`);
+  if(opt) g.push(`<circle cx="${X(opt.sig).toFixed(1)}" cy="${Y(opt.cost).toFixed(1)}" r="8" fill="none" stroke="var(--good)" stroke-width="3"><animate attributeName="r" values="8;13;8" dur="1.9s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;.45;1" dur="1.9s" repeatCount="indefinite"/></circle>`);
+  g.push(`<circle cx="${X(cur.sig).toFixed(1)}" cy="${Y(cur.cost).toFixed(1)}" r="9" fill="none" stroke="var(--leak)" stroke-width="2.5" opacity="0.5"><animate attributeName="r" values="9;18;9" dur="1.9s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0;0.5" dur="1.9s" repeatCount="indefinite"/></circle>`);
+  g.push(`<circle cx="${X(cur.sig).toFixed(1)}" cy="${Y(cur.cost).toFixed(1)}" r="9" fill="var(--leak)" stroke="#fff" stroke-width="3"><animate attributeName="r" values="9;11;9" dur="1.6s" repeatCount="indefinite"/></circle>`);
+  g.push(`<text class="eflabel" x="${(X(cur.sig)+12).toFixed(1)}" y="${(Y(cur.cost)+4).toFixed(1)}" fill="var(--leak)" font-weight="800">현재</text>`);
   $("ef").innerHTML=g.join("");
+  EFGEO={L,iw,T,ih,xMax,yMax};
   const tip=$("eftip");
   $("ef").querySelectorAll(".pt").forEach(el=>{ el.style.cursor="pointer";
-    el.addEventListener("mouseenter",()=>{ tip.innerHTML=`${el.dataset.fr?"<b style='color:var(--pay)'>최선 조합</b>":"더 나은 선택 있음"}<br>흔들림 <b>${won(+el.dataset.sig)}억</b><br>비용 <b>${won(+el.dataset.cost)}억</b>`; tip.style.opacity=1; });
+    el.addEventListener("mouseenter",()=>{ tip.innerHTML=`${el.dataset.fr?"<b style='color:var(--pay)'>최선 조합</b>":"이 조합으로"}<br>흔들림 <b>${won(+el.dataset.sig)}억</b> · 비용 <b>${won(+el.dataset.cost)}억</b><br><span style="color:var(--pay);font-weight:700">👆 눌러서 적용</span>`; tip.style.opacity=1; });
     el.addEventListener("mousemove",ev=>{ tip.style.left=Math.min(ev.clientX+12,innerWidth-230)+"px"; tip.style.top=(ev.clientY+12)+"px"; });
-    el.addEventListener("mouseleave",()=>tip.style.opacity=0); });
+    el.addEventListener("mouseleave",()=>tip.style.opacity=0);
+    el.addEventListener("click",()=>{ const hedged=new Set((el.dataset.hs||"").split(",").filter(Boolean));
+      TOGGLE.forEach(id=>{const r=RISK.find(x=>x.id===id); if(r) r.on=hedged.has(id)?1:0;});
+      tip.style.opacity=0; render(); if(SIM.loaded)renderSim(); }); });
+  $("ef").querySelectorAll(".efdrag").forEach(el=>{ el.addEventListener("pointerdown",ev=>{ ev.preventDefault();
+    const kind=el.dataset.k;
+    const move=e=>{ if(efRaf)return; efRaf=true; requestAnimationFrame(()=>{ efRaf=false; const sp=efSvgPt(e), G=EFGEO;
+      if(kind==="vol"){ const v=Math.max(50,Math.min(G.xMax*0.98,(sp.x-G.L)/G.iw*G.xMax)); efSetInput("voltol",Math.round(v/10)*10); }
+      else { const b=Math.max(1,(1-(sp.y-G.T)/G.ih)*G.yMax), AV=val("av")||1; efSetInput("fee",Math.max(1,Math.min(500,Math.round(b/AV)))); } }); };
+    const up=()=>{ window.removeEventListener("pointermove",move); window.removeEventListener("pointerup",up); };
+    window.addEventListener("pointermove",move); window.addEventListener("pointerup",up); }); });
 }
 
 /* ③ CSM 완충 cascade */

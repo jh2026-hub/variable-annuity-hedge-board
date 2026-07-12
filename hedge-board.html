@@ -802,12 +802,20 @@
     <span class="qchip">🔁 스왑 = <b>맞춤(베이시스)</b></span>
     <span class="qchip">🛡️ 옵션 = <b>감마·꼬리 · 비쌈</b></span>
   </div>
-  <div class="panel" style="background:linear-gradient(135deg,#EEF3FE,#F4F0FD);border:1px solid #D7E0F5">
-    <div class="cap">도구 3종 요약</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:4px">
-      <div style="display:flex;gap:9px;align-items:flex-start"><div style="font-size:22px">📉</div><div><div style="font-weight:800;font-size:13px;color:var(--pay)">선물</div><div style="font-size:12px;color:var(--muted);line-height:1.55;margin-top:2px">가장 저비용. 가격의 <b>방향만</b> 상쇄. 만기마다 <b>롤오버 비용</b>·<b>현선 베이시스</b>는 감수.</div></div></div>
-      <div style="display:flex;gap:9px;align-items:flex-start"><div style="font-size:22px">🔁</div><div><div style="font-weight:800;font-size:13px;color:var(--pay)">스왑</div><div style="font-size:12px;color:var(--muted);line-height:1.55;margin-top:2px">맞춤형 교환 계약. 펀드와 지수의 <b>차이까지</b> 조정 가능하나 거래상대방 위험 존재.</div></div></div>
-      <div style="display:flex;gap:9px;align-items:flex-start"><div style="font-size:22px">🛡️</div><div><div style="font-weight:800;font-size:13px;color:var(--leak)">옵션(스왑션)</div><div style="font-size:12px;color:var(--muted);line-height:1.55;margin-top:2px"><b>프리미엄을 선지급</b>하고 급변·대규모 하락(꼬리위험)까지 확실히 방어. 비용이 큼.</div></div></div>
+  <div class="panel">
+    <div class="cap">막는 단계 — 뒤로 갈수록 비싸고 확실</div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:2px">
+      <div class="qstep"><span class="qstepn" style="background:var(--good)">1</span><div><b>방향 막기</b> · 선물·스왑 <span class="qstar" style="color:var(--good)">★</span><small>가장 저렴 · 거의 상시 · 롤오버·베이시스는 감수</small></div></div>
+      <div class="qstep"><span class="qstepn" style="background:var(--pay)">2</span><div><b>급변까지 막기</b> · 옵션 <span class="qstar" style="color:var(--pay)">★★</span><small>중간 · 프리미엄 지불</small></div></div>
+      <div class="qstep"><span class="qstepn" style="background:var(--leak)">3</span><div><b>큰 하락(꼬리)까지 막기</b> · 옵션 <span class="qstar" style="color:var(--leak)">★★★</span><small>비쌈 · 확실 · 변동성을 확정비용으로</small></div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px">
+      <div style="border:1.5px solid var(--good);border-radius:10px;padding:11px;background:#EAF7F1">
+        <div style="font-weight:800;color:var(--good);font-size:13px">📉 선물·스왑</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px"><b>방향만</b> 싸게 상쇄. <b>대부분 여기</b>서 관리해요.</div></div>
+      <div style="border:1.5px solid #E7B9C2;border-radius:10px;padding:11px;background:#FBEEF1">
+        <div style="font-weight:800;color:var(--leak);font-size:13px">🛡️ 옵션(스왑션)</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px"><b>감마·꼬리까지</b> 방어. 비싸도 <b>필요할 때</b>.</div></div>
     </div>
   </div>
   <div class="panel">

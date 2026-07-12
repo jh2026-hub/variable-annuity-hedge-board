@@ -262,6 +262,17 @@
   .bchip.on{animation:chipPop .4s ease}
   .bchip.borne{background:var(--panel2);color:var(--muted)}
   @media(max-width:520px){h1{font-size:21px}.tabs button{font-size:11px}}
+  /* 아이폰16(393px) 최적화 — 네비 가로스크롤 1줄·파생 2열·표/패딩 축소 */
+  @media(max-width:440px){
+    body{padding:16px 10px 54px}
+    .panel{padding:13px}
+    .tabs{flex-wrap:nowrap;overflow-x:auto;gap:5px;padding-bottom:8px;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+    .tabs button{flex:0 0 auto;min-width:64px;font-size:11px;padding:8px 7px;min-height:46px}
+    .tabs button small{font-size:8.5px}
+    .derived{grid-template-columns:repeat(2,1fr)}
+    table.imt{font-size:11px} table.imt td{padding:8px 6px}
+    h1{font-size:20px}
+  }
   /* 역동성 — 탭 전환 시 패널 등장(스태거) */
   @keyframes panelIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
   .page.on>.panel,.page.on>.lede,.page.on>.refs{animation:panelIn .5s cubic-bezier(.2,.7,.3,1) both}
@@ -603,7 +614,7 @@
   <div class="panel">
     <div class="cap">게임 2 · 감내 vs 헷지 🌊<span>완충(CSM)을 지켜라</span></div>
     <details style="margin-bottom:10px"><summary style="cursor:pointer;font-size:12.5px;font-weight:700;color:var(--pay)">❓ 방법 (30초)</summary>
-      <div style="font-size:12px;color:var(--muted);line-height:1.7;margin-top:6px;padding:8px 10px;background:var(--panel2);border-radius:8px">매 라운드 시장이 <b>오르내립니다</b>(방향은 <b>선택 후 공개</b>). <b>🌊 감내</b> = 완충으로 받기 — <b>오르면 완충 채우고 이익</b>, <b>내리면</b> 완충 소진, <b>부족하면 손실</b>. <b>🛡️ 헷지</b> = 재원 내고 <b>오르내림 자체를 차단</b>(손익 0, <b>이익도 포기</b>).<br><b>재원 0 = 끝.</b> 큰 잠재변동·얇은 완충이면 헷지가 안전.</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.7;margin-top:6px;padding:8px 10px;background:var(--panel2);border-radius:8px">매 라운드 시장이 <b>오르내립니다</b>(방향은 <b>선택 후 공개</b>). <b>🌊 감내</b> = 완충으로 받기 — <b>오르면 완충 채우고 이익</b>, <b>내리면</b> 완충 소진, <b>부족하면 손실</b>. <b>🛡️ 헷지</b> = 재원 내고 <b>오르내림 자체를 차단</b>(손익 0, <b>이익도 포기</b>).<br><b>재원 0 = 끝.</b> <b>하락이 상승보다 자주·크게</b> 옵니다(보증의 속성) — 큰 잠재변동·얇은 완충이면 헷지가 안전.</div>
     </details>
     <div class="chartwrap"><svg id="g2Curve" viewBox="0 0 560 205" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px"></svg></div>
     <div id="g2Result" style="min-height:22px;margin-top:8px;text-align:center;font-weight:800;font-size:14px"></div>
@@ -1708,10 +1719,10 @@ if($("gCurve")){
 }
 
 /* 게임 2 — 감내(완충) vs 헷지(비용). 시장은 양방향(방향은 선택 후 공개): 감내 오르면 이익·내리면 손실, 헷지는 오르내림 차단(이익도 포기) */
-const G2_BUD0=100, G2_CSM0=40, G2_GU=0.6;
+const G2_BUD0=40, G2_CSM0=22, G2_GU=0.4, G2_PDOWN=0.6, G2_DMUL=1.7;   /* 하락이 더 잦고(0.6)·더 크게(×1.7) */
 const GAME2={r:0,bud:G2_BUD0,csm:G2_CSM0,shock:0,over:false,log:[],hcost:0,bloss:0,gwin:0,glose:0};
-const g2HedgeCost=sh=>Math.max(2,Math.round(2+sh*0.12));
-function g2Shock(){ let s=Math.abs(gSamp())*8; if(Math.random()<0.22) s*=2.3; return Math.max(4,Math.round(s)); }
+const g2HedgeCost=sh=>Math.max(2,Math.round(2+sh*0.15));
+function g2Shock(){ let s=Math.abs(gSamp())*8; if(Math.random()<0.24) s*=2.4; return Math.max(4,Math.round(s)); }
 function g2Tank(x,lab,emo,val,max,col,dz){ const tw=92,ty=36,th=128,by=ty+th, fh=Math.max(0,Math.min(1,val/max))*th, fy=by-fh;
   let s=`<rect x="${x}" y="${ty}" width="${tw}" height="${th}" fill="#F4F7FB" stroke="var(--hair)" rx="7"/>`;
   if(dz) s+=`<rect x="${x}" y="${by-13}" width="${tw}" height="13" fill="#F7C9D1"/><text x="${x+tw/2}" y="${by-4}" text-anchor="middle" font-size="8" fill="var(--bad)" font-weight="700">손익 위험</text>`;
@@ -1733,12 +1744,12 @@ function g2Draw(){ const b=GAME2, g=[], thin=b.csm<=G2_CSM0*0.3;
   g.push(`<text x="452" y="184" text-anchor="middle" font-size="8.5" fill="var(--muted)">방향은 선택 후 공개</text>`);
   $("g2Curve").innerHTML=g.join('');
 }
-function g2Play(a){ if(GAME2.over)return; const b=GAME2, m=b.shock, down=Math.random()<0.5; let msg,col,tag;
-  if(a==='hedge'){ const cost=g2HedgeCost(m); b.bud-=cost; b.hcost+=cost; msg=`🛡️ 헷지 · 시장 ${down?'↓':'↑'} 났지만 손익 0 (재원 −${cost}${down?'':' · 이익도 포기'})`; col='var(--pay)'; tag='막음'; }
+function g2Play(a){ if(GAME2.over)return; const b=GAME2, m=b.shock, down=Math.random()<G2_PDOWN, real=down?Math.round(m*G2_DMUL):m; let msg,col,tag;
+  if(a==='hedge'){ const cost=g2HedgeCost(m); b.bud-=cost; b.hcost+=cost; msg=`🛡️ 헷지 · 시장 ${down?'↓크게':'↑'} 났지만 손익 0 (재원 −${cost}${down?'':' · 이익도 포기'})`; col='var(--pay)'; tag='막음'; }
   else if(!down){ const c2=b.csm+m; if(c2>G2_CSM0){ const gain=Math.round((c2-G2_CSM0)*G2_GU); b.bud+=gain; b.csm=G2_CSM0; b.gwin++; msg=`🌊 시장 ↑ · 완충 채우고 <b>이익 +${won(gain)}</b>`; col='var(--good)'; tag='이익'; }
       else { b.csm=c2; msg=`🌊 시장 ↑ · 완충 회복 +${won(m)}`; col='var(--good)'; tag='회복'; } }
-  else { if(m<=b.csm){ b.csm-=m; const thin=b.csm<G2_CSM0*0.3; msg=`🌊 시장 ↓ · 완충으로 버팀 −${won(m)}${thin?' ⚠얇아짐':''}`; col=thin?'var(--leak)':'var(--good)'; tag='버팀'; }
-      else { b.bud-=m; b.bloss+=m; b.csm=0; b.glose++; msg=`🌊 시장 ↓ · 완충 부족! <b>손익 −${won(m)} 터짐</b>`; col='var(--bad)'; tag='터짐'; } }
+  else { if(real<=b.csm){ b.csm-=real; const thin=b.csm<G2_CSM0*0.3; msg=`🌊 시장 ↓크게 · 완충으로 버팀 −${won(real)}${thin?' ⚠얇아짐':''}`; col=thin?'var(--leak)':'var(--good)'; tag='버팀'; }
+      else { b.bud-=real; b.bloss+=real; b.csm=0; b.glose++; msg=`🌊 시장 ↓크게 · 완충 부족! <b>손익 −${won(real)} 터짐</b>`; col='var(--bad)'; tag='터짐'; } }
   b.r++;
   b.log.unshift({r:b.r,a,m,col,tag});
   $("g2Log").innerHTML=b.log.slice(0,10).map(x=>`<div class="glogrow"><span class="gy">${x.r}R</span><span class="gtag">${x.a==='hedge'?'🛡️ 헷지':'🌊 감내'}</span><span class="gnet" style="color:${x.col}">${x.tag}</span></div>`).join('');
@@ -1747,7 +1758,7 @@ function g2Play(a){ if(GAME2.over)return; const b=GAME2, m=b.shock, down=Math.ra
   if($("g2Result"))$("g2Result").innerHTML=`<span style="color:${col}">${msg}</span>`;
 }
 function g2Finish(){ GAME2.over=true; const c=$("g2Control"); if(c){c.style.opacity='.45';c.style.pointerEvents='none';}
-  const b=GAME2, r=b.r, t=r>=25?['🏆','완충 마스터']:r>=15?['🥇','노련']:r>=8?['👍','무난']:['😅','연습'];
+  const b=GAME2, r=b.r, t=r>=20?['🏆','완충 마스터']:r>=12?['🥇','노련']:r>=6?['👍','무난']:['😅','연습'];
   $("g2Final").innerHTML=`<div class="gres" style="background:linear-gradient(135deg,#EEF3FE,#F4F0FD);border:1px solid #D7E0F5;margin-top:14px">
     <div style="display:flex;align-items:center;gap:12px"><div style="font-size:34px">${t[0]}</div><div style="font-weight:800;font-size:16px">${t[1]} · <b style="color:var(--pay)">${r}라운드</b> 버팀</div></div>
     <div style="display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font-size:12.5px"><span>🌊 감내 이익 <b style="color:var(--good)">${b.gwin}</b>회</span><span>🌊 감내 터짐 <b style="color:var(--bad)">${b.glose}</b>회</span><span>🛡️ 헷지 비용 <b style="color:var(--pay)">${won(b.hcost)}</b></span></div>

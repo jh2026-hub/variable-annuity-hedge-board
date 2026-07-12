@@ -1429,7 +1429,7 @@ function drawEF(pts,fr,cur,opt,budget){
   const frSet=new Set(fr.map(p=>p.sig+"|"+p.cost));
   const hsAttr=p=>Object.keys(p.hs||{}).filter(k=>p.hs[k]).join(',');
   pts.forEach(p=>{ if(frSet.has(p.sig+"|"+p.cost))return;
-    g.push(`<circle class="pt" data-hs="${hsAttr(p)}" data-sig="${p.sig}" data-cost="${p.cost}" cx="${X(p.sig).toFixed(1)}" cy="${Y(p.cost).toFixed(1)}" r="3.2" fill="#C4CBD6" opacity="0.5"/>`); });
+    g.push(`<circle class="pt" data-hs="${hsAttr(p)}" data-sig="${p.sig}" data-cost="${p.cost}" cx="${X(p.sig).toFixed(1)}" cy="${Y(p.cost).toFixed(1)}" r="3.2" fill="#C4CBD6" opacity="0.28"/>`); });
   g.push(`<path d="${fr.map((p,i)=>(i?"L":"M")+X(p.sig).toFixed(1)+" "+Y(p.cost).toFixed(1)).join(" ")}" fill="none" stroke="url(#efGrad)" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"><animate attributeName="stroke-dashoffset" from="1" to="0" dur="1s" fill="freeze"/></path>`);
   fr.forEach(p=>g.push(`<circle class="pt" data-hs="${hsAttr(p)}" data-sig="${p.sig}" data-cost="${p.cost}" data-fr="1" cx="${X(p.sig).toFixed(1)}" cy="${Y(p.cost).toFixed(1)}" r="5" fill="#fff" stroke="#3B6FE6" stroke-width="2"/>`));
   /* 양끝 개념 주석 — 좌상=헷지(안전), 우하=미헷지(위험) */
@@ -1439,8 +1439,7 @@ function drawEF(pts,fr,cur,opt,budget){
     g.push(`<path d="M${cx.toFixed(1)} ${cy.toFixed(1)} Q${mx.toFixed(1)} ${my.toFixed(1)} ${ox.toFixed(1)} ${oy.toFixed(1)}" fill="none" stroke="#0a7c50" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#efar)"/>`);
     g.push(`<text class="eflabel" x="${mx.toFixed(1)}" y="${(my-3).toFixed(1)}" text-anchor="middle" fill="#0a7c50" font-weight="800">여기로 ✓ 더 좋음</text>`); }
   if(opt) g.push(`<circle cx="${X(opt.sig).toFixed(1)}" cy="${Y(opt.cost).toFixed(1)}" r="8" fill="none" stroke="var(--good)" stroke-width="3"><animate attributeName="r" values="8;13;8" dur="1.9s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;.45;1" dur="1.9s" repeatCount="indefinite"/></circle>`);
-  g.push(`<circle cx="${X(cur.sig).toFixed(1)}" cy="${Y(cur.cost).toFixed(1)}" r="9" fill="none" stroke="var(--leak)" stroke-width="2.5" opacity="0.5"><animate attributeName="r" values="9;18;9" dur="1.9s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0;0.5" dur="1.9s" repeatCount="indefinite"/></circle>`);
-  g.push(`<circle cx="${X(cur.sig).toFixed(1)}" cy="${Y(cur.cost).toFixed(1)}" r="9" fill="var(--leak)" stroke="#fff" stroke-width="3"><animate attributeName="r" values="9;11;9" dur="1.6s" repeatCount="indefinite"/></circle>`);
+  g.push(`<circle cx="${X(cur.sig).toFixed(1)}" cy="${Y(cur.cost).toFixed(1)}" r="9.5" fill="var(--leak)" stroke="#fff" stroke-width="3"/>`);
   g.push(`<text class="eflabel" x="${(X(cur.sig)+12).toFixed(1)}" y="${(Y(cur.cost)+4).toFixed(1)}" fill="var(--leak)" font-weight="800">현재</text>`);
   $("ef").innerHTML=g.join("");
   EFGEO={L,iw,T,ih,xMax,yMax};
@@ -1569,10 +1568,9 @@ function renderConceptCombo(){
   const wYr=[];for(let i=0;i<U.length;i+=5)wYr.push(idx[Math.min(i,idx.length-1)]);
   const nmW=nmWeekly();   /* 비시장 잔차(펀드 불일치·베가·해지) — 헷지해도 남아 잔잔히 흔들림 */
   const RAT=[
-    {h:0,   n:'미헷지',        c:'var(--sym)',  lw:1.1, o:0.5},
-    {h:0.5, n:'방향 50% 헷지',  c:'var(--pay)',  lw:1.6, o:0.85},
-    {h:0.8, n:'방향 80% 헷지',  c:'var(--pay-ink)', lw:1.8, o:0.95},
-    {h:1,   n:'방향 100% 헷지', c:'var(--good)', lw:2.4, o:1},
+    {h:0,   n:'미헷지',        c:'var(--sym)',  lw:1.3, o:0.55},
+    {h:0.5, n:'방향 50% 헷지',  c:'var(--pay)',  lw:1.8, o:0.9},
+    {h:1,   n:'방향 100% 헷지', c:'var(--good)', lw:2.6, o:1},
   ].map(r=>{ const arr=wU.map((u,i)=>(1-r.h)*u + r.h*wLK[i] + (r.h>0?nmNoise(i,nmW):0)); return {...r, arr, sig:stdev(arr)*Math.sqrt(252/5)}; });
   const amp=Math.max(...wU.map(Math.abs),1)*1.05;
   const W=640,H=280,L=54,R=14,T=16,B=26,iw=W-L-R,ih=H-T-B,g=[];

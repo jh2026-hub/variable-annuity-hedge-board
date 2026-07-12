@@ -1087,7 +1087,7 @@ function numRow(o){ return `<div class="srow"><div class="lab">${o.n}<small>${o.
   <input type="number" inputmode="decimal" id="in_${o.id}" value="${o.v}" step="any" min="0"><span class="unit">${o.u}</span></div>`; }
 $("sheetFin").innerHTML=FIN.map(numRow).join("");
 $("sheetVol").innerHTML=VOL.map(numRow).join("");
-[...FIN,...VOL].forEach(o=>$("in_"+o.id).addEventListener("input",e=>{o.v=parseFloat(e.target.value)||0;syncCsm2();render();if(SIM.loaded){renderSim();renderConceptCombo();}}));
+[...FIN,...VOL].forEach(o=>$("in_"+o.id).addEventListener("input",e=>{o.v=parseFloat(e.target.value)||0;syncCsm2();render();simRefresh();ccRefresh();}));
 
 const mtxBody=$("mtx").querySelector("tbody");
 mtxBody.innerHTML=RISK.map(r=>{
@@ -1098,8 +1098,8 @@ mtxBody.innerHTML=RISK.map(r=>{
   return `<tr><td>${r.n}<small>${r.note}</small></td><td>${expCell}</td><td>${costCell}</td></tr>`;
 }).join("");
 RISK.forEach(r=>{
-  if($("ex_"+r.id)) $("ex_"+r.id).addEventListener("input",e=>{r.exp=parseFloat(e.target.value)||0;render();if(SIM.loaded)renderSim();});
-  if($("bp_"+r.id)) $("bp_"+r.id).addEventListener("input",e=>{r.bp=parseFloat(e.target.value)||0;render();if(SIM.loaded)renderSim();});
+  if($("ex_"+r.id)) $("ex_"+r.id).addEventListener("input",e=>{r.exp=parseFloat(e.target.value)||0;render();simRefresh();});
+  if($("bp_"+r.id)) $("bp_"+r.id).addEventListener("input",e=>{r.bp=parseFloat(e.target.value)||0;render();simRefresh();});
 });
 function renderSelect(){
   const box=$("selList"); if(!box)return; const AV=val("av");
@@ -1122,7 +1122,7 @@ function renderSelect(){
   });
   box.innerHTML=html;
   box.querySelectorAll(".seg2 button").forEach(b=>b.addEventListener("click",()=>{
-    const r=RISK.find(x=>x.id===b.parentElement.dataset.id); r.on=+b.dataset.v; render(); if(SIM.loaded)renderSim();
+    const r=RISK.find(x=>x.id===b.parentElement.dataset.id); r.on=+b.dataset.v; render(); simRefresh();
   }));
 }
 
@@ -1207,6 +1207,10 @@ function drawVolBarK(){ if(!$("vkBar"))return; volBarKBuild();
     ? `CSM 완충 넘침 → <b style="color:var(--bad)">±${won(transferred)}억 손익·자본 전이</b>`
     : `<b style="color:var(--good)">CSM이 전부 흡수</b> · 완충 여유`;
 }
+/* 최적화 — 현재 보이는 탭만 무거운 차트 갱신(숨은 탭은 전환 시 갱신) */
+const tabOn=id=>{const e=$(id);return !!(e&&e.classList.contains("on"));};
+function simRefresh(){ if(SIM.loaded && tabOn("p2")) renderSim(); }
+function ccRefresh(){ if(SIM.loaded && tabOn("p1")) renderConceptCombo(); }
 function render(){
   const AV=val("av"), FEE=val("fee"), CSM=val("csm"), feeW=AV*FEE, budget=feeW;
   const cur=evalCombo(currentHS());
@@ -1222,9 +1226,10 @@ function render(){
     : `쓴 비용 <b style="color:var(--ink)">${won(outW)}억</b><br>남는 재원 <b style="color:var(--good)">${won(feeW-outW)}억</b>`;
   drawFundBar(payW,leakW,feeW,over);
 
-  const pts=allCombos(), fr=frontier(pts), affordFr=fr.filter(p=>p.cost<=budget);
-  const opt = affordFr.length? affordFr.reduce((a,b)=>a.sig<b.sig?a:b) : null;
-  drawEF(pts,fr,cur,opt,budget);
+  let opt=null;
+  if(tabOn("p2")){ const pts=allCombos(), fr=frontier(pts), affordFr=fr.filter(p=>p.cost<=budget);
+    opt = affordFr.length? affordFr.reduce((a,b)=>a.sig<b.sig?a:b) : null;
+    drawEF(pts,fr,cur,opt,budget); }
 
   const L95=leakW*M95*M95+1.645*cur.sig, L995=leakW*M995*M995+2.576*cur.sig;
   const vd=$("vd"); let cls,ic,t,p;
@@ -1262,7 +1267,7 @@ let EFGEO={}, efRaf=false;
 function efSvgPt(ev){ const svg=$("ef"), r=svg.getBoundingClientRect(); const cx=(ev.touches?ev.touches[0].clientX:ev.clientX), cy=(ev.touches?ev.touches[0].clientY:ev.clientY); return {x:(cx-r.left)/Math.max(1,r.width)*640, y:(cy-r.top)/Math.max(1,r.height)*340}; }
 function efMoveV(id,x){ const e=$(id); if(e){e.setAttribute("x1",x.toFixed(1));e.setAttribute("x2",x.toFixed(1));} }
 function efMoveH(id,y){ const e=$(id); if(e){e.setAttribute("y1",y.toFixed(1));e.setAttribute("y2",y.toFixed(1));} }
-function efSetInput(id,v){ const o=[...FIN,...VOL].find(x=>x.id===id); if(!o)return; o.v=v; const el=$("in_"+id); if(el)el.value=v; syncCsm2(); render(); if(SIM.loaded){renderSim();renderConceptCombo();} }
+function efSetInput(id,v){ const o=[...FIN,...VOL].find(x=>x.id===id); if(!o)return; o.v=v; const el=$("in_"+id); if(el)el.value=v; syncCsm2(); render(); simRefresh();ccRefresh(); }
 function drawEF(pts,fr,cur,opt,budget){
   const W=640,H=340, L=52,R=16,T=16,B=42, iw=W-L-R, ih=H-T-B;
   const xMax=(Math.max(...pts.map(p=>p.sig),cur.sig)||1)*1.06, yMax=(Math.max(...pts.map(p=>p.cost),cur.cost,budget)||1)*1.08;
@@ -1311,7 +1316,7 @@ function drawEF(pts,fr,cur,opt,budget){
     el.addEventListener("mouseleave",()=>tip.style.opacity=0);
     el.addEventListener("click",()=>{ const hedged=new Set((el.dataset.hs||"").split(",").filter(Boolean));
       TOGGLE.forEach(id=>{const r=RISK.find(x=>x.id===id); if(r) r.on=hedged.has(id)?1:0;});
-      tip.style.opacity=0; render(); if(SIM.loaded)renderSim(); }); });
+      tip.style.opacity=0; render(); simRefresh(); }); });
   /* 드래그 중엔 선만 가볍게 이동(전체 render X), 놓을 때 한 번만 커밋 → 부드럽게 */
   $("ef").querySelectorAll(".efdrag").forEach(el=>{ el.addEventListener("pointerdown",ev=>{ ev.preventDefault();
     const kind=el.dataset.k, G=EFGEO; let pend=null;
@@ -1385,10 +1390,10 @@ function drawCompare(){
 const SIM={loaded:false,data:null,rateKey:"y20"};
 async function loadMarket(){
   try{
-    const r=await fetch("./data/market.json",{cache:"no-store"}); if(!r.ok) throw new Error(r.status);
+    const r=await fetch("./data/market.json"); if(!r.ok) throw new Error(r.status);
     SIM.data=await r.json(); SIM.loaded=true;
     if($("simStatus")){ $("simStatus").innerHTML=`KOSPI·국고 20년 <b>${SIM.data.meta.from}–${SIM.data.meta.to}</b> (${SIM.data.meta.n.toLocaleString()}거래일) 로드 완료.`; $("simStatus").style.color="var(--muted)"; }
-    renderSim(); renderConceptCombo(); renderDerived();
+    simRefresh(); ccRefresh(); renderDerived();
   }catch(e){ if($("simStatus")){$("simStatus").innerHTML=`시장데이터를 불러오지 못했어요 (${e.message}).`; $("simStatus").style.color="var(--bad)";} }
 }
 /* 전략 조합의 연간 손익변동성(1σ, 억) — 방향·감마(시장) + 베가·펀드·해지·모형(σ가중) 합성 */

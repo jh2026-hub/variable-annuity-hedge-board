@@ -964,7 +964,7 @@ function drawFundBar(payW,leakW,feeW,over){ const bar=$("fundBar"); if(!bar)retu
   bar.innerHTML=segs.map(s=>`<div title="${s[0]} ${won(s[1])}억" style="flex-grow:${Math.max(0.0001,s[1])};flex-basis:0;min-width:0;border-radius:5px;background:${s[2]};transition:flex-grow .55s cubic-bezier(.2,.7,.3,1)"></div>`).join('');
   const lg=$("fundLegend"); if(lg) lg.innerHTML=segs.map(s=>`<span style="display:inline-flex;align-items:center;gap:4px"><span style="width:11px;height:11px;border-radius:3px;background:${s[2]};display:inline-block"></span>${s[0]} ${won(s[1])}억</span>`).join('');
 }
-/* 자본 흔들림 — 헷지만 블록 제거(감내=자본 그대로 흔들림). 금리·할인율·해지 자본가중↑ + CSM 완충 소진(빗금, 감내 의존↑일수록 커짐) */
+/* 자본 흔들림 — 헷지만 블록 제거(CSM 감내=자본은 그대로 흔들림). 금리·할인율·해지 자본가중↑ = CSM 만능 아님 */
 const VCK={delta:720,rho:1150,gE:300,gR:420,vega:240,fund:210,lapse:300,model:190};
 function volBarKBuild(){ const bar=$("vkBar"); if(!bar||bar.children.length)return;
   bar.innerHTML=RISK.map(r=>`<div class="vkseg" data-id="${r.id}" style="flex-grow:0;flex-basis:0;min-width:0;border-radius:5px;background:${VCCOL[r.id]||'#ccc'};transition:flex-grow .55s cubic-bezier(.2,.7,.3,1),opacity .4s"></div>`).join('');

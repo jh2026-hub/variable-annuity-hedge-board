@@ -620,7 +620,7 @@
     <div id="g2Result" style="min-height:22px;margin-top:8px;text-align:center;font-weight:800;font-size:14px"></div>
     <div id="g2Control" style="margin-top:6px">
       <div class="gchoices" style="grid-template-columns:repeat(2,1fr)">
-        <button class="gchoice g2c" data-a="hedge"><span class="gci">🛡️</span><span class="gct">헷지</span><span class="gcd">재원 −<b id="g2prem">5</b> · <b style="color:var(--good)">안전(이익 포기)</b></span></button>
+        <button class="gchoice g2c" data-a="hedge"><span class="gci">🛡️</span><span class="gct">헷지</span><span class="gcd">프리미엄 −<b id="g2prem">3</b> · <b style="color:var(--good)">큰 하락 막기</b></span></button>
         <button class="gchoice g2c" data-a="bear"><span class="gci">🌊</span><span class="gct">감내</span><span class="gcd">오르면 <b style="color:var(--good)">이익</b> · 내리면 <b style="color:var(--bad)">손실</b></span></button>
       </div>
     </div>
@@ -1719,9 +1719,9 @@ if($("gCurve")){
 }
 
 /* 게임 2 — 감내(완충) vs 헷지(비용). 시장은 양방향(방향은 선택 후 공개): 감내 오르면 이익·내리면 손실, 헷지는 오르내림 차단(이익도 포기) */
-const G2_BUD0=40, G2_CSM0=22, G2_GU=0.4, G2_PDOWN=0.6, G2_DMUL=1.7;   /* 하락이 더 잦고(0.6)·더 크게(×1.7) */
-const GAME2={r:0,bud:G2_BUD0,csm:G2_CSM0,shock:0,over:false,log:[],hcost:0,bloss:0,gwin:0,glose:0};
-const g2HedgeCost=sh=>Math.max(2,Math.round(2+sh*0.15));
+const G2_BUD0=40, G2_CSM0=18, G2_GU=0.4, G2_PDOWN=0.6, G2_DMUL=1.8;   /* 하락 잦고(0.6)·크게(×1.8), 헷지는 싼 보호 */
+const GAME2={r:0,bud:G2_BUD0,csm:G2_CSM0,shock:0,over:false,log:[],hcost:0,bloss:0,gwin:0,glose:0,hsaved:0};
+const g2HedgeCost=sh=>Math.max(2,Math.round(2+sh*0.06));
 function g2Shock(){ let s=Math.abs(gSamp())*8; if(Math.random()<0.24) s*=2.4; return Math.max(4,Math.round(s)); }
 function g2Tank(x,lab,emo,val,max,col,dz){ const tw=92,ty=36,th=128,by=ty+th, fh=Math.max(0,Math.min(1,val/max))*th, fy=by-fh;
   let s=`<rect x="${x}" y="${ty}" width="${tw}" height="${th}" fill="#F4F7FB" stroke="var(--hair)" rx="7"/>`;
@@ -1744,12 +1744,14 @@ function g2Draw(){ const b=GAME2, g=[], thin=b.csm<=G2_CSM0*0.3;
   g.push(`<text x="452" y="184" text-anchor="middle" font-size="8.5" fill="var(--muted)">방향은 선택 후 공개</text>`);
   $("g2Curve").innerHTML=g.join('');
 }
-function g2Play(a){ if(GAME2.over)return; const b=GAME2, m=b.shock, down=Math.random()<G2_PDOWN, real=down?Math.round(m*G2_DMUL):m; let msg,col,tag;
-  if(a==='hedge'){ const cost=g2HedgeCost(m); b.bud-=cost; b.hcost+=cost; msg=`🛡️ 헷지 · 시장 ${down?'↓크게':'↑'} 났지만 손익 0 (재원 −${cost}${down?'':' · 이익도 포기'})`; col='var(--pay)'; tag='막음'; }
-  else if(!down){ const c2=b.csm+m; if(c2>G2_CSM0){ const gain=Math.round((c2-G2_CSM0)*G2_GU); b.bud+=gain; b.csm=G2_CSM0; b.gwin++; msg=`🌊 시장 ↑ · 완충 채우고 <b>이익 +${won(gain)}</b>`; col='var(--good)'; tag='이익'; }
-      else { b.csm=c2; msg=`🌊 시장 ↑ · 완충 회복 +${won(m)}`; col='var(--good)'; tag='회복'; } }
-  else { if(real<=b.csm){ b.csm-=real; const thin=b.csm<G2_CSM0*0.3; msg=`🌊 시장 ↓크게 · 완충으로 버팀 −${won(real)}${thin?' ⚠얇아짐':''}`; col=thin?'var(--leak)':'var(--good)'; tag='버팀'; }
-      else { b.bud-=real; b.bloss+=real; b.csm=0; b.glose++; msg=`🌊 시장 ↓크게 · 완충 부족! <b>손익 −${won(real)} 터짐</b>`; col='var(--bad)'; tag='터짐'; } }
+function g2Play(a){ if(GAME2.over)return; const b=GAME2, m=b.shock, down=Math.random()<G2_PDOWN, real=down?Math.round(m*G2_DMUL):m, cost=g2HedgeCost(m); let msg,col,tag;
+  if(a==='hedge'){ b.bud-=cost; b.hcost+=cost;
+    if(down&&real>b.csm){ b.hsaved+=real; msg=`🛡️ 큰 하락 −${won(real)} <b>막음!</b> (프리미엄 −${cost})`; col='var(--good)'; tag='막음'; }
+    else { msg=`🛡️ 프리미엄 −${cost} · 이번엔 조용`; col='var(--pay)'; tag='보호'; } }
+  else if(!down){ const c2=b.csm+m; if(c2>G2_CSM0){ const gain=Math.round((c2-G2_CSM0)*G2_GU); b.bud+=gain; b.csm=G2_CSM0; b.gwin++; msg=`🌊 시장↑ · <b>이익 +${won(gain)}</b>`; col='var(--good)'; tag='이익'; }
+      else { b.csm=c2; msg=`🌊 시장↑ · 완충 회복`; col='var(--good)'; tag='회복'; } }
+  else { if(real<=b.csm){ b.csm-=real; const thin=b.csm<G2_CSM0*0.35; msg=`🌊 하락 −${won(real)} · 완충으로 버팀${thin?' ⚠얇음':''}`; col=thin?'var(--leak)':'var(--good)'; tag='버팀'; }
+      else { b.bud-=real; b.bloss+=real; b.csm=0; b.glose++; msg=`🌊 하락 −${won(real)} <b>터짐!</b> · 헷지였다면 −${cost}`; col='var(--bad)'; tag='터짐'; } }
   b.r++;
   b.log.unshift({r:b.r,a,m,col,tag});
   $("g2Log").innerHTML=b.log.slice(0,10).map(x=>`<div class="glogrow"><span class="gy">${x.r}R</span><span class="gtag">${x.a==='hedge'?'🛡️ 헷지':'🌊 감내'}</span><span class="gnet" style="color:${x.col}">${x.tag}</span></div>`).join('');
@@ -1761,12 +1763,12 @@ function g2Finish(){ GAME2.over=true; const c=$("g2Control"); if(c){c.style.opac
   const b=GAME2, r=b.r, t=r>=20?['🏆','완충 마스터']:r>=12?['🥇','노련']:r>=6?['👍','무난']:['😅','연습'];
   $("g2Final").innerHTML=`<div class="gres" style="background:linear-gradient(135deg,#EEF3FE,#F4F0FD);border:1px solid #D7E0F5;margin-top:14px">
     <div style="display:flex;align-items:center;gap:12px"><div style="font-size:34px">${t[0]}</div><div style="font-weight:800;font-size:16px">${t[1]} · <b style="color:var(--pay)">${r}라운드</b> 버팀</div></div>
-    <div style="display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font-size:12.5px"><span>🌊 감내 이익 <b style="color:var(--good)">${b.gwin}</b>회</span><span>🌊 감내 터짐 <b style="color:var(--bad)">${b.glose}</b>회</span><span>🛡️ 헷지 비용 <b style="color:var(--pay)">${won(b.hcost)}</b></span></div>
-    <div style="font-size:12px;color:var(--muted);margin-top:9px;line-height:1.6">감내는 <b>오르면 완충 채우고 이익</b>도 나지만, <b>완충이 얇을 때 큰 하락</b>이 오면 <b style="color:var(--bad)">크게 터집니다</b>(변동폭이 큰 만큼 위험). 헷지는 <b>이익을 포기</b>하는 대신 그 손실을 막죠. <b>큰 잠재변동·얇은 완충일수록 헷지</b>가 안전합니다.</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font-size:12.5px"><span>🌊 감내 터짐 <b style="color:var(--bad)">${b.glose}</b>회 (−${won(b.bloss)})</span><span>🛡️ 헷지로 막은 손실 <b style="color:var(--good)">−${won(b.hsaved)}</b></span></div>
+    <div style="font-size:12px;color:var(--muted);margin-top:9px;line-height:1.6">감내는 이익도 나지만 <b style="color:var(--bad)">큰 하락에 크게 터집니다</b>. 헷지는 작은 프리미엄으로 그 <b>큰 손실을 미리 막죠</b>. <b>하락 위험이 클수록 헷지</b>가 이깁니다.</div>
     <button id="g2Reset" class="gbtn" style="margin-top:12px;background:var(--ink)">다시 도전 ↻</button></div>`;
   $("g2Reset").addEventListener("click",g2Restart);
 }
-function g2Restart(){ Object.assign(GAME2,{r:0,bud:G2_BUD0,csm:G2_CSM0,over:false,log:[],hcost:0,bloss:0,gwin:0,glose:0}); const c=$("g2Control"); if(c){c.style.opacity='';c.style.pointerEvents='';}
+function g2Restart(){ Object.assign(GAME2,{r:0,bud:G2_BUD0,csm:G2_CSM0,over:false,log:[],hcost:0,bloss:0,gwin:0,glose:0,hsaved:0}); const c=$("g2Control"); if(c){c.style.opacity='';c.style.pointerEvents='';}
   $("g2Log").innerHTML=''; $("g2Final").innerHTML=''; GAME2.shock=g2Shock(); if($("g2prem"))$("g2prem").textContent=g2HedgeCost(GAME2.shock); g2Draw();
   if($("g2Result"))$("g2Result").innerHTML=`<span style="color:var(--muted);font-weight:600">막을까요, 버틸까요?</span>`; }
 if($("g2Curve")){ document.querySelectorAll(".g2c").forEach(b=>b.addEventListener("click",()=>g2Play(b.dataset.a)));

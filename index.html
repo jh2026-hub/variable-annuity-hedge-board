@@ -813,9 +813,10 @@
         <div id="vkCsmLine" style="position:absolute;top:-1px;bottom:-1px;left:100%;width:0;border-left:2px dashed var(--good);transition:left .55s cubic-bezier(.2,.7,.3,1)"></div>
       </div>
       <div id="vkLegend" style="display:flex;flex-wrap:wrap;gap:5px 10px;margin-top:9px;font-size:11px"></div>
-      <p class="foot" style="margin-top:9px">감내하면 이 변동성을 <b>CSM 완충</b>(초록 점선)이 흡수, <b>넘치면</b>(빨강) 손익·자본 전이. <b>얇을수록 전이↑ = 100% 노출 → 헷지 유리.</b></p>
+      <p class="foot" style="margin-top:9px">이 변동성을 <b>CSM 완충</b>(초록 점선)이 흡수해요. <b>넘치면</b>(빨강) 손익·자본으로 전이 — <b>완충이 얇을수록 그대로 내게 와요.</b></p>
     </div>
-    <div style="border-top:1px dashed var(--hair);margin-top:14px;padding-top:12px">
+    <div style="margin-top:10px">
+      <div style="text-align:center;font-size:12.5px;font-weight:800;color:var(--good);margin-bottom:8px">↓ 헷지하면 이만큼 줄어요 (같은 축)</div>
       <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
         <div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:2px"><span class="hn" style="background:var(--pay);width:20px;height:20px;font-size:12px">2</span><b style="font-size:13.5px;color:var(--ink)">헷지 변동성</b><span class="qchip" style="font-size:10px;padding:2px 7px;background:#EAF7F1;color:var(--good)">비용 지불 · 변동성 작음</span></div><div id="vbNum" style="font-size:30px;font-weight:800;color:var(--pay);letter-spacing:-.5px">±0억</div></div>
         <div style="color:var(--muted);font-size:12px;line-height:1.7">헷지하면 변동성이 <b style="color:var(--good)">이만큼으로 감소</b><br>비용(옵션 프리미엄)은 <b>위 재원</b>에서 지출</div>
@@ -824,7 +825,7 @@
         <div id="vbBar" style="display:flex;gap:2px;height:100%;width:0%;padding:2px;transition:width .55s cubic-bezier(.2,.7,.3,1)"></div>
       </div>
       <div id="vbLegend" style="display:flex;flex-wrap:wrap;gap:5px 10px;margin-top:9px;font-size:11px"></div>
-      <p class="foot" style="margin-top:9px"><b>①과 같은 축</b> — 막대 <b>길이 차이 = 헷지가 줄인 변동성</b>. 큰 변동성을 <b>작은 잔여</b>로(0은 아님), 대신 <b>비용</b> 지출.</p>
+      <p class="foot" style="margin-top:9px">큰 변동성이 <b>작은 잔여</b>로 줄어요(<b>0은 아님</b>) — 대신 <b>비용</b>을 지불.</p>
     </div>
   </div>
   <div class="panel">
@@ -891,7 +892,6 @@
     <div class="leg">
       <span><i style="background:var(--leak)"></i>감내 시 누수(실현변동성)</span>
       <span><i style="background:var(--pay)"></i>헷지 시 옵션 프리미엄(확정 지출)</span>
-      <span><i style="background:var(--sym)"></i>주가 RV(우축)</span>
     </div>
     <div class="chartwrap"><table class="mtx" id="simTbl"><thead><tr><th>연도</th><th>주가 RV</th><th>금리 RV</th><th>감내 시 누수</th><th>헷지 시 옵션 프리미엄</th></tr></thead><tbody></tbody></table></div>
     <p class="foot"><b>감내(주황)</b>는 변동성 큰 해에 누수가 <b>급증</b>해요(예측 못 하는 손실). <b>헷지(파랑)</b>는 평균적으론 조금 더 비싸지만 <b>손실이 아니라 미리 정한 비용으로 확정</b>돼요 — 싸게 막는 게 아니라 <b>불확실을 확정으로</b> 바꾸는 거예요. <span style="opacity:.75">(RV = 실현변동성 실측 · 주가 %, 금리 bp)</span></p>
@@ -1715,22 +1715,21 @@ function renderSim(){
     <div><div class="sl">감내 시 연평균 누수</div><div class="sv" style="color:var(--leak)">△${won(avgLeak)}억</div></div>
     <div><div class="sl">최대 누수(${worst.y})</div><div class="sv" style="color:var(--bad)">△${won(worst.leak)}억</div></div>
     <div><div class="sl">헷지 시 연평균 프리미엄</div><div class="sv" style="color:var(--pay)">△${won(avgPrem)}억</div></div>`;
-  const W=640,H=280,L=48,R=40,T=14,B=34,iw=W-L-R,ih=H-T-B,g=[];
-  const yMax=Math.max(...rows.map(r=>Math.max(r.leak,r.prem)),1)*1.12, rvMax=Math.max(...rows.map(r=>r.rvE),1)*1.15;
-  const bw=iw/rows.length, X=i=>L+bw*(i+0.5), YR=v=>T+ih-(v/rvMax)*ih;
+  const W=640,H=280,L=48,R=18,T=14,B=34,iw=W-L-R,ih=H-T-B,g=[];
+  const yMax=Math.max(...rows.map(r=>Math.max(r.leak,r.prem)),1)*1.12;
+  const bw=iw/rows.length, X=i=>L+bw*(i+0.5);
   for(let i=0;i<=4;i++){ const gy=T+ih*i/4;
     g.push(`<line x1="${L}" y1="${gy.toFixed(1)}" x2="${W-R}" y2="${gy.toFixed(1)}" stroke="#EAEDF5" stroke-width="1"/>`);
-    g.push(`<text class="eflabel" x="${L-6}" y="${(gy+3).toFixed(1)}" text-anchor="end">${won(yMax*(1-i/4))}</text>`);
-    g.push(`<text class="eflabel" x="${W-R+6}" y="${(gy+3).toFixed(1)}" text-anchor="start" fill="#7A8698">${(rvMax*(1-i/4)).toFixed(0)}%</text>`); }
+    g.push(`<text class="eflabel" x="${L-6}" y="${(gy+3).toFixed(1)}" text-anchor="end">${won(yMax*(1-i/4))}</text>`); }
   rows.forEach((r,i)=>{ const w=bw*0.30, hL=ih*(r.leak/yMax), hP=ih*(r.prem/yMax);
     g.push(`<rect x="${(X(i)-w-1.5).toFixed(1)}" y="${(T+ih-hL).toFixed(1)}" width="${w.toFixed(1)}" height="${hL.toFixed(1)}" fill="var(--leak)" rx="1.5"/>`);
     g.push(`<rect x="${(X(i)+1.5).toFixed(1)}" y="${(T+ih-hP).toFixed(1)}" width="${w.toFixed(1)}" height="${hP.toFixed(1)}" fill="var(--pay)" rx="1.5"/>`);
     g.push(`<text class="eflabel" x="${X(i).toFixed(1)}" y="${H-B+15}" text-anchor="middle">${r.y}</text>`); });
-  g.push(`<path d="${rows.map((r,i)=>(i?"L":"M")+X(i).toFixed(1)+" "+YR(r.rvE).toFixed(1)).join(" ")}" fill="none" stroke="var(--sym)" stroke-width="2" opacity="0.85"/>`);
-  rows.forEach((r,i)=>g.push(`<circle cx="${X(i).toFixed(1)}" cy="${YR(r.rvE).toFixed(1)}" r="3" fill="var(--sym)"/>`));
   $("sim").innerHTML=g.join("");
+  const mxRvE=Math.max(...rows.map(r=>r.rvE),1), mxRvR=Math.max(...rows.map(r=>r.rvR),1), mxLk=Math.max(...rows.map(r=>r.leak),1), mxPr=Math.max(...rows.map(r=>r.prem),1);
+  const cell=(v,txt,bar,mx,ink)=>{const p=Math.min(100,v/mx*100).toFixed(0);return `<td class="mono" style="color:${ink};background:linear-gradient(90deg,${bar} ${p}%,transparent ${p}%)">${txt}</td>`;};
   $("simTbl").querySelector("tbody").innerHTML=rows.map(r=>
-    `<tr><td>${r.y}</td><td class="mono">${r.rvE.toFixed(1)}%</td><td class="mono">${r.rvR.toFixed(0)}bp</td><td class="mono" style="color:var(--leak)">△${won(r.leak)}억</td><td class="mono" style="color:var(--pay)">△${won(r.prem)}억</td></tr>`).join("");
+    `<tr><td>${r.y}</td>${cell(r.rvE,r.rvE.toFixed(1)+'%','rgba(122,90,240,.18)',mxRvE,'var(--ink)')}${cell(r.rvR,r.rvR.toFixed(0)+'bp','rgba(122,90,240,.18)',mxRvR,'var(--ink)')}${cell(r.leak,'△'+won(r.leak)+'억','rgba(230,138,23,.18)',mxLk,'var(--leak)')}${cell(r.prem,'△'+won(r.prem)+'억','rgba(59,111,230,.18)',mxPr,'var(--pay)')}</tr>`).join("");
 
   /* 항목별 손익요소 (현재 전략, 연 기준) */
   const AV=val("av"), avgRvE=ys.reduce((a,s)=>a+s.rvE,0)/ys.length, avgRvR=ys.reduce((a,s)=>a+s.rvR,0)/ys.length;

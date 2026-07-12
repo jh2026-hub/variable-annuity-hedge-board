@@ -112,6 +112,8 @@
   .callout b{color:var(--ink)}
   .callout.key{background:#EEF3FE;border:1px solid #C9DBF7} .callout.key .clab{background:var(--pay)}
   .callout.tip{background:#FBF4E8;border:1px solid #F0E2C4} .callout.tip .clab{background:var(--leak)}
+  .callout.warn{background:#FBEEF1;border:1px solid #F1CAD3} .callout.warn .clab{background:var(--bad)}
+  .callout.sum{background:#EAF7F1;border:1px solid #BFE6D3} .callout.sum .clab{background:var(--good)}
   .qstep{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink)}
   .qstep small{color:var(--muted);margin-left:6px;font-size:11px}
   .qstepn{flex:0 0 auto;width:22px;height:22px;border-radius:50%;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:12px}
@@ -329,6 +331,7 @@
 <!-- ① 개념 -->
 <section class="page" id="p1">
   <p class="lede">변액보험은 <b>최저 수준을 보증</b>하고, 그 대가로 <b>보증수수료</b>를 받아 시장위험을 관리합니다. 핵심은 <b>비용과 흔들림의 균형</b>.</p>
+  <div class="callout sum"><span class="ci">📝</span><div><span class="clab">요약</span> 변액보험은 <b>자본이 흔들리는 상품</b>. <b>감내</b>하면 완충(CSM)이 받다 <b>소진되면 자본</b>, <b>헷지</b>하면 <b>줄어든 변동만</b> 자본에. 완충 <b>얇을수록 헷지</b>.</div></div>
 
   <div class="panel" style="background:linear-gradient(135deg,#EEF3FE,#F4F0FD);border:1px solid #D7E0F5">
     <div class="cap">한눈에</div>
@@ -841,6 +844,7 @@
     <span class="qchip">🌊 감내 = <b>완충(CSM)</b></span>
     <span class="qchip">📐 방향·감마·변동성·펀드·해지</span>
   </div>
+  <div class="callout warn"><span class="ci">⚠️</span><div><span class="clab">주의</span> <b>감내 = 안전이 아닙니다.</b> 손익만 조용할 뿐 <b>자본은 그대로 흔들리고</b>, 완충이 얇으면 손익으로 전이됩니다.</div></div>
   <div class="panel">
     <div class="cap">요인별 원리<span>무엇이 왜 위험인가</span></div>
     <div id="facAnim"></div>

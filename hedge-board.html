@@ -1106,13 +1106,13 @@ function render(){
   const L95=leakW*M95*M95+1.645*cur.sig, L995=leakW*M995*M995+2.576*cur.sig;
   const vd=$("vd"); let cls,ic,t,p;
   if(outW>feeW){cls="bad";ic="✕";t="재원이 부족하다";
-    p=`현재 조합의 연간 비용 <b>${won(outW)}억</b>이 보증수수료 <b>${won(feeW)}억</b>을 초과합니다. 헷지를 축소하거나 수수료·보증 구조의 조정이 필요합니다.`;}
+    p=`연간 비용 <b>${won(outW)}억</b> > 수수료 <b>${won(feeW)}억</b> — 헷지를 줄이거나 구조 조정 필요.`;}
   else if(L95>CSM){cls="bad";ic="!";t="나쁜 해에 보험손익이 발생한다";
-    p=`20년 빈도의 손실 <b>${won(L95)}억</b>이 CSM <b>${won(CSM)}억</b>을 초과하여 <b>${won(L95-CSM)}억</b>이 당기 손익으로 전이됩니다. <b>완충이 얇아 100% 노출에 가까우므로 헷지 확대가 우선</b>이며(또는 완충 보강).`;}
+    p=`나쁜 해 손실 <b>${won(L95)}억</b> > CSM <b>${won(CSM)}억</b> → <b>${won(L95-CSM)}억</b>이 손익으로 전이. <b>얇은 완충 = 헷지 확대 우선.</b>`;}
   else if(L995>CSM){cls="warn";ic="~";t="평시는 버티나 극단은 손익으로 전이된다";
-    p=`나쁜 해 <b>${won(L95)}억</b>은 CSM이 흡수하나, 최악의 해(200년 빈도) <b>${won(L995-CSM)}억</b>이 당기 손익으로 전이됩니다.${opt?` 예산 내 최적 조합은 변동성을 <b>${won(opt.sig)}억</b>까지 축소한다(현재 ${won(cur.sig)}억).`:``}`;}
+    p=`나쁜 해는 CSM이 흡수하나, <b>최악의 해</b>엔 <b>${won(L995-CSM)}억</b>이 손익으로 전이.${opt?` 예산 내 최적: 변동성 <b>${won(opt.sig)}억</b>까지 축소.`:``}`;}
   else{cls="ok";ic="✓";t="현재 조합에서 손익은 안정적이다";
-    p=`연간 <b>${won(outW)}억</b>(수수료의 ${feeW>0?Math.round(outW/feeW*100):0}%)이 지출되고, 최악의 해 <b>${won(L995)}억</b>까지 CSM이 흡수합니다.${opt&&opt.sig<cur.sig-1?` 다만 예산 내에서 변동성을 <b>${won(cur.sig)}→${won(opt.sig)}억</b>으로 추가 축소할 여지가 있습니다.`:``}`;}
+    p=`연간 <b>${won(outW)}억</b>(수수료의 ${feeW>0?Math.round(outW/feeW*100):0}%) 지출, <b>최악의 해</b>도 CSM이 흡수.${opt&&opt.sig<cur.sig-1?` 변동성 <b>${won(cur.sig)}→${won(opt.sig)}억</b> 추가 축소 여지.`:``}`;}
   vd.className="verdict "+cls;$("vdi").textContent=ic;$("vdt").textContent=t;$("vdp").innerHTML=p;
 
   drawCasc(); drawCompare(); renderSelect(); renderDerived(); drawVolBar(); drawVolBarK();
@@ -1330,10 +1330,10 @@ function drawBuffer(){
   const totCost=BUFF.reduce((s,f)=>s+f.cost,0); let cost=0; for(let i=0;i<nH;i++)cost+=BUFF[i].cost;
   $("bufCostFill").style.width=(cost/totCost*100).toFixed(0)+"%"; $("bufCostLab").textContent=Math.round(cost/totCost*100)+"%";
   $("bufMsg").innerHTML = csmF>0.66
-    ? '완충이 <b>두텁습니다</b> → 대부분 <b>감내(CSM이 흡수)</b>. 헷지 비용은 낮지만 손익변동성은 큽니다. <b style="color:var(--sym)">보라 파동(감내 시 변동)</b>이 완충 안에 들어옵니다.'
+    ? '완충 <b>두꺼움</b> → 대부분 <b>감내(CSM 흡수)</b>. 헷지 적게 해도 OK.'
     : csmF>0.34
-    ? '완충이 <b>얇아집니다</b> → 감내하면 변동이 완충을 넘어 <b style="color:var(--bad)">손익으로 샙니다</b>. <b>감마</b>까지 헷지가 강제되어(<b style="color:var(--good)">초록 파동</b>이 완충 안으로) 비용이 오릅니다.'
-    : '완충이 <b>매우 얇습니다</b> → <b style="color:var(--bad)">주식 델타뿐 아니라 감마·펀드 베이시스·베가·해지까지</b> 헷지가 강제됩니다. <b>비용을 더 치르더라도 변동성을 완충 안으로</b> 밀어넣어야 합니다.';
+    ? '완충 <b>얇아짐</b> → 감내하면 <b style="color:var(--bad)">손익으로 샘</b>. <b>감마까지 헷지</b> 강제 → 비용↑.'
+    : '완충 <b>매우 얇음</b> → <b style="color:var(--bad)">감마·펀드·베가·해지까지 전부 헷지</b> 강제. 비용 더 내도 <b>흔들림을 완충 안으로</b>.';
 }
 function yearStats(){
   const d=SIM.data, rk=SIM.rateKey, by={}, lam=0.94;

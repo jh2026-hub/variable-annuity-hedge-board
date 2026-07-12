@@ -146,6 +146,14 @@
   .ckey{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);line-height:1.5}
   .ckey i{width:13px;height:13px;border-radius:4px;flex:0 0 auto}
   .ckey b{color:var(--ink);font-weight:700}
+  /* 헷지 순서 계단 다이어그램 */
+  .stair{margin:2px 0}
+  .stairrow{display:flex;align-items:stretch;gap:7px}
+  .stairrow .tierlab{flex:0 0 42px;display:flex;align-items:center;font-size:11px;font-weight:800;color:var(--muted)}
+  .stairbox{flex:1 1 0;min-width:0;text-align:center;padding:8px 6px;border-radius:8px;font-size:12.5px;font-weight:700;background:var(--pay-bg);border:1px solid #C9DBF7;color:var(--pay-ink)}
+  .stairbox.lock{background:var(--panel2);border-color:var(--hair);color:var(--muted)}
+  .stairbox.wide{flex-basis:100%}
+  .stairarrow{font-size:11px;font-weight:700;color:var(--muted);margin:3px 0;padding-left:49px}
   /* 패널 제목 유형 배지 */
   .capb{display:inline-block;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;margin-left:6px;vertical-align:1.5px;letter-spacing:.02em}
   .capb.data{background:#EAF7F1;color:#0a7c50} .capb.live{background:#EEF3FE;color:var(--pay)} .capb.ex{background:#FBF4E8;color:var(--leak)}
@@ -194,7 +202,7 @@
   .chartwrap{margin-top:12px;overflow-x:auto}
   svg.ef,svg.sim{width:100%;display:block}
   svg.ef{height:340px;min-width:340px} svg.sim{height:280px;min-width:360px}
-  .eflabel{font-family:"IBM Plex Sans KR",sans-serif;font-size:10px;fill:var(--muted)}
+  .eflabel{font-family:"IBM Plex Sans KR",sans-serif;font-size:12.5px;fill:var(--muted)}
   .eftip{position:fixed;pointer-events:none;background:#FFFFFF;border:1px solid var(--hair);border-radius:7px;
     padding:7px 9px;font-size:11px;color:var(--ink);z-index:50;opacity:0;transition:opacity .1s;max-width:220px;line-height:1.5}
   .eftip b{font-family:"IBM Plex Sans KR",sans-serif}
@@ -360,14 +368,14 @@
 <div class="exbanner">📊 범용 계산 도구 <span>· 적립금·부채·민감도·수수료 등 모든 값을 직접 입력하여 사용해요. 기본값은 개념 설명용 예시이며 특정 회사와 무관해요.</span></div>
 
 <h1>도대체 <em>헷지</em>는 왜??</h1>
-<div class="sub">최저보증(GMxB) 헷지의 구조, 보증수수료·비용·손익변동성의 관계, CSM 완충의 역할을 입력값과 실제 시장데이터로 살펴봐요.</div>
+<div class="sub">최저보증 헷지가 왜 필요한지, 보증수수료·비용·손익변동성의 관계, <b>완충(CSM · 손실을 먼저 흡수하는 회계상 여유분)</b>의 역할을 입력값과 실제 시장데이터로 살펴봐요.</div>
 
 <div class="tabs" id="tabs">
   <button data-p="pqa" class="on">❓ Q&amp;A<small>쉬운 문답</small></button>
   <button data-p="p1">① 개념<small>수수료·비용·변동성</small></button>
   <button data-p="p4">② 항목별 설명<small>요인 원리</small></button>
   <button data-p="p7">③ 헷지수단<small>비용·효과</small></button>
-  <button data-p="p3">④ PL 인식<small>CSM 완충</small></button>
+  <button data-p="p3">④ 손익 인식<small>완충(CSM)</small></button>
   <button data-p="p2">⑤ 시뮬레이션<small>선택→결과</small></button>
   <button data-p="p6">⑥ 이론<small>참고문헌</small></button>
   <button data-p="pgame">🎮 게임<small>2종 체험</small></button>
@@ -397,7 +405,7 @@
       <div style="display:flex;gap:10px;align-items:flex-start"><div style="font-size:26px;line-height:1">🛡️</div><div><div style="font-weight:800;font-size:13.5px;color:var(--ink)">헷지 → 손익 변동성 축소</div><div style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:2px">반대 포지션으로 상쇄. <b>비용</b>이 들고, 얼마나 줄일지는 <b>비용과의 교환</b>.</div></div></div>
       <div style="display:flex;gap:10px;align-items:flex-start"><div style="font-size:26px;line-height:1">⚖️</div><div><div style="font-weight:800;font-size:13.5px;color:var(--ink)">감내(CSM) vs 헷지 — 얇으면 헷지</div><div style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:2px">안 하면 <b>CSM(완충)</b>으로 감내. 얇거나 소진되면 손익·자본으로 전이 = <b>100% 노출</b> → <b>얇을수록 헷지</b>.</div></div></div>
     </div>
-    <p class="foot" style="margin-top:10px">아래 그림: <b>헷지↑ → 변동폭↓</b> (실제 시장데이터). 용어는 그림·색으로 따라오세요.</p>
+    <p class="foot" style="margin-top:10px">용어는 아래 <b>그림·색</b>으로 자연히 따라와요.</p>
   </div>
 
   <div class="panel">
@@ -429,7 +437,7 @@
       <text x="490" y="116" text-anchor="middle" font-size="15" font-weight="800" fill="#2F63E0">🏛️ 자본</text>
       <text x="490" y="134" text-anchor="middle" font-size="9" fill="var(--muted)">둘 다 여기로</text>
     </svg></div>
-    <p class="foot" style="margin-top:8px"><b>헷지</b> = 흔들림을 <b>작게 줄여</b> 자본에. <b>미헷지</b> = <b>큰 흔들림</b>을 <b>CSM 완충</b>이 받쳐주다 <b>넘치면</b> 자본에. 둘 다 자본에 닿지만 <b>흔들림 크기 자체가 훨씬 달라요.</b></p>
+    <p class="foot" style="margin-top:8px">헷지든 아니든 결국 <b>자본에 반영</b>돼요. 차이는 딱 하나 — <b>헷지하면 훨씬 작게 흔들려요.</b></p>
     <div class="callout key"><span class="ci">⭐</span><div><span class="clab">핵심</span> 완충이 <b>얇을수록 헷지가 유리</b>해요.</div></div>
   </div>
 
@@ -466,7 +474,7 @@
       <text x="496" y="94" fill="#566275" font-size="9" text-anchor="middle" font-family="sans-serif">수수료 − 비용 − 잔여변동성</text>
       <text x="320" y="146" fill="#566275" font-size="10.5" text-anchor="middle" font-family="sans-serif">감내분은 CSM을 조정하고, 완충이 소진되면 보험손익(PL)으로 인식돼요.</text>
     </svg></div>
-    <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-top:6px"><b>수수료 − 헷지 비용 − 잔여변동성 = 자본 반영</b>. 넘어서면 지속 불가.</p>
+    <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-top:6px"><b>재원을 넘어서면 지속 불가.</b></p>
   </div>
 
   <div class="panel concept">
@@ -533,12 +541,7 @@
       <div class="qstep"><span class="qstepn" style="background:#8A94A6">3</span><div><b>막는 순서가 있어요 — 방향 먼저.</b><small>방향(주가·금리 흐름)은 싸고 필수, 급변·꼬리는 비싸서 완충 봐가며 선택</small></div></div>
     </div>
     <div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;margin:14px 0 6px">✅ 그래서 우리가 할 일</div>
-    <div style="display:flex;flex-direction:column;gap:7px">
-      <div class="qstep"><span class="qstepn" style="background:#8A94A6">1</span><div><b>우리 완충(CSM) 두께부터 확인</b><small>얇으면 헷지 우선순위 ↑ (→ ④ PL 인식)</small></div></div>
-      <div class="qstep"><span class="qstepn" style="background:#8A94A6">2</span><div><b>회계기준 확인 — 완충 쓰는 VFA인가, 못 쓰는 PL법인가</b><small>PL법이면 완충 불가 → 선택 없이 헷지 필수 (→ ④)</small></div></div>
-      <div class="qstep"><span class="qstepn" style="background:#8A94A6">3</span><div><b>방향(주가·금리)은 무조건 먼저 헷지</b><small>싸고 효과 커요</small></div></div>
-      <div class="qstep"><span class="qstepn" style="background:#8A94A6">4</span><div><b>급변·꼬리 위험은 완충 봐가며 선택</b><small>비싸니 완충이 얇을수록만 (→ ⑤ 시뮬레이션에서 조합 실험)</small></div></div>
-    </div>
+    <div style="font-size:13px;line-height:1.7;color:var(--ink)"><b>완충(CSM) 두께 확인</b>(→ ④) → <b>방향(주가·금리) 먼저 헷지</b> → <b>급변·꼬리는 완충 봐가며</b>(→ ⑤).</div>
   </div>
 
   <div class="panel">
@@ -552,10 +555,6 @@
       <li>안 하면 그 출렁임이 그대로 손익 — <b>안 할 때 흔들림 &gt; 헷지 비용</b>.</li>
       <li>회계상 <b>펀드·헷지 손익은 그 해 바로</b>, <b>보증 변동은 완충(CSM)이 먼저 흡수</b> → 어긋남은 회계 특례로 맞춰요.</li>
     </ul>
-    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">
-      <span class="qchip">📈 펀드·헷지 손익 → 그 해 실적</span>
-      <span class="qchip">🧾 보증 변동 → 완충(CSM)이 먼저 흡수</span>
-    </div>
     <div class="qref">근거가 되는 문헌은 <b>⑥ 이론</b> 탭에 정리돼 있어요.</div>
   </div>
 
@@ -584,12 +583,7 @@
 
   <div class="panel">
     <div class="qah"><div class="qan">Q3</div><div class="qat">어떻게 헷지하나요? 사람·전문성·난이도는? 🧗</div></div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:700">막는 단계 (뒤로 갈수록 어렵고 비쌈)</div>
-    <div style="display:flex;flex-direction:column;gap:8px;margin:0 0 14px">
-      <div class="qstep"><span class="qstepn" style="background:var(--good)">1</span><div><b>값의 오르내림 막기</b> · 선물·스왑 <span class="qstar" style="color:var(--good)">★</span><small>쉬움 · 거의 상시</small></div></div>
-      <div class="qstep"><span class="qstepn" style="background:var(--pay)">2</span><div><b>급변까지 막기</b> · 옵션 <span class="qstar" style="color:var(--pay)">★★</span><small>중간</small></div></div>
-      <div class="qstep"><span class="qstepn" style="background:var(--leak)">3</span><div><b>출렁임·큰 하락까지 막기</b> · 옵션 <span class="qstar" style="color:var(--leak)">★★★</span><small>어려움</small></div></div>
-    </div>
+    <div style="font-size:13px;line-height:1.7;color:var(--ink);margin:0 0 14px"><b>막는 순서</b>: 방향(선물·스왑, 쉬움) → 급변(옵션) → 큰 하락(옵션, 비쌈). <span style="color:var(--muted)">수단 자세히는 → ③ 헷지수단.</span></div>
     <div style="font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:700">필요한 사람 (전담 팀)</div>
     <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
       <span class="qchip">💼 파생 트레이더 <span style="color:var(--muted)">· 헷지 실행</span></span>
@@ -633,7 +627,7 @@
       <circle cx="235" cy="86" r="4" fill="var(--bad)"><animate attributeName="r" values="4;6.5;4" dur="1.3s" repeatCount="indefinite"/></circle>
       <text x="240" y="99" text-anchor="middle" font-size="10" font-weight="700" fill="var(--bad)">나쁜 해엔 손익 터짐</text>
     </svg></div>
-    <ul class="qalist"><li><b>막을 수 있는 위험은 최대한 막기.</b> 완충이 얇을수록 헷지 압력↑ (→ ④ PL 인식).</li></ul>
+    <ul class="qalist"><li><b>막을 수 있는 위험은 최대한 막기.</b> 완충이 얇을수록 헷지 압력↑ (→ ④ 손익 인식).</li></ul>
   </div>
 
   <div class="panel">
@@ -673,7 +667,7 @@
       <text x="322" y="114" font-size="16" text-anchor="middle" opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.4;0.48;0.64" dur="2.4s" repeatCount="indefinite"/>💥</text>
       <text x="322" y="158" text-anchor="middle" font-size="12.5" font-weight="800" fill="var(--bad)">터짐 → 더 헷지</text>
     </svg></div>
-    <ul class="qalist"><li><b>완충이 얇을수록 = 헷지를 더.</b> <b>④ PL 인식</b> 슬라이더를 얇은 쪽으로 당겨 보세요.</li></ul>
+    <ul class="qalist"><li><b>완충이 얇을수록 = 헷지를 더.</b> <b>④ 손익 인식</b> 슬라이더를 얇은 쪽으로 당겨 보세요.</li></ul>
   </div>
 
   <div class="panel">
@@ -798,7 +792,7 @@
     </div>
   </div>
   <div class="panel">
-    <div class="cap">비용 · 흔들림 한눈에<span class="capb ex">개념 배분</span><span>재원 · 미헷지 vs 헷지</span></div>
+    <div class="cap">비용 · 흔들림 한눈에<span class="capb ex">예시값</span><span>재원 · 미헷지 vs 헷지</span></div>
     <div>
       <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
         <div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:2px"><span style="font-size:16px">💰</span><b style="font-size:13.5px;color:var(--ink)">헷지 재원</b><span class="qchip" style="font-size:10px;padding:2px 7px;background:#EEF3FE;color:var(--pay)">예산 = 보증수수료</span></div><div id="feeBig" style="font-size:30px;font-weight:800;color:var(--pay);letter-spacing:-.5px"></div></div>
@@ -835,8 +829,18 @@
   </div>
   <div class="panel">
     <div class="cap">헷지할 항목 선택<span class="capb data">VFA 기준</span><span>헷지(PL) 또는 CSM 감내</span></div>
-    <div class="callout info" style="margin-bottom:8px"><span class="ci">🧾</span><div><span class="clab">회계전제</span> 여기 <b>감내(CSM)</b> 선택지는 <b>VFA</b>라서 가능해요. <b>PL법이면 완충이 불가</b>해 변동이 <b>전액 즉시 손익</b> — 감내 없이 <b>헷지가 필수</b>예요. (→ ④ PL 인식)</div></div>
-    <div class="callout warn" style="margin-bottom:8px"><span class="ci">🔒</span><div><span class="clab">순서 제약</span> 헷지는 <b>방향 → 곡률 → 나머지</b> 순서로만 쌓여요. <b>주가·금리는 각자 따로</b> — 주가 감마는 <b>주가 방향(Δ)</b>, 금리 감마는 <b>금리 방향(ρ)</b>을 먼저 헷지해야 해요(감마는 방향 헷지 후 잔여). <b>나머지(베가·펀드·해지)</b>는 방향·곡률을 모두 헷지한 뒤예요. 켜면 선행 항목이 자동으로 켜지고, 끄면 이를 필요로 하던 항목이 함께 꺼져요.</div></div>
+    <div class="callout info" style="margin-bottom:8px"><span class="ci">🧾</span><div><span class="clab">회계전제</span> <b>감내(CSM)</b>는 완충 있는 <b>VFA</b>라서 가능한 선택지 — <b>PL법이면 헷지 필수</b>. (→ ④)</div></div>
+    <div style="margin-bottom:8px;border:1px solid #F1CAD3;background:#FBEEF1;border-radius:10px;padding:11px 12px">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap"><span style="font-size:14px">🔒</span><span class="clab" style="background:var(--bad);color:#fff;font-weight:800;font-size:10px;letter-spacing:.05em;padding:1px 6px;border-radius:5px">순서 제약</span><b style="font-size:12.5px">아래층부터만 — 방향 없이 감마만은 못 막아요</b></div>
+      <div class="stair">
+        <div class="stairrow"><span class="tierlab">1 방향</span><span class="stairbox">주가 방향 Δ</span><span class="stairbox">금리 방향 ρ</span></div>
+        <div class="stairarrow">↓ 각 방향을 먼저 막아야</div>
+        <div class="stairrow"><span class="tierlab">2 곡률</span><span class="stairbox lock">🔒 주가 감마</span><span class="stairbox lock">🔒 금리 감마</span></div>
+        <div class="stairarrow">↓ 곡률까지 막아야</div>
+        <div class="stairrow"><span class="tierlab">3 나머지</span><span class="stairbox lock wide">🔒 베가 · 펀드 · 해지</span></div>
+      </div>
+      <div style="font-size:11.5px;color:var(--muted);margin-top:8px">주가·금리는 각자 계열(감마는 <b>같은 자산 방향</b> 뒤). 켜면 아래층이 같이 켜지고, 끄면 위층이 같이 꺼져요.</div>
+    </div>
     <div id="selList"></div>
     <div class="callout tip"><span class="ci">💡</span><div><span class="clab">팁</span> 각 항목을 눌러 <b>헷지 ↔ 감내</b>를 바꿔 보세요. 위 막대·프론티어가 즉시 반응해요.</div></div>
     <p class="foot">각 항목 옆 <b>막대 = 그 항목의 손익 흔들림</b>. <b style="color:var(--good)">헷지</b>=비용 내고 <b style="color:var(--good)">짧게(초록)</b> / <b style="color:var(--bad)">CSM 감내</b>=비용 0이지만 <b style="color:var(--bad)">길게(빨강)</b> — 감내를 고르면 <b>변동성이 커져요</b>.</p>

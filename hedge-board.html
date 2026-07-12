@@ -668,6 +668,23 @@
     </svg></div>
     <ul class="qalist"><li><b>완충이 얇을수록 = 헷지를 더.</b> <b>④ PL 인식</b> 슬라이더를 얇은 쪽으로 당겨 보세요.</li></ul>
   </div>
+
+  <div class="panel">
+    <div class="qah"><div class="qan">Q6</div><div class="qat">헷지 비용이 수익을 다 까먹는 것 아닌가요? 💸</div></div>
+    <div class="pair2" style="margin:4px 0 12px">
+      <div style="border:1.5px solid var(--good);border-radius:10px;padding:11px;background:#EAF7F1">
+        <div style="font-weight:800;color:var(--good);font-size:13px">☀️ 좋은 해</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px">비용만큼 <b>덜 벌어요</b>. 그게 헷지의 대가예요.</div></div>
+      <div style="border:1.5px solid var(--bad-line);border-radius:10px;padding:11px;background:#FBEEF1">
+        <div style="font-weight:800;color:var(--bad);font-size:13px">🌧️ 나쁜 해</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px"><b>자본이 터지는 걸 막아요</b>. 이게 헷지의 값어치.</div></div>
+    </div>
+    <ul class="qalist">
+      <li>헷지 비용은 회사가 받는 <b>보증수수료(재원) 안에서</b> 나가요 — 새로 생기는 지출이 아니라, 애초에 <b>이 위험을 관리하라고 받은 돈</b>이에요.</li>
+      <li>헷지는 <b>평균 수익을 늘리는 게 아니라</b>, 나쁜 해의 <b>큰 손실을 막는 보험</b>이에요(보험료처럼 평소엔 비용).</li>
+      <li>그래서 기준은 "비용 vs 수익"이 아니라 <b>"이 비용으로 꼬리 위험을 얼마나 줄이나"</b> — <b>완충이 얇을수록</b> 그 값어치가 커져요. (→ ⑤ 시뮬레이션)</li>
+    </ul>
+  </div>
 </section>
 
 <!-- 게임 -->
@@ -758,7 +775,7 @@
     </div>
   </div>
   <div class="panel" style="border-color:#F1D7A3;background:#FDF7EC">
-    <div class="cap">⚠ 미헷지도 변동성은 그대로</div>
+    <div class="cap">⚠️ 미헷지도 변동성은 그대로</div>
     <p style="font-size:12.5px;color:var(--muted);line-height:1.7;margin-top:2px"><b style="color:var(--pay)">헷지</b> = 비용↑·흔들림↓ · <b style="color:var(--leak)">미헷지</b> = 비용0·흔들림↑. 미헷지는 <b>CSM 완충</b>이 흡수하지만, <b style="color:var(--bad)">완충이 얇으면 손익으로 전이</b> — 얇을수록 더 헷지해야 해요. (→ <b>④ PL 인식</b>)</p>
   </div>
   <div class="panel">
@@ -791,7 +808,7 @@
       </div>
       <div id="fundBar" style="display:flex;gap:2px;height:36px;border-radius:9px;overflow:hidden;margin-top:11px;background:var(--panel2);border:1px solid var(--hair);padding:2px"></div>
       <div id="fundLegend" style="display:flex;flex-wrap:wrap;gap:5px 10px;margin-top:9px;font-size:11px"></div>
-      <p class="foot" style="margin-top:9px"><b>헷지비용</b>과 <b>감내 감마누수</b>가 재원에서 차감, 잔액이 이익. 헷지↑ → 비용↑·누수↓.</p>
+      <p class="foot" style="margin-top:9px"><b>헷지 비용</b>과 <b>감내 감마 누수</b>가 재원에서 차감, 잔액이 이익. 헷지↑ → 비용↑·누수↓.</p>
     </div>
     <div style="border-top:1px dashed var(--hair);margin-top:14px;padding-top:12px">
       <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
@@ -1992,7 +2009,7 @@ function g2Draw(){ const b=GAME2, g=[], thin=b.csm<=G2_CSM0*0.3;
   const csmCol=b.csm>G2_CSM0*0.5?'var(--good)':b.csm>G2_CSM0*0.25?'var(--leak)':'var(--bad)';
   g.push(g2Tank(46,'재원','💰',b.bud,G2_BUD0,'var(--pay)',false));
   g.push(g2Tank(232,'CSM 완충','🛟',b.csm,G2_CSM0,csmCol,true));
-  if(thin&&!b.over) g.push(`<text x="278" y="30" text-anchor="middle" font-size="9.5" font-weight="800" fill="var(--bad)"><animate attributeName="opacity" values="1;.3;1" dur="1s" repeatCount="indefinite"/>⚠ 완충 얇음 · 감내 위험</text>`);
+  if(thin&&!b.over) g.push(`<text x="278" y="30" text-anchor="middle" font-size="9.5" font-weight="800" fill="var(--bad)"><animate attributeName="opacity" values="1;.3;1" dur="1s" repeatCount="indefinite"/>⚠️ 완충 얇음 · 감내 위험</text>`);
   const sh=b.shock, lvl=sh>=30?'큼':sh>=15?'보통':'작음', scol=sh>=30?'var(--bad)':sh>=15?'var(--leak)':'#12A870';
   g.push(`<text x="452" y="28" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">🌊 이번 잠재 변동</text>`);
   const amp=6+sh/3; let p=''; for(let x=0;x<=140;x+=7){ const y=92-amp*Math.sin(x/13); p+=(x?'L':'M')+(382+x).toFixed(1)+' '+y.toFixed(1); }
@@ -2008,7 +2025,7 @@ function g2Play(a){ if(GAME2.over)return; const b=GAME2, m=b.shock, down=Math.ra
     else { msg=`🛡️ 프리미엄 −${cost} · 이번엔 조용`; col='var(--pay)'; tag='보호'; } }
   else if(!down){ const c2=b.csm+m; if(c2>G2_CSM0){ const gain=Math.round((c2-G2_CSM0)*G2_GU); b.bud+=gain; b.csm=G2_CSM0; b.gwin++; msg=`🌊 시장↑ · <b>이익 +${won(gain)}</b>`; col='var(--good)'; tag='이익'; }
       else { b.csm=c2; msg=`🌊 시장↑ · 완충 회복`; col='var(--good)'; tag='회복'; } }
-  else { if(real<=b.csm){ b.csm-=real; const thin=b.csm<G2_CSM0*0.35; msg=`🌊 하락 −${won(real)} · 완충으로 버팀${thin?' ⚠얇음':''}`; col=thin?'var(--leak)':'var(--good)'; tag='버팀'; }
+  else { if(real<=b.csm){ b.csm-=real; const thin=b.csm<G2_CSM0*0.35; msg=`🌊 하락 −${won(real)} · 완충으로 버팀${thin?' ⚠️얇음':''}`; col=thin?'var(--leak)':'var(--good)'; tag='버팀'; }
       else { b.bud-=real; b.bloss+=real; b.csm=0; b.glose++; msg=`🌊 하락 −${won(real)} <b>터짐!</b> · 헷지였다면 −${cost}`; col='var(--bad)'; tag='터짐'; } }
   b.r++;
   b.log.unshift({r:b.r,a,m,col,tag});

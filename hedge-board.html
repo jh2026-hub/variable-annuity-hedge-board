@@ -318,6 +318,7 @@
       <div style="display:flex;gap:10px;align-items:flex-start"><div style="font-size:26px;line-height:1">🤝</div><div><div style="font-weight:800;font-size:13.5px;color:var(--ink)">보증 제공 → 수수료 수취</div><div style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:2px">고객에게 최저 수준을 보장하고 그 대가로 <b>보증수수료</b>를 받습니다. 이 보증이 회사의 <b>부채</b>가 됩니다.</div></div></div>
       <div style="display:flex;gap:10px;align-items:flex-start"><div style="font-size:26px;line-height:1">🌊</div><div><div style="font-weight:800;font-size:13.5px;color:var(--ink)">시장 변동 → 보증 부채 변동</div><div style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:2px">주가·금리가 움직이면 보증 부채의 가치도 함께 움직입니다. 방치하면 <b>회사 손익의 변동성이 커집니다</b>.</div></div></div>
       <div style="display:flex;gap:10px;align-items:flex-start"><div style="font-size:26px;line-height:1">🛡️</div><div><div style="font-weight:800;font-size:13.5px;color:var(--ink)">헷지 → 손익 변동성 축소</div><div style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:2px">반대 포지션으로 변동을 상쇄합니다. <b>비용이 수반</b>되며, 축소 정도는 <b>비용과의 교환</b>으로 결정됩니다.</div></div></div>
+      <div style="display:flex;gap:10px;align-items:flex-start"><div style="font-size:26px;line-height:1">⚖️</div><div><div style="font-weight:800;font-size:13.5px;color:var(--ink)">감내(CSM) vs 헷지 — 얇으면 헷지</div><div style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:2px">헷지 안 하면 변동을 <b>CSM(완충)</b>으로 감내합니다. 두꺼우면 흡수하나 <b>얇거나 소진되면</b> 초과분이 손익·자본으로 전이 — 사실상 <b>100% 노출</b>. 그래서 <b>완충이 얇을수록 헷지가 유리</b>합니다.</div></div></div>
     </div>
     <p class="foot" style="margin-top:10px">아래 그림은 실제 시장데이터 기준으로, 헷지 비중을 높일수록 손익 변동폭이 어떻게 줄어드는지 보여줍니다. 용어가 낯설면 각 탭의 그림과 색을 따라가면 됩니다.</p>
   </div>
@@ -1023,7 +1024,7 @@ function render(){
   if(outW>feeW){cls="bad";ic="✕";t="재원이 부족하다";
     p=`현재 조합의 연간 비용 <b>${won(outW)}억</b>이 보증수수료 <b>${won(feeW)}억</b>을 초과합니다. 헷지를 축소하거나 수수료·보증 구조의 조정이 필요합니다.`;}
   else if(L95>CSM){cls="bad";ic="!";t="나쁜 해에 보험손익이 발생한다";
-    p=`20년 빈도의 손실 <b>${won(L95)}억</b>이 CSM <b>${won(CSM)}억</b>을 초과하여 <b>${won(L95-CSM)}억</b>이 당기 손익으로 전이됩니다. 감마 헷지 강화 또는 완충 확대가 요구됩니다.`;}
+    p=`20년 빈도의 손실 <b>${won(L95)}억</b>이 CSM <b>${won(CSM)}억</b>을 초과하여 <b>${won(L95-CSM)}억</b>이 당기 손익으로 전이됩니다. <b>완충이 얇아 100% 노출에 가까우므로 헷지 확대가 우선</b>이며(또는 완충 보강).`;}
   else if(L995>CSM){cls="warn";ic="~";t="평시는 버티나 극단은 손익으로 전이된다";
     p=`나쁜 해 <b>${won(L95)}억</b>은 CSM이 흡수하나, 최악의 해(200년 빈도) <b>${won(L995-CSM)}억</b>이 당기 손익으로 전이됩니다.${opt?` 예산 내 최적 조합은 변동성을 <b>${won(opt.sig)}억</b>까지 축소한다(현재 ${won(cur.sig)}억).`:``}`;}
   else{cls="ok";ic="✓";t="현재 조합에서 손익은 안정적이다";
@@ -1073,6 +1074,9 @@ function drawEF(pts,fr,cur,opt,budget){
     g.push(`<circle class="pt" data-sig="${p.sig}" data-cost="${p.cost}" cx="${X(p.sig).toFixed(1)}" cy="${Y(p.cost).toFixed(1)}" r="3" fill="#AAB4C6"/>`); });
   g.push(`<path d="${fr.map((p,i)=>(i?"L":"M")+X(p.sig).toFixed(1)+" "+Y(p.cost).toFixed(1)).join(" ")}" fill="none" stroke="var(--pay)" stroke-width="2" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"><animate attributeName="stroke-dashoffset" from="1" to="0" dur="1s" fill="freeze"/></path>`);
   fr.forEach(p=>g.push(`<circle class="pt" data-sig="${p.sig}" data-cost="${p.cost}" data-fr="1" cx="${X(p.sig).toFixed(1)}" cy="${Y(p.cost).toFixed(1)}" r="4" fill="var(--pay)" stroke="var(--bg)" stroke-width="1.5"/>`));
+  /* 미헷지(감내)↔헷지 개념 주석 — 우하=감내(변동성 큼·비용0), 좌상=헷지(비용↑·변동성↓) */
+  g.push(`<text class="eflabel" x="${(W-R-4).toFixed(1)}" y="${(T+ih-7).toFixed(1)}" text-anchor="end" fill="var(--sym)" font-weight="700">감내(미헷지) ▶ 변동성 큼 · 비용 0</text>`);
+  g.push(`<text class="eflabel" x="${(L+6).toFixed(1)}" y="${(T+12).toFixed(1)}" fill="var(--pay)" font-weight="700">◀ 헷지 많음 · 비용↑ · 변동성↓</text>`);
   if(opt) g.push(`<circle cx="${X(opt.sig).toFixed(1)}" cy="${Y(opt.cost).toFixed(1)}" r="7" fill="none" stroke="var(--good)" stroke-width="2.5"><animate attributeName="r" values="7;11;7" dur="1.9s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;.45;1" dur="1.9s" repeatCount="indefinite"/></circle>`);
   g.push(`<circle cx="${X(cur.sig).toFixed(1)}" cy="${Y(cur.cost).toFixed(1)}" r="6" fill="var(--leak)" stroke="var(--bg)" stroke-width="2"><animate attributeName="r" values="6;7.5;6" dur="1.6s" repeatCount="indefinite"/></circle>`);
   g.push(`<text class="eflabel" x="${(X(cur.sig)+9).toFixed(1)}" y="${(Y(cur.cost)+3).toFixed(1)}" fill="var(--leak)">현재</text>`);

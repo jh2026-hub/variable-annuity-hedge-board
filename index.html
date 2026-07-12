@@ -39,7 +39,7 @@
   /* 탭마다 제목 액센트 색 */
   #pqa .cap::before{background:#3B6FE6} #p1 .cap::before{background:#7A5AF0} #p4 .cap::before{background:#12A870}
   #p7 .cap::before{background:#E68A17} #p3 .cap::before{background:#E24A62} #p2 .cap::before{background:#0EA5A5}
-  #p6 .cap::before{background:#4F5BD5} #p8 .cap::before{background:#8A94A6} #pgame .cap::before{background:#DB4A7A}
+  #p6 .cap::before{background:#4F5BD5} #p8 .cap::before{background:#5B7CBA} #pgame .cap::before{background:#DB4A7A}
   .cap span{font-weight:400;color:var(--muted);font-size:12px;margin-left:6px}
   .hn{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;border-radius:50%;background:var(--pay);color:#fff;font-weight:800;font-size:11px;margin-right:6px;vertical-align:1px}
   .fund{margin-top:16px;border:1px solid #9DBBF3;background:linear-gradient(90deg,#E7EFFD,#FFFFFF 70%);border-radius:12px;padding:15px 16px}
@@ -948,18 +948,18 @@
     <p class="foot">입력값들이 어떻게 이어지는지 보여줍니다 — 헷지 재원은 <b>보증수수료×적립금</b>, 감마 누수/프리미엄은 <b>Γ·변동성</b>에서 나옵니다.</p>
   </div>
   <div class="panel">
-    <div class="cap"><span class="hn" style="background:#64748B">1</span>규모·재원<span>얼마를 굴리고, 예산·완충은 얼마인가</span></div>
-    <div class="inhdr"><b>적립금</b>은 모든 bp·비율의 기준입니다 → <b>헷지 재원 = 보증수수료(bp) × 적립금</b>. <b>CSM</b>은 손실을 먼저 흡수하는 완충, <b>변동성 허용</b>은 ⑤ 프론티어의 세로 허용선입니다.</div>
+    <div class="cap"><span class="hn" style="background:#5B7CBA">1</span>규모·재원<span>얼마를 굴리고, 예산·완충은 얼마인가</span></div>
+    <div class="inhdr"><b>적립금</b>이 모든 bp의 기준. <b>재원 = 수수료(bp) × 적립금</b>. CSM = 완충.</div>
     <div class="sheet" id="sheetFin"></div>
   </div>
   <div class="panel">
-    <div class="cap"><span class="hn" style="background:#64748B">2</span>방향·변동성 민감도<span>시장이 움직이면 손익이 얼마나 흔들리나</span></div>
-    <div class="inhdr"><b>민감도(Δ·DV01)</b>는 방향 손익 크기를, <b>Γ·RV·IV</b>는 감마 누수(감내)와 옵션 프리미엄(헷지)을 결정합니다. RV=실현변동성, IV=내재변동성(옵션가).</div>
+    <div class="cap"><span class="hn" style="background:#5B7CBA">2</span>방향·변동성 민감도<span>시장이 움직이면 손익이 얼마나 흔들리나</span></div>
+    <div class="inhdr"><b>민감도(Δ·DV01)</b> = 방향 손익 크기. <b>Γ·RV·IV</b> = 감마 누수·옵션 프리미엄. RV=실현·IV=내재변동성.</div>
     <div class="sheet" id="sheetVol"></div>
   </div>
   <div class="panel">
-    <div class="cap"><span class="hn" style="background:#64748B">3</span>요인별 노출·헷지단가<span>각 위험의 크기와 넘기는 값</span></div>
-    <div class="inhdr">각 위험 요인의 <b>노출(σ 기여)</b>과 <b>헷지단가</b>입니다. 방향형(Δ·ρ) 단가는 bp(×적립금)로 직접 입력합니다. <b>주가·금리 감마</b>는 직접 입력이 아니라 <b>델타(방향)를 헷지한 뒤에야 드러나는 잔여</b>입니다 — 노출은 ②의 <b>Γ·변동성에서 자동</b> 산출되고, 감내 시 실현변동성 누수·헷지 시 <b>옵션 프리미엄</b>(IV)이 됩니다. 처리 선택(헷지/CSM)은 <b>⑤ 시뮬레이션</b>에서 합니다.</div>
+    <div class="cap"><span class="hn" style="background:#5B7CBA">3</span>요인별 노출·헷지단가<span>각 위험의 크기와 넘기는 값</span></div>
+    <div class="inhdr">각 위험의 <b>노출</b>과 <b>헷지단가</b>. 방향형(Δ·ρ)은 bp로 입력. <b>감마</b>는 직접 입력 X — 델타 헷지 후 드러나는 <b>잔여</b>(②에서 자동). 처리 선택은 <b>⑤</b>에서.</div>
     <div class="chartwrap"><table class="mtx" id="mtx"><thead><tr><th>위험 요인</th><th>노출(흔들림 기여)</th><th>헷지단가</th></tr></thead><tbody></tbody></table></div>
   </div>
 </section>

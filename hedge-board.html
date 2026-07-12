@@ -250,7 +250,7 @@
   .foot{font-size:11.5px;color:var(--muted);line-height:1.75;margin-top:14px}.foot b{color:var(--ink)}
   .stat{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
   .stat div{flex:1 1 110px;background:var(--panel2);border:1px solid var(--hair);border-radius:9px;padding:10px 12px}
-  .stat .sl{font-size:10.5px;color:var(--muted)}.stat .sv{font-size:18px;font-weight:800;margin-top:2px;letter-spacing:-.3px;font-variant-numeric:tabular-nums}
+  .stat .sl{font-size:11px;color:var(--muted);line-height:1.35}.stat .sv{font-size:22px;font-weight:800;margin-top:3px;letter-spacing:-.5px;font-variant-numeric:tabular-nums}
   select{background:#FFFFFF;border:1px solid var(--hair);color:var(--ink);border-radius:7px;padding:8px 10px;font-family:inherit;font-size:13px;min-height:40px}
   /* 요인 설명 애니메이션 (항상 펼침) */
   .fac{border:1px solid var(--hair);border-radius:9px;margin-top:10px;background:var(--panel2);overflow:hidden}
@@ -848,18 +848,6 @@
   <p class="lede">실제 시장데이터(KOSPI·<b>국고 20년</b>, 약 6.5년)로 손익을 재현해요. <b>미헷지</b>는 시장 등락이 그대로 손익이 되어 <b>크게 출렁이고</b>, 헷지는 그 흔들림을 줄여요. <span id="simStatus" style="color:var(--muted)">데이터 불러오는 중…</span></p>
   <div class="verdict ok" id="vd"><div class="ic" id="vdi">✓</div><div><h3 id="vdt"></h3><p id="vdp"></p></div></div>
   <div class="panel">
-    <div class="cap">미헷지 손익변동성 vs 헷지<span class="capb data">📊 실측</span><span>주간 손익 (억)</span></div>
-    <div class="stat" id="volStat"></div>
-    <div class="chartwrap"><svg class="sim" id="simVol" viewBox="0 0 640 280" preserveAspectRatio="xMidYMid meet"></svg></div>
-    <div class="leg">
-      <span><i style="background:var(--sym)"></i>미헷지 주간손익(방향)</span>
-      <span><i style="background:var(--good)"></i>헷지 후(현재 선택 반영)</span>
-      <span><i style="background:var(--sym);opacity:.25"></i>±1σ 범위(미헷지)</span>
-      <span><i style="background:var(--good);opacity:.35"></i>±1σ 범위(헷지 후)</span>
-    </div>
-    <p class="foot"><b>미헷지</b>는 매주 크게 출렁, <b>헷지 후</b>는 좁게. 음영 띠 = <b>±1σ 변동 범위</b>(σ=보통 등락폭). <b>넓은 띠 → 좁은 띠</b>로 줄어든 만큼이 헷지 효과. 민감도는 <b>입력 가정</b>에서.</p>
-  </div>
-  <div class="panel">
     <div class="cap">변동성 국면 프리셋<span>입력 가정을 한 번에 세팅 · 프론티어가 즉시 이동</span></div>
     <div class="pobtns" id="regimeSeg">
       <button data-rg="normal" class="on">🙂 평상시 <small style="opacity:.7">23·24년</small></button>
@@ -882,7 +870,19 @@
     <p class="foot">가로=흔들림, 세로=비용. <b>왼쪽</b>=헷지↑(<span style="color:#0a7c50;font-weight:700">안전</span>·비용↑) / <b>오른쪽</b>=미헷지(<span style="color:var(--bad);font-weight:700">위험</span>·비용0). <b>초록 구역</b> 안 가장 왼쪽이 최적(<b style="color:#0a7c50">여기로 ✓</b>).<br>🖐 <b>예산선·변동성 허용선을 드래그</b>해 조절하고, <b>점을 눌러</b> 그 헷지 조합을 바로 적용해 보세요.</p>
   </div>
   <details class="deep">
-    <summary>🔬 심화 — 연도별 재현 · 요소 분해 <small>(선택, 초심자는 건너뛰어도 좋아요)</small></summary>
+    <summary>🔬 심화 — 실측 재현 · 요소 분해 <small>(선택, 초심자는 건너뛰어도 좋아요)</small></summary>
+  <div class="panel">
+    <div class="cap">미헷지 손익변동성 vs 헷지<span class="capb data">📊 실측</span><span>주간 손익 (억) · 흔들림은 연 기준</span></div>
+    <div class="stat" id="volStat"></div>
+    <div class="chartwrap"><svg class="sim" id="simVol" viewBox="0 0 640 280" preserveAspectRatio="xMidYMid meet"></svg></div>
+    <div class="leg">
+      <span><i style="background:var(--sym)"></i>미헷지 주간손익(방향)</span>
+      <span><i style="background:var(--good)"></i>헷지 후(현재 선택 반영)</span>
+      <span><i style="background:var(--sym);opacity:.25"></i>±1σ 범위(미헷지)</span>
+      <span><i style="background:var(--good);opacity:.35"></i>±1σ 범위(헷지 후)</span>
+    </div>
+    <p class="foot"><b>미헷지</b>는 매주 크게 출렁, <b>헷지 후</b>는 좁게. 음영 띠 = <b>±1σ 변동 범위</b>(σ=보통 등락폭). <b>넓은 띠 → 좁은 띠</b>로 줄어든 만큼이 헷지 효과. 민감도는 <b>입력 가정</b>에서.</p>
+  </div>
   <div class="panel">
     <div class="cap">연도별 변동성 · 감마 손실<span>실제 시장 변동성으로 재현</span></div>
     <div class="foot" id="simStrat" style="margin-top:6px"></div>
@@ -1664,10 +1664,12 @@ function drawVolChart(){
   const std=a=>{const m=a.reduce((x,y)=>x+y,0)/a.length; return Math.sqrt(a.reduce((x,y)=>x+(y-m)*(y-m),0)/(a.length-1));};
   const cH={}; RISK.forEach(r=>cH[r.id]=r.on);
   const volAll=stratVol({}), volCur=stratVol(cH);   /* 전 항목 반영(방향·감마·베가·펀드·해지·모형) */
+  const rnd=n=>{const a=Math.abs(n),st=a>=1000?100:a>=100?10:1;return Math.round(n/st)*st;};   /* 큰 수 반올림(튐 완화) */
+  const rAll=rnd(volAll), rCur=rnd(volCur);
   $("volStat").innerHTML=`
-    <div><div class="sl">안 막을 때 손익 흔들림(연)</div><div class="sv" style="color:var(--sym)">±${won(volAll)}억</div></div>
-    <div><div class="sl">지금 전략의 흔들림(연)</div><div class="sv" style="color:var(--pay)">±${won(volCur)}억</div></div>
-    <div><div class="sl">헷지가 줄인 흔들림</div><div class="sv" style="color:var(--good)">${won(Math.max(0,volAll-volCur))}억</div></div>`;
+    <div><div class="sl">안 막을 때 손익 흔들림(연)</div><div class="sv" style="color:var(--sym)">±${won(rAll)}억</div></div>
+    <div><div class="sl">지금 전략의 흔들림(연)</div><div class="sv" style="color:var(--pay)">±${won(rCur)}억</div></div>
+    <div><div class="sl">헷지가 줄인 흔들림</div><div class="sv" style="color:var(--good)">${won(Math.max(0,rAll-rCur))}억</div></div>`;
   const W=640,H=280,L=52,R=14,T=14,B=26,iw=W-L-R,ih=H-T-B,g=[];
   const amp=Math.max(...wU.map(Math.abs),1)*1.1, n=wU.length;
   const X=i=>L+iw*i/(n-1), Y=v=>T+ih/2-(v/amp)*(ih/2);

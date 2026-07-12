@@ -679,11 +679,21 @@
 
   <div class="panel">
     <div class="qah"><div class="qan">Q6</div><div class="qat">헷지 비용이 수익을 다 까먹는 것 아닌가요? 💸</div></div>
-    <div style="display:flex;flex-direction:column;gap:9px;margin:4px 0 12px">
-      <div style="font-size:11.5px;color:var(--muted);font-weight:700">🌧️ 나쁜 해에 손익이 이렇게 갈려요</div>
-      <div class="qabar"><span class="qalab">미헷지</span><div class="qatrack"><div style="width:100%;background:var(--bad)"></div></div><span class="qaval" style="color:var(--bad)">큰 손실 (터짐)</span></div>
-      <div class="qabar"><span class="qalab">헷지</span><div class="qatrack"><div style="width:22%;background:var(--pay)"></div></div><span class="qaval" style="color:var(--pay)">정해진 비용만</span></div>
-    </div>
+    <div class="chartwrap" style="margin:4px 0 12px"><svg viewBox="0 0 560 150" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
+      <defs><linearGradient id="q6grad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#E24A62"/><stop offset="0.5" stop-color="#C8CFDA"/><stop offset="1" stop-color="#12A870"/></linearGradient></defs>
+      <text x="280" y="16" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--muted)">한 해 손익이 나올 수 있는 범위</text>
+      <line x1="280" y1="24" x2="280" y2="128" stroke="#9AA3B2" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <text x="280" y="145" text-anchor="middle" font-size="9.5" fill="var(--muted)">손익 0</text>
+      <text x="44" y="145" font-size="10" font-weight="700" fill="var(--bad)">← 큰 손실</text>
+      <text x="516" y="145" text-anchor="end" font-size="10" font-weight="700" fill="#0a7c50">큰 이익 →</text>
+      <text x="20" y="52" font-size="11.5" font-weight="800" fill="var(--sym)">미헷지</text>
+      <rect x="60" y="38" width="440" height="24" rx="7" fill="url(#q6grad)"/>
+      <text x="280" y="54" text-anchor="middle" font-size="10.5" font-weight="800" fill="#3a3f4a">크게 잃거나 크게 벎 (도박)</text>
+      <text x="20" y="102" font-size="11.5" font-weight="800" fill="var(--pay)">헷지</text>
+      <rect x="242" y="88" width="76" height="24" rx="7" fill="var(--pay)"/>
+      <text x="280" y="104" text-anchor="middle" font-size="9" font-weight="800" fill="#fff">비용만큼</text>
+      <text x="330" y="104" font-size="10" fill="var(--muted)">좁게 — 큰 손실도, 큰 이익도 포기(안정)</text>
+    </svg></div>
     <div class="pair2" style="margin:4px 0 12px">
       <div style="border:1.5px solid var(--good);border-radius:10px;padding:11px;background:#EAF7F1">
         <div style="font-weight:800;color:var(--good);font-size:13px">☀️ 좋은 해</div>
@@ -1271,7 +1281,9 @@ function frontier(pts){ const s=[...pts].sort((a,b)=>a.sig-b.sig||a.cost-b.cost)
 
 /* 선택에 따른 손익 흔들림 막대 — 위험 기여를 균형 배분(주가 방향이 크나 감마·변동성·펀드도 유의미) */
 const VC={delta:1000,rho:950,gE:360,gR:340,vega:280,fund:250,lapse:200,model:170};
-const VCCOL={delta:'var(--pay)',rho:'#5B8DEF',gE:'var(--sym)',gR:'#9B7BEF',vega:'var(--leak)',fund:'#EBA24A',lapse:'#F0B968',model:'#AAB4C6'};
+/* 요인 색 = 상태 하나의 음영(색규약 준수): 미헷지 바=주황 계열, 헷지 바=파랑 계열. 요인은 음영(진→연)으로만 구분 */
+const BORNE_SHADES=['#C7770A','#E68A17','#EC9C3D','#F0AD5F','#F3BD80','#F6CDA1','#F8DBBE'];
+const HEDGE_SHADES=['#2F63E0','#3B6FE6','#5A83EA','#7898EE','#96ADF2','#B3C2F6','#D0D6FA'];
 /* 헷지해도 남는 잔여 비율(감마 슬리피지·베이시스 등) — 방향은 작게, 펀드·해지·모형은 크게 남음 */
 const RESF={delta:0.15,rho:0.15,gE:0.20,gR:0.20,vega:0.30,fund:0.45,lapse:0.40,model:0.50};
 const vres=id=>(VC[id]||0)*(RESF[id]||0.3);
@@ -1282,8 +1294,8 @@ function tween(id,to,fmt){ const el=$(id); if(!el)return; const from=_tw[id]==nu
   requestAnimationFrame(step); }
 const vcHedged=r=>(r.kind==='na')?false:!!r.on;
 function volBarBuild(){ const bar=$("vbBar"); if(!bar||bar.children.length)return;
-  bar.innerHTML=RISK.map(r=>`<div class="vbseg" data-id="${r.id}" style="flex-grow:0;flex-basis:0;min-width:0;border-radius:5px;background:${VCCOL[r.id]||'#ccc'};transition:flex-grow .55s cubic-bezier(.2,.7,.3,1),opacity .4s"></div>`).join('');
-  const lg=$("vbLegend"); if(lg) lg.innerHTML=RISK.map(r=>`<span data-lg="${r.id}" style="display:inline-flex;align-items:center;gap:4px;transition:opacity .3s"><span style="width:11px;height:11px;border-radius:3px;background:${VCCOL[r.id]||'#ccc'};display:inline-block"></span>${r.n} 잔여 ±${won(vres(r.id))}</span>`).join('');
+  bar.innerHTML=RISK.map((r,i)=>`<div class="vbseg" data-id="${r.id}" style="flex-grow:0;flex-basis:0;min-width:0;border-radius:5px;background:${HEDGE_SHADES[i]||'#ccc'};transition:flex-grow .55s cubic-bezier(.2,.7,.3,1),opacity .4s"></div>`).join('');
+  const lg=$("vbLegend"); if(lg) lg.innerHTML=RISK.map((r,i)=>`<span data-lg="${r.id}" style="display:inline-flex;align-items:center;gap:4px;transition:opacity .3s"><span style="width:11px;height:11px;border-radius:3px;background:${HEDGE_SHADES[i]||'#ccc'};display:inline-block"></span>${r.n} 잔여 ±${won(vres(r.id))}</span>`).join('');
 }
 /* ② 헷지 변동성 = 헷지한 항목의 잔여(①과 공통축). 막대 길이 = ① 대비 헷지가 줄인 변동성 */
 function drawVolBar(){ if(!$("vbBar"))return; volBarBuild();
@@ -1304,8 +1316,8 @@ function drawFundBar(payW,leakW,feeW,over){ const bar=$("fundBar"); if(!bar)retu
 }
 /* ① 미헷지(감내) 변동성 — 감내한 항목의 전체 변동성 + CSM 흡수선/초과 전이(빨강) 오버레이 → thesis 배선 */
 function volBarKBuild(){ const bar=$("vkBar"); if(!bar||bar.children.length)return;
-  bar.innerHTML=RISK.map(r=>`<div class="vkseg" data-id="${r.id}" style="flex-grow:0;flex-basis:0;min-width:0;border-radius:5px;background:${VCCOL[r.id]||'#ccc'};transition:flex-grow .55s cubic-bezier(.2,.7,.3,1),opacity .4s"></div>`).join('');
-  const lg=$("vkLegend"); if(lg) lg.innerHTML=RISK.map(r=>`<span data-lg="${r.id}" style="display:inline-flex;align-items:center;gap:4px;transition:opacity .3s"><span style="width:11px;height:11px;border-radius:3px;background:${VCCOL[r.id]||'#ccc'};display:inline-block"></span>${r.n} ±${won(VC[r.id]||0)}</span>`).join('');
+  bar.innerHTML=RISK.map((r,i)=>`<div class="vkseg" data-id="${r.id}" style="flex-grow:0;flex-basis:0;min-width:0;border-radius:5px;background:${BORNE_SHADES[i]||'#ccc'};transition:flex-grow .55s cubic-bezier(.2,.7,.3,1),opacity .4s"></div>`).join('');
+  const lg=$("vkLegend"); if(lg) lg.innerHTML=RISK.map((r,i)=>`<span data-lg="${r.id}" style="display:inline-flex;align-items:center;gap:4px;transition:opacity .3s"><span style="width:11px;height:11px;border-radius:3px;background:${BORNE_SHADES[i]||'#ccc'};display:inline-block"></span>${r.n} ±${won(VC[r.id]||0)}</span>`).join('');
 }
 function drawVolBarK(){ if(!$("vkBar"))return; volBarKBuild();
   const CSM=val("csm");

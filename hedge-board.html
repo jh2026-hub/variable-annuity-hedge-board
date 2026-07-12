@@ -576,21 +576,21 @@
     </div>
     <div style="border-top:1px dashed var(--hair);margin-top:14px;padding-top:12px">
       <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
-        <div><div class="foot" style="margin:0">지금 손익 흔들림 (연) · <span style="color:var(--good);font-weight:700">CSM이 잠재움</span></div><div id="vbNum" style="font-size:30px;font-weight:800;color:var(--pay);letter-spacing:-.5px">±0억</div></div>
-        <div style="color:var(--muted);font-size:12px;line-height:1.7">안 막으면 <b id="vbFull" style="color:var(--sym)">±0</b> → 지금 <b id="vbCur" style="color:var(--good)">±0</b><br><b id="vbCut" style="color:var(--good)">0억</b> 줄였습니다</div>
+        <div><div class="foot" style="margin:0">지금 손익 흔들림 (연) · <span style="color:var(--pay);font-weight:700">헷지한 항목의 잔여</span></div><div id="vbNum" style="font-size:30px;font-weight:800;color:var(--pay);letter-spacing:-.5px">±0억</div></div>
+        <div style="color:var(--muted);font-size:12px;line-height:1.7">전부 헷지해도 <b id="vbFull" style="color:var(--sym)">±0</b> 잔여 → 지금 <b id="vbCur" style="color:var(--pay)">±0</b><br><span style="color:var(--good)">큰 흔들림을 작은 잔여로 바꿉니다</span></div>
       </div>
       <div id="vbBar" style="display:flex;gap:2px;height:36px;border-radius:9px;overflow:hidden;margin-top:11px;background:var(--panel2);border:1px solid var(--hair);padding:2px"></div>
       <div id="vbLegend" style="display:flex;flex-wrap:wrap;gap:5px 10px;margin-top:9px;font-size:11px"></div>
-      <p class="foot" style="margin-top:9px">각 블록 = 그 위험이 만드는 <b>흔들림의 크기</b>. <b>헷지</b>하면 블록이 <b>사라지고</b> 총 흔들림이 줄어듭니다. 주가 방향이 크지만, 막고 나면 남는 <b>금리·감마·변동성·펀드</b>도 상당해 — <b>어디까지 헷지할지</b>가 비용과의 선택입니다.</p>
+      <p class="foot" style="margin-top:9px">각 블록 = <b>헷지한 항목</b>이 헷지 후에도 <b>남기는 잔여 변동성</b>(감마 슬리피지·베이시스 등). 헷지는 큰 변동성을 <b>작고 예측 가능한 잔여</b>로 바꿀 뿐 <b>0으로 만들지 못합니다</b>. 감내(미헷지)한 항목은 손익이 아니라 아래 <b>자본</b>에서 흔들립니다.</p>
     </div>
     <div style="border-top:1px dashed var(--hair);margin-top:14px;padding-top:12px">
       <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
-        <div><div class="foot" style="margin:0">지금 자본 흔들림 (연) · <span style="color:var(--bad);font-weight:700">CSM은 만능이 아님</span></div><div id="vkNum" style="font-size:30px;font-weight:800;color:var(--leak);letter-spacing:-.5px">±0억</div></div>
-        <div style="color:var(--muted);font-size:12px;line-height:1.7">전부 CSM 감내 <b id="vkFull" style="color:var(--sym)">±0</b> → 지금 <b id="vkCur" style="color:var(--leak)">±0</b><br><b id="vkCut" style="color:var(--good)">0억</b> 줄였습니다 <span style="color:var(--bad)">(헷지로만 감소)</span></div>
+        <div><div class="foot" style="margin:0">지금 CSM · 자본 흔들림 (연) · <span style="color:var(--bad);font-weight:700">미헷지(감내) 항목</span></div><div id="vkNum" style="font-size:30px;font-weight:800;color:var(--leak);letter-spacing:-.5px">±0억</div></div>
+        <div style="color:var(--muted);font-size:12px;line-height:1.7">전부 감내 시 <b id="vkFull" style="color:var(--sym)">±0</b> → 지금 <b id="vkCur" style="color:var(--leak)">±0</b><br><b id="vkCut" style="color:var(--good)">0억</b> 줄였습니다 <span style="color:var(--bad)">(헷지로만 감소)</span></div>
       </div>
       <div id="vkBar" style="display:flex;gap:2px;height:36px;border-radius:9px;overflow:hidden;margin-top:11px;background:var(--panel2);border:1px solid var(--hair);padding:2px"></div>
       <div id="vkLegend" style="display:flex;flex-wrap:wrap;gap:5px 10px;margin-top:9px;font-size:11px"></div>
-      <p class="foot" style="margin-top:9px">위 <b>손익</b>은 CSM 완충이 잠재우지만, <b>자본</b>(OCI·요구자본)은 다릅니다 — <b>CSM으로 감내</b>한 위험은 자본에서 <b>그대로 흔들립니다</b>. <b>금리·할인율·해지</b>는 자본에서 더 크고, <b>헷지</b>만이 손익·자본을 함께 줄이죠. <b>CSM은 만능이 아닙니다.</b></p>
+      <p class="foot" style="margin-top:9px"><b>감내(미헷지)</b>한 항목의 변동성입니다. CSM 완충이 <b>손익은 잠재우지만</b>, <b>자본</b>(OCI·요구자본)은 <b>그대로 흔들립니다</b>. <b>금리·할인율·해지</b>는 자본에서 더 크고, <b>헷지</b>만이 손익·자본을 함께 줄이죠. <b>CSM은 만능이 아닙니다.</b></p>
     </div>
   </div>
   <div class="verdict ok" id="vd"><div class="ic" id="vdi">✓</div><div><h3 id="vdt"></h3><p id="vdp"></p></div></div>
@@ -939,6 +939,9 @@ function frontier(pts){ const s=[...pts].sort((a,b)=>a.sig-b.sig||a.cost-b.cost)
 /* 선택에 따른 손익 흔들림 막대 — 위험 기여를 균형 배분(주가 방향이 크나 감마·변동성·펀드도 유의미) */
 const VC={delta:1000,rho:950,gE:360,gR:340,vega:280,fund:250,lapse:200,model:170};
 const VCCOL={delta:'var(--pay)',rho:'#5B8DEF',gE:'var(--sym)',gR:'#9B7BEF',vega:'var(--leak)',fund:'#EBA24A',lapse:'#F0B968',model:'#AAB4C6'};
+/* 헷지해도 남는 잔여 비율(감마 슬리피지·베이시스 등) — 방향은 작게, 펀드·해지·모형은 크게 남음 */
+const RESF={delta:0.15,rho:0.15,gE:0.20,gR:0.20,vega:0.30,fund:0.45,lapse:0.40,model:0.50};
+const vres=id=>(VC[id]||0)*(RESF[id]||0.3);
 const _tw={};
 function tween(id,to,fmt){ const el=$(id); if(!el)return; const from=_tw[id]==null?to:_tw[id]; _tw[id]=to; let start=null;
   const step=ts=>{ if(start==null)start=ts; const p=Math.min(1,(ts-start)/550), e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2, v=from+(to-from)*e; el.textContent=fmt(v); if(p<1)requestAnimationFrame(step); };
@@ -946,15 +949,16 @@ function tween(id,to,fmt){ const el=$(id); if(!el)return; const from=_tw[id]==nu
 const vcHedged=r=>(r.kind==='na')?false:!!r.on;
 function volBarBuild(){ const bar=$("vbBar"); if(!bar||bar.children.length)return;
   bar.innerHTML=RISK.map(r=>`<div class="vbseg" data-id="${r.id}" style="flex-grow:0;flex-basis:0;min-width:0;border-radius:5px;background:${VCCOL[r.id]||'#ccc'};transition:flex-grow .55s cubic-bezier(.2,.7,.3,1),opacity .4s"></div>`).join('');
-  const lg=$("vbLegend"); if(lg) lg.innerHTML=RISK.map(r=>`<span data-lg="${r.id}" style="display:inline-flex;align-items:center;gap:4px;transition:opacity .3s"><span style="width:11px;height:11px;border-radius:3px;background:${VCCOL[r.id]||'#ccc'};display:inline-block"></span>${r.n} ±${won(VC[r.id]||0)}</span>`).join('');
+  const lg=$("vbLegend"); if(lg) lg.innerHTML=RISK.map(r=>`<span data-lg="${r.id}" style="display:inline-flex;align-items:center;gap:4px;transition:opacity .3s"><span style="width:11px;height:11px;border-radius:3px;background:${VCCOL[r.id]||'#ccc'};display:inline-block"></span>${r.n} 잔여 ±${won(vres(r.id))}</span>`).join('');
 }
+/* 손익 흔들림 = 헷지한 항목이 헷지 후에도 남기는 잔여 변동성(감내한 항목은 손익 X → 자본으로) */
 function drawVolBar(){ if(!$("vbBar"))return; volBarBuild();
-  const full=Math.sqrt(RISK.reduce((a,r)=>a+Math.pow(VC[r.id]||0,2),0)), cur=Math.sqrt(RISK.reduce((a,r)=>a+(vcHedged(r)?0:Math.pow(VC[r.id]||0,2)),0));
+  const full=Math.sqrt(RISK.reduce((a,r)=>a+Math.pow(vres(r.id),2),0)), cur=Math.sqrt(RISK.reduce((a,r)=>a+(vcHedged(r)?Math.pow(vres(r.id),2):0),0));
   RISK.forEach(r=>{ const seg=$("vbBar").querySelector(`[data-id="${r.id}"]`), lg=$("vbLegend")&&$("vbLegend").querySelector(`[data-lg="${r.id}"]`), h=vcHedged(r);
-    if(seg){ seg.style.flexGrow=h?0:Math.pow(VC[r.id]||0,2); seg.style.opacity=h?0:1; seg.title=r.n+(h?' · 헷지됨':' ±'+won(VC[r.id]||0)+'억'); }
-    if(lg) lg.style.opacity=h?0.32:1; });
+    if(seg){ seg.style.flexGrow=h?Math.pow(vres(r.id),2):0; seg.style.opacity=h?1:0; seg.title=r.n+(h?' · 헷지 잔여 ±'+won(vres(r.id))+'억':' · 감내→자본으로'); }
+    if(lg) lg.style.opacity=h?1:0.32; });
   tween("vbNum",cur,v=>'±'+won(v)+'억'); tween("vbCur",cur,v=>'±'+won(v));
-  if($("vbFull"))$("vbFull").textContent='±'+won(full); tween("vbCut",Math.max(0,full-cur),v=>won(v)+'억');
+  if($("vbFull"))$("vbFull").textContent='±'+won(full);
 }
 /* 재원(예산) 사용 막대 — 손익·자본 바와 같은 디자인. 선형(비용 합) */
 function drawFundBar(payW,leakW,feeW,over){ const bar=$("fundBar"); if(!bar)return;

@@ -345,7 +345,7 @@
 <div class="exbanner">📊 범용 계산 도구 <span>· 적립금·부채·민감도·수수료 등 모든 값을 직접 입력하여 사용해요. 기본값은 개념 설명용 예시이며 특정 회사와 무관해요.</span></div>
 
 <h1>도대체 <em>헷지</em>는 왜??</h1>
-<div class="sub">보증(GMxB) 헷지의 구조, 보증수수료·비용·손익변동성의 관계, CSM 완충의 역할을 입력값과 실제 시장데이터로 살펴본다.</div>
+<div class="sub">최저보증(GMxB) 헷지의 구조, 보증수수료·비용·손익변동성의 관계, CSM 완충의 역할을 입력값과 실제 시장데이터로 살펴봐요.</div>
 
 <div class="tabs" id="tabs">
   <button data-p="pqa" class="on">❓ Q&amp;A<small>쉬운 문답</small></button>
@@ -355,7 +355,7 @@
   <button data-p="p3">④ PL 인식<small>CSM 완충</small></button>
   <button data-p="p2">⑤ 시뮬레이션<small>선택→결과</small></button>
   <button data-p="p6">⑥ 이론<small>참고문헌</small></button>
-  <button data-p="p8">입력 가정<small>규모·민감도</small></button>
+  <button data-p="p8">입력 가정<small>심화·선택</small></button>
   <button data-p="pgame">🎮 게임<small>2종 체험</small></button>
 </div>
 
@@ -492,6 +492,23 @@
 <section class="page on" id="pqa">
   <p class="lede">자주 나오는 질문을 <b>그림 위주</b>로, <b>쉬운 말로</b> 답해요. 더 자세한 내용은 각 탭에 있어요.</p>
   <div class="callout sum"><span class="ci">📝</span><div><span class="clab">요약</span> 시장이 흔들리면 <b>보증 부채</b>도 흔들려요. <b>헷지</b>는 비용 내고 흔들림을 줄이고, <b>감내</b>는 완충(CSM)에 맡겨요 — 완충이 <b>얇으면 헷지</b>가 답!</div></div>
+
+  <div class="panel" style="background:linear-gradient(135deg,#EEF3FE,#EAF7F1);border:1px solid #C9DBF7">
+    <div class="cap">한 장 결론 — 이것만 기억하세요<span>왜 중요한가 · 무엇을 할까</span></div>
+    <div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;margin:2px 0 6px">🎯 명심할 3가지</div>
+    <div style="display:flex;flex-direction:column;gap:9px">
+      <div class="qstep"><span class="qstepn" style="background:var(--pay)">1</span><div><b>미헷지라도 변동성은 그대로예요.</b><small>안 막으면 CSM 완충이 받다 소진되면 그대로 손익·자본으로 터져요</small></div></div>
+      <div class="qstep"><span class="qstepn" style="background:var(--pay)">2</span><div><b>완충(CSM)이 얇을수록 헷지가 답이에요.</b><small>완충이 두꺼우면 감내 여유, 얇으면 즉시 헷지 압력↑</small></div></div>
+      <div class="qstep"><span class="qstepn" style="background:var(--pay)">3</span><div><b>방향부터, 그다음 곡률·나머지 순서로 막아요.</b><small>방향(Δ·ρ)은 싸고 필수, 감마·꼬리는 비싸서 완충 대비 선택</small></div></div>
+    </div>
+    <div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;margin:14px 0 6px">✅ 그래서 우리가 할 일 (4스텝)</div>
+    <div style="display:flex;flex-direction:column;gap:7px">
+      <div class="qstep"><span class="qstepn" style="background:var(--good)">1</span><div><b>우리 완충(CSM) 두께 확인</b><small>얇으면 헷지 우선순위↑ (→ ④ PL 인식)</small></div></div>
+      <div class="qstep"><span class="qstepn" style="background:var(--good)">2</span><div><b>회계기준 확인 — VFA인가 PL법인가</b><small>PL법이면 완충 불가 → 선택 없이 헷지 필수 (→ ④)</small></div></div>
+      <div class="qstep"><span class="qstepn" style="background:var(--good)">3</span><div><b>방향(Δ·ρ)은 무조건 헷지</b><small>싸고 효과 큼 — 가장 먼저</small></div></div>
+      <div class="qstep"><span class="qstepn" style="background:var(--good)">4</span><div><b>감마·꼬리 위험은 완충 대비 선택</b><small>비싸니 완충이 얇을수록만 (→ ⑤ 시뮬레이션에서 조합 실험)</small></div></div>
+    </div>
+  </div>
 
   <div class="panel">
     <div class="qah"><div class="qan">Q1</div><div class="qat">헷지를 왜 해야 하나요? 🤔</div></div>
@@ -895,14 +912,14 @@
     <span class="qchip">⚠️ 얇을수록 <b>헷지</b></span>
   </div>
   <div class="panel">
-    <div class="cap">회계기준이 <b>선택권을 가른다</b><span>VFA vs PL법</span></div>
+    <div class="cap">회계기준이 <b>선택권을 가름</b><span>VFA vs PL법</span></div>
     <div class="pair2" style="margin:4px 0 2px">
       <div style="border:1.5px solid var(--good);border-radius:10px;padding:11px;background:#EAF7F1">
-        <div style="font-weight:800;color:var(--good);font-size:13px">✅ VFA <span style="font-weight:600;font-size:11px">변액·직접참가</span></div>
+        <div style="font-weight:800;color:var(--good);font-size:13px">✅ VFA <span style="font-weight:600;font-size:11px">변동수수료접근법·직접참가</span></div>
         <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px"><b>CSM 완충이 있어요.</b> 보증 변동을 완충이 먼저 흡수 → <b>헷지 ↔ 감내를 선택</b>할 수 있어요. (완충 얇으면 헷지)</div>
       </div>
       <div style="border:1.5px solid var(--bad-line);border-radius:10px;padding:11px;background:#FBEEF1">
-        <div style="font-weight:800;color:var(--bad);font-size:13px">⚠️ PL법 <span style="font-weight:600;font-size:11px">일반·GMM</span></div>
+        <div style="font-weight:800;color:var(--bad);font-size:13px">⚠️ PL법 <span style="font-weight:600;font-size:11px">일반측정(GMM)</span></div>
         <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px"><b>완충이 불가</b>해요. 변동이 <b>전액 그 해 손익으로 즉시</b> 인식 → <b>감내라는 선택지가 없어요</b>. 사실상 <b>헷지 필수</b>.</div>
       </div>
     </div>
@@ -957,9 +974,9 @@
   </div>
   <div class="panel">
     <div class="cap">두 경로의 성격</div>
-    <div class="grpbox g0"><h4><span class="hn">1</span>헷지한다 → 투자손익(PL)</h4>
+    <div class="grpbox g0"><h4><span class="hn">1</span>헷지 → 투자손익(PL)</h4>
       <p>비용(프리미엄)을 내고 변동을 제거 → <b>손익 예측 가능</b>. 대신 비용은 매년 지출.</p></div>
-    <div class="grpbox g1"><h4><span class="hn">2</span>CSM으로 보낸다 → 완충 감내</h4>
+    <div class="grpbox g1"><h4><span class="hn">2</span>CSM으로 → 완충 감내</h4>
       <p>비용 0, 변동을 <b>CSM이 흡수</b>. 단 <b>완충 초과 시 손익 전이</b> → 큰 해에 손실 집중.</p></div>
   </div>
   <div class="panel">
@@ -1913,7 +1930,7 @@ function gFinish(){
   $("gFinal").innerHTML=`<div class="gres" style="background:linear-gradient(135deg,#EEF3FE,#F4F0FD);border:1px solid #D7E0F5;margin-top:14px">
     <div style="display:flex;align-items:center;gap:12px"><div style="font-size:34px">${t[0]}</div>
       <div><div style="font-weight:800;font-size:16px;color:var(--ink)">${t[1]} · <b style="color:var(--pay)">${d}일</b> 버팀</div></div></div>
-    <div style="font-size:12px;color:var(--muted);margin-top:9px;line-height:1.6">헷지선은 <b>어제 기울기 그대로</b> 남아요 — 안 맞추면 갭이 커져 더 터지고, 맞추면 <b>확정손실+비용</b>을 내요. 되돌릴지 이어질지 <b>알 수 없어</b> "가만히 뒀으면 됐을 걸" 후회가 반복되죠. 타이트한 버짓 안에서 <b>매일 되맞추는 일 자체가 어렵다</b> — 이것이 실제 델타헷지예요.</div>
+    <div style="font-size:12px;color:var(--muted);margin-top:9px;line-height:1.6">헷지선은 <b>어제 기울기 그대로</b> 남아요 — 안 맞추면 갭이 커져 더 터지고, 맞추면 <b>확정손실+비용</b>을 내요. 되돌릴지 이어질지 <b>알 수 없어</b> "가만히 뒀으면 됐을 걸" 후회가 반복되죠. 빠듯한 예산 안에서 <b>매일 되맞추는 일 자체가 어려워요</b> — 이것이 실제 델타 헷지예요.</div>
     <button id="gReset" class="gbtn" style="margin-top:12px;background:var(--ink)">다시 도전 ↻</button>
   </div>`;
   $("gReset").addEventListener("click",gReset);

@@ -1157,23 +1157,23 @@ const FIN=[
   {id:"voltol",n:"손익 흔들림 허용", u:"억", v:1200, s:"참을 수 있는 연간 흔들림 상한 · 완충이 얇을수록 낮게"},
 ];
 const VOL=[
-  {id:"ge",n:"주가 Γ", u:"억/1%", v:0.6, s:"코스피 1%당 감마"},
+  {id:"ge",n:"주가 Γ", u:"억/1%", v:1.1, s:"코스피 1%당 감마"},
   {id:"re",n:"주가 RV", u:"%", v:16, s:"실현변동성(연) · 평상시(23·24년) 가정"},
   {id:"ie",n:"주가 IV", u:"%", v:19, s:"내재변동성(옵션가) · RV+위험프리미엄"},
   {id:"gr",n:"금리 Γ", u:"억/bp", v:0.1, s:"1bp당 컨벡시티"},
   {id:"rr",n:"금리 RV", u:"bp", v:55, s:"실현변동성(연) · 평상시(23·24년) 가정"},
-  {id:"ir",n:"금리 IV", u:"bp", v:62, s:"스왑션 IV · RV+위험프리미엄"},
+  {id:"ir",n:"금리 IV", u:"bp", v:63, s:"스왑션 IV · RV+위험프리미엄"},
   {id:"eqd",n:"주가 민감도", u:"억/bp", v:1, s:"주가 100bp(1%)↑ → 100억(방향)"},
   {id:"rvd",n:"금리 민감도(DV01)", u:"억/bp", v:38, s:"장기보증 듀레이션 · 금리 10bp↑ → 380억(주가와 비슷한 영향)"},
   {id:"sig",n:"잔여 흔들림 1σ", u:"%", v:1.0, s:"미헷지 손익변동성(적립금 대비)"},
 ];
 const RISK=[
-  {id:"delta", n:"주가 방향 (Δ)", exp:42, bp:1.5,kind:"bp",   on:1, note:"KOSPI200 선물", cls:"PL",  grp:"방향 위험 (민감도)", diff:"easy"},
-  {id:"rho",   n:"금리 수준 (ρ)", exp:40, bp:1,  kind:"bp",   on:1, note:"국채·IRS", cls:"PL",  grp:"방향 위험 (민감도)", diff:"easy"},
+  {id:"delta", n:"주가 방향 (Δ)", exp:42, bp:3,  kind:"bp",   on:1, note:"KOSPI200 선물", cls:"PL",  grp:"방향 위험 (민감도)", diff:"easy"},
+  {id:"rho",   n:"금리 수준 (ρ)", exp:40, bp:2,  kind:"bp",   on:1, note:"국채·IRS", cls:"PL",  grp:"방향 위험 (민감도)", diff:"easy"},
   {id:"gE",    n:"주가 감마",     exp:0,  kind:"calcE", dep:"delta", on:0, note:"델타 헷지 후 잔여 · 옵션 매수", cls:"CSM", grp:"감마 위험 (곡률)", diff:"mid"},
   {id:"gR",    n:"금리 감마",     exp:0,  kind:"calcR", dep:"rho",   on:0, note:"방향 헷지 후 잔여 · 스왑션", cls:"CSM", grp:"감마 위험 (곡률)", diff:"mid"},
-  {id:"vega",  n:"변동성 (베가)", exp:2.5,bp:11, kind:"bp",   on:0, note:"장기 vol 매수", cls:"CSM", grp:"변동성·행동 위험", diff:"hard"},
-  {id:"fund",  n:"펀드 불일치",   exp:2,  bp:13, kind:"bp",   on:0, note:"맞춤 OTC", cls:"CSM", grp:"변동성·행동 위험", diff:"hard"},
+  {id:"vega",  n:"변동성 (베가)", exp:2.5,bp:6.7,kind:"bp",   on:0, note:"장기 vol 매수", cls:"CSM", grp:"변동성·행동 위험", diff:"hard"},
+  {id:"fund",  n:"펀드 불일치",   exp:2,  bp:10, kind:"bp",   on:0, note:"맞춤 OTC", cls:"CSM", grp:"변동성·행동 위험", diff:"hard"},
   {id:"lapse", n:"해지율·행동",   exp:1.5,bp:20, kind:"bp",   on:0, note:"재보험", cls:"CSM", grp:"변동성·행동 위험", diff:"hard"},
   {id:"model", n:"모형·제도",     exp:1,  bp:null,kind:"na",  on:0, note:"이전 시장 없음", cls:"CSM", grp:"이전 불가", diff:"no"},
 ];
@@ -1338,8 +1338,8 @@ function ccRefresh(){ if(SIM.loaded && tabOn("p1")) renderConceptCombo(); }
 /* 변동성 국면 프리셋 — 평상시(23·24년) vs 위기시(26년, 전반 단가↑)
    vol=RV·IV 입력, bp=헷지 단가(위기엔 스프레드 확대로 전반 상승) */
 const REGIME={
-  normal:{ vol:{re:16,ie:19,rr:55,ir:62}, bp:{delta:1.5,rho:1,vega:11,fund:13,lapse:20} },
-  crisis:{ vol:{re:40,ie:46,rr:88,ir:98}, bp:{delta:2.5,rho:1.5,vega:19,fund:22,lapse:30} }
+  normal:{ vol:{re:16,ie:19,rr:55,ir:63}, bp:{delta:3,rho:2,vega:6.7,fund:10,lapse:20} },
+  crisis:{ vol:{re:26,ie:30,rr:75,ir:89}, bp:{delta:5,rho:3,vega:33.3,fund:20,lapse:30} }
 };
 function setRegime(rg){ const R=REGIME[rg]; if(!R)return;
   Object.keys(R.vol).forEach(id=>{ const o=[...FIN,...VOL].find(x=>x.id===id); if(o){o.v=R.vol[id]; const el=$("in_"+id); if(el)el.value=R.vol[id];} });

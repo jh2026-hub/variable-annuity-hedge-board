@@ -34,8 +34,10 @@
   .page{display:none} .page.on{display:block}
   .lede{color:var(--muted);font-size:14px;margin-top:14px}.lede b{color:var(--ink);font-weight:600}
   .panel{background:var(--panel);border:1px solid var(--hair);border-radius:12px;padding:16px;margin-top:18px}
-  .cap{font-size:13px;font-weight:700;margin-bottom:4px}
+  .cap{font-size:13.5px;font-weight:800;margin-bottom:6px;padding-left:11px;position:relative;line-height:1.3}
+  .cap::before{content:"";position:absolute;left:0;top:2px;bottom:2px;width:4px;border-radius:3px;background:var(--pay)}
   .cap span{font-weight:400;color:var(--muted);font-size:12px;margin-left:6px}
+  .hn{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;border-radius:50%;background:var(--pay);color:#fff;font-weight:800;font-size:11px;margin-right:6px;vertical-align:1px}
   .fund{margin-top:16px;border:1px solid #9DBBF3;background:linear-gradient(90deg,#E7EFFD,#FFFFFF 70%);border-radius:12px;padding:15px 16px}
   .fund .t{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--pay);font-family:"IBM Plex Mono",monospace;margin-bottom:6px}
   .fund .big{font-size:26px;font-weight:700;letter-spacing:-.02em}
@@ -52,6 +54,7 @@
   .concept p{font-size:13px;color:var(--muted);line-height:1.75;margin-bottom:4px}.concept p b{color:var(--ink)}
   .grpbox{border-left:3px solid var(--hair);padding:2px 0 2px 12px;margin:12px 0}
   .grpbox.g0{border-color:var(--pay)} .grpbox.g1{border-color:var(--leak)} .grpbox.g2{border-color:var(--sym)}
+  .grpbox.g1 .hn{background:var(--leak)} .grpbox.g2 .hn{background:var(--sym)}
   .grpbox h4{font-size:13px;font-weight:700;margin-bottom:3px}
   .grpbox p{font-size:12px;color:var(--muted);line-height:1.65}
   .sheet{margin-top:12px}
@@ -442,11 +445,11 @@
 
   <div class="panel concept">
     <div class="cap">위험의 세 갈래 · 처리 방식</div>
-    <div class="grpbox g0"><h4>방향 위험 — 헷지가 저렴</h4>
+    <div class="grpbox g0"><h4><span class="hn">1</span>방향 위험 — 헷지가 저렴</h4>
       <p>주가·금리 1차 민감도. 선물·스왑으로 <b>프리미엄 없이 제거</b> → 보통 헷지.</p></div>
-    <div class="grpbox g1"><h4>변동성·감마 — 비용이 큼</h4>
+    <div class="grpbox g1"><h4><span class="hn">2</span>변동성·감마 — 비용이 큼</h4>
       <p>변동성 커질수록 손실. 옵션으로 이전하나 <b>프리미엄 큼</b>. <b>헷지 vs 감내</b>가 핵심.</p></div>
-    <div class="grpbox g2"><h4>기타 — 이전이 어려움</h4>
+    <div class="grpbox g2"><h4><span class="hn">3</span>기타 — 이전이 어려움</h4>
       <p>펀드 불일치·해지·모형. 이전 시장이 없어 <b>대개 감내</b>.</p></div>
     <p class="foot">각 요인의 원리는 <b>② 항목별 설명</b>, 처리 선택은 <b>⑤ 시뮬레이션</b>에서 다룹니다.</p>
   </div>

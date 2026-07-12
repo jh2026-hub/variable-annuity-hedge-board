@@ -133,6 +133,15 @@
   .callout.warn{background:#FBEEF1;border:1px solid #F1CAD3} .callout.warn .clab{background:var(--bad)}
   .callout.sum{background:#EAF7F1;border:1px solid #BFE6D3} .callout.sum .clab{background:var(--good)}
   .callout.info{background:#F0FAF5;border:1px solid #BFE6D2} .callout.info .clab{background:var(--good)}
+  /* 심화 접기 */
+  details.deep{margin-top:18px}
+  details.deep>summary{cursor:pointer;list-style:none;background:var(--panel);border:1px solid var(--hair);border-radius:12px;padding:14px 16px;font-size:14px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:8px}
+  details.deep>summary::-webkit-details-marker{display:none}
+  details.deep>summary small{font-weight:500;color:var(--muted);font-size:12px}
+  details.deep>summary::after{content:"▾";margin-left:auto;color:var(--muted);transition:transform .2s}
+  details.deep[open]>summary::after{transform:rotate(180deg)}
+  details.deep[open]>summary{border-bottom-left-radius:0;border-bottom-right-radius:0}
+  details.deep>.panel:first-of-type{margin-top:10px}
   /* 패널 제목 유형 배지 */
   .capb{display:inline-block;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;margin-left:6px;vertical-align:1.5px;letter-spacing:.02em}
   .capb.data{background:#EAF7F1;color:#0a7c50} .capb.live{background:#EEF3FE;color:var(--pay)} .capb.ex{background:#FBF4E8;color:var(--leak)}
@@ -816,6 +825,8 @@
     </div>
     <p class="foot"><b>미헷지</b>는 매주 크게 출렁, <b>헷지 후</b>는 좁게. 음영 띠 = <b>±1σ 변동 범위</b>(σ=보통 등락폭). <b>넓은 띠 → 좁은 띠</b>로 줄어든 만큼이 헷지 효과. 민감도는 <b>입력 가정</b>에서.</p>
   </div>
+  <details class="deep">
+    <summary>🔬 심화 — 연도별 재현 · 요소 분해 <small>(선택, 초심자는 건너뛰어도 좋아요)</small></summary>
   <div class="panel">
     <div class="cap">연도별 변동성 · 감마 손실<span>실제 시장 변동성으로 재현</span></div>
     <div class="foot" id="simStrat" style="margin-top:6px"></div>
@@ -834,6 +845,7 @@
     <div class="chartwrap"><table class="mtx" id="simBreak"><thead><tr><th>위험 요인</th><th>처리</th><th>연간 손익요소</th><th>비고</th></tr></thead><tbody></tbody></table></div>
     <p class="foot">헷지 항목은 확정 비용(음수)으로, 감내 항목 중 감마는 실현변동성 기반 <b>연평균 누수</b>로, 그 밖의 감내 항목은 손익변동성 기여(σ)로 표시해요. 감마 관련 값은 위 시장데이터 기간의 실측 실현변동성에 기반해요.</p>
   </div>
+  </details>
 </section>
 
 <!-- ③ 헷지수단 -->

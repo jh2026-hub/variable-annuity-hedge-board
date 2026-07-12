@@ -679,6 +679,11 @@
 
   <div class="panel">
     <div class="qah"><div class="qan">Q6</div><div class="qat">헷지 비용이 수익을 다 까먹는 것 아닌가요? 💸</div></div>
+    <div style="display:flex;flex-direction:column;gap:9px;margin:4px 0 12px">
+      <div style="font-size:11.5px;color:var(--muted);font-weight:700">🌧️ 나쁜 해에 손익이 이렇게 갈려요</div>
+      <div class="qabar"><span class="qalab">미헷지</span><div class="qatrack"><div style="width:100%;background:var(--bad)"></div></div><span class="qaval" style="color:var(--bad)">큰 손실 (터짐)</span></div>
+      <div class="qabar"><span class="qalab">헷지</span><div class="qatrack"><div style="width:22%;background:var(--pay)"></div></div><span class="qaval" style="color:var(--pay)">정해진 비용만</span></div>
+    </div>
     <div class="pair2" style="margin:4px 0 12px">
       <div style="border:1.5px solid var(--good);border-radius:10px;padding:11px;background:#EAF7F1">
         <div style="font-weight:800;color:var(--good);font-size:13px">☀️ 좋은 해</div>
@@ -778,34 +783,14 @@
     <div class="cap">이렇게 보면 돼요 — 3단계</div>
     <div style="display:flex;flex-direction:column;gap:10px;margin-top:2px">
       <div class="qstep"><span class="qstepn" style="background:#0EA5A5">1</span><div><b>재원(보증수수료) 확인</b><small>이 예산 안에서 헷지</small></div></div>
-      <div class="qstep"><span class="qstepn" style="background:#0EA5A5">2</span><div><b>항목을 헷지 ↔ 감내로 선택</b><small>막대·프론티어가 즉시 반응</small></div></div>
-      <div class="qstep"><span class="qstepn" style="background:#0EA5A5">3</span><div><b>결과 확인</b> — 흔들림·프론티어·연도별<small>비용과 변동성의 균형</small></div></div>
+      <div class="qstep"><span class="qstepn" style="background:#0EA5A5">2</span><div><b>항목을 헷지 ↔ 감내로 선택</b><small>바로 아래 막대·판정이 즉시 반응</small></div></div>
+      <div class="qstep"><span class="qstepn" style="background:#0EA5A5">3</span><div><b>결과 확인</b> — 흔들림·판정·실측 차트<small>비용과 변동성의 균형</small></div></div>
+      <div class="qstep"><span class="qstepn" style="background:#0EA5A5">4</span><div><b>최적 조합 찾기</b> — 국면 프리셋·프론티어<small>맨 아래 · 심화 (선택)</small></div></div>
     </div>
   </div>
   <div class="panel" style="border-color:#F1D7A3;background:#FDF7EC">
     <div class="cap">⚠️ 미헷지도 변동성은 그대로</div>
     <p style="font-size:12.5px;color:var(--muted);line-height:1.7;margin-top:2px"><b style="color:var(--pay)">헷지</b> = 비용↑·흔들림↓ · <b style="color:var(--leak)">미헷지</b> = 비용0·흔들림↑. 미헷지는 <b>CSM 완충</b>이 흡수하지만, <b style="color:var(--bad)">완충이 얇으면 손익으로 전이</b> — 얇을수록 더 헷지해야 해요. (→ <b>④ PL 인식</b>)</p>
-  </div>
-  <div class="panel">
-    <div class="cap">변동성 국면 프리셋<span>입력 가정을 한 번에 세팅 · 프론티어가 즉시 이동</span></div>
-    <div class="pobtns" id="regimeSeg">
-      <button data-rg="normal" class="on">🙂 평상시 <small style="opacity:.7">23·24년</small></button>
-      <button data-rg="crisis">🌪️ 위기시 <small style="opacity:.7">26년</small></button>
-    </div>
-    <p class="foot"><b>위기시</b>엔 변동성·헷지 <b>단가가 전반적으로 상승</b>해요(26년 급락장). 감마 비용은 <b>변동성²</b>이라 <b style="color:var(--bad)">확 뛰어요</b>. 눌러서 아래 프론티어가 어떻게 움직이는지 보세요.</p>
-  </div>
-  <div class="panel">
-    <div class="cap">효율적 프론티어 — 비용과 손익변동성<span class="capb live">🖐 조작</span><span>점 = 헷지 조합</span></div>
-    <div class="chartwrap"><svg class="ef" id="ef" viewBox="0 0 640 340" preserveAspectRatio="xMidYMid meet"></svg></div>
-    <div class="leg">
-      <span><i style="background:var(--pay)"></i>효율적 프론티어</span>
-      <span><i style="background:var(--leak)"></i>현재 선택</span>
-      <span><i style="background:var(--good)"></i>예산 내 최적</span>
-      <span><span class="dash"></span>예산선(가로)</span>
-      <span><span class="dash" style="border-color:var(--good)"></span>변동성 허용선(세로)</span>
-      <span><i style="background:#12A870;opacity:.35"></i>둘 다 만족 구역</span>
-    </div>
-    <p class="foot">가로=흔들림, 세로=비용. <b>왼쪽</b>=헷지↑(<span style="color:#0a7c50;font-weight:700">안전</span>·비용↑) / <b>오른쪽</b>=미헷지(<span style="color:var(--bad);font-weight:700">위험</span>·비용0). <b>초록 구역</b> 안 가장 왼쪽이 최적(<b style="color:#0a7c50">여기로 ✓</b>).<br>🖐 <b>예산선·변동성 허용선을 드래그</b>해 조절하고, <b>점을 눌러</b> 그 헷지 조합을 바로 적용해 보세요.</p>
   </div>
   <div class="panel">
     <div class="cap">비용 · 흔들림 한눈에<span class="capb ex">개념 배분</span><span>재원 · 미헷지 vs 헷지</span></div>
@@ -843,7 +828,6 @@
       <p class="foot" style="margin-top:9px"><b>①과 같은 축</b> — 막대 <b>길이 차이 = 헷지가 줄인 변동성</b>. 큰 변동성을 <b>작은 잔여</b>로(0은 아님), 대신 <b>비용</b> 지출.</p>
     </div>
   </div>
-  <div class="verdict ok" id="vd"><div class="ic" id="vdi">✓</div><div><h3 id="vdt"></h3><p id="vdp"></p></div></div>
   <div class="panel">
     <div class="cap">헷지할 항목 선택<span class="capb data">VFA 기준</span><span>헷지(PL) 또는 CSM 감내</span></div>
     <div class="callout info" style="margin-bottom:8px"><span class="ci">🧾</span><div><span class="clab">회계전제</span> 여기 <b>감내(CSM)</b> 선택지는 <b>VFA</b>라서 가능해요. <b>PL법이면 완충이 불가</b>해 변동이 <b>전액 즉시 손익</b> — 감내 없이 <b>헷지가 필수</b>예요. (→ ④ PL 인식)</div></div>
@@ -853,6 +837,7 @@
     <p class="foot">각 항목 옆 <b>막대 = 그 항목의 손익 흔들림</b>. <b style="color:var(--good)">헷지</b>=비용 내고 <b style="color:var(--good)">짧게(초록)</b> / <b style="color:var(--bad)">CSM 감내</b>=비용 0이지만 <b style="color:var(--bad)">길게(빨강)</b> — 감내를 고르면 <b>변동성이 커져요</b>.</p>
   </div>
   <p class="lede">실제 시장데이터(KOSPI·<b>국고 20년</b>, 약 6.5년)로 손익을 재현해요. <b>미헷지</b>는 시장 등락이 그대로 손익이 되어 <b>크게 출렁이고</b>, 헷지는 그 흔들림을 줄여요. <span id="simStatus" style="color:var(--muted)">데이터 불러오는 중…</span></p>
+  <div class="verdict ok" id="vd"><div class="ic" id="vdi">✓</div><div><h3 id="vdt"></h3><p id="vdp"></p></div></div>
   <div class="panel">
     <div class="cap">미헷지 손익변동성 vs 헷지<span class="capb data">📊 실측</span><span>주간 손익 (억)</span></div>
     <div class="stat" id="volStat"></div>
@@ -864,6 +849,28 @@
       <span><i style="background:var(--good);opacity:.35"></i>±1σ 범위(헷지 후)</span>
     </div>
     <p class="foot"><b>미헷지</b>는 매주 크게 출렁, <b>헷지 후</b>는 좁게. 음영 띠 = <b>±1σ 변동 범위</b>(σ=보통 등락폭). <b>넓은 띠 → 좁은 띠</b>로 줄어든 만큼이 헷지 효과. 민감도는 <b>입력 가정</b>에서.</p>
+  </div>
+  <div class="panel">
+    <div class="cap">변동성 국면 프리셋<span>입력 가정을 한 번에 세팅 · 프론티어가 즉시 이동</span></div>
+    <div class="pobtns" id="regimeSeg">
+      <button data-rg="normal" class="on">🙂 평상시 <small style="opacity:.7">23·24년</small></button>
+      <button data-rg="crisis">🌪️ 위기시 <small style="opacity:.7">26년</small></button>
+    </div>
+    <p class="foot"><b>위기시</b>엔 변동성·헷지 <b>단가가 전반적으로 상승</b>해요(26년 급락장). 감마 비용은 <b>변동성²</b>이라 <b style="color:var(--bad)">확 뛰어요</b>. 눌러서 아래 프론티어가 어떻게 움직이는지 보세요.</p>
+  </div>
+  <div class="panel">
+    <div class="cap">효율적 프론티어 — 비용과 손익변동성<span class="capb live">🖐 조작</span><span>점 = 헷지 조합</span></div>
+    <p class="foot" style="margin-top:0">이 그림은 <b>같은 예산으로 흔들림을 가장 작게</b> 만드는 지점(<b style="color:#0a7c50">초록 ✓</b>)을 찾는 도구예요. 위에서 고른 <b>헷지 선택</b>과 <b>바로 위 국면 프리셋</b>이 여기에 반영돼요.</p>
+    <div class="chartwrap"><svg class="ef" id="ef" viewBox="0 0 640 340" preserveAspectRatio="xMidYMid meet"></svg></div>
+    <div class="leg">
+      <span><i style="background:var(--pay)"></i>효율적 프론티어</span>
+      <span><i style="background:var(--leak)"></i>현재 선택</span>
+      <span><i style="background:var(--good)"></i>예산 내 최적</span>
+      <span><span class="dash"></span>예산선(가로)</span>
+      <span><span class="dash" style="border-color:var(--good)"></span>변동성 허용선(세로)</span>
+      <span><i style="background:#12A870;opacity:.35"></i>둘 다 만족 구역</span>
+    </div>
+    <p class="foot">가로=흔들림, 세로=비용. <b>왼쪽</b>=헷지↑(<span style="color:#0a7c50;font-weight:700">안전</span>·비용↑) / <b>오른쪽</b>=미헷지(<span style="color:var(--bad);font-weight:700">위험</span>·비용0). <b>초록 구역</b> 안 가장 왼쪽이 최적(<b style="color:#0a7c50">여기로 ✓</b>).<br>🖐 <b>예산선·변동성 허용선을 드래그</b>해 조절하고, <b>점을 눌러</b> 그 헷지 조합을 바로 적용해 보세요.</p>
   </div>
   <details class="deep">
     <summary>🔬 심화 — 연도별 재현 · 요소 분해 <small>(선택, 초심자는 건너뛰어도 좋아요)</small></summary>

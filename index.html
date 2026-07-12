@@ -724,7 +724,7 @@
       <span><span class="dash" style="border-color:var(--good)"></span>변동성 허용선(세로)</span>
       <span><i style="background:#12A870;opacity:.35"></i>둘 다 만족 구역</span>
     </div>
-    <p class="foot">가로축은 남는 손익변동성, 세로축은 연간 비용입니다. <b>왼쪽·아래</b>일수록 우수하며, 점선(예산선) 아래에서 가장 왼쪽 프론티어 점이 최적입니다. 우측 끝은 미헷지, 왼쪽으로 갈수록 헷지를 더 실행한 조합입니다.</p>
+    <p class="foot">가로=흔들림, 세로=비용. <b>선을 따라 왼쪽</b>=헷지↑(<span style="color:#0a7c50;font-weight:700">안전</span>·비용↑) / <b>오른쪽</b>=미헷지(<span style="color:var(--bad);font-weight:700">위험</span>·비용0). <b>초록 구역</b>(예산·변동성 OK) 안에서 가장 왼쪽이 최적 — <b style="color:#0a7c50">여기로 ✓</b> 화살표가 가리켜요.</p>
   </div>
   <div class="panel">
     <div class="cap">비용 · 흔들림 한눈에<span>재원 · 미헷지 vs 헷지</span></div>
@@ -1263,8 +1263,10 @@ function drawEF(pts,fr,cur,opt,budget){
   const xMax=(Math.max(...pts.map(p=>p.sig),cur.sig)||1)*1.06, yMax=(Math.max(...pts.map(p=>p.cost),cur.cost,budget)||1)*1.08;
   const X=v=>L+(v/xMax)*iw, Y=v=>T+ih-(v/yMax)*ih, g=[];
   const volTol=val("voltol")||0, vx=Math.min(X(volTol),W-R), byv=Math.max(Y(budget),T);
+  g.push(`<defs><linearGradient id="efGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#12A870"/><stop offset="0.5" stop-color="#3B6FE6"/><stop offset="1" stop-color="#E24A62"/></linearGradient><marker id="efar" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#0a7c50"/></marker></defs>`);
   /* 둘 다 만족 구역(비용≤예산 & 변동성≤허용) 연한 색칠 */
   g.push(`<rect x="${L}" y="${byv.toFixed(1)}" width="${(vx-L).toFixed(1)}" height="${(T+ih-byv).toFixed(1)}" fill="#12A870" opacity="0.16"/>`);
+  if(vx>L+50) g.push(`<text class="eflabel" x="${(L+8).toFixed(1)}" y="${(T+ih-9).toFixed(1)}" fill="#0a7c50" font-weight="800">✅ 좋은 구역</text>`);
   for(let i=0;i<=4;i++){ const gy=T+ih*i/4;
     g.push(`<line x1="${L}" y1="${gy.toFixed(1)}" x2="${W-R}" y2="${gy.toFixed(1)}" stroke="#EAEDF5" stroke-width="1"/>`);
     g.push(`<text class="eflabel" x="${L-6}" y="${(gy+3).toFixed(1)}" text-anchor="end">${won(yMax*(1-i/4))}</text>`); }
@@ -1279,12 +1281,15 @@ function drawEF(pts,fr,cur,opt,budget){
     g.push(`<text class="eflabel" x="${(vx+4).toFixed(1)}" y="${(T+10)}" fill="var(--good)">변동성 허용 ${won(volTol)}억</text>`); }
   const frSet=new Set(fr.map(p=>p.sig+"|"+p.cost));
   pts.forEach(p=>{ if(frSet.has(p.sig+"|"+p.cost))return;
-    g.push(`<circle class="pt" data-sig="${p.sig}" data-cost="${p.cost}" cx="${X(p.sig).toFixed(1)}" cy="${Y(p.cost).toFixed(1)}" r="3" fill="#AAB4C6"/>`); });
-  g.push(`<path d="${fr.map((p,i)=>(i?"L":"M")+X(p.sig).toFixed(1)+" "+Y(p.cost).toFixed(1)).join(" ")}" fill="none" stroke="var(--pay)" stroke-width="3" stroke-linejoin="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"><animate attributeName="stroke-dashoffset" from="1" to="0" dur="1s" fill="freeze"/></path>`);
-  fr.forEach(p=>g.push(`<circle class="pt" data-sig="${p.sig}" data-cost="${p.cost}" data-fr="1" cx="${X(p.sig).toFixed(1)}" cy="${Y(p.cost).toFixed(1)}" r="4" fill="var(--pay)" stroke="var(--bg)" stroke-width="1.5"/>`));
-  /* 미헷지(감내)↔헷지 개념 주석 — 우하=감내(변동성 큼·비용0), 좌상=헷지(비용↑·변동성↓) */
-  g.push(`<text class="eflabel" x="${(W-R-4).toFixed(1)}" y="${(T+ih-7).toFixed(1)}" text-anchor="end" fill="var(--sym)" font-weight="700">감내(미헷지) ▶ 변동성 큼 · 비용 0</text>`);
-  g.push(`<text class="eflabel" x="${(L+6).toFixed(1)}" y="${(T+12).toFixed(1)}" fill="var(--pay)" font-weight="700">◀ 헷지 많음 · 비용↑ · 변동성↓</text>`);
+    g.push(`<circle class="pt" data-sig="${p.sig}" data-cost="${p.cost}" cx="${X(p.sig).toFixed(1)}" cy="${Y(p.cost).toFixed(1)}" r="2.5" fill="#C4CBD6" opacity="0.5"/>`); });
+  g.push(`<path d="${fr.map((p,i)=>(i?"L":"M")+X(p.sig).toFixed(1)+" "+Y(p.cost).toFixed(1)).join(" ")}" fill="none" stroke="url(#efGrad)" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"><animate attributeName="stroke-dashoffset" from="1" to="0" dur="1s" fill="freeze"/></path>`);
+  fr.forEach(p=>g.push(`<circle class="pt" data-sig="${p.sig}" data-cost="${p.cost}" data-fr="1" cx="${X(p.sig).toFixed(1)}" cy="${Y(p.cost).toFixed(1)}" r="3.5" fill="#fff" stroke="#7C8DA8" stroke-width="1.5"/>`));
+  /* 양끝 개념 주석 — 좌상=헷지(안전), 우하=미헷지(위험) */
+  g.push(`<text class="eflabel" x="${(L+6).toFixed(1)}" y="${(T+12).toFixed(1)}" fill="#0a7c50" font-weight="800">◀ 헷지 많음 · 안전</text>`);
+  g.push(`<text class="eflabel" x="${(W-R-4).toFixed(1)}" y="${(T+ih-24).toFixed(1)}" text-anchor="end" fill="var(--bad)" font-weight="800">미헷지 ▶ 위험</text>`);
+  if(opt && (cur.sig-opt.sig)>xMax*0.04){ const cx=X(cur.sig),cy=Y(cur.cost),ox=X(opt.sig),oy=Y(opt.cost),mx=(cx+ox)/2,my=Math.min(cy,oy)-16;
+    g.push(`<path d="M${cx.toFixed(1)} ${cy.toFixed(1)} Q${mx.toFixed(1)} ${my.toFixed(1)} ${ox.toFixed(1)} ${oy.toFixed(1)}" fill="none" stroke="#0a7c50" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#efar)"/>`);
+    g.push(`<text class="eflabel" x="${mx.toFixed(1)}" y="${(my-3).toFixed(1)}" text-anchor="middle" fill="#0a7c50" font-weight="800">여기로 ✓ 더 좋음</text>`); }
   if(opt) g.push(`<circle cx="${X(opt.sig).toFixed(1)}" cy="${Y(opt.cost).toFixed(1)}" r="7" fill="none" stroke="var(--good)" stroke-width="2.5"><animate attributeName="r" values="7;11;7" dur="1.9s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;.45;1" dur="1.9s" repeatCount="indefinite"/></circle>`);
   g.push(`<circle cx="${X(cur.sig).toFixed(1)}" cy="${Y(cur.cost).toFixed(1)}" r="7" fill="none" stroke="var(--leak)" stroke-width="2" opacity="0.5"><animate attributeName="r" values="7;15;7" dur="1.9s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0;0.5" dur="1.9s" repeatCount="indefinite"/></circle>`);
   g.push(`<circle cx="${X(cur.sig).toFixed(1)}" cy="${Y(cur.cost).toFixed(1)}" r="7" fill="var(--leak)" stroke="#fff" stroke-width="2.5"><animate attributeName="r" values="7;8.5;7" dur="1.6s" repeatCount="indefinite"/></circle>`);

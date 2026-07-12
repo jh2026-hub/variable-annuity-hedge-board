@@ -633,6 +633,11 @@
 <!-- ④ 비용·변동성 : 프론티어 → 선택 → 재원 → 입력 -->
 <section class="page" id="p2">
   <p class="lede"><b>예산(수수료)</b> 안에서 <b>비용</b>과 <b>흔들림</b>을 보고 헷지할 항목을 고릅니다.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:6px;margin:0 0 4px">
+    <span class="qchip">🌊 미헷지 = <b>변동성 큼</b></span>
+    <span class="qchip">🛡️ 헷지 = <b>변동성 작음 · 비용</b></span>
+    <span class="qchip">🪫 얇은 완충 = <b>헷지</b></span>
+  </div>
   <div class="panel" style="border-color:#F1D7A3;background:#FDF7EC">
     <div class="cap">⚠ 미헷지도 변동성은 그대로</div>
     <p style="font-size:12.5px;color:var(--muted);line-height:1.7;margin-top:2px"><b style="color:var(--pay)">헷지</b> = 비용↑·흔들림↓ · <b style="color:var(--leak)">미헷지</b> = 비용0·흔들림↑. 미헷지는 <b>CSM 완충</b>이 흡수하지만, <b style="color:var(--bad)">완충이 얇으면 손익으로 전이</b> — 얇을수록 더 헷지해야 합니다. (→ <b>④ PL 인식</b>)</p>
@@ -728,6 +733,11 @@
 <!-- ③ 헷지수단 -->
 <section class="page" id="p7">
   <p class="lede">위험을 넘기는 <b>도구</b>를 비용·효과로 비교합니다. <b>선물·스왑</b> = 방향만 싸게 상쇄 · <b>옵션</b> = 프리미엄 내고 급락·꼬리까지 확실히 방어.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:6px;margin:0 0 4px">
+    <span class="qchip">📉 선물·스왑 = <b>방향 · 저렴</b></span>
+    <span class="qchip">🔁 스왑 = <b>맞춤(베이시스)</b></span>
+    <span class="qchip">🛡️ 옵션 = <b>감마·꼬리 · 비쌈</b></span>
+  </div>
   <div class="panel" style="background:linear-gradient(135deg,#EEF3FE,#F4F0FD);border:1px solid #D7E0F5">
     <div class="cap">도구 3종 요약</div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:4px">
@@ -781,6 +791,11 @@
 <!-- ④ CSM 완충 -->
 <section class="page" id="p3">
   <p class="lede">헷지 안 한 손실은 곧장 손익에 안 잡히고, 먼저 <b>CSM(완충)</b>을 깎아 흡수합니다. <b>완충이 바닥나면</b> 초과분이 <b>그 해 보험손익</b>으로 잡힙니다.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:6px;margin:0 0 4px">
+    <span class="qchip">🌊 충격 → 🛟 <b>CSM 먼저</b></span>
+    <span class="qchip">🪫 소진 → <b>손익 전이</b></span>
+    <span class="qchip">⚠️ 얇을수록 <b>헷지</b></span>
+  </div>
   <div class="panel">
     <div class="cap">완충의 작동<span>주가 충격 시나리오</span></div>
     <div class="srow"><div class="lab">주식성 자산 규모<small>충격이 적용되는 기준</small></div>
@@ -810,6 +825,11 @@
 <!-- ④ 헷지 vs CSM -->
 <section class="page" id="p4">
   <p class="lede">각 위험은 둘 중 하나 — <b>헷지</b>(비용 내고 손익 확정) 또는 <b>감내</b>(완충 CSM으로 버팀). 아래는 요인별 <b>원리(그림)</b>, 실제 선택은 ⑤에서.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:6px;margin:0 0 4px">
+    <span class="qchip">🛡️ 헷지 = <b>손익 확정</b></span>
+    <span class="qchip">🌊 감내 = <b>완충(CSM)</b></span>
+    <span class="qchip">📐 방향·감마·변동성·펀드·해지</span>
+  </div>
   <div class="panel">
     <div class="cap">요인별 원리<span>무엇이 왜 위험인가</span></div>
     <div id="facAnim"></div>
@@ -857,6 +877,12 @@
 <!-- ⑥ 이론 -->
 <section class="page" id="p6">
   <p class="lede">이 도구가 기대는 이론과 대표 문헌입니다. 최저보증은 사실상 적립금에 <b>내장된 풋옵션(하락을 막아 주는 약속)</b>이므로, 그 관리는 옵션 복제·헷지 이론에 뿌리를 둡니다.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:6px;margin:0 0 4px">
+    <span class="qchip">📐 보증 = <b>내장 풋옵션</b></span>
+    <span class="qchip">🌀 감마 손실 ∝ <b>변동성²</b></span>
+    <span class="qchip">🛡️ IV&gt;RV = <b>보험</b></span>
+    <span class="qchip">🧾 CSM 완충 · <b>K-ICS</b></span>
+  </div>
   <div class="panel" style="background:linear-gradient(135deg,#EEF3FE,#F4F0FD);border:1px solid #D7E0F5">
     <div class="cap">쉬운 요약</div>
     <ul class="qalist">

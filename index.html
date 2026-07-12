@@ -327,7 +327,7 @@
     <div class="cap">도대체 헷지는 왜? — 헷지를 늘릴수록 변동폭이 줄어듭니다<span>미헷지 주간 손익 · 실제 시장데이터 · 방향 헷지 비율별</span></div>
     <div class="chartwrap"><svg id="conceptLines" viewBox="0 0 640 280" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"><text x="320" y="140" text-anchor="middle" class="eflabel">데이터 불러오는 중…</text></svg></div>
     <div id="conceptLeg" style="display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;font-size:11.5px"></div>
-    <p style="font-size:13px;color:var(--muted);line-height:1.75;margin-top:8px"><b style="color:var(--sym)">미헷지</b>는 주가·금리 등락이 그대로 손익이 되어 위기마다 <b style="color:var(--ink)">수백~수천억씩</b> 출렁입니다 — 이 큰 변동을 재무제표가 그대로 떠안을 수 없어 헷지합니다. 같은 축에 방향 헷지 비율을 <b>0 → 50 → 80 → 100%</b>로 올려 겹쳤는데, 비율을 높일수록 <b>밴드(변동폭)가 눈에 띄게 좁아집니다</b>(범례의 ±값이 그 크기). 다만 <b>100% 헷지해도 완전 직선은 아닙니다</b>: 방향을 막아도 남는 <b style="color:var(--leak)">감마 누수(시장이 크게 움직일 때 헷지가 못 따라가 새는 비용)</b>와 <b>펀드 성과 차이·변동성(베가)·해지</b> 같은 나머지 요인으로 <b>좁게 흔들립니다</b>. 헷지는 흔들림을 <b>없애는 것이 아니라 크게 줄이는 것</b>입니다.</p>
+    <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-top:8px"><b style="color:var(--sym)">미헷지</b> = 위기마다 크게 출렁. 헷지 비율을 <b>0→50→80→100%</b>로 올릴수록 <b>흔들림(밴드)이 좁아집니다</b>. 단 <b>100%도 0은 아님</b> — 감마·펀드·베가 등 나머지로 <b>좁게 흔들립니다</b>. 헷지 = <b>없애기가 아니라 크게 줄이기</b>.</p>
   </div>
 
   <div class="panel concept">
@@ -479,10 +479,20 @@
         <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px"><b>관리가 아니라</b> "평소 평균은 괜찮겠지"에 기대는 것. 나쁜 해엔 완충을 넘어 <b>손익으로 터집니다</b>.</div>
       </div>
     </div>
-    <ul class="qalist">
-      <li><b>원칙: 막을 수 있는 위험은 최대한 막는 것</b>이 유리합니다 — 회사가 통제할 수 있는 상태로 둡니다.</li>
-      <li>완충(CSM)이 <b>얇을수록</b> 방치의 위험이 커집니다 → 그만큼 <b>헷지를 더 해야 하는 압력</b>이 커집니다(④ PL 인식).</li>
-    </ul>
+    <div class="chartwrap" style="margin:0 0 8px"><svg viewBox="0 0 320 104" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
+      <text x="80" y="16" text-anchor="middle" font-size="11" font-weight="800" fill="#0a7c50">✅ 막기 → 손익 좁게</text>
+      <rect x="20" y="47" width="120" height="22" fill="#D6F0E4" opacity="0.55" rx="3"/>
+      <line x1="20" y1="58" x2="140" y2="58" stroke="#AAB4C6" stroke-width="0.8"/>
+      <path d="M20 58 Q35 53 50 58 T80 57 T110 60 T140 58" fill="none" stroke="var(--good)" stroke-width="2.6" stroke-linecap="round"><animate attributeName="opacity" values="1;.55;1" dur="2s" repeatCount="indefinite"/></path>
+      <text x="80" y="92" text-anchor="middle" font-size="10" font-weight="700" fill="#0a7c50">통제됨 · 안전</text>
+      <line x1="160" y1="26" x2="160" y2="86" stroke="var(--hair)" stroke-dasharray="3 3"/>
+      <text x="240" y="16" text-anchor="middle" font-size="11" font-weight="800" fill="var(--bad)">⚠️ 방치 → 가끔 터짐</text>
+      <line x1="180" y1="50" x2="300" y2="50" stroke="#AAB4C6" stroke-width="0.8"/>
+      <path d="M180 50 L214 50 L235 86 L250 50 L300 50" fill="none" stroke="var(--bad)" stroke-width="2.6" stroke-linejoin="round"/>
+      <circle cx="235" cy="86" r="4" fill="var(--bad)"><animate attributeName="r" values="4;6.5;4" dur="1.3s" repeatCount="indefinite"/></circle>
+      <text x="240" y="99" text-anchor="middle" font-size="10" font-weight="700" fill="var(--bad)">나쁜 해엔 손익 터짐</text>
+    </svg></div>
+    <ul class="qalist"><li><b>막을 수 있는 위험은 최대한 막기.</b> 완충이 얇을수록 헷지 압력↑ (→ ④ PL 인식).</li></ul>
   </div>
 
   <div class="panel">
@@ -497,11 +507,24 @@
         <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px">작은 손실도 곧장 <b>손익으로 터집니다</b>. 그래서 <b>더 많이 막아야</b> 합니다.</div>
       </div>
     </div>
-    <ul class="qalist">
-      <li>완충이 얇으면 받아 줄 여력이 없어, <b>감내하던 위험까지 헷지해야 하는 압력</b>이 커집니다.</li>
-      <li>주가 방향뿐 아니라 <b>감마·펀드 차이·변동성까지</b> 막아야 하고, <b>비용이 더 들어도</b> 흔들림을 낮춰야 합니다.</li>
-      <li>즉 <b>완충이 얇을수록 = 헷지를 더 해야 한다</b>는 뜻입니다. 직접 움직여 보려면 <b>④ PL 인식</b> 탭의 슬라이더를 얇은 쪽으로 당겨 보세요.</li>
-    </ul>
+    <div class="chartwrap" style="margin:0 0 8px"><svg viewBox="0 0 320 120" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
+      <text x="78" y="15" text-anchor="middle" font-size="11" font-weight="800" fill="#0a7c50">🛡️ 완충 두꺼움</text>
+      <text x="78" y="30" text-anchor="middle" font-size="9" fill="var(--leak)" font-weight="700">🌊 충격</text>
+      <rect x="34" y="72" width="88" height="30" fill="#D6F0E4" stroke="#5BD99A" rx="4"/>
+      <text x="78" y="91" text-anchor="middle" font-size="9" fill="#0a7c50" font-weight="700">완충</text>
+      <rect x="34" y="102" width="88" height="9" fill="#F7C9D1"/>
+      <circle cx="78" r="7" fill="var(--leak)"><animate attributeName="cy" values="40;66;66;40" keyTimes="0;0.4;0.8;1" dur="2.4s" repeatCount="indefinite"/></circle>
+      <text x="78" y="118" text-anchor="middle" font-size="10" font-weight="800" fill="#0a7c50">완충이 흡수 ✓</text>
+      <line x1="160" y1="26" x2="160" y2="104" stroke="var(--hair)" stroke-dasharray="3 3"/>
+      <text x="242" y="15" text-anchor="middle" font-size="11" font-weight="800" fill="var(--bad)">🪫 완충 얇음</text>
+      <text x="242" y="30" text-anchor="middle" font-size="9" fill="var(--leak)" font-weight="700">🌊 충격</text>
+      <rect x="198" y="94" width="88" height="8" fill="#D6F0E4" stroke="#5BD99A" rx="3"/>
+      <rect x="198" y="102" width="88" height="12" fill="#F7C9D1"/>
+      <rect x="198" y="102" width="88" height="12" fill="var(--bad)"><animate attributeName="opacity" values="0;0;.55;0" keyTimes="0;0.42;0.5;0.72" dur="2.4s" repeatCount="indefinite"/></rect>
+      <circle cx="242" r="7" fill="var(--bad)"><animate attributeName="cy" values="40;107;107;40" keyTimes="0;0.45;0.8;1" dur="2.4s" repeatCount="indefinite"/></circle>
+      <text x="242" y="118" text-anchor="middle" font-size="10" font-weight="800" fill="var(--bad)">터짐 → 더 헷지</text>
+    </svg></div>
+    <ul class="qalist"><li><b>완충이 얇을수록 = 헷지를 더.</b> <b>④ PL 인식</b> 슬라이더를 얇은 쪽으로 당겨 보세요.</li></ul>
   </div>
 </section>
 
@@ -566,10 +589,10 @@
 
 <!-- ④ 비용·변동성 : 프론티어 → 선택 → 재원 → 입력 -->
 <section class="page" id="p2">
-  <p class="lede">보증수수료라는 <b>예산</b> 안에서 <b>비용</b>과 <b>손익 흔들림(변동성)</b>을 함께 보고 헷지할 항목을 고릅니다. 아래 <b>프론티어(비용↔변동성 지도)</b>가 선택의 기준입니다.</p>
+  <p class="lede"><b>예산(수수료)</b> 안에서 <b>비용</b>과 <b>흔들림</b>을 보고 헷지할 항목을 고릅니다.</p>
   <div class="panel" style="border-color:#F1D7A3;background:#FDF7EC">
-    <div class="cap">⚠ 미헷지는 변동성을 없애지 않습니다</div>
-    <p style="font-size:12.5px;color:var(--muted);line-height:1.7;margin-top:2px"><b style="color:var(--pay)">헷지</b> = 비용↑·손익변동성↓ · <b style="color:var(--leak)">미헷지</b> = 비용↓·<b style="color:var(--ink)">손익변동성↑</b>. 미헷지의 큰 변동성은 사라지는 것이 아니라 <b>CSM 완충</b>이 흡수합니다. 다만 <b style="color:var(--bad)">완충이 얇으면 손실이 보험손익(PL)으로 전이</b>되므로, 얇은 CSM일수록 <b>허용 변동성(세로선)을 낮춰 더 많이 헷지</b>해야 합니다. (완충 작동은 <b>④ PL 인식</b> 참조)</p>
+    <div class="cap">⚠ 미헷지도 변동성은 그대로</div>
+    <p style="font-size:12.5px;color:var(--muted);line-height:1.7;margin-top:2px"><b style="color:var(--pay)">헷지</b> = 비용↑·흔들림↓ · <b style="color:var(--leak)">미헷지</b> = 비용0·흔들림↑. 미헷지는 <b>CSM 완충</b>이 흡수하지만, <b style="color:var(--bad)">완충이 얇으면 손익으로 전이</b> — 얇을수록 더 헷지해야 합니다. (→ <b>④ PL 인식</b>)</p>
   </div>
   <div class="panel">
     <div class="cap">효율적 프론티어 — 비용과 손익변동성<span>점 = 헷지 조합</span></div>
@@ -637,7 +660,7 @@
       <span><i style="background:var(--sym);opacity:.25"></i>±1σ 범위(미헷지)</span>
       <span><i style="background:var(--good);opacity:.35"></i>±1σ 범위(헷지 후)</span>
     </div>
-    <p class="foot"><b>미헷지</b> 선은 주가·금리 등락이 그대로 손익이 되어 <b>매주 크게 위아래로 출렁입니다</b>. <b>헷지 후</b> 선은 <b>위에서 헷지로 선택한 항목의 변동만 제거</b>합니다 — 아무것도 헷지하지 않으면 미헷지 선과 겹치고, 방향(주가·금리)을 헷지하면 0 근처로 붙습니다. 배경의 <b>음영 띠는 각 선의 ±1σ 주간 변동 범위</b>(σ=보통의 등락폭, 대부분의 주가 이 안)로, 넓은 띠(미헷지)가 좁은 띠(헷지 후)로 줄어드는 만큼이 헷지가 잡아낸 변동성입니다. 민감도는 <b>⑥ 입력 가정</b>에서 조정합니다.</p>
+    <p class="foot"><b>미헷지</b>는 매주 크게 출렁, <b>헷지 후</b>는 좁게. 음영 띠 = <b>±1σ 변동 범위</b>(σ=보통 등락폭). <b>넓은 띠 → 좁은 띠</b>로 줄어든 만큼이 헷지 효과. 민감도는 <b>⑥</b>에서.</p>
   </div>
   <div class="panel">
     <div class="cap">연도별 변동성 · 감마 손실<span>실제 시장 변동성으로 재현</span></div>

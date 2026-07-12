@@ -335,7 +335,7 @@
   <span class="sbitem">💬 의견 <b id="sbFeedback">…</b></span>
   <span class="sbnote">변액보험 헷지 학습 도구</span>
 </div>
-<div class="exbanner">📊 범용 계산 도구 <span>· 적립금·부채·민감도·수수료 등 모든 값을 직접 입력하여 사용합니다. 기본값은 개념 설명용 예시이며 특정 회사와 무관합니다.</span></div>
+<div class="exbanner">📊 범용 계산 도구 <span>· 적립금·부채·민감도·수수료 등 모든 값을 직접 입력하여 사용해요. 기본값은 개념 설명용 예시이며 특정 회사와 무관해요.</span></div>
 
 <h1>도대체 <em>헷지</em>는 왜??</h1>
 <div class="sub">보증(GMxB) 헷지의 구조, 보증수수료·비용·손익변동성의 관계, CSM 완충의 역할을 입력값과 실제 시장데이터로 살펴본다.</div>
@@ -354,7 +354,7 @@
 
 <!-- ① 개념 -->
 <section class="page" id="p1">
-  <p class="lede">변액보험은 <b>최저 수준을 보증</b>하고, 그 대가로 <b>보증수수료</b>를 받아 시장위험을 관리합니다. 핵심은 <b>비용과 흔들림의 균형</b>.</p>
+  <p class="lede">변액보험은 <b>최저 수준을 보증</b>하고, 그 대가로 <b>보증수수료</b>를 받아 시장위험을 관리해요. 핵심은 <b>비용과 흔들림의 균형</b>.</p>
   <div class="callout sum"><span class="ci">📝</span><div><span class="clab">요약</span> 변액보험은 <b>자본이 흔들리는 상품</b>. <b>감내</b>하면 완충(CSM)이 받다 <b>소진되면 자본</b>, <b>헷지</b>하면 <b>줄어든 변동만</b> 자본에. 완충 <b>얇을수록 헷지</b>.</div></div>
 
   <div class="panel" style="background:linear-gradient(135deg,#EEF3FE,#F4F0FD);border:1px solid #D7E0F5">
@@ -369,7 +369,7 @@
   </div>
 
   <div class="panel">
-    <div class="cap">헷지든 미헷지든 → 결국 자본에<span>단, 흔들림 크기가 다릅니다</span></div>
+    <div class="cap">헷지든 미헷지든 → 결국 자본에<span>단, 흔들림 크기가 달라요</span></div>
     <div class="chartwrap"><svg viewBox="0 0 560 240" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
       <defs>
         <marker id="fArr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#AAB4C6"/></marker>
@@ -397,15 +397,15 @@
       <text x="490" y="116" text-anchor="middle" font-size="15" font-weight="800" fill="#2F63E0">🏛️ 자본</text>
       <text x="490" y="134" text-anchor="middle" font-size="9" fill="var(--muted)">둘 다 여기로</text>
     </svg></div>
-    <p class="foot" style="margin-top:8px"><b>헷지</b> = 흔들림을 <b>작게 줄여</b> 자본에. <b>미헷지</b> = <b>큰 흔들림</b>을 <b>CSM 완충</b>이 받쳐주다 <b>넘치면</b> 자본에. 둘 다 자본에 닿지만 <b>흔들림 크기 자체가 훨씬 다릅니다.</b></p>
-    <div class="callout key"><span class="ci">⭐</span><div><span class="clab">핵심</span> 완충이 <b>얇을수록 헷지가 유리</b>합니다.</div></div>
+    <p class="foot" style="margin-top:8px"><b>헷지</b> = 흔들림을 <b>작게 줄여</b> 자본에. <b>미헷지</b> = <b>큰 흔들림</b>을 <b>CSM 완충</b>이 받쳐주다 <b>넘치면</b> 자본에. 둘 다 자본에 닿지만 <b>흔들림 크기 자체가 훨씬 달라요.</b></p>
+    <div class="callout key"><span class="ci">⭐</span><div><span class="clab">핵심</span> 완충이 <b>얇을수록 헷지가 유리</b>해요.</div></div>
   </div>
 
   <div class="panel concept">
     <div class="cap">도대체 헷지는 왜?<span class="capb data">📊 실측</span><span>헷지↑ → 변동폭↓</span></div>
     <div class="chartwrap"><svg id="conceptLines" viewBox="0 0 640 280" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"><text x="320" y="140" text-anchor="middle" class="eflabel">데이터 불러오는 중…</text></svg></div>
     <div id="conceptLeg" style="display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;font-size:11.5px"></div>
-    <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-top:8px"><b style="color:var(--sym)">미헷지</b> = 위기마다 크게 출렁. 헷지 비율을 <b>0→50→80→100%</b>로 올릴수록 <b>흔들림(밴드)이 좁아집니다</b>. 단 <b>100%도 0은 아님</b> — 감마·펀드·베가 등 나머지로 <b>좁게 흔들립니다</b>. 헷지 = <b>없애기가 아니라 크게 줄이기</b>.</p>
+    <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-top:8px"><b style="color:var(--sym)">미헷지</b> = 위기마다 크게 출렁. 헷지 비율을 <b>0→50→80→100%</b>로 올릴수록 <b>흔들림(밴드)이 좁아져요</b>. 단 <b>100%도 0은 아님</b> — 감마·펀드·베가 등 나머지로 <b>좁게 흔들려요</b>. 헷지 = <b>없애기가 아니라 크게 줄이기</b>.</p>
   </div>
 
   <div class="panel concept">
@@ -432,7 +432,7 @@
       <rect x="428" y="58" width="136" height="46" rx="9" fill="#E4F6EE" stroke="#A7E3C6"/>
       <text x="496" y="78" fill="#12A870" font-size="13" font-weight="700" text-anchor="middle" font-family="sans-serif">🏛️ 자본 반영</text>
       <text x="496" y="94" fill="#566275" font-size="9" text-anchor="middle" font-family="sans-serif">수수료 − 비용 − 잔여변동성</text>
-      <text x="320" y="146" fill="#566275" font-size="10.5" text-anchor="middle" font-family="sans-serif">감내분은 CSM을 조정하고, 완충이 소진되면 보험손익(PL)으로 인식됩니다.</text>
+      <text x="320" y="146" fill="#566275" font-size="10.5" text-anchor="middle" font-family="sans-serif">감내분은 CSM을 조정하고, 완충이 소진되면 보험손익(PL)으로 인식돼요.</text>
     </svg></div>
     <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-top:6px"><b>수수료 − 헷지 비용 − 잔여변동성 = 자본 반영</b>. 넘어서면 지속 불가.</p>
   </div>
@@ -465,7 +465,7 @@
       <p>변동성 커질수록 손실. 옵션으로 이전하나 <b>프리미엄 큼</b>. <b>헷지 vs 감내</b>가 핵심.</p></div>
     <div class="grpbox g2"><h4><span class="hn">3</span>기타 — 이전이 어려움</h4>
       <p>펀드 불일치·해지·모형. 이전 시장이 없어 <b>대개 감내</b>.</p></div>
-    <p class="foot">각 요인의 원리는 <b>② 항목별 설명</b>, 처리 선택은 <b>⑤ 시뮬레이션</b>에서 다룹니다.</p>
+    <p class="foot">각 요인의 원리는 <b>② 항목별 설명</b>, 처리 선택은 <b>⑤ 시뮬레이션</b>에서 다뤄요.</p>
   </div>
 
   <div class="panel concept">
@@ -493,15 +493,15 @@
       <div class="qabar"><span class="qalab">하면</span><div class="qatrack"><div style="width:20%;background:var(--good)"></div></div><span class="qaval" style="color:var(--good)">흔들림이 작음</span></div>
     </div>
     <ul class="qalist">
-      <li>회사는 <b>"최소한 이만큼 보장"</b>을 약속했고, <b>시장이 나쁠수록 부담이 커집니다</b>.</li>
+      <li>회사는 <b>"최소한 이만큼 보장"</b>을 약속했고, <b>시장이 나쁠수록 부담이 커져요</b>.</li>
       <li>안 하면 그 출렁임이 그대로 손익 — <b>안 할 때 흔들림 &gt; 헷지 비용</b>.</li>
-      <li>회계상 <b>펀드·헷지 손익은 그 해 바로</b>, <b>보증 변동은 완충(CSM)이 먼저 흡수</b> → 어긋남은 회계 특례로 맞춥니다.</li>
+      <li>회계상 <b>펀드·헷지 손익은 그 해 바로</b>, <b>보증 변동은 완충(CSM)이 먼저 흡수</b> → 어긋남은 회계 특례로 맞춰요.</li>
     </ul>
     <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">
       <span class="qchip">📈 펀드·헷지 손익 → 그 해 실적</span>
       <span class="qchip">🧾 보증 변동 → 완충(CSM)이 먼저 흡수</span>
     </div>
-    <div class="qref">근거가 되는 문헌은 <b>⑥ 이론</b> 탭에 정리돼 있습니다.</div>
+    <div class="qref">근거가 되는 문헌은 <b>⑥ 이론</b> 탭에 정리돼 있어요.</div>
   </div>
 
   <div class="panel">
@@ -521,9 +521,9 @@
       <text x="536" y="118" fill="var(--good)" font-size="10" font-weight="700" text-anchor="end">헷지 후: 좁게만 흔들림 ↓</text>
     </svg></div>
     <ul class="qalist">
-      <li>값의 <b>오르내림(방향)</b>은 막아도, <b>시장이 크게 출렁일 때 헷지가 못 따라가 새는 부분</b>이 남습니다.</li>
-      <li>우리 <b>펀드와 시장(지수)의 성과 차이</b>, <b>출렁임 자체가 커지는 것</b>, 고객 <b>해지</b> 등은 완전히 없앨 수 없습니다.</li>
-      <li>그래서 목표는 <b>0이 아니라 "예측 가능한 좁은 폭"</b>으로 잡아 두는 것입니다.</li>
+      <li>값의 <b>오르내림(방향)</b>은 막아도, <b>시장이 크게 출렁일 때 헷지가 못 따라가 새는 부분</b>이 남아요.</li>
+      <li>우리 <b>펀드와 시장(지수)의 성과 차이</b>, <b>출렁임 자체가 커지는 것</b>, 고객 <b>해지</b> 등은 완전히 없앨 수 없어요.</li>
+      <li>그래서 목표는 <b>0이 아니라 "예측 가능한 좁은 폭"</b>으로 잡아 두는 것이에요.</li>
     </ul>
   </div>
 
@@ -550,7 +550,7 @@
       <span class="qchip">📒 회계·자본규제 반영</span>
       <span class="qchip">💧 증거금·현금 관리</span>
     </div>
-    <div style="background:#FBEEF1;border:1px solid #E7B9C2;border-radius:9px;padding:10px 12px;font-size:12.5px;color:var(--ink);line-height:1.6"><b>난이도 요약</b> — 방향 막기는 비교적 쉽지만, 급변·출렁임까지 막으려면 <b>고도 전문 인력이 상시 붙어</b> 매일 계산·조정해야 합니다. 그래서 <b>사람·시스템에 대한 지속 투자</b>가 전제입니다.</div>
+    <div style="background:#FBEEF1;border:1px solid #E7B9C2;border-radius:9px;padding:10px 12px;font-size:12.5px;color:var(--ink);line-height:1.6"><b>난이도 요약</b> — 방향 막기는 비교적 쉽지만, 급변·출렁임까지 막으려면 <b>고도 전문 인력이 상시 붙어</b> 매일 계산·조정해야 해요. 그래서 <b>사람·시스템에 대한 지속 투자</b>가 전제예요.</div>
   </div>
 
   <div class="panel">
@@ -558,11 +558,11 @@
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:4px 0 12px">
       <div style="border:1.5px solid var(--good);border-radius:10px;padding:11px;background:#EAF7F1">
         <div style="font-weight:800;color:var(--good);font-size:13px">✅ 막을 수 있는 건 최대한 막기</div>
-        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px"><b>직접 관리 가능</b>. 손익이 좁은 폭 안에서 움직입니다.</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px"><b>직접 관리 가능</b>. 손익이 좁은 폭 안에서 움직여요.</div>
       </div>
       <div style="border:1.5px solid #E7B9C2;border-radius:10px;padding:11px;background:#FBEEF1">
         <div style="font-weight:800;color:var(--bad);font-size:13px">⚠️ 완충(CSM)에 맡기고 방치</div>
-        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px"><b>관리가 아니라</b> "평소 평균은 괜찮겠지"에 기대는 것. 나쁜 해엔 완충을 넘어 <b>손익으로 터집니다</b>.</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px"><b>관리가 아니라</b> "평소 평균은 괜찮겠지"에 기대는 것. 나쁜 해엔 완충을 넘어 <b>손익으로 터져요</b>.</div>
       </div>
     </div>
     <div class="chartwrap" style="margin:0 0 8px"><svg viewBox="0 0 320 104" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
@@ -586,11 +586,11 @@
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:4px 0 12px">
       <div style="border:1.5px solid var(--good);border-radius:10px;padding:11px;background:#EAF7F1">
         <div style="font-weight:800;color:var(--good);font-size:13px">🛡️ 완충이 두꺼우면</div>
-        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px">웬만한 손실은 완충이 받아 줍니다. <b>덜 막고 감내</b>해도 버틸 여유가 있습니다.</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px">웬만한 손실은 완충이 받아 줘요. <b>덜 막고 감내</b>해도 버틸 여유가 있어요.</div>
       </div>
       <div style="border:1.5px solid #E7B9C2;border-radius:10px;padding:11px;background:#FBEEF1">
         <div style="font-weight:800;color:var(--bad);font-size:13px">🪫 완충이 얇으면</div>
-        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px">작은 손실도 곧장 <b>손익으로 터집니다</b>. 그래서 <b>더 많이 막아야</b> 합니다.</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px">작은 손실도 곧장 <b>손익으로 터져요</b>. 그래서 <b>더 많이 막아야</b> 해요.</div>
       </div>
     </div>
     <div class="chartwrap" style="margin:0 0 8px"><svg viewBox="0 0 440 162" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
@@ -635,10 +635,10 @@
     <div class="cap">게임 1 · 델타 헷지 🎮<span>매일 따라붙기</span></div>
     <details style="margin-bottom:10px"><summary style="cursor:pointer;font-size:12.5px;font-weight:700;color:var(--pay)">❓ 게임 방법 (처음이라면)</summary>
       <div style="font-size:12px;color:var(--muted);line-height:1.75;margin-top:8px;padding:10px 12px;background:var(--panel2);border-radius:8px">
-        · <b>검은 점 = 오늘 시장 위치.</b> 곡선의 <b>꼭대기에서 멀어질수록 손실</b>이 커집니다.<br>
-        · <b>회색 선 = 어제 걸어둔 내 헷지.</b> 시장이 움직여도 그대로 남아, 벌어진 만큼이 위험입니다.<br>
-        · 매일 <b>셋 중 하나</b>를 고르세요 → 내일 시장이 밝혀지고 <b>돈을 벌거나 잃습니다</b>.<br>
-        · 아니다 싶으면 <b>↩ 되돌리기</b>로 다시. (같은 내일, 다른 선택을 비교해 보세요)
+        · <b>검은 점 = 오늘 시장 위치.</b> 곡선의 <b>꼭대기에서 멀어질수록 손실</b>이 커져요.<br>
+        · <b>회색 선 = 어제 걸어둔 내 헷지.</b> 시장이 움직여도 그대로 남아, 벌어진 만큼이 위험이에요.<br>
+        · 매일 <b>셋 중 하나</b>를 고르세요 → 내일 시장이 밝혀지고 <b>돈을 벌거나 잃어요</b>.<br>
+        · 아니에요 싶으면 <b>↩ 되돌리기</b>로 다시. (같은 내일, 다른 선택을 비교해 보세요)
       </div>
     </details>
     <div id="gStatus" class="gstat"></div>
@@ -665,13 +665,13 @@
     </div>
     <div id="gLog" style="margin-top:12px"></div>
     <div id="gFinal"></div>
-    <p class="foot" style="margin-top:12px">시장은 <b>코스피 2분기 실측</b>. 내일은 <b>아무도 모릅니다</b>. (교육용)</p>
+    <p class="foot" style="margin-top:12px">시장은 <b>코스피 2분기 실측</b>. 내일은 <b>아무도 몰라요</b>. (교육용)</p>
   </div>
 
   <div class="panel">
     <div class="cap">게임 2 · 감내 vs 헷지 🌊<span>완충(CSM)을 지켜라</span></div>
     <details style="margin-bottom:10px"><summary style="cursor:pointer;font-size:12.5px;font-weight:700;color:var(--pay)">❓ 방법 (30초)</summary>
-      <div style="font-size:12px;color:var(--muted);line-height:1.7;margin-top:6px;padding:8px 10px;background:var(--panel2);border-radius:8px">매 라운드 시장이 <b>오르내립니다</b>(방향은 <b>선택 후 공개</b>). <b>🌊 감내</b> = 완충으로 받기 — <b>오르면 완충 채우고 이익</b>, <b>내리면</b> 완충 소진, <b>부족하면 손실</b>. <b>🛡️ 헷지</b> = 재원 내고 <b>오르내림 자체를 차단</b>(손익 0, <b>이익도 포기</b>).<br><b>재원 0 = 끝.</b> <b>하락이 상승보다 자주·크게</b> 옵니다(보증의 속성) — 큰 잠재변동·얇은 완충이면 헷지가 안전.</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.7;margin-top:6px;padding:8px 10px;background:var(--panel2);border-radius:8px">매 라운드 시장이 <b>오르내려요</b>(방향은 <b>선택 후 공개</b>). <b>🌊 감내</b> = 완충으로 받기 — <b>오르면 완충 채우고 이익</b>, <b>내리면</b> 완충 소진, <b>부족하면 손실</b>. <b>🛡️ 헷지</b> = 재원 내고 <b>오르내림 자체를 차단</b>(손익 0, <b>이익도 포기</b>).<br><b>재원 0 = 끝.</b> <b>하락이 상승보다 자주·크게</b> 와요(보증의 속성) — 큰 잠재변동·얇은 완충이면 헷지가 안전.</div>
     </details>
     <div style="display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px">
       <span class="qchip">🌊 감내 = <b>양방향(이익·손실)</b></span>
@@ -711,7 +711,7 @@
   </div>
   <div class="panel" style="border-color:#F1D7A3;background:#FDF7EC">
     <div class="cap">⚠ 미헷지도 변동성은 그대로</div>
-    <p style="font-size:12.5px;color:var(--muted);line-height:1.7;margin-top:2px"><b style="color:var(--pay)">헷지</b> = 비용↑·흔들림↓ · <b style="color:var(--leak)">미헷지</b> = 비용0·흔들림↑. 미헷지는 <b>CSM 완충</b>이 흡수하지만, <b style="color:var(--bad)">완충이 얇으면 손익으로 전이</b> — 얇을수록 더 헷지해야 합니다. (→ <b>④ PL 인식</b>)</p>
+    <p style="font-size:12.5px;color:var(--muted);line-height:1.7;margin-top:2px"><b style="color:var(--pay)">헷지</b> = 비용↑·흔들림↓ · <b style="color:var(--leak)">미헷지</b> = 비용0·흔들림↑. 미헷지는 <b>CSM 완충</b>이 흡수하지만, <b style="color:var(--bad)">완충이 얇으면 손익으로 전이</b> — 얇을수록 더 헷지해야 해요. (→ <b>④ PL 인식</b>)</p>
   </div>
   <div class="panel">
     <div class="cap">효율적 프론티어 — 비용과 손익변동성<span class="capb live">🖐 조작</span><span>점 = 헷지 조합</span></div>
@@ -766,8 +766,8 @@
   <div class="panel">
     <div class="cap">헷지할 항목 선택<span>헷지(PL) 또는 CSM 감내</span></div>
     <div id="selList"></div>
-    <div class="callout tip"><span class="ci">💡</span><div><span class="clab">팁</span> 각 항목을 눌러 <b>헷지 ↔ 감내</b>를 바꿔 보세요. 위 막대·프론티어가 즉시 반응합니다.</div></div>
-    <p class="foot">각 항목 옆 <b>막대 = 그 항목의 손익 흔들림</b>. <b style="color:var(--good)">헷지</b>=비용 내고 <b style="color:var(--good)">짧게(초록)</b> / <b style="color:var(--bad)">CSM 감내</b>=비용 0이지만 <b style="color:var(--bad)">길게(빨강)</b> — 감내를 고르면 <b>변동성이 커집니다</b>.</p>
+    <div class="callout tip"><span class="ci">💡</span><div><span class="clab">팁</span> 각 항목을 눌러 <b>헷지 ↔ 감내</b>를 바꿔 보세요. 위 막대·프론티어가 즉시 반응해요.</div></div>
+    <p class="foot">각 항목 옆 <b>막대 = 그 항목의 손익 흔들림</b>. <b style="color:var(--good)">헷지</b>=비용 내고 <b style="color:var(--good)">짧게(초록)</b> / <b style="color:var(--bad)">CSM 감내</b>=비용 0이지만 <b style="color:var(--bad)">길게(빨강)</b> — 감내를 고르면 <b>변동성이 커져요</b>.</p>
   </div>
   <p class="lede">실제 시장데이터(KOSPI·<b>국고 20년</b>, 약 6.5년)로 손익을 재현해요. <b>미헷지</b>는 시장 등락이 그대로 손익이 되어 <b>크게 출렁이고</b>, 헷지는 그 흔들림을 줄여요. <span id="simStatus" style="color:var(--muted)">데이터 불러오는 중…</span></p>
   <div class="panel">
@@ -793,18 +793,18 @@
       <span><i style="background:var(--sym)"></i>주가 RV(우축)</span>
     </div>
     <div class="chartwrap"><table class="mtx" id="simTbl"><thead><tr><th>연도</th><th>주가 RV</th><th>금리 RV</th><th>감내 시 누수</th><th>헷지 시 옵션 프리미엄</th></tr></thead><tbody></tbody></table></div>
-    <p class="foot"><b>감내(주황)</b>는 변동성이 큰 해에 누수가 급증하고, <b>헷지(청록)</b>도 그 해 <b>변동성이 크면 옵션 프리미엄(IV)이 함께 오릅니다</b> — 다만 감내보다 <b>변동이 작고 예측 가능</b>합니다(감마 위험의 핵심 트레이드오프). <b>옵션 프리미엄</b>은 감마를 넘기려 <b>옵션·스왑션을 매입할 때 지불하는 가격(지출)</b>이며, 회사가 수취하는 <b>보증수수료(재원)</b>와는 다릅니다 — 이 프리미엄은 그 재원에서 지출됩니다. 주가 RV는 KOSPI 일간수익률의 연율화 표준편차(%), 금리 RV는 국고 일간변동의 연율화 표준편차(bp)입니다.</p>
+    <p class="foot"><b>감내(주황)</b>는 변동성이 큰 해에 누수가 급증하고, <b>헷지(청록)</b>도 그 해 <b>변동성이 크면 옵션 프리미엄(IV)이 함께 올라요</b> — 다만 감내보다 <b>변동이 작고 예측 가능</b>해요(감마 위험의 핵심 트레이드오프). <b>옵션 프리미엄</b>은 감마를 넘기려 <b>옵션·스왑션을 매입할 때 지불하는 가격(지출)</b>이며, 회사가 수취하는 <b>보증수수료(재원)</b>와는 달라요 — 이 프리미엄은 그 재원에서 지출돼요. 주가 RV는 KOSPI 일간수익률의 연율화 표준편차(%), 금리 RV는 국고 일간변동의 연율화 표준편차(bp)예요.</p>
   </div>
   <div class="panel">
     <div class="cap">항목별 손익요소<span>현재 전략 · 연 기준</span></div>
     <div class="chartwrap"><table class="mtx" id="simBreak"><thead><tr><th>위험 요인</th><th>처리</th><th>연간 손익요소</th><th>비고</th></tr></thead><tbody></tbody></table></div>
-    <p class="foot">헷지 항목은 확정 비용(음수)으로, 감내 항목 중 감마는 실현변동성 기반 <b>연평균 누수</b>로, 그 밖의 감내 항목은 손익변동성 기여(σ)로 표시합니다. 감마 관련 값은 위 시장데이터 기간의 실측 실현변동성에 기반합니다.</p>
+    <p class="foot">헷지 항목은 확정 비용(음수)으로, 감내 항목 중 감마는 실현변동성 기반 <b>연평균 누수</b>로, 그 밖의 감내 항목은 손익변동성 기여(σ)로 표시해요. 감마 관련 값은 위 시장데이터 기간의 실측 실현변동성에 기반해요.</p>
   </div>
 </section>
 
 <!-- ③ 헷지수단 -->
 <section class="page" id="p7">
-  <p class="lede">위험을 넘기는 <b>도구</b>를 비용·효과로 비교합니다. <b>선물·스왑</b> = 방향만 싸게 상쇄 · <b>옵션</b> = 프리미엄 내고 급락·꼬리까지 확실히 방어.</p>
+  <p class="lede">위험을 넘기는 <b>도구</b>를 비용·효과로 비교해요. <b>선물·스왑</b> = 방향만 싸게 상쇄 · <b>옵션</b> = 프리미엄 내고 급락·꼬리까지 확실히 방어.</p>
   <div style="display:flex;flex-wrap:wrap;gap:6px;margin:0 0 4px">
     <span class="qchip">📉 선물·스왑 = <b>방향 · 저렴</b></span>
     <span class="qchip">🔁 스왑 = <b>맞춤(베이시스)</b></span>
@@ -864,7 +864,7 @@
   </div>
   <div class="panel concept">
     <div class="cap">비용 vs 효과 요약</div>
-    <p><b>방향은 선물·스왑으로 싸게, 감마·꼬리는 옵션으로</b> 조합합니다. <b>감마·변동성을 확정 비용으로 막는 건 옵션뿐</b>입니다.</p>
+    <p><b>방향은 선물·스왑으로 싸게, 감마·꼬리는 옵션으로</b> 조합해요. <b>감마·변동성을 확정 비용으로 막는 건 옵션뿐</b>이에요.</p>
     <div class="callout key"><span class="ci">⭐</span><div><span class="clab">핵심</span> 방향은 <b>선물·스왑(저렴)</b>, 감마·꼬리는 <b>옵션</b> — 둘을 <b>조합</b>하는 게 정답.</div></div>
   </div>
 </section>
@@ -893,13 +893,13 @@
     <div style="margin-top:14px"><label class="foot" style="margin:0">주가 충격 <b class="mono" id="shockLab" style="color:var(--pay)"></b></label>
       <input type="range" id="shock" min="-40" max="40" step="1" value="-30"></div>
     <div class="casc" id="casc"></div>
-    <p class="foot">상승 = CSM 확충(손익 무영향). 하락 = CSM 먼저 소진, <b>초과분만 당기 손익</b>. <b>완충이 얇을수록 전이가 빠릅니다.</b> (예시값)</p>
+    <p class="foot">상승 = CSM 확충(손익 무영향). 하락 = CSM 먼저 소진, <b>초과분만 당기 손익</b>. <b>완충이 얇을수록 전이가 빨라요.</b> (예시값)</p>
   </div>
   <div class="panel">
-    <div class="cap">완충이 얇아지면 헷지 압력이 커집니다<span class="capb live">🖐 조작</span><span>CSM을 줄여보세요</span></div>
+    <div class="cap">완충이 얇아지면 헷지 압력이 커져요<span class="capb live">🖐 조작</span><span>CSM을 줄여보세요</span></div>
     <div style="margin-top:2px"><label class="foot" style="margin:0">CSM 완충 두께 <b class="mono" id="bufCsmLab" style="color:var(--good)"></b></label>
       <input type="range" id="bufCsm" min="4" max="100" step="1" value="80"></div>
-    <div class="callout tip"><span class="ci">💡</span><div><span class="clab">팁</span> 슬라이더를 <b>얇은 쪽</b>으로 당겨 보세요 — 감내분이 <b>손익으로 전이</b>되며 헷지 압력이 커집니다.</div></div>
+    <div class="callout tip"><span class="ci">💡</span><div><span class="clab">팁</span> 슬라이더를 <b>얇은 쪽</b>으로 당겨 보세요 — 감내분이 <b>손익으로 전이</b>되며 헷지 압력이 커져요.</div></div>
     <div class="chartwrap"><svg id="bufSvg" viewBox="0 0 640 200" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"></svg></div>
     <div id="bufChips" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"></div>
     <div style="display:flex;align-items:center;gap:10px;margin-top:12px">
@@ -919,7 +919,7 @@
     <span class="qchip">🌊 감내 = <b>완충(CSM)</b></span>
     <span class="qchip">📐 방향·감마·변동성·펀드·해지</span>
   </div>
-  <div class="callout warn"><span class="ci">⚠️</span><div><span class="clab">주의</span> <b>감내 = 안전이 아닙니다.</b> 손익만 조용할 뿐 <b>자본은 그대로 흔들리고</b>, 완충이 얇으면 손익으로 전이됩니다.</div></div>
+  <div class="callout warn"><span class="ci">⚠️</span><div><span class="clab">주의</span> <b>감내 = 안전이 아니에요.</b> 손익만 조용할 뿐 <b>자본은 그대로 흔들리고</b>, 완충이 얇으면 손익으로 전이돼요.</div></div>
   <div class="panel">
     <div class="cap">요인별 원리<span>무엇이 왜 위험인가</span></div>
     <div id="facAnim"></div>
@@ -934,7 +934,7 @@
   <div class="panel">
     <div class="cap">항목별 비교<span>현재 입력값 기준</span></div>
     <div class="chartwrap"><table class="mtx" id="cmpTbl"><thead><tr><th>위험 요인</th><th>헷지 시 (PL)</th><th>CSM 감내 시</th><th>일반적 분류</th></tr></thead><tbody></tbody></table></div>
-    <p class="foot">일반적으로 <b>민감도(방향)</b>는 저비용이므로 헷지하여 PL로 관리하고, <b>변동성·감마·가정 변화</b>는 비용이 크거나 이전이 어려워 완충(CSM)으로 두는 경우가 많습니다. 실제 분류는 회사의 회계모형·완충 수준·전략에 따라 달라집니다. 구체적 선택(체크)은 <b>⑤ 시뮬레이션</b>의 민감도 시트에서 수행합니다. (분류는 일반적 경향의 예시이며 특정 회사와 무관합니다.)</p>
+    <p class="foot">일반적으로 <b>민감도(방향)</b>는 저비용이므로 헷지하여 PL로 관리하고, <b>변동성·감마·가정 변화</b>는 비용이 크거나 이전이 어려워 완충(CSM)으로 두는 경우가 많아요. 실제 분류는 회사의 회계모형·완충 수준·전략에 따라 달라져요. 구체적 선택(체크)은 <b>⑤ 시뮬레이션</b>의 민감도 시트에서 수행해요. (분류는 일반적 경향의 예시이며 특정 회사와 무관해요.)</p>
   </div>
 </section>
 
@@ -946,7 +946,7 @@
   <div class="panel">
     <div class="cap">파생 결과<span>입력을 바꾸면 실시간 반영 · 깜빡이며 갱신</span></div>
     <div class="derived" id="derived"></div>
-    <p class="foot">입력값들이 어떻게 이어지는지 보여줍니다 — 헷지 재원은 <b>보증수수료×적립금</b>, 감마 누수/프리미엄은 <b>Γ·변동성</b>에서 나옵니다.</p>
+    <p class="foot">입력값들이 어떻게 이어지는지 보여줘요 — 헷지 재원은 <b>보증수수료×적립금</b>, 감마 누수/프리미엄은 <b>Γ·변동성</b>에서 나와요.</p>
   </div>
   <div class="panel">
     <div class="cap"><span class="hn" style="background:#0E7C86">1</span>규모·재원<span>얼마를 굴리고, 예산·완충은 얼마인가</span></div>
@@ -967,7 +967,7 @@
 
 <!-- ⑥ 이론 -->
 <section class="page" id="p6">
-  <p class="lede">이 도구가 기대는 이론과 대표 문헌입니다. 최저보증은 사실상 적립금에 <b>내장된 풋옵션(하락을 막아 주는 약속)</b>이라, 그 관리는 옵션 복제·헷지 이론에 뿌리를 둬요.</p>
+  <p class="lede">이 도구가 기대는 이론과 대표 문헌이에요. 최저보증은 사실상 적립금에 <b>내장된 풋옵션(하락을 막아 주는 약속)</b>이라, 그 관리는 옵션 복제·헷지 이론에 뿌리를 둬요.</p>
   <div style="display:flex;flex-wrap:wrap;gap:6px;margin:0 0 4px">
     <span class="qchip">📐 보증 = <b>내장 풋옵션</b></span>
     <span class="qchip">🌀 감마 손실 ∝ <b>변동성²</b></span>
@@ -978,28 +978,28 @@
   <div class="panel" style="background:linear-gradient(135deg,#EEF3FE,#F4F0FD);border:1px solid #D7E0F5">
     <div class="cap">쉬운 요약</div>
     <ul class="qalist">
-      <li>보증은 <b>하락을 막아 주는 옵션</b>이라, 옵션을 다루는 이론으로 관리합니다.</li>
-      <li>선물·스왑으로 <b>방향</b>을 막아도 시장이 크게 움직이면 <b>감마</b>가 손실을 냅니다 — 아무리 자주 조정해도 완전히는 못 없앱니다.</li>
-      <li>그래서 목표는 완전 제거가 아니라 <b>비용과 남는 흔들림의 균형</b>입니다.</li>
-      <li>옵션은 평균적으로 <b>비싸서</b>, 감마 헷지는 수익이 아니라 <b>큰 손실을 막는 보험</b>으로 씁니다.</li>
-      <li>회계상 보증 변동은 <b>완충(CSM)</b>이 먼저 흡수하고, 헷지와의 어긋남은 <b>회계 특례</b>로 맞춥니다(IFRS17). 자본규제(K-ICS)도 같은 위험을 봅니다.</li>
+      <li>보증은 <b>하락을 막아 주는 옵션</b>이라, 옵션을 다루는 이론으로 관리해요.</li>
+      <li>선물·스왑으로 <b>방향</b>을 막아도 시장이 크게 움직이면 <b>감마</b>가 손실을 내요 — 아무리 자주 조정해도 완전히는 못 없애요.</li>
+      <li>그래서 목표는 완전 제거가 아니라 <b>비용과 남는 흔들림의 균형</b>이에요.</li>
+      <li>옵션은 평균적으로 <b>비싸서</b>, 감마 헷지는 수익이 아니라 <b>큰 손실을 막는 보험</b>으로 써요.</li>
+      <li>회계상 보증 변동은 <b>완충(CSM)</b>이 먼저 흡수하고, 헷지와의 어긋남은 <b>회계 특례</b>로 맞춰요(IFRS17). 자본규제(K-ICS)도 같은 위험을 봐요.</li>
     </ul>
-    <p class="foot">아래는 근거 이론과 문헌(전문 용어 포함)입니다.</p>
+    <p class="foot">아래는 근거 이론과 문헌(전문 용어 포함)이에요.</p>
   </div>
   <div class="panel refs">
     <div class="cap">핵심 이론</div>
     <h3><span class="hn" style="background:#4F5BD5">1</span>동적 헷지 (Greeks 기반 복제)</h3>
-    <p><b>보증을 델타·로·베가로 흉내 내 상쇄합니다.</b> 완전복제는 연속 재조정이 전제지만, 현실은 이산·거래비용으로 잔차가 남습니다. (Brennan–Schwartz 1976; Boyle–Hardy 2003)</p>
+    <p><b>보증을 델타·로·베가로 흉내 내 상쇄해요.</b> 완전복제는 연속 재조정이 전제지만, 현실은 이산·거래비용으로 잔차가 남아요. (Brennan–Schwartz 1976; Boyle–Hardy 2003)</p>
     <h3><span class="hn" style="background:#4F5BD5">2</span>감마와 리밸런싱 손실</h3>
-    <p><b>많이 움직일수록 손실이 커집니다(short-gamma).</b> 손익은 실현−내재변동성 차이로 쌓이고, 거래비용 탓에 자주 조정해도 오차가 안 사라집니다. (Boyle–Emanuel 1980; Leland 1985)</p>
+    <p><b>많이 움직일수록 손실이 커져요(short-gamma).</b> 손익은 실현−내재변동성 차이로 쌓이고, 거래비용 탓에 자주 조정해도 오차가 안 사라져요. (Boyle–Emanuel 1980; Leland 1985)</p>
     <h3><span class="hn" style="background:#4F5BD5">3</span>비용 대 잔여위험 — 효율적 프론티어</h3>
-    <p><b>완전헷지는 비싸서 "비용 vs 잔여위험"을 고릅니다.</b> 2차 헷지(local risk minimization)가 이론 토대. (Föllmer–Sondermann 1986; Schweizer 2001)</p>
+    <p><b>완전헷지는 비싸서 "비용 vs 잔여위험"을 골라요.</b> 2차 헷지(local risk minimization)가 이론 토대. (Föllmer–Sondermann 1986; Schweizer 2001)</p>
     <h3><span class="hn" style="background:#4F5BD5">4</span>변동성 위험 프리미엄 (IV &gt; RV)</h3>
-    <p><b>옵션은 평균적으로 비쌉니다(IV&gt;RV).</b> 그래서 감마 헷지는 수익이 아니라 <b>꼬리 손실을 프리미엄으로 고정하는 보험</b>입니다. (Carr–Wu 2009; Bollerslev 외 2009)</p>
+    <p><b>옵션은 평균적으로 비싸요(IV&gt;RV).</b> 그래서 감마 헷지는 수익이 아니라 <b>꼬리 손실을 프리미엄으로 고정하는 보험</b>이에요. (Carr–Wu 2009; Bollerslev 외 2009)</p>
     <h3><span class="hn" style="background:#4F5BD5">5</span>IFRS17 · CSM · 헷지회계</h3>
-    <p><b>시장 변동은 먼저 CSM이 흡수, 넘치면 손익.</b> 변액은 VFA로 측정하고, 위험경감선택권(B115–B118)이 파생 헷지의 회계 불일치를 상계합니다.</p>
+    <p><b>시장 변동은 먼저 CSM이 흡수, 넘치면 손익.</b> 변액은 VFA로 측정하고, 위험경감선택권(B115–B118)이 파생 헷지의 회계 불일치를 상계해요.</p>
     <h3><span class="hn" style="background:#4F5BD5">6</span>한국 K-ICS</h3>
-    <p><b>주식·금리·변동성 충격으로 보증 위험액을 평가합니다.</b> 동적 헷지를 요인별 민감도 상쇄로 인정. (금융감독원 K-ICS 해설서, 2022.12)</p>
+    <p><b>주식·금리·변동성 충격으로 보증 위험액을 평가해요.</b> 동적 헷지를 요인별 민감도 상쇄로 인정. (금융감독원 K-ICS 해설서, 2022.12)</p>
     <div class="cap" style="margin-top:18px">참고문헌</div>
     <ol>
       <li>Brennan, M. J. &amp; Schwartz, E. S. (1976). <i>The Pricing of Equity-linked Life Insurance Policies with an Asset Value Guarantee.</i> J. Financial Economics, 3(3), 195–213. doi:10.1016/0304-405X(76)90003-9</li>
@@ -1026,9 +1026,9 @@
 
 <!-- 피드백 -->
 <div class="panel fb" id="fb">
-  <div class="cap">의견 남기기<span>별도 저장소에 축적하여 페이지 개선에 반영합니다</span></div>
+  <div class="cap">의견 남기기<span>별도 저장소에 축적하여 페이지 개선에 반영해요</span></div>
   <input type="text" id="fbName" placeholder="이름 또는 닉네임 (선택)">
-  <textarea id="fbText" placeholder="개념·수치·구성에 대한 의견을 입력합니다."></textarea>
+  <textarea id="fbText" placeholder="개념·수치·구성에 대한 의견을 입력해요."></textarea>
   <button id="fbSend">보내기</button>
   <div class="fbmsg" id="fbMsg"></div>
   <div class="fbnote" id="fbNote"></div>
@@ -1228,13 +1228,13 @@ function render(){
 
   const L95=leakW*M95*M95+1.645*cur.sig, L995=leakW*M995*M995+2.576*cur.sig;
   const vd=$("vd"); let cls,ic,t,p;
-  if(outW>feeW){cls="bad";ic="✕";t="재원이 부족하다";
+  if(outW>feeW){cls="bad";ic="✕";t="재원이 부족해요";
     p=`연간 비용 <b>${won(outW)}억</b> > 수수료 <b>${won(feeW)}억</b> — 헷지를 줄이거나 구조 조정 필요.`;}
-  else if(L95>CSM){cls="bad";ic="!";t="나쁜 해에 보험손익이 발생한다";
+  else if(L95>CSM){cls="bad";ic="!";t="나쁜 해에 보험손익이 발생해요";
     p=`나쁜 해 손실 <b>${won(L95)}억</b> > CSM <b>${won(CSM)}억</b> → <b>${won(L95-CSM)}억</b>이 손익으로 전이. <b>얇은 완충 = 헷지 확대 우선.</b>`;}
-  else if(L995>CSM){cls="warn";ic="~";t="평시는 버티나 극단은 손익으로 전이된다";
+  else if(L995>CSM){cls="warn";ic="~";t="평시는 버티나 극단은 손익으로 전이돼요";
     p=`나쁜 해는 CSM이 흡수하나, <b>최악의 해</b>엔 <b>${won(L995-CSM)}억</b>이 손익으로 전이.${opt?` 예산 내 최적: 변동성 <b>${won(opt.sig)}억</b>까지 축소.`:``}`;}
-  else{cls="ok";ic="✓";t="현재 조합에서 손익은 안정적이다";
+  else{cls="ok";ic="✓";t="현재 조합에서 손익은 안정적이에요";
     p=`연간 <b>${won(outW)}억</b>(수수료의 ${feeW>0?Math.round(outW/feeW*100):0}%) 지출, <b>최악의 해</b>도 CSM이 흡수.${opt&&opt.sig<cur.sig-1?` 변동성 <b>${won(cur.sig)}→${won(opt.sig)}억</b> 추가 축소 여지.`:``}`;}
   vd.className="verdict "+cls;$("vdi").textContent=ic;$("vdt").textContent=t;$("vdp").innerHTML=p;
 
@@ -1334,9 +1334,9 @@ function drawCasc(){
     g.push(`<text x="${cx2+colW/2}" y="${(baseY-hD+hDef/2+4).toFixed(1)}" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--bad)">CSM 소진→손실(PL) ${won(-cap)}</text>`);
   }
   $("casc").innerHTML=`<div class="chartwrap"><svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto">${g.join("")}</svg></div>
-    <div class="foot" style="margin-top:2px">충격은 <b style="color:#0a7c50">CSM 완충</b>을 먼저 소진하고, 넘치면 <b style="color:var(--leak)">자본</b>·<b style="color:var(--bad)">손익(PL)</b>으로 전이됩니다. ${shock>=0
+    <div class="foot" style="margin-top:2px">충격은 <b style="color:#0a7c50">CSM 완충</b>을 먼저 소진하고, 넘치면 <b style="color:var(--leak)">자본</b>·<b style="color:var(--bad)">손익(PL)</b>으로 전이돼요. ${shock>=0
       ? `자산 증가 → CSM 완충·자본 확충, 당기 손익 영향 없음.`
-      : cap>=0 ? `자산 감소를 <b style="color:#0a7c50">CSM 완충(잔여 ${won(Math.min(CSM,cap))}억)</b>이 먼저 흡수 — 손익 영향 없음. <b>완충이 얇을수록</b> 곧 전이됩니다.`
+      : cap>=0 ? `자산 감소를 <b style="color:#0a7c50">CSM 완충(잔여 ${won(Math.min(CSM,cap))}억)</b>이 먼저 흡수 — 손익 영향 없음. <b>완충이 얇을수록</b> 곧 전이돼요.`
       : `<b style="color:#0a7c50">CSM 완충 소진</b> 후 <b style="color:var(--bad)">${won(-cap)}억</b>이 자본 잠식·보험손익(PL)으로 인식.`}</div>`;
 }
 ["in_eqf","in_csm2","shock"].forEach(id=>{ const el=$(id); if(el) el.addEventListener("input",drawCasc); });
@@ -1363,7 +1363,7 @@ async function loadMarket(){
     SIM.data=await r.json(); SIM.loaded=true;
     if($("simStatus")){ $("simStatus").innerHTML=`KOSPI·국고 20년 <b>${SIM.data.meta.from}–${SIM.data.meta.to}</b> (${SIM.data.meta.n.toLocaleString()}거래일) 로드 완료.`; $("simStatus").style.color="var(--muted)"; }
     renderSim(); renderConceptCombo(); renderDerived();
-  }catch(e){ if($("simStatus")){$("simStatus").innerHTML=`시장데이터를 불러오지 못했습니다 (${e.message}).`; $("simStatus").style.color="var(--bad)";} }
+  }catch(e){ if($("simStatus")){$("simStatus").innerHTML=`시장데이터를 불러오지 못했어요 (${e.message}).`; $("simStatus").style.color="var(--bad)";} }
 }
 /* 전략 조합의 연간 손익변동성(1σ, 억) — 방향·감마(시장) + 베가·펀드·해지·모형(σ가중) 합성 */
 const NM_SCALE=40;
@@ -1530,7 +1530,7 @@ function drawVolChart(){
     g.push(`<line x1="${X(iMin).toFixed(1)}" y1="${Y(vMin).toFixed(1)}" x2="${(lx+boxW/2).toFixed(1)}" y2="${(ly+28).toFixed(1)}" stroke="var(--bad)" stroke-width="1" stroke-dasharray="2 2" opacity="0.6"/>`);
     g.push(`<rect x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" width="${boxW}" height="28" rx="6" fill="#fff" stroke="var(--bad)" stroke-width="1.2" opacity="0.97"/>`);
     g.push(`<text x="${(lx+9).toFixed(1)}" y="${(ly+12).toFixed(1)}" font-size="10" font-weight="800" fill="var(--bad)">💥 최악의 주 · 미헷지 ${vMin>=0?'+':'−'}${won(Math.abs(vMin))}억</text>`);
-    g.push(`<text x="${(lx+9).toFixed(1)}" y="${(ly+24).toFixed(1)}" font-size="10" font-weight="700" fill="var(--good)">헷지였다면 ${hMin>=0?'+':'−'}${won(Math.abs(hMin))}억 — 이만큼 막습니다</text>`); }
+    g.push(`<text x="${(lx+9).toFixed(1)}" y="${(ly+24).toFixed(1)}" font-size="10" font-weight="700" fill="var(--good)">헷지였다면 ${hMin>=0?'+':'−'}${won(Math.abs(hMin))}억 — 이만큼 막아요</text>`); }
   g.push(`<rect x="${L+2}" y="${(Y(stdU)-13).toFixed(1)}" width="150" height="13" fill="#FFFFFF" opacity="0.7"/><text class="eflabel" x="${L+4}" y="${(Y(stdU)-3).toFixed(1)}" fill="var(--sym)">미헷지 ±1σ ${won(stdU)}억/주</text>`);
   g.push(`<rect x="${(W-R-150).toFixed(1)}" y="${(Y(stdH)-13).toFixed(1)}" width="148" height="13" fill="#FFFFFF" opacity="0.7"/><text class="eflabel" x="${W-R-2}" y="${(Y(stdH)-3).toFixed(1)}" text-anchor="end" fill="var(--good)">헷지 후 ±1σ ${won(stdH)}억/주</text>`);
   $("simVol").innerHTML=g.join("");
@@ -1546,7 +1546,7 @@ function renderSim(){
   const re=val("re")||1, rr=val("rr")||1;   /* IV≈RV → 프리미엄도 그 해 변동성 따라 변함 */
   const rows=ys.map(s=>({...s, leak:gam(ge,s.rvE)+gam(gr,s.rvR), prem:gam(ge,ie*s.rvE/re)+gam(gr,ir*s.rvR/rr)}));
   const avgLeak=rows.reduce((a,r)=>a+r.leak,0)/rows.length, avgPrem=rows.reduce((a,r)=>a+r.prem,0)/rows.length, worst=rows.reduce((a,b)=>a.leak>b.leak?a:b);
-  $("simStrat").innerHTML=`<b style="color:var(--leak)">감내</b>하면 변동성 큰 해에 누수가 급증하고, <b style="color:var(--good)">헷지</b>하면 프리미엄으로 <b>훨씬 안정</b>적입니다(변동성 크면 프리미엄도 오르나 폭이 작음).`;
+  $("simStrat").innerHTML=`<b style="color:var(--leak)">감내</b>하면 변동성 큰 해에 누수가 급증하고, <b style="color:var(--good)">헷지</b>하면 프리미엄으로 <b>훨씬 안정</b>적이에요(변동성 크면 프리미엄도 오르나 폭이 작음).`;
   $("simStat").innerHTML=`
     <div><div class="sl">감내 시 연평균 누수</div><div class="sv" style="color:var(--leak)">△${won(avgLeak)}억</div></div>
     <div><div class="sl">최대 누수(${worst.y})</div><div class="sv" style="color:var(--bad)">△${won(worst.leak)}억</div></div>
@@ -1614,14 +1614,14 @@ const VIZ={
     a:`<svg class="anim" viewBox="0 0 120 84"><rect class="a-pulse" x="32" y="24" width="56" height="30" rx="6" fill="#EEF1F8" stroke="#C9D2E2"/><text x="60" y="43" fill="#566275" font-size="10" text-anchor="middle" font-weight="700">CSM 감내</text><text x="60" y="79" fill="#566275" font-size="8" text-anchor="middle">이전 시장 없음</text></svg>`},
 };
 const FAC={
-  delta:{viz:"dir", nat:"two", t:"주가가 오르내리면 보증가치도 같이 흔들립니다(오르면 이득·내리면 손실). <b>시소 반대편에 선물</b>을 얹듯 반대 포지션을 잡으면 흔들림이 사라집니다."},
-  rho:{viz:"rate", nat:"two", t:"금리가 움직이면 부채가치가 흔들리는 <b>양방향</b> 위험. 보증은 <b>만기가 아주 긴 약속</b>이라 <b>먼 미래 금리</b>에 특히 민감합니다(긴 줄일수록 끝이 크게 출렁이듯). 국채·스왑으로 반대편을 잡아 상쇄합니다."},
-  gE:{viz:"gamma", nat:"loss", t:"헷지는 <b>곧은 자</b>로 <b>휜 길</b>을 재는 것과 같아, 시장이 많이 움직일수록 <b>자와 길 사이 틈</b>이 벌어져 <b>늘 조금씩 손해</b>가 납니다. <b>옵션을 사두면</b> 이 손해가 <b>미리 정해진 비용</b>으로 바뀝니다."},
-  gR:{viz:"gammaR", nat:"loss", t:"금리에서도 같은 <b>자와 길의 틈</b>이 생겨 <b>늘 조금씩 손해</b>. 금리가 크게 움직일수록 커지고, <b>스왑션</b>을 사서 확정 비용으로 바꿉니다."},
-  vega:{viz:"vol", nat:"two", t:"시장이 <b>얼마나 요동치는지</b>가 커지면 부채가 늘어 손실, 잔잔해지면 이득인 양방향. <b>날씨 거칠기</b>에 거는 셈이라 옵션으로 줄일 수 있으나 비쌉니다."},
-  fund:{viz:"basis", nat:"two", t:"고객 돈은 <b>실제 펀드</b>를 따르는데 헷지는 <b>대표 지수</b>로 대신합니다. 둘 성적 차이가 손익 — <b>펀드가 지수보다 못하면 손실, 나으면 이득</b>. <b>반 평균과 내 점수 차이</b>처럼 늘 조금 어긋나고, 맞춤 복제로만 줄지만 비쌉니다."},
-  lapse:{viz:"behav", nat:"two", t:"고객이 예상과 다르게 <b>해지·인출</b>하면 보증 노출이 양쪽으로 변합니다. <b>예약 손님이 갑자기 안 오거나 몰리듯</b> 예측이 어렵고, 재보험으로 일부만 덜어냅니다."},
-  model:{viz:"regime", nat:"bear", t:"제도·가정이 <b>확 바뀌면</b> 시장에서 넘길 <b>수단이 아예 없어</b>, <b>완충(CSM)으로 감내</b>할 수밖에 없습니다."},
+  delta:{viz:"dir", nat:"two", t:"주가가 오르내리면 보증가치도 같이 흔들려요(오르면 이득·내리면 손실). <b>시소 반대편에 선물</b>을 얹듯 반대 포지션을 잡으면 흔들림이 사라져요."},
+  rho:{viz:"rate", nat:"two", t:"금리가 움직이면 부채가치가 흔들리는 <b>양방향</b> 위험. 보증은 <b>만기가 아주 긴 약속</b>이라 <b>먼 미래 금리</b>에 특히 민감해요(긴 줄일수록 끝이 크게 출렁이듯). 국채·스왑으로 반대편을 잡아 상쇄해요."},
+  gE:{viz:"gamma", nat:"loss", t:"헷지는 <b>곧은 자</b>로 <b>휜 길</b>을 재는 것과 같아, 시장이 많이 움직일수록 <b>자와 길 사이 틈</b>이 벌어져 <b>늘 조금씩 손해</b>가 나요. <b>옵션을 사두면</b> 이 손해가 <b>미리 정해진 비용</b>으로 바뀌어요."},
+  gR:{viz:"gammaR", nat:"loss", t:"금리에서도 같은 <b>자와 길의 틈</b>이 생겨 <b>늘 조금씩 손해</b>. 금리가 크게 움직일수록 커지고, <b>스왑션</b>을 사서 확정 비용으로 바꿔요."},
+  vega:{viz:"vol", nat:"two", t:"시장이 <b>얼마나 요동치는지</b>가 커지면 부채가 늘어 손실, 잔잔해지면 이득인 양방향. <b>날씨 거칠기</b>에 거는 셈이라 옵션으로 줄일 수 있으나 비싸요."},
+  fund:{viz:"basis", nat:"two", t:"고객 돈은 <b>실제 펀드</b>를 따르는데 헷지는 <b>대표 지수</b>로 대신해요. 둘 성적 차이가 손익 — <b>펀드가 지수보다 못하면 손실, 나으면 이득</b>. <b>반 평균과 내 점수 차이</b>처럼 늘 조금 어긋나고, 맞춤 복제로만 줄지만 비싸요."},
+  lapse:{viz:"behav", nat:"two", t:"고객이 예상과 다르게 <b>해지·인출</b>하면 보증 노출이 양쪽으로 변해요. <b>예약 손님이 갑자기 안 오거나 몰리듯</b> 예측이 어렵고, 재보험으로 일부만 덜어내요."},
+  model:{viz:"regime", nat:"bear", t:"제도·가정이 <b>확 바뀌면</b> 시장에서 넘길 <b>수단이 아예 없어</b>, <b>완충(CSM)으로 감내</b>할 수밖에 없어요."},
 };
 function renderFactorAnim(){
   const box=$("facAnim"); if(!box)return;
@@ -1649,13 +1649,13 @@ loadCounts();
 const FEEDBACK_ENDPOINT="https://script.google.com/macros/s/AKfycbwEqiaQ9mhEl2-4AVC8FfHPPbW1fKHVDDVPnqb5ZD5FAb8yeyHZS6OaYHicsjkvDWBs/exec";
 (function(){ const note=$("fbNote"), btn=$("fbSend"), msg=$("fbMsg");
   if(!FEEDBACK_ENDPOINT){ btn.disabled=true;
-    note.innerHTML="⚙ 의견 수집 저장소가 아직 연결되지 않았다 — 배포자가 구글 Apps Script 웹앱(/exec) 주소를 설정하면 활성화됩니다. 접수된 의견은 구글 시트에 기록됩니다."; return; }
+    note.innerHTML="⚙ 의견 수집 저장소가 아직 연결되지 않았다 — 배포자가 구글 Apps Script 웹앱(/exec) 주소를 설정하면 활성화돼요. 접수된 의견은 구글 시트에 기록돼요."; return; }
   btn.addEventListener("click",async()=>{ const at=document.querySelector(".tabs button.on"); const tab=at?((at.childNodes[0]&&at.childNodes[0].nodeValue||at.textContent)||"").trim():"";
     const body={name:$("fbName").value.slice(0,60), text:$("fbText").value.slice(0,2000), page:tab||location.pathname, ts:new Date().toISOString()};
     if(!body.text.trim()){ msg.style.color="var(--leak)"; msg.textContent="의견을 입력해 주세요."; return; }
     btn.disabled=true; msg.style.color="var(--muted)"; msg.textContent="전송 중…";
     try{ await fetch(FEEDBACK_ENDPOINT,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(body)});
-      msg.style.color="var(--good)"; msg.textContent="의견이 접수되었습니다. 감사합니다."; $("fbText").value="";
+      msg.style.color="var(--good)"; msg.textContent="의견이 접수되었어요. 감사해요."; $("fbText").value="";
       try{ await fetch(`https://abacus.jasoncameron.dev/hit/${CNT_NS}/feedback`); loadCounts(); }catch(_){}
     }catch(e){ msg.style.color="var(--bad)"; msg.textContent="전송 실패 — 잠시 후 다시 시도해 주세요."; } finally{ btn.disabled=false; } });
 })();
@@ -1778,10 +1778,10 @@ function gDrawReveal(){ const box=$("gCurve"),L=GAME.last; if(!box||!L)return; c
 }
 function gShowResult(L){
   const cf=(v,lab)=>`<span style="display:inline-flex;gap:4px">${lab} <b style="color:${v>=0?'var(--good)':'var(--bad)'}">${v>=0?'+':'−'}${Math.abs(v).toFixed(1)}</b></span>`;
-  const lesson = L.opt ? (Math.abs(L.dM)>=2.2 ? `🛡️ <b>급변동</b>을 옵션이 막았습니다 — 방향·곡선 손실 전부 차단, <b>비싼 프리미엄</b>만 냈죠. 이런 날 옵션이 빛납니다.` : `🛡️ 옵션은 <b>가장 안전</b>하지만 <b style="color:var(--bad)">프리미엄이 비쌉니다</b> — 잔잔한 날엔 손해였습니다.`)
-    : (L.h===0 && L.trend && L.dir<=-1.0) ? `⚠️ <b>조정을 안 해서</b> 방향손실이 <b style="color:var(--bad)">−${Math.abs(L.dir).toFixed(1)}</b>로 커졌습니다 — 갭을 줄였다면 덜 잃었을 겁니다.`
-    : L.revert ? `🔄 시장이 <b>되돌아왔습니다</b> — <b style="color:var(--good)">가만히 뒀으면 이득</b>이었죠. 맞췄다면 확정손실이었습니다.`
-    : (L.trend ? `➡️ 시장이 <b>더 갔습니다</b> — <b style="color:var(--pay)">맞췄으면(딱 맞춤)</b> 방향손실을 줄였을 겁니다.` : `시장이 소폭 움직였습니다 — 감마손실만 남았습니다.`);
+  const lesson = L.opt ? (Math.abs(L.dM)>=2.2 ? `🛡️ <b>급변동</b>을 옵션이 막았어요 — 방향·곡선 손실 전부 차단, <b>비싼 프리미엄</b>만 냈죠. 이런 날 옵션이 빛나요.` : `🛡️ 옵션은 <b>가장 안전</b>하지만 <b style="color:var(--bad)">프리미엄이 비싸요</b> — 잔잔한 날엔 손해였어요.`)
+    : (L.h===0 && L.trend && L.dir<=-1.0) ? `⚠️ <b>조정을 안 해서</b> 방향손실이 <b style="color:var(--bad)">−${Math.abs(L.dir).toFixed(1)}</b>로 커졌어요 — 갭을 줄였다면 덜 잃었을 거예요.`
+    : L.revert ? `🔄 시장이 <b>되돌아왔어요</b> — <b style="color:var(--good)">가만히 뒀으면 이득</b>이었죠. 맞췄다면 확정손실이었어요.`
+    : (L.trend ? `➡️ 시장이 <b>더 갔어요</b> — <b style="color:var(--pay)">맞췄으면(딱 맞춤)</b> 방향손실을 줄였을 거예요.` : `시장이 소폭 움직였어요 — 감마손실만 남았어요.`);
   const won=L.net>=0;
   $("gResult").innerHTML=`<div class="gres" style="background:${won?'#EAF7F1':'#FBEEF1'};padding:9px 12px;margin-top:8px">
     <div style="font-weight:700;font-size:12px;color:var(--ink);margin-bottom:3px">🔎 같은 내일, 다른 선택이었다면?</div>
@@ -1793,7 +1793,7 @@ function gShowResult(L){
 }
 function gCtrl(on){ const c=$("gControl"); if(c){ c.style.opacity=on?'':'0.45'; c.style.pointerEvents=on?'':'none'; } }
 function gHint(){ const gp=gGap(), m=Math.abs(gp);
-  const st = m<0.5? '헷지가 시장과 <b>거의 맞아</b> 있습니다.' : `내 헷지가 시장과 <b style="color:var(--bad)">${gp>=0?'+':''}${gp.toFixed(1)}%p</b> 벌어졌습니다 — 그대로 두면 위험이 커집니다.`;
+  const st = m<0.5? '헷지가 시장과 <b>거의 맞아</b> 있어요.' : `내 헷지가 시장과 <b style="color:var(--bad)">${gp>=0?'+':''}${gp.toFixed(1)}%p</b> 벌어졌어요 — 그대로 두면 위험이 커져요.`;
   $("gToday").innerHTML=`📍 ${st} <b>오늘 어떻게 할지</b> 아래에서 고르세요.`;
   gStatus();
 }
@@ -1824,12 +1824,12 @@ function gUndo(){ const p=GAME.prev; if(!p)return;
   if($("gReview")) $("gReview").style.display='none';
   gNewDay(); }
 function gFinish(){
-  GAME.over=true; gCtrl(false); $("gToday").innerHTML=`🏁 <b>${GAME.d}일</b>째에 예산이 바닥났습니다.`;
+  GAME.over=true; gCtrl(false); $("gToday").innerHTML=`🏁 <b>${GAME.d}일</b>째에 예산이 바닥났어요.`;
   const d=GAME.d, t=d>=30?['🏆','베테랑 트레이더']:d>=18?['🥇','노련']:d>=10?['👍','무난']:['😅','아직 연습'];
   $("gFinal").innerHTML=`<div class="gres" style="background:linear-gradient(135deg,#EEF3FE,#F4F0FD);border:1px solid #D7E0F5;margin-top:14px">
     <div style="display:flex;align-items:center;gap:12px"><div style="font-size:34px">${t[0]}</div>
       <div><div style="font-weight:800;font-size:16px;color:var(--ink)">${t[1]} · <b style="color:var(--pay)">${d}일</b> 버팀</div></div></div>
-    <div style="font-size:12px;color:var(--muted);margin-top:9px;line-height:1.6">헷지선은 <b>어제 기울기 그대로</b> 남습니다 — 안 맞추면 갭이 커져 더 터지고, 맞추면 <b>확정손실+비용</b>을 냅니다. 되돌릴지 이어질지 <b>알 수 없어</b> "가만히 뒀으면 됐을 걸" 후회가 반복되죠. 타이트한 버짓 안에서 <b>매일 되맞추는 일 자체가 어렵다</b> — 이것이 실제 델타헷지입니다.</div>
+    <div style="font-size:12px;color:var(--muted);margin-top:9px;line-height:1.6">헷지선은 <b>어제 기울기 그대로</b> 남아요 — 안 맞추면 갭이 커져 더 터지고, 맞추면 <b>확정손실+비용</b>을 내요. 되돌릴지 이어질지 <b>알 수 없어</b> "가만히 뒀으면 됐을 걸" 후회가 반복되죠. 타이트한 버짓 안에서 <b>매일 되맞추는 일 자체가 어렵다</b> — 이것이 실제 델타헷지예요.</div>
     <button id="gReset" class="gbtn" style="margin-top:12px;background:var(--ink)">다시 도전 ↻</button>
   </div>`;
   $("gReset").addEventListener("click",gReset);
@@ -1894,7 +1894,7 @@ function g2Finish(){ GAME2.over=true; const c=$("g2Control"); if(c){c.style.opac
   $("g2Final").innerHTML=`<div class="gres" style="background:linear-gradient(135deg,#EEF3FE,#F4F0FD);border:1px solid #D7E0F5;margin-top:14px">
     <div style="display:flex;align-items:center;gap:12px"><div style="font-size:34px">${t[0]}</div><div style="font-weight:800;font-size:16px">${t[1]} · <b style="color:var(--pay)">${r}라운드</b> 버팀</div></div>
     <div style="display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font-size:12.5px"><span>🌊 감내 터짐 <b style="color:var(--bad)">${b.glose}</b>회 (−${won(b.bloss)})</span><span>🛡️ 헷지로 막은 손실 <b style="color:var(--good)">−${won(b.hsaved)}</b></span></div>
-    <div style="font-size:12px;color:var(--muted);margin-top:9px;line-height:1.6">감내는 이익도 나지만 <b style="color:var(--bad)">큰 하락에 크게 터집니다</b>. 헷지는 작은 프리미엄으로 그 <b>큰 손실을 미리 막죠</b>. <b>하락 위험이 클수록 헷지</b>가 이깁니다.</div>
+    <div style="font-size:12px;color:var(--muted);margin-top:9px;line-height:1.6">감내는 이익도 나지만 <b style="color:var(--bad)">큰 하락에 크게 터져요</b>. 헷지는 작은 프리미엄으로 그 <b>큰 손실을 미리 막죠</b>. <b>하락 위험이 클수록 헷지</b>가 이겨요.</div>
     <button id="g2Reset" class="gbtn" style="margin-top:12px;background:var(--ink)">다시 도전 ↻</button></div>`;
   $("g2Reset").addEventListener("click",g2Restart);
 }

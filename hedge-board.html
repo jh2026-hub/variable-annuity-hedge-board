@@ -773,6 +773,7 @@
   <div class="verdict ok" id="vd"><div class="ic" id="vdi">✓</div><div><h3 id="vdt"></h3><p id="vdp"></p></div></div>
   <div class="panel">
     <div class="cap">헷지할 항목 선택<span>헷지(PL) 또는 CSM 감내</span></div>
+    <div class="callout warn" style="margin-bottom:8px"><span class="ci">🔒</span><div><span class="clab">순서 제약</span> 헷지는 <b>방향 → 곡률 → 나머지</b> 순서로만 쌓여요. <b>방향(Δ·ρ) 없이 곡률(감마)만</b> 헷지할 순 없어요 — 감마는 <b>델타 헷지 후 잔여</b>니까요. 상위를 켜면 하위가 자동으로 켜지고, 하위를 끄면 상위가 함께 꺼져요.</div></div>
     <div id="selList"></div>
     <div class="callout tip"><span class="ci">💡</span><div><span class="clab">팁</span> 각 항목을 눌러 <b>헷지 ↔ 감내</b>를 바꿔 보세요. 위 막대·프론티어가 즉시 반응해요.</div></div>
     <p class="foot">각 항목 옆 <b>막대 = 그 항목의 손익 흔들림</b>. <b style="color:var(--good)">헷지</b>=비용 내고 <b style="color:var(--good)">짧게(초록)</b> / <b style="color:var(--bad)">CSM 감내</b>=비용 0이지만 <b style="color:var(--bad)">길게(빨강)</b> — 감내를 고르면 <b>변동성이 커져요</b>.</p>
@@ -1130,7 +1131,7 @@ function renderSelect(){
   });
   box.innerHTML=html;
   box.querySelectorAll(".seg2 button").forEach(b=>b.addEventListener("click",()=>{
-    const r=RISK.find(x=>x.id===b.parentElement.dataset.id); r.on=+b.dataset.v; render(); simRefresh();
+    applyHedgeToggle(b.parentElement.dataset.id, +b.dataset.v); render(); simRefresh();
   }));
 }
 
@@ -1153,9 +1154,21 @@ function evalCombo(hs){
 }
 const currentHS=()=>{const h={};RISK.forEach(r=>h[r.id]=r.on);return h;};
 const TOGGLE=["delta","rho","vega","fund","lapse","gE","gR"];
+/* 헷지 순서 제약: 방향(T0) → 곡률(T1) → 나머지(T2). 하위 tier가 모두 켜져야 상위 tier 헷지 가능
+   (방향 없이 곡률만 불가 — 감마는 델타 헷지 후 잔여). */
+const HEDGE_TIERS=[["delta","rho"],["gE","gR"],["vega","fund","lapse"]];
+const tierIdx=id=>HEDGE_TIERS.findIndex(t=>t.includes(id));
+function validHedge(hs){ let lowerFull=true;
+  for(const tier of HEDGE_TIERS){ const anyOn=tier.some(id=>hs[id]);
+    if(anyOn&&!lowerFull) return false; lowerFull=lowerFull&&tier.every(id=>hs[id]); }
+  return true; }
+/* 토글 시 순서 강제: 켜면 하위 tier 자동 ON, 끄면 상위 tier 자동 OFF */
+function applyHedgeToggle(id,v){ const r=RISK.find(x=>x.id===id); if(!r)return; r.on=v; const ti=tierIdx(id); if(ti<0)return;
+  if(v){ for(let t=0;t<ti;t++) HEDGE_TIERS[t].forEach(x=>{const o=RISK.find(y=>y.id===x); if(o)o.on=1;}); }
+  else { for(let t=ti+1;t<HEDGE_TIERS.length;t++) HEDGE_TIERS[t].forEach(x=>{const o=RISK.find(y=>y.id===x); if(o)o.on=0;}); } }
 function allCombos(){
   const out=[]; for(let m=0;m<(1<<TOGGLE.length);m++){ const hs={}; TOGGLE.forEach((id,i)=>hs[id]=(m>>i)&1);
-    if(hs.gE&&!hs.delta) continue; if(hs.gR&&!hs.rho) continue; out.push({hs, ...evalCombo(hs)}); } return out;
+    if(!validHedge(hs)) continue; out.push({hs, ...evalCombo(hs)}); } return out;
 }
 function frontier(pts){ const s=[...pts].sort((a,b)=>a.sig-b.sig||a.cost-b.cost); const fr=[]; let mc=Infinity;
   for(const p of s){ if(p.cost<mc-1e-9){ fr.push(p); mc=p.cost; } } return fr; }

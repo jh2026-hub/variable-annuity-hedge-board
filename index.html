@@ -305,7 +305,7 @@
   <button data-p="p2">⑤ 시뮬레이션<small>선택→결과</small></button>
   <button data-p="p8">⑥ 입력 가정<small>규모·민감도</small></button>
   <button data-p="p6">⑦ 이론<small>참고문헌</small></button>
-  <button data-p="pgame">🎮 게임<small>헷지 체험</small></button>
+  <button data-p="pgame">🎮 게임<small>2종 체험</small></button>
 </div>
 
 <!-- ① 개념 -->
@@ -509,7 +509,7 @@
 <section class="page" id="pgame">
   <p class="lede">🎯 <b>목표 — 예산(💰)이 바닥나지 않게 최대한 오래 버티기!</b> 시장은 매일 오르내리고, 당신은 <b>헷지를 조정할지</b> 결정합니다. 정답은 없습니다 — 헷지가 왜 어려운지 직접 느껴 보세요.</p>
   <div class="panel">
-    <div class="cap">헷지 체험 게임 🎮<span>코스피 2분기 실측으로</span></div>
+    <div class="cap">게임 1 · 델타 헷지 🎮<span>매일 따라붙기</span></div>
     <details style="margin-bottom:10px"><summary style="cursor:pointer;font-size:12.5px;font-weight:700;color:var(--pay)">❓ 게임 방법 (처음이라면)</summary>
       <div style="font-size:12px;color:var(--muted);line-height:1.75;margin-top:8px;padding:10px 12px;background:var(--panel2);border-radius:8px">
         · <b>검은 점 = 오늘 시장 위치.</b> 곡선의 <b>꼭대기에서 멀어질수록 손실</b>이 커집니다.<br>
@@ -542,7 +542,25 @@
     </div>
     <div id="gLog" style="margin-top:12px"></div>
     <div id="gFinal"></div>
-    <p class="foot" style="margin-top:12px">시장 주가는 <b>코스피 2분기 실제 일간수익률</b>에서 뽑습니다. 매일 손익이 예산에서 정산되고, 내일이 오르내릴지는 <b>아무도 모릅니다</b>. (교육용 단순 모형)</p>
+    <p class="foot" style="margin-top:12px">시장은 <b>코스피 2분기 실측</b>. 내일은 <b>아무도 모릅니다</b>. (교육용)</p>
+  </div>
+
+  <div class="panel">
+    <div class="cap">게임 2 · 감내 vs 헷지 🌊<span>완충(CSM)을 지켜라</span></div>
+    <details style="margin-bottom:10px"><summary style="cursor:pointer;font-size:12.5px;font-weight:700;color:var(--pay)">❓ 방법 (30초)</summary>
+      <div style="font-size:12px;color:var(--muted);line-height:1.7;margin-top:6px;padding:8px 10px;background:var(--panel2);border-radius:8px">매 라운드 <b>충격</b>이 옵니다. <b>🛡️ 헷지</b> = 재원을 써서 막기 · <b>🌊 감내</b> = 완충으로 버티기(공짜).<br>완충이 <b>충격보다 작으면 터져서</b> 재원(손익)이 깎입니다. <b>재원 0 = 끝.</b></div>
+    </details>
+    <div class="chartwrap"><svg id="g2Curve" viewBox="0 0 560 205" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px"></svg></div>
+    <div id="g2Result" style="min-height:22px;margin-top:8px;text-align:center;font-weight:800;font-size:14px"></div>
+    <div id="g2Control" style="margin-top:6px">
+      <div class="gchoices" style="grid-template-columns:repeat(2,1fr)">
+        <button class="gchoice g2c" data-a="hedge"><span class="gci">🛡️</span><span class="gct">헷지</span><span class="gcd">재원 −<b id="g2prem">8</b> · <b style="color:var(--good)">안전</b></span></button>
+        <button class="gchoice g2c" data-a="bear"><span class="gci">🌊</span><span class="gct">감내</span><span class="gcd">완충으로 버팀 · <b style="color:var(--bad)">공짜지만 위험</b></span></button>
+      </div>
+    </div>
+    <div id="g2Log" style="margin-top:12px"></div>
+    <div id="g2Final"></div>
+    <p class="foot" style="margin-top:10px"><b>두꺼운 완충</b>이면 작은 충격은 감내가 이득(공짜). <b>얇거나 큰 충격</b>이면 헷지가 살립니다 — 이것이 <b>얇을수록 헷지</b>인 이유입니다.</p>
   </div>
 </section>
 
@@ -1633,6 +1651,53 @@ if($("gCurve")){
   if($("gStart")) $("gStart").addEventListener("click",gStart);
   GAME.bud0=+($("gBud0")?.value||50); GAME.bud=GAME.bud0; GAME.seq=[]; GAME.hx=0; GAME.mkt=gDM(0); gNewDay();
 }
+
+/* 게임 2 — 감내(CSM 완충) vs 헷지(비용). 색·메타포는 ④/⑤와 동일: 재원 파랑·완충 초록·손익 빨강·충격 파도 */
+const G2_BUD0=100, G2_CSM0=60, G2_PREM=8, G2_REGEN=5;
+const GAME2={r:0,bud:G2_BUD0,csm:G2_CSM0,shock:0,over:false,log:[]};
+function g2Shock(){ return Math.max(4,Math.round(Math.abs(gSamp())*9)); }
+function g2Tank(x,lab,emo,val,max,col,dz){ const tw=92,ty=36,th=128,by=ty+th, fh=Math.max(0,Math.min(1,val/max))*th, fy=by-fh;
+  let s=`<rect x="${x}" y="${ty}" width="${tw}" height="${th}" fill="#F4F7FB" stroke="var(--hair)" rx="7"/>`;
+  if(dz) s+=`<rect x="${x}" y="${by-13}" width="${tw}" height="13" fill="#F7C9D1"/><text x="${x+tw/2}" y="${by-4}" text-anchor="middle" font-size="8" fill="var(--bad)" font-weight="700">손익 위험</text>`;
+  s+=`<rect x="${x}" y="${fy.toFixed(1)}" width="${tw}" height="${fh.toFixed(1)}" fill="${col}" rx="6"/>`;
+  s+=`<text x="${x+tw/2}" y="${ty-9}" text-anchor="middle" font-size="12" font-weight="800" fill="var(--ink)">${emo} ${lab}</text>`;
+  s+=`<text x="${x+tw/2}" y="${by+19}" text-anchor="middle" font-size="15" font-weight="800" fill="${col}">${won(Math.max(0,val))}</text>`;
+  return s; }
+function g2Draw(){ const b=GAME2, g=[];
+  g.push(g2Tank(46,'재원','💰',b.bud,G2_BUD0,'var(--pay)',false));
+  g.push(g2Tank(232,'CSM 완충','🛡️',b.csm,G2_CSM0,'var(--good)',true));
+  const sh=b.shock, lvl=sh>=30?'큼':sh>=15?'보통':'작음', scol=sh>=30?'var(--bad)':sh>=15?'var(--leak)':'#12A870';
+  g.push(`<text x="452" y="30" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">🌊 이번 충격</text>`);
+  const amp=6+sh/3; let p=''; for(let x=0;x<=140;x+=7){ const y=92-amp*Math.sin(x/13); p+=(x?'L':'M')+(382+x).toFixed(1)+' '+y.toFixed(1); }
+  g.push(`<path d="${p}" fill="none" stroke="${scol}" stroke-width="2.8" stroke-linecap="round"><animate attributeName="opacity" values="1;.45;1" dur="1.2s" repeatCount="indefinite"/></path>`);
+  g.push(`<text x="452" y="152" text-anchor="middle" font-size="26" font-weight="800" fill="${scol}">−${won(sh)}</text>`);
+  g.push(`<text x="452" y="173" text-anchor="middle" font-size="13" font-weight="800" fill="${scol}">${lvl}</text>`);
+  $("g2Curve").innerHTML=g.join('');
+}
+function g2Play(a){ if(GAME2.over)return; const b=GAME2, sh=b.shock; let msg,col,tag;
+  if(a==='hedge'){ b.bud-=G2_PREM; msg=`🛡️ 헷지로 막음 · 재원 −${G2_PREM}`; col='var(--pay)'; tag='막음'; }
+  else { b.csm-=sh; if(b.csm<0){ const loss=-b.csm; b.bud-=loss; b.csm=0; msg=`🌊 완충이 충격보다 작아 <b>터짐</b> · 손익 −${won(loss)}`; col='var(--bad)'; tag='터짐'; }
+    else { msg=`🌊 완충으로 버팀 · 완충 −${won(sh)}`; col='var(--good)'; tag='버팀'; } }
+  b.r++; b.csm=Math.min(G2_CSM0,b.csm+G2_REGEN);
+  b.log.unshift({r:b.r,a,sh,col,tag});
+  $("g2Log").innerHTML=b.log.slice(0,10).map(x=>`<div class="glogrow"><span class="gy">${x.r}R</span><span class="gtag">${x.a==='hedge'?'🛡️':'🌊'} 충격 ${won(x.sh)}</span><span class="gnet" style="color:${x.col}">${x.tag}</span></div>`).join('');
+  if(b.bud<=0){ b.bud=0; g2Draw(); if($("g2Result"))$("g2Result").innerHTML=`<span style="color:${col}">${msg}</span>`; g2Finish(); return; }
+  b.shock=g2Shock(); g2Draw();
+  if($("g2Result"))$("g2Result").innerHTML=`<span style="color:${col}">${msg}</span>`;
+}
+function g2Finish(){ GAME2.over=true; const c=$("g2Control"); if(c){c.style.opacity='.45';c.style.pointerEvents='none';}
+  const r=GAME2.r, t=r>=25?['🏆','완충 마스터']:r>=15?['🥇','노련']:r>=8?['👍','무난']:['😅','연습'];
+  $("g2Final").innerHTML=`<div class="gres" style="background:linear-gradient(135deg,#EEF3FE,#F4F0FD);border:1px solid #D7E0F5;margin-top:14px">
+    <div style="display:flex;align-items:center;gap:12px"><div style="font-size:34px">${t[0]}</div><div style="font-weight:800;font-size:16px">${t[1]} · <b style="color:var(--pay)">${r}라운드</b> 버팀</div></div>
+    <div style="font-size:12px;color:var(--muted);margin-top:9px;line-height:1.6">작은 충격은 <b>감내</b>가 공짜라 이득이지만, <b>완충이 얇을 때 큰 충격을 감내</b>하면 손익이 터집니다. 그래서 <b>얇을수록·클수록 헷지</b>가 정답입니다.</div>
+    <button id="g2Reset" class="gbtn" style="margin-top:12px;background:var(--ink)">다시 도전 ↻</button></div>`;
+  $("g2Reset").addEventListener("click",g2Restart);
+}
+function g2Restart(){ Object.assign(GAME2,{r:0,bud:G2_BUD0,csm:G2_CSM0,over:false,log:[]}); const c=$("g2Control"); if(c){c.style.opacity='';c.style.pointerEvents='';}
+  $("g2Log").innerHTML=''; $("g2Final").innerHTML=''; GAME2.shock=g2Shock(); g2Draw();
+  if($("g2Result"))$("g2Result").innerHTML=`<span style="color:var(--muted);font-weight:600">막을까요, 버틸까요?</span>`; }
+if($("g2Curve")){ document.querySelectorAll(".g2c").forEach(b=>b.addEventListener("click",()=>g2Play(b.dataset.a)));
+  if($("g2prem"))$("g2prem").textContent=G2_PREM; g2Restart(); }
 
 renderFactorAnim(); renderPayoff();
 render(); syncCsm2(); drawCasc(); drawBuffer();

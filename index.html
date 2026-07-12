@@ -1012,6 +1012,11 @@
       <input type="range" id="bufCsm" min="4" max="100" step="1" value="80"></div>
     <div class="callout tip"><span class="ci">💡</span><div><span class="clab">팁</span> 슬라이더를 <b>얇은 쪽</b>으로 당겨 보세요 — 감내분이 <b>손익으로 전이</b>되며 헷지 압력이 커져요.</div></div>
     <div class="chartwrap"><svg id="bufSvg" viewBox="0 0 640 200" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"></svg></div>
+    <div class="leg" style="margin-top:8px">
+      <span><i style="background:var(--sym);opacity:.5"></i>헷지 안 하면 · 흔들림이 <b>완충 밖</b>(전이)</span>
+      <span><i style="background:var(--good)"></i>헷지 후 · 남는 흔들림이 <b>완충 안</b></span>
+    </div>
+    <p class="foot" style="margin:8px 0 0"><b>완충(초록 띠)</b>이 담을 수 있는 만큼만 감내 가능 — <b>넘치는 흔들림은 헷지</b>로 완충 안에 눌러 담아야 해요. 그래서 <b>완충이 얇을수록 헷지 강제↑</b>.</p>
     <div id="bufChips" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"></div>
     <div style="display:flex;align-items:center;gap:10px;margin-top:12px">
       <span class="foot" style="margin:0;flex:0 0 auto">누적 헷지 비용</span>
@@ -1624,10 +1629,10 @@ function drawBuffer(){
   const totCost=BUFF.reduce((s,f)=>s+f.cost,0); let cost=0; for(let i=0;i<nH;i++)cost+=BUFF[i].cost;
   $("bufCostFill").style.width=(cost/totCost*100).toFixed(0)+"%"; $("bufCostLab").textContent=Math.round(cost/totCost*100)+"%";
   $("bufMsg").innerHTML = csmF>0.66
-    ? '완충 <b>두꺼움</b> → 대부분 <b>감내(CSM 흡수)</b>. 헷지 적게 해도 괜찮아요.'
+    ? `완충 <b>두꺼움</b> → 감당 범위가 넓어 대부분 <b>감내(완충 흡수)</b>. <b>${nH}/${N}개</b>만 헷지해도 흔들림이 완충 안.`
     : csmF>0.34
-    ? '완충 <b>얇아짐</b> → 감내하면 <b style="color:var(--bad)">손익으로 샘</b>. <b>감마까지 헷지</b> 강제 → 비용↑.'
-    : '완충 <b>매우 얇음</b> → <b style="color:var(--bad)">감마·펀드·베가·해지까지 전부 헷지</b> 강제. 비용 더 내도 <b>흔들림을 완충 안으로</b>.';
+    ? `완충 <b>얇아짐</b> → 감내분이 <b style="color:var(--bad)">완충을 넘어 손익으로 전이</b>. 완충 안에 담으려면 <b>${nH}/${N}개 헷지 강제</b> → 비용↑.`
+    : `완충 <b>매우 얇음</b> → 감당 범위가 좁아 <b style="color:var(--bad)">${nH}/${N}개 전부 헷지 강제</b>. 비용 더 내도 <b>흔들림을 완충 안으로</b> 눌러 담아야.`;
 }
 function yearStats(){
   const d=SIM.data, rk=SIM.rateKey, by={}, lam=0.94;

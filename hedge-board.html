@@ -80,6 +80,10 @@
   .selgrp:first-child{border-top:none;margin-top:2px;padding-top:0}
   .selrow{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:10px 10px;border-radius:9px;margin:3px 0;transition:background .12s}
   .selrow.selon{background:#EEF4FE}
+  .svol{flex:1 1 128px;min-width:108px}
+  .svoltrack{height:8px;border-radius:4px;background:var(--panel2);overflow:hidden}
+  .svolfill{height:100%;border-radius:4px;min-width:2px;transition:width .4s cubic-bezier(.2,.7,.3,1),background .3s}
+  .svollab{font-size:9.5px;color:var(--muted);margin-top:3px;font-family:"IBM Plex Mono",monospace;white-space:nowrap}
   .sname{flex:1 1 130px;font-size:13px;font-weight:600}.sname small{display:block;color:var(--muted);font-size:10.5px;font-weight:400;margin-top:1px}
   .difftag{flex:0 0 auto;font-size:10px;font-weight:700;padding:3px 9px;border-radius:99px;white-space:nowrap}
   .difftag.good{background:#E4F6EE;color:#12A870}.difftag.pay{background:#E7EFFD;color:#3B6FE6}
@@ -709,7 +713,7 @@
     <div class="cap">헷지할 항목 선택<span>헷지(PL) 또는 CSM 감내</span></div>
     <div id="selList"></div>
     <div class="callout tip"><span class="ci">💡</span><div><span class="clab">팁</span> 각 항목을 눌러 <b>헷지 ↔ 감내</b>를 바꿔 보세요. 위 막대·프론티어가 즉시 반응합니다.</div></div>
-    <p class="foot">각 항목을 <b>헷지</b>(확정 비용을 지불하고 손익 안정)하거나 <b>CSM</b>(비용 없이 완충으로 감내)으로 둡니다. 선택은 <b>위 흔들림 세트</b>·프론티어·시뮬레이션에 즉시 반영됩니다.</p>
+    <p class="foot">각 항목 옆 <b>막대 = 그 항목의 손익 흔들림</b>. <b style="color:var(--good)">헷지</b>=비용 내고 <b style="color:var(--good)">짧게(초록)</b> / <b style="color:var(--bad)">CSM 감내</b>=비용 0이지만 <b style="color:var(--bad)">길게(빨강)</b> — 감내를 고르면 <b>변동성이 커집니다</b>.</p>
   </div>
   <p class="lede">실제 시장데이터(KOSPI·<b>국고 20년</b>, 약 6.5년)로 손익을 재현해요. <b>미헷지</b>는 시장 등락이 그대로 손익이 되어 <b>크게 출렁이고</b>, 헷지는 그 흔들림을 줄여요. <span id="simStatus" style="color:var(--muted)">데이터 불러오는 중…</span></p>
   <div class="panel">
@@ -1030,16 +1034,21 @@ RISK.forEach(r=>{
 });
 function renderSelect(){
   const box=$("selList"); if(!box)return; const AV=val("av");
+  const barMax=Math.max(...Object.values(VC));   /* 최대 항목(주가 방향) 기준 스케일 */
+  const svol=(vol,col)=>{ const w=Math.max(2,Math.min(100,vol/barMax*100));
+    return `<div class="svoltrack"><div class="svolfill" style="width:${w.toFixed(1)}%;background:${col}"></div></div>`; };
   let html="", cur=null;
   RISK.forEach(r=>{
     if(r.grp!==cur){ cur=r.grp; html+=`<div class="selgrp">${r.grp}</div>`; }
     const dt=DIFF[r.diff], dtag=`<span class="difftag ${dt.c}">${dt.t}</span>`;
-    if(r.kind==="na"){ html+=`<div class="selrow"><div class="sname">${r.n}<small>${r.note} · 이전 불가</small></div>${dtag}<div class="scost">완충 감내</div><span class="segfix">CSM</span></div>`; return; }
-    let hint;
-    if(r.kind==="bp") hint = r.on? `헷지 −${won((r.bp||0)*AV)}억` : `감내(흔들림 ${(r.exp||0).toFixed(1)})`;
-    else { const {leak,prem}=leakPrem(r); const dep=r.dep?RISK.find(x=>x.id===r.dep).on:1;
-      hint = !dep? `방향 미헷지` : r.on? `헷지 −${won(prem)}억` : `감내 −${won(leak)}억`; }
-    html+=`<div class="selrow ${r.on?'selon':'seloff'}"><div class="sname">${r.n}<small>${r.note}</small></div>${dtag}<div class="scost mono">${hint}</div>
+    const full=VC[r.id]||0, res=vres(r.id);
+    if(r.kind==="na"){ html+=`<div class="selrow"><div class="sname">${r.n}<small>${r.note} · 이전 불가</small></div>${dtag}<div class="svol">${svol(full,'var(--bad)')}<div class="svollab">감내 · 비용 0 · 흔들림 <b style="color:var(--bad)">±${won(full)}</b></div></div><span class="segfix">CSM</span></div>`; return; }
+    let volNow, costTxt;
+    if(r.kind==="bp"){ volNow=r.on?res:full; costTxt=r.on?`헷지 −${won((r.bp||0)*AV)}억`:`감내 · 비용 0`; }
+    else { const dep=r.dep?RISK.find(x=>x.id===r.dep).on:1; const {prem}=leakPrem(r);
+      if(!dep){ volNow=full; costTxt=`방향 먼저 헷지`; } else { volNow=r.on?res:full; costTxt=r.on?`헷지 −${won(prem)}억`:`감내 · 비용 0`; } }
+    const barCol=r.on?'var(--good)':'var(--bad)';
+    html+=`<div class="selrow ${r.on?'selon':'seloff'}"><div class="sname">${r.n}<small>${r.note}</small></div>${dtag}<div class="svol">${svol(volNow,barCol)}<div class="svollab">${costTxt} · 흔들림 <b style="color:${barCol}">±${won(volNow)}</b></div></div>
       <div class="seg2" data-id="${r.id}"><button class="${r.on?'on':''}" data-v="1">헷지</button><button class="${r.on?'':'on'}" data-v="0">CSM</button></div></div>`;
   });
   box.innerHTML=html;

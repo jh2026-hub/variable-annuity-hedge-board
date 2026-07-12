@@ -1260,6 +1260,8 @@ function renderDerived(){
 
 let EFGEO={}, efRaf=false;
 function efSvgPt(ev){ const svg=$("ef"), r=svg.getBoundingClientRect(); const cx=(ev.touches?ev.touches[0].clientX:ev.clientX), cy=(ev.touches?ev.touches[0].clientY:ev.clientY); return {x:(cx-r.left)/Math.max(1,r.width)*640, y:(cy-r.top)/Math.max(1,r.height)*340}; }
+function efMoveV(id,x){ const e=$(id); if(e){e.setAttribute("x1",x.toFixed(1));e.setAttribute("x2",x.toFixed(1));} }
+function efMoveH(id,y){ const e=$(id); if(e){e.setAttribute("y1",y.toFixed(1));e.setAttribute("y2",y.toFixed(1));} }
 function efSetInput(id,v){ const o=[...FIN,...VOL].find(x=>x.id===id); if(!o)return; o.v=v; const el=$("in_"+id); if(el)el.value=v; syncCsm2(); render(); if(SIM.loaded){renderSim();renderConceptCombo();} }
 function drawEF(pts,fr,cur,opt,budget){
   const W=640,H=340, L=52,R=16,T=16,B=42, iw=W-L-R, ih=H-T-B;
@@ -1268,7 +1270,7 @@ function drawEF(pts,fr,cur,opt,budget){
   const volTol=val("voltol")||0, vx=Math.min(X(volTol),W-R), byv=Math.max(Y(budget),T);
   g.push(`<defs><linearGradient id="efGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#12A870"/><stop offset="0.5" stop-color="#3B6FE6"/><stop offset="1" stop-color="#E24A62"/></linearGradient><marker id="efar" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#0a7c50"/></marker></defs>`);
   /* 둘 다 만족 구역(비용≤예산 & 변동성≤허용) 연한 색칠 */
-  g.push(`<rect x="${L}" y="${byv.toFixed(1)}" width="${(vx-L).toFixed(1)}" height="${(T+ih-byv).toFixed(1)}" fill="#12A870" opacity="0.16"/>`);
+  g.push(`<rect id="efZone" x="${L}" y="${byv.toFixed(1)}" width="${(vx-L).toFixed(1)}" height="${(T+ih-byv).toFixed(1)}" fill="#12A870" opacity="0.16"/>`);
   if(vx>L+50) g.push(`<text class="eflabel" x="${(L+8).toFixed(1)}" y="${(T+ih-9).toFixed(1)}" fill="#0a7c50" font-weight="800">✅ 좋은 구역</text>`);
   for(let i=0;i<=4;i++){ const gy=T+ih*i/4;
     g.push(`<line x1="${L}" y1="${gy.toFixed(1)}" x2="${W-R}" y2="${gy.toFixed(1)}" stroke="#EAEDF5" stroke-width="1"/>`);
@@ -1277,13 +1279,13 @@ function drawEF(pts,fr,cur,opt,budget){
   g.push(`<text class="eflabel" x="${L+iw/2}" y="${H-4}" text-anchor="middle">남는 손익 흔들림 (억, 클수록 불안정) →</text>`);
   g.push(`<text class="eflabel" x="14" y="${T+ih/2}" text-anchor="middle" transform="rotate(-90 14 ${T+ih/2})">연간 비용 (억)</text>`);
   const by=Y(budget);
-  g.push(`<line x1="${L}" y1="${by.toFixed(1)}" x2="${W-R}" y2="${by.toFixed(1)}" stroke="var(--line)" stroke-width="2.5" stroke-dasharray="6 4" opacity="0.75"/>`);
-  g.push(`<line class="efdrag" data-k="bud" x1="${L}" y1="${by.toFixed(1)}" x2="${W-R}" y2="${by.toFixed(1)}" stroke="transparent" stroke-width="18" style="cursor:ns-resize"/>`);
-  g.push(`<text class="eflabel" x="${W-R}" y="${(by-6).toFixed(1)}" text-anchor="end" fill="var(--line)" font-weight="700">예산 ${won(budget)}억 ⇕</text>`);
+  g.push(`<line id="efBudLine" x1="${L}" y1="${by.toFixed(1)}" x2="${W-R}" y2="${by.toFixed(1)}" stroke="var(--line)" stroke-width="2.5" stroke-dasharray="6 4" opacity="0.75"/>`);
+  g.push(`<line id="efBudHit" class="efdrag" data-k="bud" x1="${L}" y1="${by.toFixed(1)}" x2="${W-R}" y2="${by.toFixed(1)}" stroke="transparent" stroke-width="18" style="cursor:ns-resize"/>`);
+  g.push(`<text id="efBudLab" class="eflabel" x="${W-R}" y="${(by-6).toFixed(1)}" text-anchor="end" fill="var(--line)" font-weight="700">예산 ${won(budget)}억 ⇕</text>`);
   if(volTol>0 && vx>L+2 && vx<W-R){
-    g.push(`<line x1="${vx.toFixed(1)}" y1="${T}" x2="${vx.toFixed(1)}" y2="${T+ih}" stroke="var(--good)" stroke-width="2.5" stroke-dasharray="6 4" opacity="0.85"/>`);
-    g.push(`<line class="efdrag" data-k="vol" x1="${vx.toFixed(1)}" y1="${T}" x2="${vx.toFixed(1)}" y2="${T+ih}" stroke="transparent" stroke-width="18" style="cursor:ew-resize"/>`);
-    g.push(`<text class="eflabel" x="${(vx+4).toFixed(1)}" y="${(T+10)}" fill="var(--good)" font-weight="700">변동성 허용 ${won(volTol)}억 ⇔</text>`); }
+    g.push(`<line id="efVolLine" x1="${vx.toFixed(1)}" y1="${T}" x2="${vx.toFixed(1)}" y2="${T+ih}" stroke="var(--good)" stroke-width="2.5" stroke-dasharray="6 4" opacity="0.85"/>`);
+    g.push(`<line id="efVolHit" class="efdrag" data-k="vol" x1="${vx.toFixed(1)}" y1="${T}" x2="${vx.toFixed(1)}" y2="${T+ih}" stroke="transparent" stroke-width="18" style="cursor:ew-resize"/>`);
+    g.push(`<text id="efVolLab" class="eflabel" x="${(vx+4).toFixed(1)}" y="${(T+10)}" fill="var(--good)" font-weight="700">변동성 허용 ${won(volTol)}억 ⇔</text>`); }
   const frSet=new Set(fr.map(p=>p.sig+"|"+p.cost));
   const hsAttr=p=>Object.keys(p.hs||{}).filter(k=>p.hs[k]).join(',');
   pts.forEach(p=>{ if(frSet.has(p.sig+"|"+p.cost))return;
@@ -1310,12 +1312,19 @@ function drawEF(pts,fr,cur,opt,budget){
     el.addEventListener("click",()=>{ const hedged=new Set((el.dataset.hs||"").split(",").filter(Boolean));
       TOGGLE.forEach(id=>{const r=RISK.find(x=>x.id===id); if(r) r.on=hedged.has(id)?1:0;});
       tip.style.opacity=0; render(); if(SIM.loaded)renderSim(); }); });
+  /* 드래그 중엔 선만 가볍게 이동(전체 render X), 놓을 때 한 번만 커밋 → 부드럽게 */
   $("ef").querySelectorAll(".efdrag").forEach(el=>{ el.addEventListener("pointerdown",ev=>{ ev.preventDefault();
-    const kind=el.dataset.k;
-    const move=e=>{ if(efRaf)return; efRaf=true; requestAnimationFrame(()=>{ efRaf=false; const sp=efSvgPt(e), G=EFGEO;
-      if(kind==="vol"){ const v=Math.max(50,Math.min(G.xMax*0.98,(sp.x-G.L)/G.iw*G.xMax)); efSetInput("voltol",Math.round(v/10)*10); }
-      else { const b=Math.max(1,(1-(sp.y-G.T)/G.ih)*G.yMax), AV=val("av")||1; efSetInput("fee",Math.max(1,Math.min(500,Math.round(b/AV)))); } }); };
-    const up=()=>{ window.removeEventListener("pointermove",move); window.removeEventListener("pointerup",up); };
+    const kind=el.dataset.k, G=EFGEO; let pend=null;
+    const move=e=>{ const sp=efSvgPt(e);
+      if(kind==="vol"){ let v=Math.max(50,Math.min(G.xMax*0.99,(sp.x-G.L)/G.iw*G.xMax)); v=Math.round(v/10)*10; pend=["voltol",v];
+        const px=G.L+(v/G.xMax)*G.iw; efMoveV("efVolLine",px); efMoveV("efVolHit",px);
+        const lab=$("efVolLab"); if(lab){lab.setAttribute("x",(px+4).toFixed(1)); lab.textContent="변동성 허용 "+won(v)+"억 ⇔";}
+        const z=$("efZone"); if(z) z.setAttribute("width",Math.max(0,px-G.L).toFixed(1)); }
+      else { const AV=val("av")||1; let fee=Math.max(1,Math.min(500,Math.round((1-(sp.y-G.T)/G.ih)*G.yMax/AV))); pend=["fee",fee];
+        const b=fee*AV, py=G.T+G.ih-(b/G.yMax)*G.ih; efMoveH("efBudLine",py); efMoveH("efBudHit",py);
+        const lab=$("efBudLab"); if(lab){lab.setAttribute("y",(py-6).toFixed(1)); lab.textContent="예산 "+won(b)+"억 ⇕";}
+        const z=$("efZone"); if(z){ z.setAttribute("y",py.toFixed(1)); z.setAttribute("height",Math.max(0,G.T+G.ih-py).toFixed(1)); } } };
+    const up=()=>{ window.removeEventListener("pointermove",move); window.removeEventListener("pointerup",up); if(pend) efSetInput(pend[0],pend[1]); };
     window.addEventListener("pointermove",move); window.addEventListener("pointerup",up); }); });
 }
 

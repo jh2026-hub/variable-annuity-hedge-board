@@ -605,10 +605,13 @@
       <!-- 완충 얇음 -->
       <text x="322" y="22" text-anchor="middle" font-size="13" font-weight="800" fill="var(--bad)">🪫 완충 얇음</text>
       <text x="322" y="41" text-anchor="middle" font-size="11" fill="var(--leak)" font-weight="700">🌊 충격</text>
-      <rect x="278" y="120" width="88" height="9" fill="#D6F0E4" stroke="#5BD99A" stroke-width="1.5" rx="3"/>
       <rect x="278" y="129" width="88" height="15" fill="#F7C9D1"/>
-      <rect x="278" y="129" width="88" height="15" fill="var(--bad)"><animate attributeName="opacity" values="0;0;.55;0" keyTimes="0;0.42;0.5;0.72" dur="2.4s" repeatCount="indefinite"/></rect>
-      <circle cx="322" r="8" fill="var(--bad)"><animate attributeName="cy" values="54;136;136;54" keyTimes="0;0.45;0.8;1" dur="2.4s" repeatCount="indefinite"/></circle>
+      <rect x="278" y="129" width="88" height="15" fill="var(--bad)"><animate attributeName="opacity" values="0;0;.6;0" keyTimes="0;0.4;0.5;0.72" dur="2.4s" repeatCount="indefinite"/></rect>
+      <!-- 얇은 완충이 두 조각으로 깨져 아래로 벌어짐 -->
+      <rect x="278" y="120" width="43" height="9" fill="#D6F0E4" stroke="#5BD99A" stroke-width="1.5" rx="2"><animateTransform attributeName="transform" type="rotate" values="0 321 129;0 321 129;-18 321 129;-18 321 129;0 321 129" keyTimes="0;0.4;0.52;0.78;0.9" dur="2.4s" repeatCount="indefinite"/></rect>
+      <rect x="323" y="120" width="43" height="9" fill="#D6F0E4" stroke="#5BD99A" stroke-width="1.5" rx="2"><animateTransform attributeName="transform" type="rotate" values="0 323 129;0 323 129;18 323 129;18 323 129;0 323 129" keyTimes="0;0.4;0.52;0.78;0.9" dur="2.4s" repeatCount="indefinite"/></rect>
+      <circle cx="322" r="8" fill="var(--bad)"><animate attributeName="cy" values="54;138;138;54" keyTimes="0;0.5;0.8;1" dur="2.4s" repeatCount="indefinite"/></circle>
+      <text x="322" y="127" font-size="15" text-anchor="middle" opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.45;0.54;0.72" dur="2.4s" repeatCount="indefinite"/>💥</text>
       <text x="322" y="158" text-anchor="middle" font-size="12.5" font-weight="800" fill="var(--bad)">터짐 → 더 헷지</text>
     </svg></div>
     <ul class="qalist"><li><b>완충이 얇을수록 = 헷지를 더.</b> <b>④ PL 인식</b> 슬라이더를 얇은 쪽으로 당겨 보세요.</li></ul>

@@ -735,7 +735,7 @@
     <p class="foot">가로=흔들림, 세로=비용. <b>왼쪽</b>=헷지↑(<span style="color:#0a7c50;font-weight:700">안전</span>·비용↑) / <b>오른쪽</b>=미헷지(<span style="color:var(--bad);font-weight:700">위험</span>·비용0). <b>초록 구역</b> 안 가장 왼쪽이 최적(<b style="color:#0a7c50">여기로 ✓</b>).<br>🖐 <b>예산선·변동성 허용선을 드래그</b>해 조절하고, <b>점을 눌러</b> 그 헷지 조합을 바로 적용해 보세요.</p>
   </div>
   <div class="panel">
-    <div class="cap">비용 · 흔들림 한눈에<span>재원 · 미헷지 vs 헷지</span></div>
+    <div class="cap">비용 · 흔들림 한눈에<span class="capb ex">개념 배분</span><span>재원 · 미헷지 vs 헷지</span></div>
     <div>
       <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
         <div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:2px"><span style="font-size:16px">💰</span><b style="font-size:13.5px;color:var(--ink)">헷지 재원</b><span class="qchip" style="font-size:10px;padding:2px 7px;background:#EEF3FE;color:var(--pay)">예산 = 보증수수료</span></div><div id="feeBig" style="font-size:30px;font-weight:800;color:var(--pay);letter-spacing:-.5px"></div></div>
@@ -799,11 +799,11 @@
     <div class="chartwrap"><svg class="sim" id="sim" viewBox="0 0 640 280" preserveAspectRatio="xMidYMid meet"></svg></div>
     <div class="leg">
       <span><i style="background:var(--leak)"></i>감내 시 누수(실현변동성)</span>
-      <span><i style="background:var(--pay)"></i>헷지 시 옵션 프리미엄(고정)</span>
+      <span><i style="background:var(--pay)"></i>헷지 시 옵션 프리미엄(확정 지출)</span>
       <span><i style="background:var(--sym)"></i>주가 RV(우축)</span>
     </div>
     <div class="chartwrap"><table class="mtx" id="simTbl"><thead><tr><th>연도</th><th>주가 RV</th><th>금리 RV</th><th>감내 시 누수</th><th>헷지 시 옵션 프리미엄</th></tr></thead><tbody></tbody></table></div>
-    <p class="foot"><b>감내(주황)</b>는 변동성이 큰 해에 누수가 급증하고, <b>헷지(청록)</b>도 그 해 <b>변동성이 크면 옵션 프리미엄(IV)이 함께 올라요</b> — 다만 감내보다 <b>변동이 작고 예측 가능</b>해요(감마 위험의 핵심 트레이드오프). <b>옵션 프리미엄</b>은 감마를 넘기려 <b>옵션·스왑션을 매입할 때 지불하는 가격(지출)</b>이며, 회사가 수취하는 <b>보증수수료(재원)</b>와는 달라요 — 이 프리미엄은 그 재원에서 지출돼요. 주가 RV는 KOSPI 일간수익률의 연율화 표준편차(%), 금리 RV는 국고 일간변동의 연율화 표준편차(bp)예요.</p>
+    <p class="foot"><b>감내(주황)</b>는 변동성 큰 해에 누수가 <b>급증</b>해요(예측 못 하는 손실). <b>헷지(청록)</b>는 그 위험을 옵션 프리미엄으로 넘기는 건데, 프리미엄도 <b>변동성 따라 오르고 평균적으론 누수보다 조금 더 비싸요</b>(보험료 성격) — 대신 <b>손실이 아니라 미리 정한 비용으로 확정</b>돼 재원에서 계획적으로 나가고 <b>'터지는' 일이 없어요</b>(감마 위험의 핵심 트레이드오프: 싸게 막는 게 아니라 <b>불확실을 확정으로 바꾸는 것</b>). <b>옵션 프리미엄</b>은 감마를 넘기려 <b>옵션·스왑션을 매입할 때 내는 가격</b>이고, 회사가 받는 <b>보증수수료(재원)</b>에서 지출돼요. 주가 RV는 KOSPI 일간수익률의 연율화 변동성(%), 금리 RV는 국고 20년 일간변동의 연율화 변동성(bp, EWMA)이에요.</p>
   </div>
   <div class="panel">
     <div class="cap">항목별 손익요소<span>현재 전략 · 연 기준</span></div>
@@ -1058,7 +1058,7 @@
   <div class="fbnote" id="fbNote"></div>
 </div>
 
-<p class="foot" style="text-align:center">데이터 출처 · KOSPI: Yahoo Finance(^KS11) · 국고 10년: 한국은행 ECOS. 공개 시장데이터, 참고용.</p>
+<p class="foot" style="text-align:center">데이터 출처 · KOSPI: Yahoo Finance(^KS11) · 국고 20년: 한국은행 ECOS. 공개 시장데이터, 참고용.</p>
 <div class="eftip" id="eftip"></div>
 
 <script>
@@ -1618,11 +1618,11 @@ function renderSim(){
   const on=id=>RISK.find(r=>r.id===id).on;
   const dOn=on("delta"), rOn=on("rho"), gEOn=on("gE"), gROn=on("gR");
   /* 감마는 방향(델타/로)을 헷지할 때만 존재. 감마헷지(gE/gR) 켜면 프리미엄 확정, 아니면 실현변동성 누수. */
-  /* 연도별: 감내 시 누수(변동성 기반, 매년 변동) vs 헷지 시 프리미엄(고정) — 선택과 무관한 비교 */
+  /* 연도별: 감내 시 누수(RV 기반) vs 헷지 시 프리미엄(IV 기반, 매년 변동·평균적으로 누수보다 큼) — 선택과 무관한 비교 */
   const re=val("re")||1, rr=val("rr")||1;   /* IV≈RV → 프리미엄도 그 해 변동성 따라 변함 */
   const rows=ys.map(s=>({...s, leak:gam(ge,s.rvE)+gam(gr,s.rvR), prem:gam(ge,ie*s.rvE/re)+gam(gr,ir*s.rvR/rr)}));
   const avgLeak=rows.reduce((a,r)=>a+r.leak,0)/rows.length, avgPrem=rows.reduce((a,r)=>a+r.prem,0)/rows.length, worst=rows.reduce((a,b)=>a.leak>b.leak?a:b);
-  $("simStrat").innerHTML=`<b style="color:var(--leak)">감내</b>하면 변동성 큰 해에 누수가 급증하고, <b style="color:var(--good)">헷지</b>하면 프리미엄으로 <b>훨씬 안정</b>적이에요(변동성 크면 프리미엄도 오르나 폭이 작음).`;
+  $("simStrat").innerHTML=`<b style="color:var(--leak)">감내</b>는 변동성 큰 해에 누수가 <b>급증</b>해요(예측 못 하는 손실). <b style="color:var(--good)">헷지</b>는 그 위험을 옵션 프리미엄으로 넘기는 것 — 프리미엄도 변동성 따라 오르고 평균적으론 조금 더 비싸지만, <b>손실이 아니라 미리 정한 비용으로 확정</b>돼요(계획된 지출, 터짐 없음).`;
   $("simStat").innerHTML=`
     <div><div class="sl">감내 시 연평균 누수</div><div class="sv" style="color:var(--leak)">△${won(avgLeak)}억</div></div>
     <div><div class="sl">최대 누수(${worst.y})</div><div class="sv" style="color:var(--bad)">△${won(worst.leak)}억</div></div>

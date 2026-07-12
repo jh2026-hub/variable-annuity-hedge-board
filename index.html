@@ -34,8 +34,8 @@
   .page{display:none} .page.on{display:block}
   .lede{color:var(--muted);font-size:14px;margin-top:14px}.lede b{color:var(--ink);font-weight:600}
   .panel{background:var(--panel);border:1px solid var(--hair);border-radius:12px;padding:16px;margin-top:18px}
-  .cap{font-size:13.5px;font-weight:800;margin-bottom:6px;padding-left:11px;position:relative;line-height:1.3}
-  .cap::before{content:"";position:absolute;left:0;top:2px;bottom:2px;width:4px;border-radius:3px;background:var(--pay)}
+  .cap{font-size:15px;font-weight:800;margin-bottom:8px;padding-left:13px;position:relative;line-height:1.32;letter-spacing:-.01em;color:var(--ink)}
+  .cap::before{content:"";position:absolute;left:0;top:1px;bottom:1px;width:5px;border-radius:3px;background:var(--pay)}
   /* 탭마다 제목 액센트 색 */
   #pqa .cap::before{background:#3B6FE6} #p1 .cap::before{background:#7A5AF0} #p4 .cap::before{background:#12A870}
   #p7 .cap::before{background:#E68A17} #p3 .cap::before{background:#E24A62} #p2 .cap::before{background:#0EA5A5}
@@ -295,6 +295,15 @@
     .derived{grid-template-columns:repeat(2,1fr)}
     table.imt{font-size:11px} table.imt td{padding:8px 6px}
     h1{font-size:20px}
+    .cap{font-size:14px}
+    /* 긴 제목 부제는 아랫줄로 → 줄바꿈 지저분함 방지 */
+    .cap span:not(.capb){display:block;margin-left:0;margin-top:2px}
+    .qchip{font-size:10.5px;padding:4px 8px}
+    .callout{font-size:12px;padding:9px 10px;gap:8px}
+    .lede{font-size:13px}
+    /* 선택 행: 이름 한 줄, 막대·토글 아래로 */
+    .selrow{gap:6px 8px} .sname{flex:1 1 100%}
+    .svol{flex:1 1 auto}
   }
   /* 역동성 — 탭 전환 시 패널 등장(스태거) */
   @keyframes panelIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
@@ -1215,7 +1224,7 @@ function drawEF(pts,fr,cur,opt,budget){
   const X=v=>L+(v/xMax)*iw, Y=v=>T+ih-(v/yMax)*ih, g=[];
   const volTol=val("voltol")||0, vx=Math.min(X(volTol),W-R), byv=Math.max(Y(budget),T);
   /* 둘 다 만족 구역(비용≤예산 & 변동성≤허용) 연한 색칠 */
-  g.push(`<rect x="${L}" y="${byv.toFixed(1)}" width="${(vx-L).toFixed(1)}" height="${(T+ih-byv).toFixed(1)}" fill="#12A870" opacity="0.09"/>`);
+  g.push(`<rect x="${L}" y="${byv.toFixed(1)}" width="${(vx-L).toFixed(1)}" height="${(T+ih-byv).toFixed(1)}" fill="#12A870" opacity="0.16"/>`);
   for(let i=0;i<=4;i++){ const gy=T+ih*i/4;
     g.push(`<line x1="${L}" y1="${gy.toFixed(1)}" x2="${W-R}" y2="${gy.toFixed(1)}" stroke="#EAEDF5" stroke-width="1"/>`);
     g.push(`<text class="eflabel" x="${L-6}" y="${(gy+3).toFixed(1)}" text-anchor="end">${won(yMax*(1-i/4))}</text>`); }
@@ -1231,13 +1240,14 @@ function drawEF(pts,fr,cur,opt,budget){
   const frSet=new Set(fr.map(p=>p.sig+"|"+p.cost));
   pts.forEach(p=>{ if(frSet.has(p.sig+"|"+p.cost))return;
     g.push(`<circle class="pt" data-sig="${p.sig}" data-cost="${p.cost}" cx="${X(p.sig).toFixed(1)}" cy="${Y(p.cost).toFixed(1)}" r="3" fill="#AAB4C6"/>`); });
-  g.push(`<path d="${fr.map((p,i)=>(i?"L":"M")+X(p.sig).toFixed(1)+" "+Y(p.cost).toFixed(1)).join(" ")}" fill="none" stroke="var(--pay)" stroke-width="2" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"><animate attributeName="stroke-dashoffset" from="1" to="0" dur="1s" fill="freeze"/></path>`);
+  g.push(`<path d="${fr.map((p,i)=>(i?"L":"M")+X(p.sig).toFixed(1)+" "+Y(p.cost).toFixed(1)).join(" ")}" fill="none" stroke="var(--pay)" stroke-width="3" stroke-linejoin="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"><animate attributeName="stroke-dashoffset" from="1" to="0" dur="1s" fill="freeze"/></path>`);
   fr.forEach(p=>g.push(`<circle class="pt" data-sig="${p.sig}" data-cost="${p.cost}" data-fr="1" cx="${X(p.sig).toFixed(1)}" cy="${Y(p.cost).toFixed(1)}" r="4" fill="var(--pay)" stroke="var(--bg)" stroke-width="1.5"/>`));
   /* 미헷지(감내)↔헷지 개념 주석 — 우하=감내(변동성 큼·비용0), 좌상=헷지(비용↑·변동성↓) */
   g.push(`<text class="eflabel" x="${(W-R-4).toFixed(1)}" y="${(T+ih-7).toFixed(1)}" text-anchor="end" fill="var(--sym)" font-weight="700">감내(미헷지) ▶ 변동성 큼 · 비용 0</text>`);
   g.push(`<text class="eflabel" x="${(L+6).toFixed(1)}" y="${(T+12).toFixed(1)}" fill="var(--pay)" font-weight="700">◀ 헷지 많음 · 비용↑ · 변동성↓</text>`);
   if(opt) g.push(`<circle cx="${X(opt.sig).toFixed(1)}" cy="${Y(opt.cost).toFixed(1)}" r="7" fill="none" stroke="var(--good)" stroke-width="2.5"><animate attributeName="r" values="7;11;7" dur="1.9s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;.45;1" dur="1.9s" repeatCount="indefinite"/></circle>`);
-  g.push(`<circle cx="${X(cur.sig).toFixed(1)}" cy="${Y(cur.cost).toFixed(1)}" r="6" fill="var(--leak)" stroke="var(--bg)" stroke-width="2"><animate attributeName="r" values="6;7.5;6" dur="1.6s" repeatCount="indefinite"/></circle>`);
+  g.push(`<circle cx="${X(cur.sig).toFixed(1)}" cy="${Y(cur.cost).toFixed(1)}" r="7" fill="none" stroke="var(--leak)" stroke-width="2" opacity="0.5"><animate attributeName="r" values="7;15;7" dur="1.9s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0;0.5" dur="1.9s" repeatCount="indefinite"/></circle>`);
+  g.push(`<circle cx="${X(cur.sig).toFixed(1)}" cy="${Y(cur.cost).toFixed(1)}" r="7" fill="var(--leak)" stroke="#fff" stroke-width="2.5"><animate attributeName="r" values="7;8.5;7" dur="1.6s" repeatCount="indefinite"/></circle>`);
   g.push(`<text class="eflabel" x="${(X(cur.sig)+9).toFixed(1)}" y="${(Y(cur.cost)+3).toFixed(1)}" fill="var(--leak)">현재</text>`);
   $("ef").innerHTML=g.join("");
   const tip=$("eftip");

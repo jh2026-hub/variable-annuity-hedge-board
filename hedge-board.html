@@ -700,14 +700,6 @@
     <span class="qchip">🛡️ 헷지 = <b>변동성 작음 · 비용</b></span>
     <span class="qchip">🪫 얇은 완충 = <b>헷지</b></span>
   </div>
-  <div class="panel">
-    <div class="cap">변동성 국면 프리셋<span>입력 가정(RV·IV)을 한 번에 세팅</span></div>
-    <div class="pobtns" id="regimeSeg">
-      <button data-rg="normal" class="on">🙂 평상시</button>
-      <button data-rg="crisis">🌪️ 위기시</button>
-    </div>
-    <p class="foot">감마 비용(옵션 프리미엄)은 <b>변동성²</b>에 비례해요 — <b style="color:var(--bad)">위기시엔 확 뛰고</b>, 평상시엔 낮아요. 눌러서 <b>감마 헷지 비용</b>이 어떻게 달라지는지 보세요.</p>
-  </div>
   <div class="callout warn"><span class="ci">⚠️</span><div><span class="clab">주의</span> 여기 숫자는 <b>개념용 예시</b>예요. 자기 회사 값은 <b>입력 가정</b> 탭에서 넣으면 즉시 반영돼요.</div></div>
   <div class="panel">
     <div class="cap">이렇게 보면 돼요 — 3단계</div>
@@ -720,6 +712,14 @@
   <div class="panel" style="border-color:#F1D7A3;background:#FDF7EC">
     <div class="cap">⚠ 미헷지도 변동성은 그대로</div>
     <p style="font-size:12.5px;color:var(--muted);line-height:1.7;margin-top:2px"><b style="color:var(--pay)">헷지</b> = 비용↑·흔들림↓ · <b style="color:var(--leak)">미헷지</b> = 비용0·흔들림↑. 미헷지는 <b>CSM 완충</b>이 흡수하지만, <b style="color:var(--bad)">완충이 얇으면 손익으로 전이</b> — 얇을수록 더 헷지해야 해요. (→ <b>④ PL 인식</b>)</p>
+  </div>
+  <div class="panel">
+    <div class="cap">변동성 국면 프리셋<span>입력 가정을 한 번에 세팅 · 프론티어가 즉시 이동</span></div>
+    <div class="pobtns" id="regimeSeg">
+      <button data-rg="normal" class="on">🙂 평상시 <small style="opacity:.7">23·24년</small></button>
+      <button data-rg="crisis">🌪️ 위기시 <small style="opacity:.7">26년</small></button>
+    </div>
+    <p class="foot"><b>위기시</b>엔 변동성·헷지 <b>단가가 전반적으로 상승</b>해요(26년 급락장). 감마 비용은 <b>변동성²</b>이라 <b style="color:var(--bad)">확 뛰어요</b>. 눌러서 아래 프론티어가 어떻게 움직이는지 보세요.</p>
   </div>
   <div class="panel">
     <div class="cap">효율적 프론티어 — 비용과 손익변동성<span class="capb live">🖐 조작</span><span>점 = 헷지 조합</span></div>
@@ -1054,11 +1054,11 @@ const FIN=[
 ];
 const VOL=[
   {id:"ge",n:"주가 Γ", u:"억/1%", v:1.2, s:"코스피 1%당 감마"},
-  {id:"re",n:"주가 RV", u:"%", v:18, s:"실현변동성(연) · 정상 국면(위기 제외)"},
-  {id:"ie",n:"주가 IV", u:"%", v:21, s:"내재변동성(옵션가) · RV+위험프리미엄"},
+  {id:"re",n:"주가 RV", u:"%", v:16, s:"실현변동성(연) · 평상시(23·24년) 가정"},
+  {id:"ie",n:"주가 IV", u:"%", v:19, s:"내재변동성(옵션가) · RV+위험프리미엄"},
   {id:"gr",n:"금리 Γ", u:"억/bp", v:0.2, s:"1bp당 컨벡시티"},
-  {id:"rr",n:"금리 RV", u:"bp", v:50, s:"실현변동성(연) · 정상 국면(위기 제외)"},
-  {id:"ir",n:"금리 IV", u:"bp", v:58, s:"스왑션 IV · RV+위험프리미엄"},
+  {id:"rr",n:"금리 RV", u:"bp", v:55, s:"실현변동성(연) · 평상시(23·24년) 가정"},
+  {id:"ir",n:"금리 IV", u:"bp", v:62, s:"스왑션 IV · RV+위험프리미엄"},
   {id:"eqd",n:"주가 민감도", u:"억/bp", v:1, s:"주가 100bp(1%)↑ → 100억(방향)"},
   {id:"rvd",n:"금리 민감도(DV01)", u:"억/bp", v:38, s:"장기보증 듀레이션 · 금리 10bp↑ → 380억(주가와 비슷한 영향)"},
   {id:"sig",n:"잔여 흔들림 1σ", u:"%", v:1.0, s:"미헷지 손익변동성(적립금 대비)"},
@@ -1219,10 +1219,15 @@ function drawVolBarK(){ if(!$("vkBar"))return; volBarKBuild();
 const tabOn=id=>{const e=$(id);return !!(e&&e.classList.contains("on"));};
 function simRefresh(){ if(SIM.loaded && tabOn("p2")) renderSim(); }
 function ccRefresh(){ if(SIM.loaded && tabOn("p1")) renderConceptCombo(); }
-/* 변동성 국면 프리셋 — 입력 가정(RV·IV)을 정상/위기 값으로 한 번에 세팅 */
-const REGIME={ normal:{re:18,ie:21,rr:50,ir:58}, crisis:{re:26,ie:30,rr:67,ir:74} };
+/* 변동성 국면 프리셋 — 평상시(23·24년) vs 위기시(26년, 전반 단가↑)
+   vol=RV·IV 입력, bp=헷지 단가(위기엔 스프레드 확대로 전반 상승) */
+const REGIME={
+  normal:{ vol:{re:16,ie:19,rr:55,ir:62}, bp:{delta:3,rho:2,vega:22,fund:26,lapse:40} },
+  crisis:{ vol:{re:40,ie:46,rr:88,ir:98}, bp:{delta:5,rho:3,vega:38,fund:44,lapse:60} }
+};
 function setRegime(rg){ const R=REGIME[rg]; if(!R)return;
-  Object.keys(R).forEach(id=>{ const o=[...FIN,...VOL].find(x=>x.id===id); if(o){o.v=R[id]; const el=$("in_"+id); if(el)el.value=R[id];} });
+  Object.keys(R.vol).forEach(id=>{ const o=[...FIN,...VOL].find(x=>x.id===id); if(o){o.v=R.vol[id]; const el=$("in_"+id); if(el)el.value=R.vol[id];} });
+  Object.keys(R.bp).forEach(id=>{ const r=RISK.find(x=>x.id===id); if(r){r.bp=R.bp[id]; const el=$("bp_"+id); if(el)el.value=R.bp[id];} });
   document.querySelectorAll("#regimeSeg button").forEach(b=>b.classList.toggle("on",b.dataset.rg===rg));
   render(); simRefresh(); ccRefresh(); }
 function render(){

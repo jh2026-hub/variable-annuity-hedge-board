@@ -700,6 +700,14 @@
     <span class="qchip">🛡️ 헷지 = <b>변동성 작음 · 비용</b></span>
     <span class="qchip">🪫 얇은 완충 = <b>헷지</b></span>
   </div>
+  <div class="panel">
+    <div class="cap">변동성 국면 프리셋<span>입력 가정(RV·IV)을 한 번에 세팅</span></div>
+    <div class="pobtns" id="regimeSeg">
+      <button data-rg="normal" class="on">🙂 평상시</button>
+      <button data-rg="crisis">🌪️ 위기시</button>
+    </div>
+    <p class="foot">감마 비용(옵션 프리미엄)은 <b>변동성²</b>에 비례해요 — <b style="color:var(--bad)">위기시엔 확 뛰고</b>, 평상시엔 낮아요. 눌러서 <b>감마 헷지 비용</b>이 어떻게 달라지는지 보세요.</p>
+  </div>
   <div class="callout warn"><span class="ci">⚠️</span><div><span class="clab">주의</span> 여기 숫자는 <b>개념용 예시</b>예요. 자기 회사 값은 <b>입력 가정</b> 탭에서 넣으면 즉시 반영돼요.</div></div>
   <div class="panel">
     <div class="cap">이렇게 보면 돼요 — 3단계</div>
@@ -1211,6 +1219,12 @@ function drawVolBarK(){ if(!$("vkBar"))return; volBarKBuild();
 const tabOn=id=>{const e=$(id);return !!(e&&e.classList.contains("on"));};
 function simRefresh(){ if(SIM.loaded && tabOn("p2")) renderSim(); }
 function ccRefresh(){ if(SIM.loaded && tabOn("p1")) renderConceptCombo(); }
+/* 변동성 국면 프리셋 — 입력 가정(RV·IV)을 정상/위기 값으로 한 번에 세팅 */
+const REGIME={ normal:{re:18,ie:21,rr:50,ir:58}, crisis:{re:26,ie:30,rr:67,ir:74} };
+function setRegime(rg){ const R=REGIME[rg]; if(!R)return;
+  Object.keys(R).forEach(id=>{ const o=[...FIN,...VOL].find(x=>x.id===id); if(o){o.v=R[id]; const el=$("in_"+id); if(el)el.value=R[id];} });
+  document.querySelectorAll("#regimeSeg button").forEach(b=>b.classList.toggle("on",b.dataset.rg===rg));
+  render(); simRefresh(); ccRefresh(); }
 function render(){
   const AV=val("av"), FEE=val("fee"), CSM=val("csm"), feeW=AV*FEE, budget=feeW;
   const cur=evalCombo(currentHS());
@@ -1732,6 +1746,7 @@ function renderPayoff(){
 }
 $("poBtns")&&$("poBtns").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
   PO.t=b.dataset.t; document.querySelectorAll("#poBtns button").forEach(x=>x.classList.toggle("on",x===b)); renderPayoff();});
+$("regimeSeg")&&$("regimeSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(b)setRegime(b.dataset.rg);});
 $("poX")&&$("poX").addEventListener("input",renderPayoff);
 
 /* 델타 리밸런싱 게임 — 부채곡선(볼록)+사선 헷지선(전일 기울기 유지), 시장점 이동, 매일 복기, 코스피 2분기 실측 */

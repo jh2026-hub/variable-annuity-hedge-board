@@ -616,7 +616,7 @@
       </div>
       <div id="fundBar" style="display:flex;gap:2px;height:36px;border-radius:9px;overflow:hidden;margin-top:11px;background:var(--panel2);border:1px solid var(--hair);padding:2px"></div>
       <div id="fundLegend" style="display:flex;flex-wrap:wrap;gap:5px 10px;margin-top:9px;font-size:11px"></div>
-      <p class="foot" style="margin-top:9px">이 재원에서 <b>헷지비용</b>과 <b>감내한 감마 누수</b>가 차감되고, 잔액이 이익입니다. 헷지를 늘리면 <b>비용↑·누수↓</b> — 재원 안에서 어디까지 막을지가 선택입니다.</p>
+      <p class="foot" style="margin-top:9px"><b>헷지비용</b>과 <b>감내 감마누수</b>가 재원에서 차감, 잔액이 이익. 헷지↑ → 비용↑·누수↓.</p>
     </div>
     <div style="border-top:1px dashed var(--hair);margin-top:14px;padding-top:12px">
       <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
@@ -629,7 +629,7 @@
         <div id="vkCsmLine" style="position:absolute;top:-1px;bottom:-1px;left:100%;width:0;border-left:2px dashed var(--good);transition:left .55s cubic-bezier(.2,.7,.3,1)"></div>
       </div>
       <div id="vkLegend" style="display:flex;flex-wrap:wrap;gap:5px 10px;margin-top:9px;font-size:11px"></div>
-      <p class="foot" style="margin-top:9px">감내(미헷지)하면 이 <b>큰 변동성</b>이 <b>CSM 완충</b>(초록 점선)에 흡수됩니다. <b>완충을 넘치면</b>(빨강) 손익·자본으로 전이 — <b>완충이 얇을수록 전이가 커져 사실상 100% 노출</b>이 되므로, 그럴수록 <b>헷지가 유리</b>합니다.</p>
+      <p class="foot" style="margin-top:9px">감내하면 이 변동성을 <b>CSM 완충</b>(초록 점선)이 흡수, <b>넘치면</b>(빨강) 손익·자본 전이. <b>얇을수록 전이↑ = 100% 노출 → 헷지 유리.</b></p>
     </div>
     <div style="border-top:1px dashed var(--hair);margin-top:14px;padding-top:12px">
       <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
@@ -640,7 +640,7 @@
         <div id="vbBar" style="display:flex;gap:2px;height:100%;width:0%;padding:2px;transition:width .55s cubic-bezier(.2,.7,.3,1)"></div>
       </div>
       <div id="vbLegend" style="display:flex;flex-wrap:wrap;gap:5px 10px;margin-top:9px;font-size:11px"></div>
-      <p class="foot" style="margin-top:9px"><b>①과 같은 축</b> — 두 막대 <b>길이 차이가 곧 헷지가 줄인 변동성</b>입니다. 헷지는 큰 변동성을 <b>작고 예측 가능한 잔여</b>(감마 슬리피지·베이시스)로 바꿀 뿐 <b>0은 아닙니다</b>. 대신 <b>비용</b>이 위 재원에서 나갑니다.</p>
+      <p class="foot" style="margin-top:9px"><b>①과 같은 축</b> — 막대 <b>길이 차이 = 헷지가 줄인 변동성</b>. 큰 변동성을 <b>작은 잔여</b>로(0은 아님), 대신 <b>비용</b> 지출.</p>
     </div>
   </div>
   <div class="verdict ok" id="vd"><div class="ic" id="vdi">✓</div><div><h3 id="vdt"></h3><p id="vdp"></p></div></div>
@@ -684,7 +684,7 @@
 
 <!-- ③ 헷지수단 -->
 <section class="page" id="p7">
-  <p class="lede">위험을 넘기는 <b>도구</b>를 비용과 효과로 비교합니다. 크게 두 종류입니다 — <b>선물·스왑</b>은 가격의 오르내림(방향)만 반대로 상쇄해 <b>비용이 낮고</b>, <b>옵션</b>은 <b>프리미엄을 선지급</b>하고 급변·대규모 하락까지 방어합니다(비용이 크나 확실).</p>
+  <p class="lede">위험을 넘기는 <b>도구</b>를 비용·효과로 비교합니다. <b>선물·스왑</b> = 방향만 싸게 상쇄 · <b>옵션</b> = 프리미엄 내고 급락·꼬리까지 확실히 방어.</p>
   <div class="panel" style="background:linear-gradient(135deg,#EEF3FE,#F4F0FD);border:1px solid #D7E0F5">
     <div class="cap">도구 3종 요약</div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:4px">
@@ -727,17 +727,17 @@
       <input type="range" id="poX" min="-30" max="30" step="1" value="0"></div>
     <div class="chartwrap"><svg id="poSvg" viewBox="0 0 560 220" style="width:100%;height:auto"></svg></div>
     <div class="foot" id="poRead" style="margin-top:4px"></div>
-    <p class="foot"><b>부채(회색)</b>는 <b>곡선</b>입니다 — 방향(기울기)뿐 아니라 <b>곡률(감마)</b>을 가집니다(보증의 옵션성). <b>선물·스왑(선형)</b>은 기울기만 상쇄해 <b>합에 곡률(감마 손실)이 남습니다</b>. <b>옵션 매수</b>는 곡률까지 잡아 합이 평탄해지지만 <b>프리미엄</b>을 냅니다. <b>미헷지</b>는 부채 곡선 그대로입니다. (개념적 상대값)</p>
+    <p class="foot"><b>부채(회색)</b>는 <b>곡선</b>(방향+곡률=감마). <b>선물·스왑</b>은 기울기만 상쇄 → <b>곡률(감마)이 남음</b>. <b>옵션</b>은 곡률까지 잡아 평탄, 대신 <b>프리미엄</b>. <b>미헷지</b> = 곡선 그대로.</p>
   </div>
   <div class="panel concept">
     <div class="cap">비용 vs 효과 요약</div>
-    <p><b>선물</b>은 가장 저렴하지만 방향만 제거하고 감마는 남습니다. <b>스왑</b>은 맞춤·베이시스에 유리하나 장외 위험이 있고, 국고스왑은 유동성이 얇아 비쌉니다. <b>옵션(스왑션)</b>은 프리미엄이 크지만 <b>감마·변동성(꼬리)까지</b> 확정 비용으로 방어하는 유일한 수단입니다. 따라서 <b>방향은 선물·스왑으로 저렴하게, 감마·변동성은 옵션으로 필요한 만큼</b> 조합하는 것이 일반적입니다.</p>
+    <p><b>방향은 선물·스왑으로 싸게, 감마·꼬리는 옵션으로</b> 조합합니다. <b>감마·변동성을 확정 비용으로 막는 건 옵션뿐</b>입니다.</p>
   </div>
 </section>
 
 <!-- ④ CSM 완충 -->
 <section class="page" id="p3">
-  <p class="lede">헷지하지 않은 시장 손실은 곧바로 손익에 나타나지 않고, 먼저 <b>CSM(미래이익 적립분 = 완충장치)</b>을 깎아 흡수합니다. 이 <b>완충이 바닥나면</b> 초과분이 <b>그 해 보험손익(당기손익)</b>으로 잡힙니다.</p>
+  <p class="lede">헷지 안 한 손실은 곧장 손익에 안 잡히고, 먼저 <b>CSM(완충)</b>을 깎아 흡수합니다. <b>완충이 바닥나면</b> 초과분이 <b>그 해 보험손익</b>으로 잡힙니다.</p>
   <div class="panel">
     <div class="cap">완충의 작동<span>주가 충격 시나리오</span></div>
     <div class="srow"><div class="lab">주식성 자산 규모<small>충격이 적용되는 기준</small></div>
@@ -747,7 +747,7 @@
     <div style="margin-top:14px"><label class="foot" style="margin:0">주가 충격 <b class="mono" id="shockLab" style="color:var(--pay)"></b></label>
       <input type="range" id="shock" min="-40" max="40" step="1" value="-30"></div>
     <div class="casc" id="casc"></div>
-    <p class="foot">상승 시 자본 증가는 CSM을 확충하여 손익에 영향이 없습니다. 하락 시 자본 감소는 CSM을 먼저 소진하며, CSM을 초과하는 부분만 당기 보험손익으로 나타납니다. <b>완충이 얇을수록 손익 전이가 빠르게 발생</b>합니다. (여기의 값은 임의 예시입니다.)</p>
+    <p class="foot">상승 = CSM 확충(손익 무영향). 하락 = CSM 먼저 소진, <b>초과분만 당기 손익</b>. <b>완충이 얇을수록 전이가 빠릅니다.</b> (예시값)</p>
   </div>
   <div class="panel">
     <div class="cap">완충이 얇아지면 헷지 압력이 커집니다<span>CSM을 줄여보세요</span></div>
@@ -766,7 +766,7 @@
 
 <!-- ④ 헷지 vs CSM -->
 <section class="page" id="p4">
-  <p class="lede">각 위험 요인은 두 가지로 처리합니다 — <b>헷지</b>해서 비용을 내고 손익을 확정하거나(투자손익, PL), <b>헷지하지 않고</b> 완충장치(CSM)로 버팁니다(감내). 아래에서 요인마다 <b>원리(그림)</b>와 성격을 보여드리며, 실제 선택은 ⑤ 시뮬레이션에서 합니다.</p>
+  <p class="lede">각 위험은 둘 중 하나 — <b>헷지</b>(비용 내고 손익 확정) 또는 <b>감내</b>(완충 CSM으로 버팀). 아래는 요인별 <b>원리(그림)</b>, 실제 선택은 ⑤에서.</p>
   <div class="panel">
     <div class="cap">요인별 원리<span>무엇이 왜 위험인가</span></div>
     <div id="facAnim"></div>
@@ -774,9 +774,9 @@
   <div class="panel">
     <div class="cap">두 경로의 성격</div>
     <div class="grpbox g0"><h4>헷지한다 → 투자손익(PL)</h4>
-      <p>확정 비용(거래비용·프리미엄)을 지불하고 변동을 제거합니다. 손익은 예측 가능해지나, 비용은 회수되지 않는 지출로 매년 발생합니다.</p></div>
+      <p>비용(프리미엄)을 내고 변동을 제거 → <b>손익 예측 가능</b>. 대신 비용은 매년 지출.</p></div>
     <div class="grpbox g1"><h4>CSM으로 보낸다 → 완충 감내</h4>
-      <p>비용 지출은 없으나 변동이 CSM을 조정합니다. 평시에는 완충이 흡수하지만, 완충을 초과하면 보험손익으로 전이되어 큰 해에 손실이 집중됩니다.</p></div>
+      <p>비용 0, 변동을 <b>CSM이 흡수</b>. 단 <b>완충 초과 시 손익 전이</b> → 큰 해에 손실 집중.</p></div>
   </div>
   <div class="panel">
     <div class="cap">항목별 비교<span>현재 입력값 기준</span></div>

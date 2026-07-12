@@ -11,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{--bg:#E9ECF3;--panel:#FFFFFF;--panel2:#EEF1F7;--hair:#DEE3EE;--ink:#16202F;--muted:#566275;
-        /* 색=의미 규약: pay=헷지(실행·비용·재원) · good=안전(저변동·좋은 결과) · leak=미헷지/감내(누수) · bad=위험(큰 변동·터짐) · sym=원변동성(raw swing) */
+        /* 색=의미 규약(전 페이지 공통, ① 개념 탭에 범례): pay=헷지(막기·실행·비용·프리미엄) · leak=미헷지/감내(누수·비용) · sym=흔들림의 크기(σ, 헷지 전 큰 파동) · good=안전(작게·완충 흡수·좋은 결과) · bad=위험(큰 변동·완충 소진·터짐) */
         --pay:#3B6FE6;--leak:#E68A17;--sym:#7A5AF0;--bad:#E24A62;--good:#12A870;--line:#1B2437;
         --good-ink:#0a7c50;--pay-ink:#2F63E0;--bad-line:#E7B9C2;
         --good-bg:#EAF7F1;--bad-bg:#FBEEF1;--leak-bg:#FBF4E8;--pay-bg:#EEF3FE}
@@ -142,6 +142,10 @@
   details.deep[open]>summary::after{transform:rotate(180deg)}
   details.deep[open]>summary{border-bottom-left-radius:0;border-bottom-right-radius:0}
   details.deep>.panel:first-of-type{margin-top:10px}
+  /* 색 읽는 법 범례 */
+  .ckey{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);line-height:1.5}
+  .ckey i{width:13px;height:13px;border-radius:4px;flex:0 0 auto}
+  .ckey b{color:var(--ink);font-weight:700}
   /* 패널 제목 유형 배지 */
   .capb{display:inline-block;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;margin-left:6px;vertical-align:1.5px;letter-spacing:.02em}
   .capb.data{background:#EAF7F1;color:#0a7c50} .capb.live{background:#EEF3FE;color:var(--pay)} .capb.ex{background:#FBF4E8;color:var(--leak)}
@@ -372,6 +376,17 @@
 <section class="page" id="p1">
   <p class="lede">변액보험은 <b>최저 수준을 보증</b>하고, 그 대가로 <b>보증수수료</b>를 받아 시장위험을 관리해요. 핵심은 <b>비용과 흔들림의 균형</b>.</p>
   <div class="callout sum"><span class="ci">📝</span><div><span class="clab">요약</span> 변액보험은 <b>자본이 흔들리는 상품</b>. <b>감내</b>하면 완충(CSM)이 받다 <b>소진되면 자본</b>, <b>헷지</b>하면 <b>줄어든 변동만</b> 자본에. 완충 <b>얇을수록 헷지</b>.</div></div>
+
+  <div class="panel">
+    <div class="cap">색 읽는 법<span>이 색은 페이지 전체에서 같은 뜻이에요</span></div>
+    <div style="display:flex;flex-wrap:wrap;gap:9px 16px;margin-top:2px">
+      <span class="ckey"><i style="background:var(--pay)"></i><b>파랑</b> 헷지(막기·비용)</span>
+      <span class="ckey"><i style="background:var(--leak)"></i><b>주황</b> 미헷지·감내(누수)</span>
+      <span class="ckey"><i style="background:var(--sym)"></i><b>보라</b> 흔들림의 크기</span>
+      <span class="ckey"><i style="background:var(--good)"></i><b>초록</b> 안전(작게·흡수)</span>
+      <span class="ckey"><i style="background:var(--bad)"></i><b>빨강</b> 위험(터짐·소진)</span>
+    </div>
+  </div>
 
   <div class="panel" style="background:linear-gradient(135deg,#EEF3FE,#F4F0FD);border:1px solid #D7E0F5">
     <div class="cap">한눈에</div>
@@ -867,9 +882,9 @@
       <div style="border:1.5px solid var(--good);border-radius:10px;padding:11px;background:#EAF7F1">
         <div style="font-weight:800;color:var(--good);font-size:13px">📉 선물·스왑</div>
         <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px"><b>방향만</b> 싸게 상쇄. <b>대부분 여기</b>서 관리해요.</div></div>
-      <div style="border:1.5px solid var(--bad-line);border-radius:10px;padding:11px;background:#FBEEF1">
-        <div style="font-weight:800;color:var(--leak);font-size:13px">🛡️ 옵션(스왑션)</div>
-        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px"><b>감마·꼬리까지</b> 방어. 비싸도 <b>필요할 때</b>.</div></div>
+      <div style="border:1.5px solid #C9DBF7;border-radius:10px;padding:11px;background:#EEF3FE">
+        <div style="font-weight:800;color:var(--pay);font-size:13px">🛡️ 옵션(스왑션)</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px"><b>감마·꼬리까지</b> 방어. 프리미엄 내고 <b>필요할 때</b>.</div></div>
     </div>
   </div>
   <div class="panel">

@@ -1188,7 +1188,8 @@
     <div class="grpbox g0"><h4><span class="hn">1</span>헷지 → 투자손익(PL)</h4>
       <p>비용(프리미엄)을 내고 변동을 제거 → <b>손익 예측 가능</b>. 대신 비용은 매년 지출.</p></div>
     <div class="grpbox g1"><h4><span class="hn">2</span>CSM으로 → 완충 감내</h4>
-      <p>비용 0, 변동을 <b>CSM이 흡수</b>. 단 <b>완충 초과 시 손익 전이</b> → 큰 해에 손실 집중.</p></div>
+      <p>비용 0, 변동을 <b>CSM이 흡수</b>해요. 단 <b>완충을 넘치면 손익으로 넘어와</b> 큰 해에 손실이 몰려요.</p></div>
+    <p class="foot"><b>투자손익·보험손익</b>은 이름만 다를 뿐 <b>둘 다 그 해 손익(PL)</b>이에요 — 헷지분은 <b>투자손익</b>, 완충 넘친 감내분은 <b>보험손익</b>으로 잡혀요.</p>
   </div>
   <div class="panel">
     <div class="cap">항목별 비교<span>현재 입력값 기준</span></div>
@@ -1568,11 +1569,11 @@ function drawEF(pts,fr,cur,opt,budget){
   g.push(`<text class="eflabel" x="14" y="${T+ih/2}" text-anchor="middle" transform="rotate(-90 14 ${T+ih/2})">연간 비용 (억)</text>`);
   const by=Y(budget);
   g.push(`<line id="efBudLine" x1="${L}" y1="${by.toFixed(1)}" x2="${W-R}" y2="${by.toFixed(1)}" stroke="var(--line)" stroke-width="2.5" stroke-dasharray="6 4" opacity="0.75"/>`);
-  g.push(`<line id="efBudHit" class="efdrag" data-k="bud" x1="${L}" y1="${by.toFixed(1)}" x2="${W-R}" y2="${by.toFixed(1)}" stroke="transparent" stroke-width="18" style="cursor:ns-resize"/>`);
+  g.push(`<line id="efBudHit" class="efdrag" data-k="bud" x1="${L}" y1="${by.toFixed(1)}" x2="${W-R}" y2="${by.toFixed(1)}" stroke="transparent" stroke-width="22" style="cursor:ns-resize;touch-action:none;pointer-events:stroke"/>`);
   g.push(`<text id="efBudLab" class="eflabel" x="${W-R}" y="${(by-6).toFixed(1)}" text-anchor="end" fill="var(--line)" font-weight="700">예산 ${won(budget)}억 ⇕</text>`);
   if(volTol>0 && vx>L+2 && vx<W-R){
     g.push(`<line id="efVolLine" x1="${vx.toFixed(1)}" y1="${T}" x2="${vx.toFixed(1)}" y2="${T+ih}" stroke="var(--good)" stroke-width="2.5" stroke-dasharray="6 4" opacity="0.85"/>`);
-    g.push(`<line id="efVolHit" class="efdrag" data-k="vol" x1="${vx.toFixed(1)}" y1="${T}" x2="${vx.toFixed(1)}" y2="${T+ih}" stroke="transparent" stroke-width="18" style="cursor:ew-resize"/>`);
+    g.push(`<line id="efVolHit" class="efdrag" data-k="vol" x1="${vx.toFixed(1)}" y1="${T}" x2="${vx.toFixed(1)}" y2="${T+ih}" stroke="transparent" stroke-width="22" style="cursor:ew-resize;touch-action:none;pointer-events:stroke"/>`);
     g.push(`<text id="efVolLab" class="eflabel" x="${(vx+4).toFixed(1)}" y="${(T+10)}" fill="var(--good)" font-weight="700">변동성 허용 ${won(volTol)}억 ⇔</text>`); }
   const frSet=new Set(fr.map(p=>p.sig+"|"+p.cost));
   const hsAttr=p=>Object.keys(p.hs||{}).filter(k=>p.hs[k]).join(',');
@@ -1600,7 +1601,7 @@ function drawEF(pts,fr,cur,opt,budget){
       TOGGLE.forEach(id=>{const r=RISK.find(x=>x.id===id); if(r) r.on=hedged.has(id)?1:0;});
       tip.style.opacity=0; render(); simRefresh(); }); });
   /* 드래그 중엔 선만 가볍게 이동(전체 render X), 놓을 때 한 번만 커밋 → 부드럽게 */
-  $("ef").querySelectorAll(".efdrag").forEach(el=>{ el.addEventListener("pointerdown",ev=>{ ev.preventDefault();
+  $("ef").querySelectorAll(".efdrag").forEach(el=>{ el.addEventListener("pointerdown",ev=>{ ev.preventDefault(); try{el.setPointerCapture(ev.pointerId);}catch(_){}
     const kind=el.dataset.k, G=EFGEO; let pend=null;
     const move=e=>{ const sp=efSvgPt(e);
       if(kind==="vol"){ let v=Math.max(50,Math.min(G.xMax*0.99,(sp.x-G.L)/G.iw*G.xMax)); v=Math.round(v/10)*10; pend=["voltol",v];

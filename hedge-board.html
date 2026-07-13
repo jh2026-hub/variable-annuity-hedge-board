@@ -523,7 +523,7 @@
         <input type="range" id="cvMkt" min="-40" max="20" step="1" value="0" style="width:100%">
       </div>
     </div>
-    <div class="chartwrap"><svg id="cvSvg" viewBox="0 0 560 220" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"></svg></div>
+    <div class="chartwrap"><svg id="cvSvg" viewBox="0 0 560 250" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"></svg></div>
     <div class="leg" style="margin-top:8px">
       <span><i style="background:var(--pay)"></i>변액펀드(자산) · 지금 값</span>
       <span><i style="background:var(--leak)"></i>변액보증(부채) · 미래 최소지급</span>
@@ -1490,7 +1490,7 @@ function drawVolBarK(){ if(!$("vkBar"))return; volBarKBuild();
 /* 최적화 — 현재 보이는 탭만 무거운 차트 갱신(숨은 탭은 전환 시 갱신) */
 const tabOn=id=>{const e=$(id);return !!(e&&e.classList.contains("on"));};
 function simRefresh(){ if(SIM.loaded && tabOn("p2")) renderSim(); }
-function ccRefresh(){ if(SIM.loaded && tabOn("pbg")){ renderConceptCombo(); } }
+function ccRefresh(){ if(SIM.loaded && $("conceptLines")){ renderConceptCombo(); } }
 /* 변동성 국면 프리셋 — 평상시(23·24년) vs 위기시(26년, 전반 단가↑)
    vol=RV·IV 입력, bp=헷지 단가(위기엔 스프레드 확대로 전반 상승) */
 const REGIME={

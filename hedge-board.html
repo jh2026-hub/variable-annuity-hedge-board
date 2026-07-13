@@ -524,7 +524,7 @@
       <button id="cvPlay" style="flex:0 0 auto;background:var(--sym);color:#fff;border:none;border-radius:9px;padding:8px 15px;font-family:inherit;font-weight:800;font-size:12.5px;cursor:pointer">⏸ 정지</button>
       <span class="foot" style="margin:0;flex:1 1 160px">시장이 자동으로 <b>오르내려요</b> — <b style="color:var(--bad)">빨간 폭(자본)</b>이 흔들리는 걸 보세요</span>
     </div>
-    <div class="chartwrap"><svg id="cvSvg" viewBox="0 0 560 230" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"></svg></div>
+    <div class="chartwrap"><svg id="cvSvg" viewBox="0 0 560 300" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"></svg></div>
     <div class="leg" style="margin-top:8px">
       <span><i style="background:var(--pay)"></i>변액펀드(자산) · 지금 값</span>
       <span><i style="background:var(--leak)"></i>변액보증(부채) · 미래 최소지급</span>
@@ -696,13 +696,13 @@
     <div class="chartwrap"><svg viewBox="0 0 560 164" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
       <text x="280" y="18" text-anchor="middle" font-size="12" font-weight="800" fill="var(--bad)">같은 시장 충격이 오면 ▼<animate attributeName="opacity" values="1;.45;1" dur="1.5s" repeatCount="indefinite"/></text>
       <line x1="96" y1="138" x2="464" y2="138" stroke="#D6DCE8" stroke-width="1.2"/>
-      <text x="150" y="36" text-anchor="middle" font-size="12.5" font-weight="800" fill="var(--bad)">안 헷지</text>
+      <text x="150" y="36" text-anchor="middle" font-size="11.5" font-weight="800" fill="var(--bad)">헷지를 안 할 경우</text>
       <rect x="106" y="44" width="88" height="0" rx="6" fill="#F7C9D1"><animate attributeName="height" values="0;0;80;80;0" keyTimes="0;0.28;0.5;0.82;1" dur="2.8s" repeatCount="indefinite"/></rect>
       <rect x="106" y="44" width="88" height="94" rx="6" fill="#DCE7FB" stroke="#9DBBF3" stroke-width="1.3"><animate attributeName="y" values="44;44;124;124;44" keyTimes="0;0.28;0.5;0.82;1" dur="2.8s" repeatCount="indefinite"/><animate attributeName="height" values="94;94;14;14;94" keyTimes="0;0.28;0.5;0.82;1" dur="2.8s" repeatCount="indefinite"/></rect>
       <text x="150" y="131" text-anchor="middle" font-size="10.5" font-weight="800" fill="#2F63E0">자본</text>
       <text x="150" y="82" text-anchor="middle" font-size="17" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.44;0.5;0.82;1" dur="2.8s" repeatCount="indefinite"/>💥</text>
       <text x="150" y="158" text-anchor="middle" font-size="11.5" font-weight="800" fill="var(--bad)">자본 붕괴 💔</text>
-      <text x="410" y="36" text-anchor="middle" font-size="12.5" font-weight="800" fill="#0a7c50">헷지</text>
+      <text x="410" y="36" text-anchor="middle" font-size="11.5" font-weight="800" fill="#0a7c50">헷지할 경우</text>
       <rect x="366" y="44" width="88" height="0" rx="6" fill="#F7C9D1"><animate attributeName="height" values="0;0;14;14;0" keyTimes="0;0.28;0.5;0.82;1" dur="2.8s" repeatCount="indefinite"/></rect>
       <rect x="366" y="44" width="88" height="94" rx="6" fill="#DCE7FB" stroke="#9DBBF3" stroke-width="1.3"><animate attributeName="y" values="44;44;58;58;44" keyTimes="0;0.28;0.5;0.82;1" dur="2.8s" repeatCount="indefinite"/><animate attributeName="height" values="94;94;80;80;94" keyTimes="0;0.28;0.5;0.82;1" dur="2.8s" repeatCount="indefinite"/></rect>
       <text x="410" y="106" text-anchor="middle" font-size="10.5" font-weight="800" fill="#2F63E0">자본</text>
@@ -1803,26 +1803,35 @@ const cvWave=t=>{const gentle=0.06*Math.sin(t*2*Math.PI)+0.045*Math.sin(t*2*Math
 function cvDraw(){
   const svg=$("cvSvg"); if(!svg)return;
   const base=CV_BASE, floor=CV_FLOOR;
-  const W=560,H=230,L=44,R=16,T=22,B=26,iw=W-L-R,ih=H-T-B,g=[];
-  const vMax=125, Y=v=>T+ih*(1-v/vMax), X=i=>L+iw*i/(CV_N-1);
-  const fundA=[],liabA=[];
-  for(let i=0;i<CV_N;i++){ const m=cvWave(cvPhase-(CV_N-1-i)*CV_DT); const f=base*(1+m); fundA.push(f); liabA.push(Math.max(f,floor)); }
+  const W=560,L=46,R=16,iw=W-L-R,g=[];
+  const X=i=>L+iw*i/(CV_N-1);
+  const fundA=[],liabA=[],netA=[];
+  for(let i=0;i<CV_N;i++){ const m=cvWave(cvPhase-(CV_N-1-i)*CV_DT); const f=base*(1+m); const l=Math.max(f,floor); fundA.push(f); liabA.push(l); netA.push(f-l); }
   const li=CV_N-1, gap=liabA[li]-fundA[li];
-  g.push(`<text class="eflabel" x="${L}" y="${(T-8).toFixed(1)}" fill="var(--muted)" font-weight="700">시간 → · 시장이 오르내려요</text>`);
-  g.push(`<line x1="${L}" y1="${Y(100).toFixed(1)}" x2="${W-R}" y2="${Y(100).toFixed(1)}" stroke="#EEF1F7" stroke-width="1"/>`);
-  g.push(`<text class="eflabel" x="${(L-5).toFixed(1)}" y="${(Y(100)+3).toFixed(1)}" text-anchor="end">100</text>`);
-  g.push(`<line x1="${L}" y1="${Y(floor).toFixed(1)}" x2="${W-R}" y2="${Y(floor).toFixed(1)}" stroke="var(--leak)" stroke-width="1.3" stroke-dasharray="5 4" opacity="0.8"/>`);
-  g.push(`<text x="${W-R}" y="${(Y(floor)-4).toFixed(1)}" text-anchor="end" font-size="10.5" font-weight="800" fill="var(--leak)" font-family="sans-serif">보증 바닥 ${floor}</text>`);
-  const top=[], bot=[];
-  for(let i=0;i<CV_N;i++) top.push(`${X(i).toFixed(1)} ${Y(liabA[i]).toFixed(1)}`);
-  for(let i=CV_N-1;i>=0;i--) bot.push(`${X(i).toFixed(1)} ${Y(fundA[i]).toFixed(1)}`);
-  g.push(`<path d="M${top.join(' L')} L${bot.join(' L')} Z" fill="var(--bad)" opacity="0.28"/>`);
-  const poly=arr=>arr.map((v,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1)).join(' ');
-  g.push(`<path d="${poly(liabA)}" fill="none" stroke="var(--leak)" stroke-width="2.2"/>`);
-  g.push(`<path d="${poly(fundA)}" fill="none" stroke="var(--pay)" stroke-width="2.6"/>`);
-  g.push(`<circle cx="${X(li).toFixed(1)}" cy="${Y(fundA[li]).toFixed(1)}" r="4.5" fill="var(--pay)" stroke="#fff" stroke-width="1.6"/>`);
-  g.push(`<circle cx="${X(li).toFixed(1)}" cy="${Y(liabA[li]).toFixed(1)}" r="4.5" fill="var(--leak)" stroke="#fff" stroke-width="1.6"/>`);
-  if(gap>1) g.push(`<text x="${(X(li)-6).toFixed(1)}" y="${((Y(liabA[li])+Y(fundA[li]))/2+4).toFixed(1)}" text-anchor="end" font-size="12" font-weight="800" fill="var(--bad)" font-family="sans-serif">자본 −${gap.toFixed(0)}</text>`);
+  const poly=(arr,Y)=>arr.map((v,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1)).join(' ');
+  const band=(topY,botArr,Y)=>{const t=[],bt=[];for(let i=0;i<CV_N;i++)t.push(`${X(i).toFixed(1)} ${topY.toFixed(1)}`);for(let i=CV_N-1;i>=0;i--)bt.push(`${X(i).toFixed(1)} ${Y(botArr[i]).toFixed(1)}`);return `M${t.join(' L')} L${bt.join(' L')} Z`;};
+  /* ===== ① 위: 자산 vs 부채 ===== */
+  const t1=32,b1=150,vMax=125,Y1=v=>t1+(b1-t1)*(1-v/vMax);
+  g.push(`<text class="eflabel" x="${L}" y="${(t1-9).toFixed(1)}" fill="var(--muted)" font-weight="700">① 자산 vs 부채 — 시간 →</text>`);
+  g.push(`<line x1="${L}" y1="${Y1(100).toFixed(1)}" x2="${W-R}" y2="${Y1(100).toFixed(1)}" stroke="#EEF1F7" stroke-width="1"/>`);
+  g.push(`<text class="eflabel" x="${(L-5).toFixed(1)}" y="${(Y1(100)+3).toFixed(1)}" text-anchor="end">100</text>`);
+  g.push(`<line x1="${L}" y1="${Y1(floor).toFixed(1)}" x2="${W-R}" y2="${Y1(floor).toFixed(1)}" stroke="var(--leak)" stroke-width="1.3" stroke-dasharray="5 4" opacity="0.8"/>`);
+  g.push(`<text x="${W-R}" y="${(Y1(floor)-4).toFixed(1)}" text-anchor="end" font-size="10" font-weight="800" fill="var(--leak)" font-family="sans-serif">보증 바닥 ${floor}</text>`);
+  { const t=[],bt=[];for(let i=0;i<CV_N;i++)t.push(`${X(i).toFixed(1)} ${Y1(liabA[i]).toFixed(1)}`);for(let i=CV_N-1;i>=0;i--)bt.push(`${X(i).toFixed(1)} ${Y1(fundA[i]).toFixed(1)}`);g.push(`<path d="M${t.join(' L')} L${bt.join(' L')} Z" fill="var(--bad)" opacity="0.24"/>`); }
+  g.push(`<path d="${poly(liabA,Y1)}" fill="none" stroke="var(--leak)" stroke-width="2.2"/>`);
+  g.push(`<path d="${poly(fundA,Y1)}" fill="none" stroke="var(--pay)" stroke-width="2.4"/>`);
+  g.push(`<circle cx="${X(li).toFixed(1)}" cy="${Y1(fundA[li]).toFixed(1)}" r="4" fill="var(--pay)" stroke="#fff" stroke-width="1.5"/>`);
+  g.push(`<circle cx="${X(li).toFixed(1)}" cy="${Y1(liabA[li]).toFixed(1)}" r="4" fill="var(--leak)" stroke="#fff" stroke-width="1.5"/>`);
+  /* ===== ② 아래: 순포지션(회사 자본) = 자산 − 부채 ===== */
+  const t2=196,b2=286,nMax=6,nMin=-46,Y2=v=>t2+(b2-t2)*(nMax-v)/(nMax-nMin);
+  g.push(`<text class="eflabel" x="${L}" y="${(t2-9).toFixed(1)}" fill="var(--muted)" font-weight="700">② 순포지션(회사 자본) = 자산 − 부채</text>`);
+  g.push(`<line x1="${L}" y1="${Y2(0).toFixed(1)}" x2="${W-R}" y2="${Y2(0).toFixed(1)}" stroke="#9aa2b1" stroke-width="1.2"/>`);
+  g.push(`<text class="eflabel" x="${(L-5).toFixed(1)}" y="${(Y2(0)+3).toFixed(1)}" text-anchor="end">0</text>`);
+  g.push(`<text class="eflabel" x="${(L-5).toFixed(1)}" y="${(Y2(-40)+3).toFixed(1)}" text-anchor="end">-40</text>`);
+  g.push(`<path d="${band(Y2(0),netA,Y2)}" fill="var(--bad)" opacity="0.30"/>`);
+  g.push(`<path d="${poly(netA,Y2)}" fill="none" stroke="var(--bad)" stroke-width="2.4"/>`);
+  g.push(`<circle cx="${X(li).toFixed(1)}" cy="${Y2(netA[li]).toFixed(1)}" r="4.5" fill="var(--bad)" stroke="#fff" stroke-width="1.6"/>`);
+  if(gap>1) g.push(`<text x="${(X(li)-8).toFixed(1)}" y="${(Y2(netA[li])+4).toFixed(1)}" text-anchor="end" font-size="12" font-weight="800" fill="var(--bad)" font-family="sans-serif">자본 −${gap.toFixed(0)}</text>`);
   svg.innerHTML=g.join('');
   if($("cvMsg")) $("cvMsg").innerHTML = gap>0.5
     ? `자산 <b style="color:var(--pay)">${fundA[li].toFixed(0)}</b>이 보증 <b style="color:var(--leak)">${floor}</b>보다 <b style="color:var(--bad)">${gap.toFixed(0)}</b> 낮아요 → 그만큼 <b>회사 자본이 메꿔요</b>.`

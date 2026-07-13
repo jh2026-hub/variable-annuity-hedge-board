@@ -1689,10 +1689,8 @@ function drawCasc(){
   const W=560,H=250,topY=32,baseY=H-40,colW=140,gap=100, cx1=W/2-gap/2-colW, cx2=W/2+gap/2;
   const scaleMax=Math.max(A0,A,liab,D,1), maxH=baseY-topY, hOf=v=>Math.max(0,v)/scaleMax*maxH;
   const hA=hOf(A), hA0=hOf(A0), hD=hOf(D), hLiab=hOf(liab), yGuar=baseY-hD, g=[];
-  /* 기준선 + 보증선(점선) */
+  /* 기준선 (보증선은 막대 위에 덮이지 않도록 맨 마지막에 그림) */
   g.push(`<line x1="${cx1-16}" y1="${baseY}" x2="${cx2+colW+16}" y2="${baseY}" stroke="#AAB4C6" stroke-width="1.5"/>`);
-  g.push(`<line x1="${cx1-16}" y1="${yGuar.toFixed(1)}" x2="${cx2+colW+16}" y2="${yGuar.toFixed(1)}" stroke="#E24A62" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>`);
-  g.push(`<text x="${cx1-16}" y="${(yGuar-3).toFixed(1)}" font-size="9" font-weight="700" fill="var(--bad)" opacity="0.85">보증선 ${won(D)}</text>`);
   g.push(`<text x="${cx1+colW/2}" y="${topY-11}" text-anchor="middle" font-size="12.5" font-weight="800" fill="var(--ink)">자산</text>`);
   g.push(`<text x="${cx2+colW/2}" y="${topY-11}" text-anchor="middle" font-size="12.5" font-weight="800" fill="var(--ink)">부채 + 자본</text>`);
   /* ── 자산 열 ── */
@@ -1715,6 +1713,9 @@ function drawCasc(){
     g.push(`<rect x="${cx2}" y="${(baseY-hD).toFixed(1)}" width="${colW}" height="${hGap.toFixed(1)}" fill="#F7C9D1" stroke="#E24A62" rx="5"><animate attributeName="opacity" values="1;.55;1" dur="1.3s" repeatCount="indefinite"/></rect>`);
     if(hGap>13) g.push(`<text x="${cx2+colW/2}" y="${(baseY-hD+hGap/2+4).toFixed(1)}" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--bad)">자본 ${won(equity)}</text>`);
   }
+  /* 보증선(점선) — 막대 위에 덮이지 않도록 맨 마지막에, 라벨은 왼쪽 여백에 */
+  g.push(`<line x1="${cx1-16}" y1="${yGuar.toFixed(1)}" x2="${cx2+colW+16}" y2="${yGuar.toFixed(1)}" stroke="#E24A62" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>`);
+  g.push(`<text x="${(cx1-6).toFixed(1)}" y="${(yGuar-3).toFixed(1)}" text-anchor="end" font-size="9" font-weight="700" fill="var(--bad)" opacity="0.85">보증선</text>`);
   const plCol=plLoss<0?'var(--bad)':'var(--good)', dCol=dA<0?'var(--bad)':(dA>0?'var(--good)':'var(--muted)');
   const pl=`<div style="margin-top:11px;border:1px solid var(--hair);border-radius:9px;overflow:hidden;font-size:12px">
     <div style="display:flex;justify-content:space-between;padding:6px 11px;background:var(--panel2);font-weight:700;color:var(--muted);font-size:10.5px;letter-spacing:.02em"><span>손익계산서 (당기)</span><span>단위 억</span></div>

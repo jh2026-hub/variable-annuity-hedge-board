@@ -413,9 +413,24 @@
   <div class="panel concept">
     <div class="cap">그런데 '변액보험 보증'이 뭔가요?<span>기본부터</span></div>
     <p class="lede" style="font-size:13.5px">변액보험은 고객 돈을 <b>펀드에 굴리되</b> "<b>최소한 이만큼은 보장</b>"(최저보증)을 약속하는 상품이에요. 회사는 그 대가로 <b>보증수수료</b>를 받아요.</p>
-    <div style="display:flex;flex-direction:column;gap:9px;margin-top:2px">
-      <div class="qstep"><span class="qstepn" style="background:var(--pay)">약속</span><div><b>보증 = 회사의 약속(부채)</b><small>시장이 아무리 나빠도 <b>최저선은 지급</b>해야 해요. 이 약속이 회사 <b>부채</b>가 돼요.</small></div></div>
-      <div class="qstep"><span class="qstepn" style="background:var(--sym)">변동</span><div><b>왜 자본이 흔들리나 — 자본 변동성</b><small>시장이 나빠지면 그 <b>보증(부채)이 커져</b> → <b>자본이 흔들려요</b>. 시장 등락이 그대로 회사 자본을 출렁이게 하는 거예요.</small></div></div>
+    <div class="chartwrap"><svg viewBox="0 0 560 118" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
+      <defs><marker id="pmA" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#AAB4C6"/></marker></defs>
+      <rect x="14" y="34" width="152" height="52" rx="10" fill="#FBEEF1" stroke="#F1CAD3" stroke-width="1.5"/>
+      <text x="90" y="60" text-anchor="middle" font-size="13" font-weight="800" fill="var(--bad)" font-family="sans-serif">📉 시장 하락</text>
+      <text x="90" y="77" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="sans-serif">주가·금리</text>
+      <path d="M170 60 L200 60" stroke="#AAB4C6" stroke-width="1.6" marker-end="url(#pmA)"/>
+      <rect x="204" y="34" width="152" height="52" rx="10" fill="#FBF4E8" stroke="#F0E2C4" stroke-width="1.5"/>
+      <text x="280" y="60" text-anchor="middle" font-size="13" font-weight="800" fill="var(--leak)" font-family="sans-serif">📈 보증 부담 ↑</text>
+      <text x="280" y="77" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="sans-serif">부채가 커져요</text>
+      <path d="M360 60 L390 60" stroke="#AAB4C6" stroke-width="1.6" marker-end="url(#pmA)"/>
+      <rect x="394" y="34" width="152" height="52" rx="10" fill="#EEF3FE" stroke="#9DBBF3" stroke-width="1.5"/>
+      <text x="470" y="60" text-anchor="middle" font-size="13" font-weight="800" fill="#2F63E0" font-family="sans-serif">🏛️ 자본 흔들림</text>
+      <text x="470" y="78" text-anchor="middle" font-size="14"><animate attributeName="opacity" values="0.2;1;0.2" dur="1.4s" begin="0.8s" repeatCount="indefinite"/>💥</text>
+      <circle r="4.5" fill="var(--bad)"><animateMotion dur="2.4s" repeatCount="indefinite" path="M90 92 L280 92 L470 92"/><animate attributeName="opacity" values="0;1;1;1;0" dur="2.4s" repeatCount="indefinite"/></circle>
+    </svg></div>
+    <div style="font-size:13px;color:var(--ink);line-height:1.75;margin-top:9px">
+      <div style="margin-bottom:4px">🤝 <b>보증 = 회사의 약속(부채)</b> — 시장이 아무리 나빠도 <b>최저선은 지급</b>해야 해요.</div>
+      <div>🌊 <b>자본 변동성</b> — 시장이 나빠지면 <b>보증(부채)이 커져</b> 그대로 <b>자본이 흔들려요</b>.</div>
     </div>
     <div class="callout key"><span class="ci">⭐</span><div><span class="clab">핵심</span> 팔 땐 좋아 보여도, <b>시장이 나빠지면 그 보증이 회사 자본을 흔드는 폭탄</b>이 돼요. <b>그래서 이 변동성을 관리(헷지)</b>해야 해요.</div></div>
   </div>

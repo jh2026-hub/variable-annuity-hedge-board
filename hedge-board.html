@@ -609,24 +609,18 @@
   </div>
 
   <div class="panel concept">
-    <div class="cap">숫자로 보는 기초 메카니즘<span class="capb data">예시 숫자</span><span>노출 → 완충/헷지 → 자본</span></div>
-    <p class="lede" style="font-size:13.5px">왜 자본이 흔들리고, 헷지가 그걸 어떻게 줄이는지 <b>한 예</b>로 볼게요.</p>
-    <div style="display:flex;flex-direction:column;gap:9px;margin-top:2px">
-      <div class="qstep"><span class="qstepn" style="background:var(--sym)">1</span><div><b>왜 흔들리나 — 자본 변동성</b><small>회사는 <b>최저보증</b>을 약속했어요. 시장이 나빠지면 그 <b>보증(부채)</b>이 커져 <b>자본이 흔들려요</b>. 예: 안 막으면 보증 손익이 <b>±1,000억</b>.</small></div></div>
-      <div class="qstep"><span class="qstepn" style="background:var(--leak)">2</span><div><b>안 막으면(노출) — 완충이 먼저, 넘치면 손익</b><small>그 ±1,000억을 <b>완충(CSM)이 먼저 흡수</b>해요. 완충이 <b>바닥나면 초과분이 그 해 당기손익</b>으로 터져요.</small></div></div>
-      <div class="qstep"><span class="qstepn" style="background:var(--pay)">3</span><div><b>막으면(헷지) — 비용 내고 흔들림 축소</b><small><b>비용 약 150억/년</b>을 내고 반대로 걸어 흔들림을 <b>±1,000억 → ±200억</b>으로 줄여요(0은 아니에요).</small></div></div>
-      <div class="qstep"><span class="qstepn" style="background:var(--good)">4</span><div><b>재원 — 받은 수수료로 충당</b><small>그 비용은 <b>받은 보증수수료(약 200억/년)</b>에서 나가요. 새 지출이 아니라 이미 받은 돈이에요.</small></div></div>
+    <div class="cap">숫자로 직접 — 헷지 비율을 움직여 보세요<span class="capb live">🖐 조작</span><span>시뮬과 같은 로직 · 예시값</span></div>
+    <p class="lede" style="font-size:13.5px">안 막으면 흔들림은 <b>방향(주가·금리)</b>이 대부분이에요. <b>헷지 비율</b>을 올릴수록 <b>방향이 싸게 제거</b>돼 흔들림이 줄지만, <b>감마·나머지 잔여</b>는 남고 <b>비용</b>이 늘어요. 직접 움직여 보세요.</p>
+    <div style="margin:10px 0 2px"><label class="foot" style="margin:0">🖐 헷지 비율 <b class="mono" id="mechRatioLab" style="color:var(--pay)">0%</b></label>
+      <input type="range" id="mechHedge" min="0" max="100" step="5" value="0"></div>
+    <div class="chartwrap"><svg id="mechSvg" viewBox="0 0 560 108" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"></svg></div>
+    <div class="chartleg">
+      <span class="lk"><i style="background:var(--sym)"></i>방향(주가·금리) — 헷지로 제거</span>
+      <span class="lk"><i style="background:var(--good);opacity:0.5"></i>나머지 잔여(감마·베가·펀드·해지)</span>
+      <span class="lk"><i style="background:var(--pay)"></i>든 비용</span>
     </div>
-    <div class="chartwrap" style="margin-top:10px"><svg viewBox="0 0 560 96" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
-      <text x="12" y="24" font-size="11" font-weight="700" fill="var(--sym)" font-family="sans-serif">안 막으면</text>
-      <rect x="118" y="12" width="400" height="20" rx="4" fill="var(--sym)" opacity="0.8"><animate attributeName="width" from="0" to="400" dur="0.8s" fill="freeze"/></rect>
-      <text x="510" y="27" text-anchor="end" font-size="11" font-weight="800" fill="#fff" font-family="sans-serif">흔들림 ±1,000억</text>
-      <text x="12" y="66" font-size="11" font-weight="700" fill="#0a7c50" font-family="sans-serif">막으면</text>
-      <rect x="118" y="54" width="80" height="20" rx="4" fill="var(--good)"><animate attributeName="width" from="400" to="80" dur="0.9s" begin="0.6s" fill="freeze"/></rect>
-      <text x="206" y="69" font-size="11" font-weight="800" fill="#0a7c50" font-family="sans-serif">±200억</text>
-      <text x="270" y="69" font-size="10" fill="var(--muted)" font-family="sans-serif">← 비용 150억으로 이만큼 줄여요</text>
-    </svg></div>
-    <div class="callout key"><span class="ci">⭐</span><div><span class="clab">핵심</span> <b>받은 수수료(200) 안에서 비용(150)</b>을 내고, 흔들림을 <b>1,000 → 200</b>으로. <b>→ ⑥ 시뮬레이션</b>에서 이 숫자들을 직접 바꿔보세요.</div></div>
+    <div class="foot" id="mechRead" style="margin-top:6px"></div>
+    <div class="callout key"><span class="ci">⭐</span><div><span class="clab">핵심</span> 방향은 <b>싸게 제거</b>, 감마·나머지는 <b>남거나 비싸요</b> — 그래서 <b>흔들림은 0이 아니고 비용이 들어요</b>. 그 비용은 <b>받은 수수료(재원)</b>가 덮어요. <b>→ ⑥ 시뮬레이션</b>에서 항목별로 정밀 조정해 보세요.</div></div>
   </div>
 
   <div class="panel concept">
@@ -1366,6 +1360,7 @@ $("tabs").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)
   /* 탭 재진입 시 차트 애니메이션 재생 */
   const p=b.dataset.p;
   if(p==="pbg"){ if(SIM.loaded){ renderConceptCombo(); } renderCases2008(); document.querySelectorAll('#pbg .chartwrap svg:not(#conceptLines):not(#cases2008)').forEach(e=>{e.innerHTML=e.innerHTML;}); }
+  else if(p==="p1"){ renderMech(); }
   else if(p==="p2"&&SIM.loaded){ renderSim(); render(); }
   else if(p==="p3"){ drawBuffer(); }
   else if(p==="p4") renderFactorAnim();
@@ -1683,6 +1678,7 @@ function drawCasc(){
 }
 ["in_eqf","in_csm2","shock"].forEach(id=>{ const el=$(id); if(el) el.addEventListener("input",drawCasc); });
 if($("bufCsm")) $("bufCsm").addEventListener("input",drawBuffer);
+if($("mechHedge")) $("mechHedge").addEventListener("input",renderMech);
 
 /* ④ 헷지 vs CSM 비교표 */
 function drawCompare(){
@@ -1731,6 +1727,25 @@ function stratVol(hs){
   return Math.sqrt(mv*mv+nm);
 }
 const CASES2008={pru:[100.0,102.0,101.3,106.6,114.5,109.1,99.4,100.7,109.5,108.5,105.6,104.4,94.3,81.9,87.8,84.9,83.8,67.0,77.4,82.7,80.8,33.7,24.3,34.0,28.9,18.4,21.3,32.4,44.8,41.8,49.7,56.7,56.0,50.7,55.9,55.8,56.1,58.8,67.9,71.3,64.7,60.2,64.3,56.8,60.8,59.0,56.9,65.9],mfc:[100.0,98.8,100.0,101.0,100.4,100.4,98.0,103.0,103.3,111.3,105.2,102.2,95.3,96.1,99.0,99.2,96.6,89.8,95.0,96.0,96.4,60.8,60.5,52.4,51.3,32.5,35.8,51.2,59.2,50.9,65.9,56.8,56.7,51.1,46.4,48.7,49.2,48.6,50.5,46.1,45.3,38.9,41.2,29.9,32.7,32.5,36.0,43.2],hig:[100.0,99.6,100.7,106.6,108.7,103.8,96.8,93.7,97.5,102.2,100.4,91.9,84.8,73.6,79.8,75.1,74.9,68.0,66.8,66.5,43.2,10.9,8.9,17.3,13.9,6.4,8.3,12.1,15.1,12.5,17.4,25.0,27.9,25.8,25.8,24.5,25.3,25.7,29.9,30.1,26.4,23.3,24.7,21.3,24.2,25.2,23.5,27.9]};
+function renderMech(){
+  const el=$("mechHedge"); if(!el)return;
+  const r=(+el.value)/100, floor=207, dir=Math.round(468*(1-r)), vol=floor+dir, cost=Math.round(442*r), rem=1500-cost;
+  const lab=$("mechRatioLab"); if(lab) lab.textContent=el.value+"%";
+  const x0=100, maxW=430, sc=maxW/675, g=[];
+  const fw=floor*sc, dw=dir*sc;
+  g.push(`<text x="12" y="32" font-size="12" font-weight="800" fill="var(--ink)" font-family="sans-serif">흔들림</text>`);
+  g.push(`<rect x="${x0}" y="18" width="${fw.toFixed(1)}" height="22" rx="4" fill="var(--good)" opacity="0.5"/>`);
+  if(dw>0.5) g.push(`<rect x="${(x0+fw).toFixed(1)}" y="18" width="${dw.toFixed(1)}" height="22" fill="var(--sym)" opacity="0.85"/>`);
+  g.push(`<text x="${Math.min(x0+fw+dw+6,540).toFixed(1)}" y="34" font-size="12.5" font-weight="800" fill="var(--sym)" font-family="sans-serif">±${won(vol)}억</text>`);
+  g.push(`<text x="12" y="84" font-size="12" font-weight="800" fill="var(--pay)" font-family="sans-serif">비용</text>`);
+  g.push(`<rect x="${x0}" y="70" width="${maxW}" height="22" rx="4" fill="#EEF1F7"/>`);
+  const cw=Math.max(cost/1500*maxW,0.5);
+  g.push(`<rect x="${x0}" y="70" width="${cw.toFixed(1)}" height="22" rx="4" fill="var(--pay)"/>`);
+  g.push(`<text x="${(x0+cw+6).toFixed(1)}" y="86" font-size="11.5" font-weight="800" fill="var(--pay)" font-family="sans-serif">${won(cost)}억</text>`);
+  g.push(`<text x="548" y="86" text-anchor="end" font-size="10.5" fill="#0a7c50" font-family="sans-serif">재원 1,500억 중 ${won(rem)}억 남음</text>`);
+  $("mechSvg").innerHTML=g.join("");
+  const rd=$("mechRead"); if(rd) rd.innerHTML=`헷지 <b>${el.value}%</b> → 흔들림 <b style="color:var(--sym)">±${won(vol)}억</b>(방향 ${won(dir)} + 나머지 ${floor}), 비용 <b style="color:var(--pay)">${won(cost)}억</b>, 재원 <b style="color:#0a7c50">${won(rem)}억</b> 남음`;
+}
 function renderCases2008(){
   const box=$("cases2008"); if(!box)return;
   const S=CASES2008, n=S.pru.length;

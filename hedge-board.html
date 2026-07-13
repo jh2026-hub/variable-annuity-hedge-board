@@ -411,28 +411,21 @@
   <p class="lede">왜 헷지가 필요한지 <b>순서대로</b> 봐요 — <b>①변액보험 보증</b>이 뭔지 → <b>②왜 위험한지</b> → <b>③2008년 실제 사례</b> → <b>④헷지의 역할</b>.</p>
 
   <div class="panel concept">
-    <div class="cap">그런데 '변액보험 보증'이 뭔가요?<span>기본부터</span></div>
-    <p class="lede" style="font-size:13.5px">변액보험은 고객 돈을 <b>펀드에 굴리되</b> "<b>최소한 이만큼은 보장</b>"(최저보증)을 약속하는 상품이에요. 회사는 그 대가로 <b>보증수수료</b>를 받아요.</p>
-    <div class="chartwrap"><svg viewBox="0 0 560 118" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
-      <defs><marker id="pmA" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#AAB4C6"/></marker></defs>
-      <rect x="14" y="34" width="152" height="52" rx="10" fill="#FBEEF1" stroke="#F1CAD3" stroke-width="1.5"/>
-      <text x="90" y="60" text-anchor="middle" font-size="13" font-weight="800" fill="var(--bad)" font-family="sans-serif">📉 시장 하락</text>
-      <text x="90" y="77" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="sans-serif">주가·금리</text>
-      <path d="M170 60 L200 60" stroke="#AAB4C6" stroke-width="1.6" marker-end="url(#pmA)"/>
-      <rect x="204" y="34" width="152" height="52" rx="10" fill="#FBF4E8" stroke="#F0E2C4" stroke-width="1.5"/>
-      <text x="280" y="60" text-anchor="middle" font-size="13" font-weight="800" fill="var(--leak)" font-family="sans-serif">📈 보증 부담 ↑</text>
-      <text x="280" y="77" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="sans-serif">부채가 커져요</text>
-      <path d="M360 60 L390 60" stroke="#AAB4C6" stroke-width="1.6" marker-end="url(#pmA)"/>
-      <rect x="394" y="34" width="152" height="52" rx="10" fill="#EEF3FE" stroke="#9DBBF3" stroke-width="1.5"/>
-      <text x="470" y="60" text-anchor="middle" font-size="13" font-weight="800" fill="#2F63E0" font-family="sans-serif">🏛️ 자본 흔들림</text>
-      <text x="470" y="78" text-anchor="middle" font-size="14"><animate attributeName="opacity" values="0.2;1;0.2" dur="1.4s" begin="0.8s" repeatCount="indefinite"/>💥</text>
-      <circle r="4.5" fill="var(--bad)"><animateMotion dur="2.4s" repeatCount="indefinite" path="M90 92 L280 92 L470 92"/><animate attributeName="opacity" values="0;1;1;1;0" dur="2.4s" repeatCount="indefinite"/></circle>
+    <div class="cap">'변액보험 보증'이 뭔가요?<span>변액보험 → 보증 순서로</span></div>
+    <p class="lede" style="font-size:13.5px"><b>① 변액보험</b> = 고객 돈을 <b>펀드에 투자</b>해요. 그래서 계좌가 <b>오르락내리락</b>해요.</p>
+    <p style="font-size:13.5px;color:var(--ink);line-height:1.7;margin:8px 0 0"><b>② 보증(최저보증)</b> = 펀드가 아무리 떨어져도 <b>보험금·연금은 "최소 이만큼"은 반드시 지급</b>한다는 약속이에요. 회사는 그 대가로 <b>보증수수료</b>를 받아요.</p>
+    <div class="chartwrap" style="margin-top:8px"><svg viewBox="0 0 560 182" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
+      <text x="14" y="22" font-size="10.5" fill="var(--muted)" font-family="sans-serif">지급액 ↑</text>
+      <line x1="56" y1="106" x2="544" y2="106" stroke="var(--good)" stroke-width="2" stroke-dasharray="6 4"/>
+      <text x="60" y="100" font-size="11" font-weight="800" fill="#0a7c50" font-family="sans-serif">보증선 = 최소 지급액</text>
+      <path d="M384 106 C 412 122 452 144 544 150 L544 106 Z" fill="var(--leak)" opacity="0"><animate attributeName="opacity" from="0" to="0.35" dur="0.6s" begin="1.3s" fill="freeze"/></path>
+      <path d="M56 90 C 130 56 210 52 290 78 C 350 96 388 120 452 142 C 496 156 522 152 544 150" fill="none" stroke="var(--pay)" stroke-width="2.8" stroke-linejoin="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"><animate attributeName="stroke-dashoffset" from="1" to="0" dur="1.5s" fill="freeze"/></path>
+      <text x="150" y="46" font-size="11" font-weight="800" fill="var(--pay)" font-family="sans-serif">고객 계좌(펀드)</text>
+      <text x="500" y="138" text-anchor="end" font-size="10.5" font-weight="800" fill="var(--leak)" font-family="sans-serif" opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="1.5s" fill="freeze"/>이만큼 회사가 메꿔요</text>
+      <text x="150" y="172" font-size="10.5" fill="var(--muted)" text-anchor="middle" font-family="sans-serif">← 시간 →</text>
     </svg></div>
-    <div style="font-size:13px;color:var(--ink);line-height:1.75;margin-top:9px">
-      <div style="margin-bottom:4px">🤝 <b>보증 = 회사의 약속(부채)</b> — 시장이 아무리 나빠도 <b>최저선은 지급</b>해야 해요.</div>
-      <div>🌊 <b>자본 변동성</b> — 시장이 나빠지면 <b>보증(부채)이 커져</b> 그대로 <b>자본이 흔들려요</b>.</div>
-    </div>
-    <div class="callout key"><span class="ci">⭐</span><div><span class="clab">핵심</span> 팔 땐 좋아 보여도, <b>시장이 나빠지면 그 보증이 회사 자본을 흔드는 폭탄</b>이 돼요. <b>그래서 이 변동성을 관리(헷지)</b>해야 해요.</div></div>
+    <p class="foot" style="margin-top:6px">펀드가 <b>보증선 아래로 떨어진 만큼(주황)</b>을 <b>회사가 메꿔</b> 최소 지급액을 보장해요. 시장이 나쁠수록 이 <b>메꿈 부담(부채)이 커져</b> 그대로 <b>회사 자본이 흔들려요 — 자본 변동성</b>이에요.</p>
+    <div class="callout key"><span class="ci">⭐</span><div><span class="clab">핵심</span> 팔 땐 좋아 보여도, <b>펀드가 크게 떨어지면 회사가 메꿀 돈이 자본을 흔드는 폭탄</b>이 돼요. <b>그래서 이 변동성을 관리(헷지)</b>해야 해요.</div></div>
   </div>
 
   <div class="panel">

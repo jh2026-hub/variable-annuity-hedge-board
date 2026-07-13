@@ -512,20 +512,22 @@
   <p class="lede">헷지의 <b>작동 원리</b>를 순서대로 봐요 — <b>①자본이 왜 흔들리나</b> → <b>②완충(CSM)</b> → <b>③어떻게 막나(파생)</b> → <b>④막으면 얼마나 줄고 비용은</b>(🖐 직접 조작) → <b>⑤변동성·비용 관계</b>.</p>
 
   <div class="panel">
-    <div class="cap">자본 변동성이란 — 왜 변액보험이 흔들리나<span>차이는 '보증' 하나</span></div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:6px">
-      <div style="border:1.5px solid #CDE9DB;border-radius:11px;padding:13px 14px;background:#F4FBF7">
-        <div style="font-weight:800;font-size:13.5px;color:#0a7c50">📊 변액펀드 <span style="font-weight:600;color:var(--muted)">(보증 없음)</span></div>
-        <div style="font-size:12.5px;color:var(--muted);line-height:1.65;margin-top:7px">펀드가 오르내려도 <b>손익은 전부 고객 몫</b>. 회사는 <b>운용만 대행</b>해요.</div>
-        <div style="margin-top:10px;font-size:12.5px;font-weight:800;color:#0a7c50">→ 회사 자본은 <b>안 흔들려요</b> ✓</div>
-      </div>
-      <div style="border:1.5px solid #F3D6B8;border-radius:11px;padding:13px 14px;background:#FDF4EA">
-        <div style="font-weight:800;font-size:13.5px;color:var(--leak)">🛟 변액보험 <span style="font-weight:600;color:var(--muted)">(최저보증 붙음)</span></div>
-        <div style="font-size:12.5px;color:var(--muted);line-height:1.65;margin-top:7px">펀드가 아무리 떨어져도 <b>"최소 이만큼" 지급</b> 약속. 모자란 만큼은 <b>회사가 메꿔야</b> 해요.</div>
-        <div style="margin-top:10px;font-size:12.5px;font-weight:800;color:var(--leak)">→ 시장 나쁠수록 <b>회사 자본이 흔들려요</b></div>
+    <div class="cap">자본 변동성이란 — 순포지션이 흔들려요<span class="capb live">🖐 조작</span><span>자산 − 부채</span></div>
+    <p style="font-size:13px;color:var(--muted);line-height:1.7;margin:2px 0 8px">회사는 <b style="color:var(--pay)">변액펀드(자산·지금 값)</b>와 <b style="color:var(--leak)">변액보증(부채·미래 최소지급)</b>을 <b>함께</b> 들고 있어요. 시장을 움직여 보세요 — 둘의 <b>순포지션(자산−부채)</b>이 흔들려요.</p>
+    <div style="display:flex;align-items:center;gap:10px;margin:2px 0 8px;flex-wrap:wrap">
+      <div style="flex:1 1 200px;min-width:170px">
+        <label class="foot" style="margin:0">시장(주가·금리) <b id="cvMktLab" class="mono" style="color:var(--sym)">0%</b></label>
+        <input type="range" id="cvMkt" min="-40" max="20" step="1" value="0" style="width:100%">
       </div>
     </div>
-    <div class="callout key" style="margin-top:12px"><span class="ci">⭐</span><div><span class="clab">핵심</span> 둘의 차이는 <b>보증</b> 하나예요. 보증이 <b>고객 펀드의 출렁임</b>을 <b>회사 자본의 출렁임</b>으로 옮겨와요 — 그래서 변액보험은 <b>자본 변동성</b>이 생겨요.</div></div>
+    <div class="chartwrap"><svg id="cvSvg" viewBox="0 0 560 220" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"></svg></div>
+    <div class="leg" style="margin-top:8px">
+      <span><i style="background:var(--sym)"></i>순포지션(자산−부채) = 회사 자본</span>
+      <span><i style="background:var(--bad);opacity:.45"></i>시장 나쁠수록 벌어지는 손실</span>
+      <span><i style="background:var(--leak)"></i>보증 바닥 — 부채가 덜 빠지는 지점</span>
+    </div>
+    <p class="foot" id="cvMsg" style="margin-top:9px"></p>
+    <div class="callout key" style="margin-top:10px"><span class="ci">⭐</span><div><span class="clab">핵심</span> 자산은 <b>지금 값</b>이라 시장 따라 다 움직이는데, 부채는 <b>미래 최소지급(보증)</b>이라 <b>바닥에 걸려 덜 움직여요</b>. 그래서 <b>순포지션(자산−부채)이 흔들리고</b>, 그게 바로 <b>자본 변동성</b>이에요.</div></div>
   </div>
 
   <div class="panel">
@@ -1342,7 +1344,7 @@ $("tabs").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)
   /* 탭 재진입 시 차트 애니메이션 재생 */
   const p=b.dataset.p;
   if(p==="pbg"){ if(SIM.loaded){ renderConceptCombo(); } renderCases2008(); document.querySelectorAll('#pbg .chartwrap svg:not(#conceptLines):not(#cases2008):not(#heroSvg)').forEach(e=>{e.innerHTML=e.innerHTML;}); drawHero(); }
-  else if(p==="p1"){ renderMech(); }
+  else if(p==="p1"){ renderMech(); renderCapVol(); }
   else if(p==="p2"&&SIM.loaded){ renderSim(); render(); }
   else if(p==="p3"){ drawBuffer(); }
   else if(p==="p4") renderFactorAnim();
@@ -1682,6 +1684,7 @@ function drawCasc(){
 ["in_eqf","in_csm2","shock"].forEach(id=>{ const el=$(id); if(el) el.addEventListener("input",drawCasc); });
 if($("bufCsm")) $("bufCsm").addEventListener("input",drawBuffer);
 if($("mechHedge")) $("mechHedge").addEventListener("input",renderMech);
+if($("cvMkt")) $("cvMkt").addEventListener("input",renderCapVol);
 
 /* ⓪ 히어로 — 보증리스크가 회사 자본을 깎는다 (조작) */
 function drawHero(){
@@ -1781,6 +1784,31 @@ function stratVol(hs){
   return Math.sqrt(mv*mv+nm);
 }
 const CASES2008={pru:[100.0,102.0,101.3,106.6,114.5,109.1,99.4,100.7,109.5,108.5,105.6,104.4,94.3,81.9,87.8,84.9,83.8,67.0,77.4,82.7,80.8,33.7,24.3,34.0,28.9,18.4,21.3,32.4,44.8,41.8,49.7,56.7,56.0,50.7,55.9,55.8,56.1,58.8,67.9,71.3,64.7,60.2,64.3,56.8,60.8,59.0,56.9,65.9],mfc:[100.0,98.8,100.0,101.0,100.4,100.4,98.0,103.0,103.3,111.3,105.2,102.2,95.3,96.1,99.0,99.2,96.6,89.8,95.0,96.0,96.4,60.8,60.5,52.4,51.3,32.5,35.8,51.2,59.2,50.9,65.9,56.8,56.7,51.1,46.4,48.7,49.2,48.6,50.5,46.1,45.3,38.9,41.2,29.9,32.7,32.5,36.0,43.2],hig:[100.0,99.6,100.7,106.6,108.7,103.8,96.8,93.7,97.5,102.2,100.4,91.9,84.8,73.6,79.8,75.1,74.9,68.0,66.8,66.5,43.2,10.9,8.9,17.3,13.9,6.4,8.3,12.1,15.1,12.5,17.4,25.0,27.9,25.8,25.8,24.5,25.3,25.7,29.9,30.1,26.4,23.3,24.7,21.3,24.2,25.2,23.5,27.9]};
+function renderCapVol(){
+  const el=$("cvMkt"); if(!el)return;
+  const m=(+el.value)/100, base=100, floor=85;
+  const fund=base*(1+m), liab=Math.max(fund,floor), net=fund-liab;
+  const W=560,H=220,L=50,R=16,T=18,B=32,iw=W-L-R,ih=H-T-B,g=[];
+  const mMin=-0.40,mMax=0.20, yMax=6,yMin=-28;
+  const X=mm=>L+iw*(mm-mMin)/(mMax-mMin), Y=v=>T+ih*(yMax-v)/(yMax-yMin);
+  const netAt=mm=>Math.min(0, base*(1+mm)-floor);
+  g.push(`<text class="eflabel" x="${L}" y="${(T-6).toFixed(1)}" fill="var(--muted)" font-weight="700">순포지션(회사 자본)</text>`);
+  [0,-10,-20].forEach(v=>{ g.push(`<line x1="${L}" y1="${Y(v).toFixed(1)}" x2="${W-R}" y2="${Y(v).toFixed(1)}" stroke="${v===0?'#9aa2b1':'#EEF1F7'}" stroke-width="${v===0?1.3:1}"/>`); g.push(`<text class="eflabel" x="${(L-6).toFixed(1)}" y="${(Y(v)+3).toFixed(1)}" text-anchor="end">${v}</text>`); });
+  [-40,-20,0,20].forEach(p=>{ g.push(`<text class="eflabel" x="${X(p/100).toFixed(1)}" y="${(H-B+16).toFixed(1)}" text-anchor="middle">${p>0?'+':''}${p}%</text>`); });
+  const pts=[]; for(let p=mMin;p<=mMax+1e-9;p+=0.02) pts.push([X(p),Y(netAt(p))]);
+  const first=pts[0], last=pts[pts.length-1];
+  g.push(`<path d="M${first[0].toFixed(1)} ${Y(0).toFixed(1)} `+pts.map(pt=>`L${pt[0].toFixed(1)} ${pt[1].toFixed(1)}`).join(' ')+` L${last[0].toFixed(1)} ${Y(0).toFixed(1)} Z" fill="var(--bad)" opacity="0.12"/>`);
+  g.push(`<path d="${pts.map((pt,i)=>(i?'L':'M')+pt[0].toFixed(1)+' '+pt[1].toFixed(1)).join(' ')}" fill="none" stroke="var(--sym)" stroke-width="2.6"/>`);
+  const mk=(floor/base)-1;
+  g.push(`<line x1="${X(mk).toFixed(1)}" y1="${T}" x2="${X(mk).toFixed(1)}" y2="${(H-B).toFixed(1)}" stroke="var(--leak)" stroke-width="1.2" stroke-dasharray="4 3" opacity="0.75"/>`);
+  g.push(`<text x="${(X(mk)+4).toFixed(1)}" y="${(T+11).toFixed(1)}" font-size="9.5" font-weight="800" fill="var(--leak)" font-family="sans-serif">보증 바닥</text>`);
+  g.push(`<circle cx="${X(m).toFixed(1)}" cy="${Y(net).toFixed(1)}" r="6" fill="var(--sym)" stroke="#fff" stroke-width="2"><animate attributeName="r" values="6;8;6" dur="1.6s" repeatCount="indefinite"/></circle>`);
+  $("cvSvg").innerHTML=g.join("");
+  $("cvMktLab").textContent=(m>=0?'+':'')+Math.round(m*100)+'%';
+  $("cvMsg").innerHTML = net<-0.5
+    ? `시장 <b>${Math.round(m*100)}%</b> → 자산 <b style="color:var(--pay)">${fund.toFixed(0)}</b> − 부채 <b style="color:var(--leak)">${liab.toFixed(0)}</b> = <b style="color:var(--bad)">순포지션 ${net.toFixed(0)}</b> — 보증에 걸려 <b>자본이 깎여요</b>.`
+    : `시장 <b>+${Math.round(m*100)}%</b> → 자산 <b style="color:var(--pay)">${fund.toFixed(0)}</b> ≈ 부채 <b style="color:var(--leak)">${liab.toFixed(0)}</b> = <b>순포지션 0</b> — 아직 보증이 안 걸려 자본에 영향 없어요.`;
+}
 function renderMech(){
   const el=$("mechHedge"); if(!el)return;
   const r=(+el.value)/100, floor=207, dir=Math.round(468*(1-r)), vol=floor+dir, cost=Math.round(442*r), rem=1500-cost;

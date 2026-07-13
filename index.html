@@ -469,7 +469,7 @@
     <div class="cap">헷지의 역할<span class="capb data">📊 실측</span><span>큰 손실 막기 · 흔들림↓</span></div>
 
     <div style="font-size:12.5px;font-weight:800;color:var(--leak);margin:2px 0 6px">① 손실을 <b>받은 수수료 수준</b>으로 낮춰요 <span style="font-weight:600;color:var(--muted)">— 수수료를 넘는 큰 손실 방지</span></div>
-    <p style="font-size:13px;color:var(--muted);line-height:1.7;margin:2px 0 8px">바로 앞 카드의 <b>보증리스크</b> = 위기 때 <b style="color:var(--bad)">치른 보증손실</b>이 <b style="color:#337A5F">받은 보증수수료</b>를 훨씬 넘는 위험이었죠. <b>헷지</b>는 그 손실을 <b style="color:#337A5F">받은 수수료 수준</b>으로 낮춰요 — <b>줄어든 변동성과 헷지비용</b>을 감당하는 대신, 수수료를 넘는 큰 손실을 막는 거예요.</p>
+    <p style="font-size:13px;color:var(--muted);line-height:1.7;margin:2px 0 8px"><b>헷지</b>는 위기 손실을 <b style="color:#337A5F">받은 수수료 수준</b>으로 낮춰요 — <b>줄어든 변동성 + 헷지비용</b>을 감당하는 대신이에요.</p>
     <div class="chartwrap"><svg viewBox="0 0 560 168" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
       <line x1="40" y1="140" x2="520" y2="140" stroke="#CBD2DE" stroke-width="1.2"/>
       <line x1="40" y1="98" x2="520" y2="98" stroke="var(--good)" stroke-width="1.6" stroke-dasharray="6 4"/>
@@ -485,12 +485,12 @@
       <span class="lk"><i style="background:var(--bad)"></i>헷지 전 위기 손실 = <b>수수료의 여러 배</b></span>
       <span class="lk"><i style="background:var(--pay)"></i>헷지 후 손실 = <b>대체로 받은 수수료 수준</b></span>
     </div>
-    <div class="callout warn"><span class="ci">⚠️</span><div><span class="clab">핵심</span> 헷지의 목적은 <b>받은 수수료를 넘어서는 큰 손실의 방지</b>예요. 대신 <b>줄어든 변동성 + 헷지비용</b>을 감당하고, 손실은 대체로 <b>보증수수료 안</b>에 머물러요 — 다만 <b>변동성이 극심한 해</b>엔 초과 손실이 날 수 있어요.</div></div>
+    <div class="callout warn"><span class="ci">⚠️</span><div><span class="clab">핵심</span> 헷지 = <b>수수료를 넘는 큰 손실의 방지</b>. 손실은 대체로 <b>보증수수료 안</b>에 머물러요 — 다만 <b>변동성이 극심한 해</b>엔 초과할 수 있어요.</div></div>
 
     <div style="font-size:12.5px;font-weight:800;color:var(--pay);margin:16px 0 6px;padding-top:14px;border-top:1px solid var(--hair)">② 실측으로도 이렇게 지켜줘요 <span style="font-weight:600;color:var(--muted)">— 헷지 전후, 같은 시장</span></div>
     <div class="chartwrap"><svg id="conceptLines" viewBox="0 0 640 280" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"><text x="320" y="140" text-anchor="middle" class="eflabel">데이터 불러오는 중…</text></svg></div>
     <div id="conceptLeg" style="display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;font-size:11.5px"></div>
-    <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-top:8px"><b style="color:var(--sym)">미헷지(보라)</b>는 매주 <b>크게 출렁</b>여요. <b style="color:var(--good)">헷지하면(초록)</b> 같은 시장에서도 <b>좁게</b> — 음영 띠(±1σ)가 그만큼 줄어요. 빨간 점 = <b>최악의 주</b>. 헷지는 <b>없애기가 아니라 크게 줄이기</b>예요.</p>
+    <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-top:8px"><b style="color:var(--sym)">미헷지(보라)</b>는 크게, <b style="color:var(--good)">헷지(초록)</b>는 좁게 흔들려요. 빨간 점 = <b>최악의 주</b>. 헷지는 <b>없애기가 아니라 크게 줄이기</b>예요.</p>
   </div>
 
   <div class="panel concept">
@@ -519,7 +519,7 @@
 
   <div class="panel">
     <div class="cap">자본 변동성이란 — 순포지션이 흔들려요<span class="capb live">▶ 애니메이션</span><span>시간에 따라</span></div>
-    <p style="font-size:13px;color:var(--muted);line-height:1.7;margin:2px 0 8px"><b style="color:var(--pay)">자산(펀드)</b>은 시장 따라 <b>크게</b> 움직이는데, <b style="color:var(--leak)">부채(보증)</b>는 더 <b>경직</b>돼(보증 때문에 일정 수준 이하로 잘 안 내려감) <b>다르게</b> 움직여요. 그 <b style="color:var(--sym)">둘의 차이(순포지션)</b>가 계속 흔들리는 게 <b>자본 변동성</b>이에요.</p>
+    <p style="font-size:13px;color:var(--muted);line-height:1.7;margin:2px 0 8px"><b style="color:var(--pay)">자산(펀드)</b>은 크게, <b style="color:var(--leak)">부채(보증)</b>는 보증 바닥 때문에 <b>경직되게</b> 움직여요. 그 <b style="color:var(--sym)">차이(순포지션)</b>가 흔들리는 게 <b>자본 변동성</b>이에요.</p>
     <div style="display:flex;align-items:center;gap:11px;margin:2px 0 8px;flex-wrap:wrap">
       <button id="cvPlay" style="flex:0 0 auto;background:var(--sym);color:#fff;border:none;border-radius:9px;padding:8px 15px;font-family:inherit;font-weight:800;font-size:12.5px;cursor:pointer">⏸ 정지</button>
       <span class="foot" style="margin:0;flex:1 1 160px">시장이 자동으로 <b>오르내려요</b> — 아래 <b style="color:var(--sym)">순포지션 선</b>이 흔들리는 걸 보세요</span>
@@ -531,7 +531,6 @@
       <span><i style="background:var(--sym)"></i>순포지션(자산−부채)=회사 자본 · <b>이게 흔들림=변동성</b></span>
     </div>
     <p class="foot" id="cvMsg" style="margin-top:9px;min-height:2.8em"></p>
-    <div class="callout key" style="margin-top:10px"><span class="ci">⭐</span><div><span class="clab">핵심</span> 자산은 <b>지금 값</b>이라 시장 따라 다 움직이는데, 부채는 <b>미래 최소지급(보증)</b>이라 <b>바닥에 걸려 덜 움직여요</b>. 그래서 <b>순포지션(자산−부채)이 흔들리고</b>, 그게 바로 <b>자본 변동성</b>이에요.</div></div>
   </div>
 
   <div class="panel">
@@ -569,7 +568,7 @@
       <span class="lk"><i class="ln" style="background:var(--sym)"></i>미헷지 → 더 큰 변동성 → <b>완충(CSM)</b> → 자본 변동성</span>
       <span class="lk"><i class="ln" style="background:var(--good)"></i>헷지 → 헷지손익 → <b>바로</b> 자본 변동성 (작게 확정)</span>
     </div>
-    <p class="foot" style="margin-top:8px">둘 다 <b>결국 자본 변동성으로</b> 가지만 <b>길이 달라요</b>. <b>미헷지</b>는 <b>더 크게 흔들려도 완충(CSM · 손실을 먼저 흡수하는 여유분)</b>이 먼저 받고, <b>넘치면(💧) 자본으로 넘어와요.</b> <b>헷지</b>는 흔들림을 작게 확정해 <b>헷지손익 → 바로 자본 변동성</b>. <b>미헷지의 큰 변동성(보라)은 결국 자본에 그대로 반영돼요 — 그래서 헷지가 필요해요.</b></p>
+    <p class="foot" style="margin-top:8px"><b>미헷지</b>는 완충(CSM)이 먼저 받고 <b>넘치면 자본으로</b>, <b>헷지</b>는 작게 확정돼 <b>바로 자본으로</b> 가요. 결국 <b>미헷지의 큰 변동성도 자본에 반영</b>돼요 — 그래서 헷지가 필요해요.</p>
   </div>
   <div class="panel concept">
     <div class="cap">헷지방법론 — 파생으로 매칭<span>방향=선물·스왑, 감마·꼬리=옵션</span></div>
@@ -593,8 +592,7 @@
 
   <div class="panel concept">
     <div class="cap">숫자로 직접 — 헷지 항목을 추가해 보세요<span class="capb live">🖐 조작</span><span>시뮬과 같은 로직 · 예시값</span></div>
-    <p class="lede" style="font-size:13.5px">미헷지 변동성은 <b>방향(주가·금리)</b>이 대부분이에요. <b>헷지 항목을 하나씩 추가</b>할수록 그 흔들림이 <b>줄지만</b>, <b>비용</b>이 늘어요. 방향(선물·스왑)은 <b>싸게</b> 제거되고, 감마·베가(옵션)는 <b>비싸요</b>. 직접 켜 보세요.</p>
-    <div class="foot" style="margin:8px 0 6px">🖐 헷지 항목을 <b>켤수록</b> 흔들림 ↓ · 비용 ↑</div>
+    <p class="lede" style="font-size:13.5px">미헷지 변동성은 <b>방향(주가·금리)</b>이 대부분이에요. 항목을 켤수록 <b>흔들림 ↓ · 비용 ↑</b> — 방향(선물·스왑)은 싸고, 감마·베가(옵션)는 비싸요. 직접 켜 보세요.</p>
     <div id="mechChips" style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px"></div>
     <div class="chartwrap"><svg id="mechSvg" viewBox="0 0 560 108" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"></svg></div>
     <div class="chartleg">
@@ -603,12 +601,12 @@
       <span class="lk"><i style="background:var(--pay)"></i>든 비용</span>
     </div>
     <div class="foot" id="mechRead" style="margin-top:6px"></div>
-    <div class="callout key"><span class="ci">⭐</span><div><span class="clab">핵심</span> 방향은 <b>싸게 제거</b>, 감마·나머지는 <b>남거나 비싸요</b> — 그래서 <b>흔들림은 0이 아니고 비용이 들어요</b>. 그 비용은 <b>받은 수수료(재원)</b>가 덮어요. <b>→ ⑥ 시뮬레이션</b>에서 항목별로 정밀 조정해 보세요.</div></div>
+    <div class="callout key"><span class="ci">⭐</span><div><span class="clab">핵심</span> 흔들림은 <b>0이 되지 않고</b>, 비용은 <b>받은 수수료(재원)</b>가 덮어요. 정밀 조정은 <b>⑥ 시뮬레이션</b>에서.</div></div>
   </div>
 
   <div class="panel concept">
     <div class="cap">변동성이 커지면 — 잔여도, 비용도 커져요<span>시장변동성 ↑ → 헷지 후 변동성·비용 ↑</span></div>
-    <p class="lede" style="font-size:13.5px">시장이 크게 흔들리면 <b>헷지 대상의 변동성</b>부터 커져요. 그러면 <b>헷지를 해도</b> 남는 <b>잔여 변동성</b>이 커지고, 그걸 막는 <b>헷지 비용</b>도 <b>함께 커져요</b> — 큰 변동성은 피할 수 없는 부담이에요.</p>
+    <p class="lede" style="font-size:13.5px">시장 변동성이 커지면 <b>헷지 후 잔여 변동성</b>도, <b>헷지 비용</b>도 함께 커져요 — 큰 변동성은 피할 수 없는 부담이에요.</p>
     <div class="chartwrap"><svg viewBox="0 0 640 214" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
       <line x1="62" y1="24" x2="62" y2="182" stroke="#AAB4C6" stroke-width="1.5"/>
       <line x1="62" y1="182" x2="602" y2="182" stroke="#AAB4C6" stroke-width="1.5"/>
@@ -635,7 +633,7 @@
 
   <div class="panel concept">
     <div class="cap">그 해 적자여도, 전 기간 누적은 흑자<span>한 해만 보면 안 돼요</span></div>
-    <p class="lede" style="font-size:13.5px">헷지 비용은 시장이 오르내릴 때 포지션을 <b>되사고 되파는</b> 데서 나와요. 대부분의 해엔 이 비용이 받은 수수료보다 작아 <b>이익(초록)</b>이 남고, <b>변동성이 큰 해</b>엔 되사고 되파는 일이 잦아져 비용이 수수료를 넘어 <b>적자(빨강)</b>가 나요. 그래서 손익은 <b>한 해가 아니라 계약 전체 기간의 누적</b>으로 봐요.</p>
+    <p class="lede" style="font-size:13.5px">대부분의 해엔 <b>수수료 &gt; 비용</b>으로 이익(초록), 변동성이 큰 해엔 비용이 수수료를 넘어 <b>적자(빨강)</b>가 나요. 그래서 손익은 <b>계약 전 기간 누적</b>으로 봐요.</p>
     <div style="font-size:12.5px;font-weight:800;color:var(--ink);margin:12px 0 3px">① 해마다 — 대부분 이익, 가끔 적자</div>
     <div class="chartwrap"><svg viewBox="0 0 560 116" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
       <line x1="20" y1="60" x2="540" y2="60" stroke="#AAB4C6" stroke-width="1.2"/>
@@ -660,7 +658,7 @@
       <polyline points="55,63 115,47 175,36 235,54 295,41 355,25 415,17 475,14" fill="none" stroke="#337A5F" stroke-width="2.6" stroke-linejoin="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"><animate attributeName="stroke-dashoffset" from="1" to="0" dur="1.2s" fill="freeze"/></polyline>
       <circle cx="235" cy="54" r="3" fill="#337A5F"/><circle cx="475" cy="14" r="3.4" fill="#337A5F"/>
     </svg></div>
-    <p class="foot" style="margin-top:6px">해마다의 이익과 적자를 <b>누적</b>하면, 위기의 해엔 증가가 잠깐 주춤하지만(가운데 점) 누적선은 계속 위로 쌓여요. 받은 수수료의 합이 비용의 합보다 크면 <b>단년 적자가 전 기간 흑자를 뒤집지 않아요</b>.</p>
+    <p class="foot" style="margin-top:6px">위기의 해엔 잠깐 주춤해도(가운데 점) <b>누적선은 계속 위로</b> — 단년 적자가 <b>전 기간 흑자를 뒤집지 않아요</b>.</p>
     <div class="callout key"><span class="ci">⭐</span><div><span class="clab">핵심</span> <b>판단 단위는 한 해가 아니라 계약 전 기간</b> — 단년 적자는 비용이 몰린 시점일 뿐, 누적 손익과 구분해서 봐요.</div></div>
   </div>
 
@@ -999,7 +997,7 @@
     </div>
     <div id="selList"></div>
     <div class="callout tip"><span class="ci">💡</span><div><span class="clab">팁</span> 각 항목을 눌러 <b>헷지 ↔ 노출</b>을 바꿔 보세요. 위 막대·프론티어가 즉시 반응해요.</div></div>
-    <p class="foot">각 항목 옆 <b>막대 = 그 항목의 손익 흔들림</b>. <b style="color:var(--good)">헷지</b>=비용 내고 <b style="color:var(--good)">짧게(초록)</b> / <b style="color:var(--bad)">CSM 흡수</b>=비용 0이지만 <b style="color:var(--bad)">길게(빨강)</b> — 노출을 고르면 <b>변동성이 커져요</b>.</p>
+    <p class="foot">막대 = 항목별 흔들림. <b style="color:var(--good)">헷지</b>=비용 내고 짧게(초록) / <b style="color:var(--bad)">노출</b>=비용 0·길게(빨강).</p>
   </div>
   <p class="lede">실제 시장데이터(KOSPI·<b>국고 20년</b>, 약 6.5년)로 손익을 재현해요. <b>미헷지</b>는 시장 등락이 그대로 손익이 되어 <b>크게 출렁이고</b>, 헷지는 그 흔들림을 줄여요. <span id="simStatus" style="color:var(--muted)">데이터 불러오는 중…</span></p>
   <div class="verdict ok" id="vd"><div class="ic" id="vdi">✓</div><div><h3 id="vdt"></h3><p id="vdp"></p></div></div>
@@ -1009,11 +1007,11 @@
       <button data-rg="normal" class="on">🙂 평상시 <small style="opacity:.7">23·24년</small></button>
       <button data-rg="crisis">🌪️ 위기시 <small style="opacity:.7">26년</small></button>
     </div>
-    <p class="foot"><b>위기시</b>엔 변동성·헷지 <b>단가가 전반적으로 상승</b>해요(26년 급락장). 감마 비용은 <b>변동성²</b>이라 <b style="color:var(--bad)">급격히 커져요</b>. 눌러서 아래 프론티어가 어떻게 움직이는지 보세요.</p>
+    <p class="foot"><b>위기시</b>엔 단가가 오르고 감마 비용은 <b>변동성²</b>이라 <b style="color:var(--bad)">급격히 커져요</b> — 눌러서 프론티어 이동을 보세요.</p>
   </div>
   <div class="panel">
     <div class="cap">효율적 프론티어 — 비용과 손익변동성<span class="capb live">🖐 조작</span><span>점 = 헷지 조합</span></div>
-    <p class="foot" style="margin-top:0">이 그림은 <b>같은 예산으로 흔들림을 가장 작게</b> 만드는 지점(<b style="color:#337A5F">초록 ✓</b>)을 찾는 도구예요. 위에서 고른 <b>헷지 선택</b>과 <b>바로 위 국면 프리셋</b>이 여기에 반영돼요.</p>
+    <p class="foot" style="margin-top:0"><b>같은 예산으로 흔들림을 가장 작게</b> 만드는 지점(<b style="color:#337A5F">초록 ✓</b>)을 찾는 도구예요 — 위 선택·프리셋이 반영돼요.</p>
     <div class="chartwrap"><svg class="ef" id="ef" viewBox="0 0 640 340" preserveAspectRatio="xMidYMid meet"></svg></div>
     <div class="leg">
       <span><i style="background:var(--pay)"></i>효율적 프론티어</span>
@@ -1023,7 +1021,7 @@
       <span><span class="dash" style="border-color:var(--good)"></span>변동성 허용선(세로)</span>
       <span><i style="background:#4FAE8C;opacity:.35"></i>둘 다 만족 구역</span>
     </div>
-    <p class="foot">가로=흔들림, 세로=비용. <b>왼쪽</b>=헷지↑(<span style="color:#337A5F;font-weight:700">안전</span>·비용↑) / <b>오른쪽</b>=미헷지(<span style="color:var(--bad);font-weight:700">위험</span>·비용0). <b>초록 구역</b> 안 가장 왼쪽이 최적(<b style="color:#337A5F">여기로 ✓</b>).<br>🖐 <b>예산선·변동성 허용선을 드래그</b>해 조절하고, <b>점을 눌러</b> 그 헷지 조합을 바로 적용해 보세요.</p>
+    <p class="foot">가로=흔들림, 세로=비용 — <b>초록 구역 안 가장 왼쪽이 최적</b>(✓). 🖐 <b>선을 드래그</b>하고 <b>점을 눌러</b> 적용해 보세요.</p>
   </div>
   <details class="deep">
     <summary>🔬 심화 — 실측 재현 · 요소 분해 <small>(선택, 초심자는 건너뛰어도 좋아요)</small></summary>
@@ -1037,7 +1035,7 @@
       <span><i style="background:var(--sym);opacity:.25"></i>±1σ 범위(미헷지)</span>
       <span><i style="background:var(--good);opacity:.35"></i>±1σ 범위(헷지 후)</span>
     </div>
-    <p class="foot"><b>미헷지</b>는 매주 크게 출렁, <b>헷지 후</b>는 좁게. 음영 띠 = <b>±1σ 변동 범위</b>(σ=보통 등락폭). <b>넓은 띠 → 좁은 띠</b>로 줄어든 만큼이 헷지 효과. 민감도는 <b>입력 가정</b>에서.</p>
+    <p class="foot">음영 띠 = <b>±1σ 범위</b> — 넓은 띠→좁은 띠로 준 만큼이 <b>헷지 효과</b>예요.</p>
   </div>
   <div class="panel">
     <div class="cap">연도별 변동성 · 감마 손실<span>실제 시장 변동성으로 재현</span></div>
@@ -1049,12 +1047,12 @@
       <span><i style="background:var(--pay)"></i>헷지 시 옵션 프리미엄(확정 지출)</span>
     </div>
     <div class="chartwrap"><table class="mtx" id="simTbl"><thead><tr><th>연도</th><th>주가 RV</th><th>금리 RV</th><th>노출 시 누수</th><th>헷지 시 옵션 프리미엄</th></tr></thead><tbody></tbody></table></div>
-    <p class="foot"><b>노출(주황)</b>은 변동성 큰 해에 누수가 <b>급증</b>해요(예측 못 하는 손실). <b>헷지(파랑)</b>는 평균적으론 조금 더 비싸지만 <b>손실이 아니라 미리 정한 비용으로 확정</b>돼요 — 싸게 막는 게 아니라 <b>불확실을 확정으로</b> 바꾸는 거예요. <span style="opacity:.75">(RV = 실현변동성 실측 · 주가 %, 금리 bp)</span></p>
+    <p class="foot"><b>노출(주황)</b>은 변동성 큰 해에 누수가 <b>급증</b>, <b>헷지(파랑)</b>는 <b>미리 정한 비용으로 확정</b> — 불확실을 확정으로 바꾸는 거예요. <span style="opacity:.75">(RV=실현변동성 실측)</span></p>
   </div>
   <div class="panel">
     <div class="cap">항목별 손익요소<span>현재 전략 · 연 기준</span></div>
     <div class="chartwrap"><table class="mtx" id="simBreak"><thead><tr><th>위험 요인</th><th>처리</th><th>연간 손익요소</th><th>비고</th></tr></thead><tbody></tbody></table></div>
-    <p class="foot">헷지 항목은 확정 비용(음수)으로, 노출 항목 중 감마는 실현변동성 기반 <b>연평균 누수</b>로, 그 밖의 노출 항목은 손익변동성 기여(σ)로 표시해요. 감마 관련 값은 위 시장데이터 기간의 실측 실현변동성에 기반해요.</p>
+    <p class="foot">헷지 항목=확정 비용, 노출 감마=실측 변동성 기반 <b>연평균 누수</b>, 그 외 노출=σ 기여로 표시해요.</p>
   </div>
   </details>
 </section>
@@ -1170,7 +1168,7 @@
       <span><i style="background:var(--sym);opacity:.5"></i>헷지 안 하면 · 흔들림이 <b>완충 밖</b>(전이)</span>
       <span><i style="background:var(--good)"></i>헷지 후 · 남는 흔들림이 <b>완충 안</b></span>
     </div>
-    <p class="foot" style="margin:8px 0 0"><b>완충(초록 띠)</b>이 담을 수 있는 만큼만 노출 가능 — <b>넘치는 흔들림은 헷지</b>로 완충 안에 눌러 담아야 해요. 그래서 <b>완충이 얇을수록 헷지 강제↑</b>.</p>
+    <p class="foot" style="margin:8px 0 0">완충이 담는 만큼만 노출 가능 — <b>넘치는 흔들림은 헷지로</b> 눌러야 해요. <b>얇을수록 헷지 강제↑</b>.</p>
     <div id="bufChips" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"></div>
     <div style="display:flex;align-items:center;gap:10px;margin-top:12px">
       <span class="foot" style="margin:0;flex:0 0 auto">누적 헷지 비용</span>
@@ -1204,7 +1202,7 @@
   <div class="panel">
     <div class="cap">항목별 비교<span>현재 입력값 기준</span></div>
     <div class="chartwrap"><table class="mtx" id="cmpTbl"><thead><tr><th>위험 요인</th><th>변동성</th><th>헷지 난이도</th></tr></thead><tbody></tbody></table></div>
-    <p class="foot"><b>방향(주가·금리)</b>은 변동성이 크지만 <b>헷지가 쉬워요</b>. <b>감마</b>는 보통, <b>변동성·펀드·해지율(옵션·행동)</b>은 <b>헷지가 어렵고</b>, <b>모형·제도</b>는 이전 시장이 없어 <b>헷지 불가</b>. 항목별 선택은 <b>⑥ 시뮬레이션</b>에서. (예시값)</p>
+    <p class="foot"><b>방향</b>은 크지만 헷지가 쉽고, <b>변동성·펀드·해지율</b>은 어렵고, <b>모형·제도</b>는 불가 — 선택은 <b>⑥ 시뮬레이션</b>에서. (예시값)</p>
   </div>
 </section>
 
@@ -2063,7 +2061,7 @@ function renderSim(){
   const re=val("re")||1, rr=val("rr")||1;   /* IV≈RV → 프리미엄도 그 해 변동성 따라 변함 */
   const rows=ys.map(s=>({...s, leak:gam(ge,s.rvE)+gam(gr,s.rvR), prem:gam(ge,ie*s.rvE/re)+gam(gr,ir*s.rvR/rr)}));
   const avgLeak=rows.reduce((a,r)=>a+r.leak,0)/rows.length, avgPrem=rows.reduce((a,r)=>a+r.prem,0)/rows.length, worst=rows.reduce((a,b)=>a.leak>b.leak?a:b);
-  $("simStrat").innerHTML=`<b style="color:var(--leak)">노출</b>은 변동성 큰 해에 누수가 <b>급증</b>해요(예측 못 하는 손실). <b style="color:var(--pay)">헷지</b>는 그 위험을 옵션 프리미엄으로 넘기는 것 — 프리미엄도 변동성 따라 오르고 평균적으론 조금 더 비싸지만, <b>손실이 아니라 미리 정한 비용으로 확정</b>돼요(계획된 지출 · 돌발 손실 없음).`;
+  $("simStrat").innerHTML=`<b style="color:var(--leak)">노출</b>=변동성 큰 해에 누수 <b>급증</b> · <b style="color:var(--pay)">헷지</b>=프리미엄으로 <b>미리 확정</b>(돌발 손실 없음).`;
   $("simStat").innerHTML=`
     <div><div class="sl">노출 시 연평균 누수</div><div class="sv" style="color:var(--leak)">△${won(avgLeak)}억</div></div>
     <div><div class="sl">최대 누수(${worst.y})</div><div class="sv" style="color:var(--bad)">△${won(worst.leak)}억</div></div>

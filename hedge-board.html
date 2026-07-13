@@ -1202,8 +1202,8 @@
   </div>
   <div class="panel">
     <div class="cap">항목별 비교<span>현재 입력값 기준</span></div>
-    <div class="chartwrap"><table class="mtx" id="cmpTbl"><thead><tr><th>위험 요인</th><th>변동성</th><th>헷지후 감쇄율</th><th>헷지비용</th></tr></thead><tbody></tbody></table></div>
-    <p class="foot"><b>방향(주가·금리)</b>은 변동성이 크지만 <b>싸게(저) 크게(90%+) 감쇄</b>돼요. <b>감마·변동성(옵션)</b>은 중간, <b>펀드·해지율(행동)</b>은 <b>감쇄율이 낮고 비싸요(고)</b>. <b>모형·제도</b>는 이전 시장이 없어 <b>헷지 불가</b>. 항목별 선택은 <b>⑥ 시뮬레이션</b>에서. (예시값)</p>
+    <div class="chartwrap"><table class="mtx" id="cmpTbl"><thead><tr><th>위험 요인</th><th>변동성</th><th>헷지 난이도</th></tr></thead><tbody></tbody></table></div>
+    <p class="foot"><b>방향(주가·금리)</b>은 변동성이 크지만 <b>헷지가 쉬워요</b>. <b>감마</b>는 보통, <b>변동성·펀드·해지율(옵션·행동)</b>은 <b>헷지가 어렵고</b>, <b>모형·제도</b>는 이전 시장이 없어 <b>헷지 불가</b>. 항목별 선택은 <b>⑥ 시뮬레이션</b>에서. (예시값)</p>
   </div>
 </section>
 
@@ -1743,23 +1743,17 @@ function drawHero(){
 }
 if($("heroShock")) $("heroShock").addEventListener("input",drawHero);
 
-/* ④ 헷지 vs CSM 비교표 */
-const CMP_ATTR={ /* id → [변동성, 헷지후 감쇄율%, 헷지비용] */
-  delta:['고',95,'저'], rho:['고',92,'저'], gE:['중',70,'중'], gR:['중',65,'중'],
-  vega:['중',55,'고'], fund:['저',45,'고'], lapse:['저',30,'고'], model:['저',0,'—'],
-};
+/* ④ 항목별 비교표 — 변동성 · 헷지 난이도 */
+const CMP_VOL={ delta:'고', rho:'고', gE:'중', gR:'중', vega:'중', fund:'저', lapse:'저', model:'저' };
+const CMP_DIFF={ easy:['쉬움','var(--good)'], mid:['보통','var(--pay)'], hard:['어려움','var(--leak)'], no:['불가','var(--muted)'] };
 function drawCompare(){
   const body=$("cmpTbl")?.querySelector("tbody"); if(!body)return;
   const vcol={'고':'var(--bad)','중':'var(--leak)','저':'var(--muted)'};
-  const ccol={'저':'var(--good)','중':'var(--pay)','고':'var(--leak)','—':'var(--muted)'};
   body.innerHTML=RISK.map(r=>{
-    const c=CMP_ATTR[r.id]||['—',0,'—'], vl=c[0], att=c[1], cl=c[2];
-    const barCol=att>=80?'var(--good)':att>=50?'var(--pay)':att>0?'var(--leak)':'transparent';
-    const attCell=`<div style="display:flex;align-items:center;justify-content:center;gap:6px"><div style="flex:0 0 44px;height:7px;background:#EEF1F7;border-radius:4px;overflow:hidden"><div style="height:100%;width:${att}%;background:${barCol};border-radius:4px"></div></div><span class="mono" style="font-size:11px;color:${att>0?'var(--ink)':'var(--muted)'}">${att>0?att+'%':'—'}</span></div>`;
+    const vl=CMP_VOL[r.id]||'—', d=CMP_DIFF[r.diff]||['—','var(--muted)'];
     return `<tr><td>${r.n}<small>${r.note}</small></td>`
       +`<td><span style="font-weight:800;color:${vcol[vl]||'var(--muted)'}">${vl}</span></td>`
-      +`<td>${attCell}</td>`
-      +`<td><span style="font-weight:800;color:${ccol[cl]||'var(--muted)'}">${cl}</span></td></tr>`;
+      +`<td><span style="font-weight:800;color:${d[1]}">${d[0]}</span></td></tr>`;
   }).join("");
 }
 
@@ -1829,6 +1823,14 @@ function renderCapVol(){
     ? `시장 <b>${Math.round(m*100)}%</b> → 자산 <b style="color:var(--pay)">${fund.toFixed(0)}</b>이 보증 <b style="color:var(--leak)">${floor}</b>에 못 미쳐 <b style="color:var(--bad)">${gap.toFixed(0)}</b>만큼 <b>회사 자본이 메꿔요</b> — 자본이 흔들려요.`
     : `시장 <b>+${Math.round(m*100)}%</b> → 자산 <b style="color:var(--pay)">${fund.toFixed(0)}</b>이 보증 <b style="color:var(--leak)">${floor}</b> 위 → 자산=부채, <b>자본 부담 0</b>. 아직 안 흔들려요.`;
 }
+const MECH_ITEMS=[
+  {id:'eq',  n:'주가 방향', tool:'선물', vol:300, cost:60,  on:0},
+  {id:'rate',n:'금리 방향', tool:'스왑', vol:160, cost:40,  on:0},
+  {id:'gam', n:'감마',      tool:'옵션', vol:90,  cost:180, on:0},
+  {id:'veg', n:'베가',      tool:'옵션', vol:50,  cost:130, on:0},
+  {id:'beta',n:'펀드 베타', tool:'선물', vol:35,  cost:32,  on:0},
+];
+const MECH_BASE=40; /* 해지율 등 못 막는 잔여 */
 function renderMech(){
   const box=$("mechSvg"); if(!box)return;
   const ch=$("mechChips");

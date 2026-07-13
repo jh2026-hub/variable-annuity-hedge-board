@@ -769,36 +769,42 @@
 
   <div class="panel">
     <div class="qah"><div class="qan">Q4</div><div class="qat">어떻게 막나요? 무슨 수단으로? 🧰</div></div>
-    <div class="chartwrap"><svg viewBox="0 0 560 220" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
-      <text x="280" y="24" text-anchor="middle" font-size="12" font-weight="800" fill="var(--muted)" font-family="sans-serif">예: 주가가 오르면 ▲</text>
-      <text x="62" y="96" text-anchor="middle" font-size="13" font-weight="800" fill="var(--ink)" font-family="sans-serif">📈 주가</text>
-      <text x="62" y="118" text-anchor="middle" font-size="16" font-weight="800" fill="#337A5F" font-family="sans-serif">+10%<animate attributeName="opacity" values="0;1;1;1;0" keyTimes="0;0.08;0.1;0.9;1" dur="4.6s" repeatCount="indefinite"/></text>
-      <path d="M118 106 L142 106 M135 99 L143 106 L135 113" stroke="#AAB4C6" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-      <line x1="158" y1="106" x2="380" y2="106" stroke="#CBD2DE" stroke-width="1.2"/>
-      <rect x="176" y="106" width="56" height="0" rx="5" fill="var(--sym)" opacity="0.9"><animate attributeName="height" values="0;0;52;52;0" keyTimes="0;0.13;0.3;0.9;1" dur="4.6s" repeatCount="indefinite"/><animate attributeName="y" values="106;106;54;54;106" keyTimes="0;0.13;0.3;0.9;1" dur="4.6s" repeatCount="indefinite"/></rect>
-      <text x="204" y="46" text-anchor="middle" font-size="13" font-weight="800" fill="var(--sym)" font-family="sans-serif" opacity="0">+100<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.28;0.34;0.9;1" dur="4.6s" repeatCount="indefinite"/></text>
-      <text x="204" y="124" text-anchor="middle" font-size="10" font-weight="800" fill="var(--sym)" font-family="sans-serif">순포지션</text>
-      <text x="204" y="137" text-anchor="middle" font-size="9" fill="var(--muted)" font-family="sans-serif">(펀드−부채) 변동</text>
-      <text x="258" y="112" text-anchor="middle" font-size="17" font-weight="800" fill="var(--muted)" font-family="sans-serif">＋</text>
-      <rect x="284" y="106" width="56" height="0" rx="5" fill="var(--pay)" opacity="0.9"><animate attributeName="height" values="0;0;0;52;52;0" keyTimes="0;0.3;0.38;0.55;0.9;1" dur="4.6s" repeatCount="indefinite"/></rect>
-      <text x="312" y="178" text-anchor="middle" font-size="13" font-weight="800" fill="var(--pay)" font-family="sans-serif" opacity="0">−100<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.53;0.59;0.9;1" dur="4.6s" repeatCount="indefinite"/></text>
-      <text x="312" y="97" text-anchor="middle" font-size="10" font-weight="800" fill="var(--pay)" font-family="sans-serif">파생상품</text>
-      <text x="312" y="84" text-anchor="middle" font-size="9" fill="var(--muted)" font-family="sans-serif">정반대로 걸어둠</text>
-      <text x="368" y="112" text-anchor="middle" font-size="17" font-weight="800" fill="var(--muted)" font-family="sans-serif">＝</text>
-      <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.6;0.68;0.9;1" dur="4.6s" repeatCount="indefinite"/>
-        <rect x="390" y="82" width="152" height="48" rx="9" fill="#EAF7F1" stroke="#93D4B4" stroke-width="1.5"/>
-        <text x="466" y="102" text-anchor="middle" font-size="13" font-weight="800" fill="#337A5F" font-family="sans-serif">합계 0 ✓</text>
-        <text x="466" y="119" text-anchor="middle" font-size="9.5" fill="#337A5F" font-family="sans-serif">자본 영향 없음</text>
+    <div class="chartwrap"><svg viewBox="0 0 560 226" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
+      <text x="280" y="24" text-anchor="middle" font-size="12" font-weight="800" fill="var(--muted)" font-family="sans-serif">예: 주가가 내리면 ▼</text>
+      <text x="60" y="98" text-anchor="middle" font-size="13" font-weight="800" fill="var(--ink)" font-family="sans-serif">📉 주가</text>
+      <text x="60" y="120" text-anchor="middle" font-size="16" font-weight="800" fill="var(--bad)" font-family="sans-serif">−10%<animate attributeName="opacity" values="0;1;1;1;0" keyTimes="0;0.08;0.1;0.9;1" dur="5s" repeatCount="indefinite"/></text>
+      <path d="M112 108 L138 108 M131 101 L139 108 L131 115" stroke="#AAB4C6" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="152" y1="108" x2="362" y2="108" stroke="#CBD2DE" stroke-width="1.2"/>
+      <rect x="172" y="108" width="56" height="0" rx="5" fill="var(--sym)" opacity="0.9"><animate attributeName="height" values="0;0;52;52;0" keyTimes="0;0.13;0.28;0.9;1" dur="5s" repeatCount="indefinite"/></rect>
+      <text x="200" y="180" text-anchor="middle" font-size="13" font-weight="800" fill="var(--sym)" font-family="sans-serif" opacity="0">−100<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.26;0.32;0.9;1" dur="5s" repeatCount="indefinite"/></text>
+      <text x="200" y="99" text-anchor="middle" font-size="10" font-weight="800" fill="var(--sym)" font-family="sans-serif">순포지션</text>
+      <text x="200" y="86" text-anchor="middle" font-size="9" fill="var(--muted)" font-family="sans-serif">(펀드−부채) 변동</text>
+      <text x="252" y="114" text-anchor="middle" font-size="17" font-weight="800" fill="var(--muted)" font-family="sans-serif">＋</text>
+      <rect x="278" y="108" width="56" height="0" rx="0" fill="var(--good)" opacity="0.92"><animate attributeName="y" values="108;108;71.6;71.6;108" keyTimes="0;0.34;0.46;0.9;1" dur="5s" repeatCount="indefinite"/><animate attributeName="height" values="0;0;36.4;36.4;0" keyTimes="0;0.34;0.46;0.9;1" dur="5s" repeatCount="indefinite"/></rect>
+      <rect x="278" y="71.6" width="56" height="0" fill="var(--pay)" opacity="0.92"><animate attributeName="y" values="71.6;71.6;61.2;61.2;71.6" keyTimes="0;0.46;0.54;0.9;1" dur="5s" repeatCount="indefinite"/><animate attributeName="height" values="0;0;10.4;10.4;0" keyTimes="0;0.46;0.54;0.9;1" dur="5s" repeatCount="indefinite"/></rect>
+      <rect x="278" y="61.2" width="56" height="0" fill="var(--leak)" opacity="0.92"><animate attributeName="y" values="61.2;61.2;56;56;61.2" keyTimes="0;0.54;0.6;0.9;1" dur="5s" repeatCount="indefinite"/><animate attributeName="height" values="0;0;5.2;5.2;0" keyTimes="0;0.54;0.6;0.9;1" dur="5s" repeatCount="indefinite"/></rect>
+      <text x="306" y="48" text-anchor="middle" font-size="13" font-weight="800" fill="var(--pay)" font-family="sans-serif" opacity="0">+100<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.6;0.66;0.9;1" dur="5s" repeatCount="indefinite"/></text>
+      <text x="306" y="99" text-anchor="middle" font-size="10" font-weight="800" fill="var(--pay)" font-family="sans-serif">파생상품 3종</text>
+      <g font-family="sans-serif" font-size="9" font-weight="700">
+        <rect x="280" y="118" width="7" height="7" rx="2" fill="var(--good)"/><text x="291" y="125" fill="#337A5F">방향 +70 · 선물·스왑</text>
+        <rect x="280" y="131" width="7" height="7" rx="2" fill="var(--pay)"/><text x="291" y="138" fill="var(--pay)">급변 +20 · 옵션</text>
+        <rect x="280" y="144" width="7" height="7" rx="2" fill="var(--leak)"/><text x="291" y="151" fill="var(--leak)">기타 +10 · 맞춤스왑</text>
       </g>
-      <text x="280" y="208" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="sans-serif">내릴 땐 반대로 — 순포지션 −100을 파생 +100이 받아요. 어느 쪽이든 서로 지워져요.</text>
+      <text x="376" y="114" text-anchor="middle" font-size="17" font-weight="800" fill="var(--muted)" font-family="sans-serif">＝</text>
+      <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.66;0.74;0.9;1" dur="5s" repeatCount="indefinite"/>
+        <rect x="392" y="84" width="150" height="48" rx="9" fill="#EAF7F1" stroke="#93D4B4" stroke-width="1.5"/>
+        <text x="467" y="104" text-anchor="middle" font-size="13" font-weight="800" fill="#337A5F" font-family="sans-serif">합계 0 ✓</text>
+        <text x="467" y="121" text-anchor="middle" font-size="9.5" fill="#337A5F" font-family="sans-serif">자본 영향 없음</text>
+      </g>
+      <text x="280" y="214" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="sans-serif">오를 땐 반대로 — 순포지션 +100을 파생 −100이 받아요. 어느 쪽이든 서로 지워져요.</text>
     </svg></div>
     <div style="display:flex;flex-direction:column;gap:9px;margin:6px 0 12px">
       <div class="qstep"><span class="qstepn" style="background:var(--good)">1</span><div><b>방향 막기</b> · 선물·스왑 <span style="color:var(--muted)">— 가장 저렴 · 필수</span></div></div>
       <div class="qstep"><span class="qstepn" style="background:var(--pay)">2</span><div><b>급변 막기</b> · 옵션 <span style="color:var(--muted)">— 중간 비용</span></div></div>
-      <div class="qstep"><span class="qstepn" style="background:var(--leak)">3</span><div><b>큰 하락(꼬리) 막기</b> · 옵션 <span style="color:var(--muted)">— 비쌈 · 확실</span></div></div>
+      <div class="qstep"><span class="qstepn" style="background:var(--leak)">3</span><div><b>기타 막기</b> · 맞춤스왑 등 <span style="color:var(--muted)">— 펀드 추적오차 등 · 일부만 가능</span></div></div>
     </div>
-    <ul class="qalist"><li><b>순포지션(펀드−부채)의 변동을 파생상품이 정반대로 받아</b> 서로 지워요 — 이게 매칭이에요.</li><li>방향은 <b>싸고 필수</b>, 급변·꼬리는 <b>비싸서 완충 봐가며</b> 골라 조합해요.</li></ul>
-    <div style="background:#FBEEF1;border:1px solid var(--bad-line);border-radius:9px;padding:9px 12px;font-size:12px;color:var(--ink);line-height:1.6;margin-top:8px"><b>난이도</b> — 방향은 쉽지만, 급변·꼬리까지 막으려면 <b>전담 팀(트레이더·퀀트·리스크)·시스템</b>이 상시 붙어 매일 조정해야 해요.</div>
+    <ul class="qalist"><li><b>순포지션(펀드−부채)의 변동을 파생상품이 정반대로 받아</b> 서로 지워요 — 이게 매칭이에요.</li><li>방향은 <b>싸고 필수</b>, 급변·기타는 <b>비싸서 완충 봐가며</b> 골라 조합해요.</li></ul>
+    <div style="background:#FBEEF1;border:1px solid var(--bad-line);border-radius:9px;padding:9px 12px;font-size:12px;color:var(--ink);line-height:1.6;margin-top:8px"><b>난이도</b> — 방향은 쉽지만, 급변·기타까지 막으려면 <b>전담 팀(트레이더·퀀트·리스크)·시스템</b>이 상시 붙어 매일 조정해야 해요.</div>
     <span class="qgo" onclick="document.querySelector('#tabs [data-p=p7]').click()">자세히 → ④ 헷지수단 (비용·효과)</span>
   </div>
 
@@ -831,7 +837,7 @@
       <text x="410" y="126" font-size="15" text-anchor="middle" opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.56;0.62;0.82" dur="2.6s" repeatCount="indefinite"/>💥</text>
       <text x="410" y="156" text-anchor="middle" font-size="11" font-weight="800" fill="var(--bad)">소진 → 손익 반영</text>
     </svg></div>
-    <ul class="qalist"><li><b>완충이 손실을 먼저 흡수하다, 소진되면 그대로 손익·자본으로 이어져요.</b> 얇을수록 헷지가 답이에요.</li></ul>
+    <ul class="qalist"><li><b>완충이 손실을 먼저 흡수하다, 소진되면 그대로 손익·자본으로 이어져요.</b> 얇을수록 헷지 필요성이 커져요.</li></ul>
     <span class="qgo" onclick="document.querySelector('#tabs [data-p=p3]').click()">자세히 → ⑤ 손익 인식 (완충 CSM)</span>
   </div>
 
@@ -862,7 +868,7 @@
     <div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;margin:2px 0 6px">🎯 명심할 3가지</div>
     <div style="display:flex;flex-direction:column;gap:9px">
       <div class="qstep"><span class="qstepn" style="background:#8A94A6">1</span><div><b>헷지하지 않아도 변동성은 그대로예요.</b><small>완충(CSM)이 흡수하다 소진되면 손익·자본으로 그대로 이어져요</small></div></div>
-      <div class="qstep"><span class="qstepn" style="background:#8A94A6">2</span><div><b>완충(CSM)이 얇을수록 헷지가 답이에요.</b><small>완충이 두꺼우면 노출할 여유, 얇으면 바로 헷지 압력이 커져요</small></div></div>
+      <div class="qstep"><span class="qstepn" style="background:#8A94A6">2</span><div><b>완충(CSM)이 얇을수록 헷지 필요성이 커져요.</b><small>완충이 두꺼우면 노출할 여유, 얇으면 바로 헷지 압력이 커져요</small></div></div>
       <div class="qstep"><span class="qstepn" style="background:#8A94A6">3</span><div><b>막는 순서가 있어요 — 방향 먼저.</b><small>방향(주가·금리 흐름)은 싸고 필수, 급변·꼬리는 비싸서 완충 봐가며 선택</small></div></div>
     </div>
     <div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;margin:14px 0 6px">✅ 그래서 우리가 할 일</div>

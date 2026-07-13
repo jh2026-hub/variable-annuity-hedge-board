@@ -439,7 +439,7 @@
         <input type="range" id="heroShock" min="0" max="40" step="1" value="0" style="width:100%">
       </div>
     </div>
-    <div class="chartwrap"><svg id="heroSvg" viewBox="0 0 520 352" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"></svg></div>
+    <div class="chartwrap"><svg id="heroSvg" viewBox="0 0 520 250" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"></svg></div>
     <div class="leg" style="margin-top:8px">
       <span><i style="background:var(--bad)"></i>보증손실 — 자본을 깎아요</span>
       <span><i style="background:var(--pay)"></i>남은 자본</span>
@@ -1753,39 +1753,24 @@ function drawHero(){
   const f=Math.pow(s/30,1.7);
   const capU=Math.round(100-100*f);                /* 안 헷지 자본 잔여 */
   const capH=Math.round(100-3-100*f*0.15);         /* 헷지 자본 잔여(소액 비용+잔여) */
-  const pvLoss=Math.round(100*f);                  /* 현재가치로 반영되는 보증손실 */
   const fundNow=Math.max(0,Math.round(100-s*2.5)); /* 적립금(펀드) 잔액 % */
-  const floorPct=64;                                /* 최저보증 % */
-  const W=520, axisY=60, xL=64, xR=456;
-  const g=[`<defs><marker id="hArr" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0 0 L7 3 L0 6 Z" fill="#E24A62"/></marker></defs>`];
-  /* ── ① 타임라인: 지급은 미래, 평가는 현재가치 ── */
-  g.push(`<text x="${W/2}" y="16" text-anchor="middle" font-size="11" font-weight="800" fill="var(--ink)">보증 지급은 <tspan fill="var(--muted)">미래</tspan> — 그런데 <tspan fill="var(--bad)">현재가치로 매일 평가</tspan>돼 오늘 자본을 때려요</text>`);
-  g.push(`<line x1="${xL}" y1="${axisY}" x2="${xR}" y2="${axisY}" stroke="#C9D2E2" stroke-width="1.6"/>`);
-  g.push(`<circle cx="${xL}" cy="${axisY}" r="4.5" fill="#2F63E0"/>`);
-  g.push(`<text x="${xL}" y="${axisY+16}" text-anchor="middle" font-size="10" font-weight="700" fill="var(--ink)">오늘</text>`);
-  g.push(`<circle cx="${xR}" cy="${axisY}" r="4.5" fill="none" stroke="#8894A8" stroke-width="1.5"/>`);
-  g.push(`<text x="${xR}" y="${axisY+16}" text-anchor="middle" font-size="10" font-weight="700" fill="var(--muted)">만기 (미래 지급)</text>`);
-  const r=6+Math.min(1.6,f)*10;
-  g.push(`<circle cx="${xR-4}" cy="${(axisY-r-6).toFixed(1)}" r="${r.toFixed(1)}" fill="#F7C9D1" stroke="#E24A62" stroke-width="1.3"${f>0.05?`><animate attributeName="r" values="${(r*0.92).toFixed(1)};${(r*1.06).toFixed(1)};${(r*0.92).toFixed(1)}" dur="1.6s" repeatCount="indefinite"/></circle>`:'/>'}`);
-  if(f>0.05) g.push(`<text x="${xR-4}" y="${(axisY-r-3).toFixed(1)}" text-anchor="middle" font-size="8" font-weight="800" fill="var(--bad)">보증↑</text>`);
-  const acol=f>0.03?'#E24A62':'#C9D2E2';
-  g.push(`<path d="M ${xR-34} ${(axisY-r-6).toFixed(1)} C 330 ${axisY-40}, 150 ${axisY-38}, ${xL+4} ${axisY-9}" fill="none" stroke="${acol}" stroke-width="${(1.2+Math.min(1.6,f)*2).toFixed(1)}" stroke-dasharray="5 3" marker-end="url(#hArr)" opacity="0.9"/>`);
-  g.push(`<text x="256" y="${axisY-30}" text-anchor="middle" font-size="9.5" font-weight="700" fill="${f>0.03?'var(--bad)':'var(--muted)'}">현재가치로 평가 (BEL) ↩</text>`);
-  if(f>0.05) g.push(`<text x="${xL}" y="${axisY-12}" text-anchor="middle" font-size="9.5" font-weight="800" fill="var(--bad)">오늘 −${pvLoss}</text>`);
-  /* ── ② 적립금(펀드) vs 최저보증 → 펀드 하락이 보증손실을 키운다 ── */
-  const gx=70, gw=380, gy=118, gh=28, xFloor=gx+floorPct/100*gw, fundW=fundNow/100*gw;
-  g.push(`<text x="${W/2}" y="102" text-anchor="middle" font-size="10.5" font-weight="800" fill="var(--ink)">펀드 하락 → <tspan fill="var(--bad)">최저보증과 격차 ↑</tspan> → 보증손실이 커져요</text>`);
+  const floorPct=64;                                /* 최저 사망보증(GMDB) % */
+  const W=520;
+  const g=[];
+  /* ── ① 적립금(펀드) vs 최저 사망보증(GMDB) → 펀드 하락이 보증손실을 키운다 ── */
+  const gx=70, gw=380, gy=36, gh=28, xFloor=gx+floorPct/100*gw, fundW=fundNow/100*gw;
+  g.push(`<text x="${W/2}" y="18" text-anchor="middle" font-size="10.5" font-weight="800" fill="var(--ink)">펀드 하락 → <tspan fill="var(--bad)">최저 사망보증(GMDB)과 격차 ↑</tspan> → 보증손실이 커져요</text>`);
   g.push(`<rect x="${gx}" y="${gy}" width="${gw}" height="${gh}" fill="#F4F6FA" stroke="#D6DCE8" rx="5"/>`);
   g.push(`<rect x="${gx}" y="${gy}" width="${Math.max(0,fundW).toFixed(1)}" height="${gh}" fill="#DCE7FB" stroke="#9DBBF3" rx="5"/>`);
   if(fundW>46) g.push(`<text x="${(gx+fundW/2).toFixed(1)}" y="${gy+gh/2+4}" text-anchor="middle" font-size="10.5" font-weight="800" fill="#2F63E0">적립금 ${fundNow}%</text>`);
   if(fundNow<=10) g.push(`<text x="${gx+34}" y="${gy-5}" text-anchor="middle" font-size="9.5" font-weight="800" fill="var(--bad)">적립금 고갈 💧</text>`);
   if(fundNow<floorPct){ const rx=gx+fundW, rw=xFloor-rx;
     g.push(`<rect x="${rx.toFixed(1)}" y="${gy}" width="${rw.toFixed(1)}" height="${gh}" fill="#F7C9D1" stroke="#E24A62" rx="4"${f>0.05?`><animate attributeName="opacity" values="1;.6;1" dur="1.3s" repeatCount="indefinite"/></rect>`:'/>'}`);
-    if(rw>52) g.push(`<text x="${(rx+rw/2).toFixed(1)}" y="${gy+gh/2+4}" text-anchor="middle" font-size="10" font-weight="800" fill="var(--bad)">보증손실</text>`); }
+    if(rw>60) g.push(`<text x="${(rx+rw/2).toFixed(1)}" y="${gy+gh/2+4}" text-anchor="middle" font-size="10" font-weight="800" fill="var(--bad)">보증손실</text>`); }
   g.push(`<line x1="${xFloor.toFixed(1)}" y1="${gy-8}" x2="${xFloor.toFixed(1)}" y2="${gy+gh+8}" stroke="#0a7c50" stroke-width="1.4" stroke-dasharray="4 3"/>`);
-  g.push(`<text x="${xFloor.toFixed(1)}" y="${gy+gh+20}" text-anchor="middle" font-size="9.5" font-weight="700" fill="#0a7c50">최저보증</text>`);
-  /* ── ③ 오늘 자본: 안 헷지 vs 헷지 (보증손실이 자본을 때린 결과) ── */
-  const tankW=92, th=92, topY=214, baseY=306, cxs=[148,372], caps=[capU,capH], hed=[false,true], labs=["안 헷지","헷지"];
+  g.push(`<text x="${xFloor.toFixed(1)}" y="${gy+gh+20}" text-anchor="middle" font-size="9.5" font-weight="700" fill="#0a7c50">최저 사망보증(GMDB)</text>`);
+  /* ── ② 자본: 안 헷지 vs 헷지 (보증손실이 자본을 때린 결과) ── */
+  const tankW=92, th=90, topY=130, baseY=220, cxs=[148,372], caps=[capU,capH], hed=[false,true], labs=["안 헷지","헷지"];
   g.push(`<line x1="${cxs[0]-tankW/2-12}" y1="${baseY}" x2="${cxs[1]+tankW/2+12}" y2="${baseY}" stroke="#AAB4C6" stroke-width="1.2"/>`);
   for(let i=0;i<2;i++){
     const cx=cxs[i], cap=caps[i], hedged=hed[i], x=cx-tankW/2;
@@ -1805,8 +1790,8 @@ function drawHero(){
   }
   svg.innerHTML=g.join("");
   if($("heroMsg")) $("heroMsg").innerHTML = s===0
-    ? `주가가 떨어지면 <b>적립금(펀드)</b>이 <b>최저보증 아래</b>로 내려가 <b style="color:var(--bad)">보증손실</b>이 생겨요. 지급은 <b>미래</b>지만 <b style="color:var(--bad)">현재가치(BEL)로 매일 평가</b>돼 <b>오늘 자본</b>을 깎죠. 슬라이더나 <b style="color:var(--bad)">▶ 위기 재생</b>으로 확인해 보세요.`
-    : `주가 <b>−${s}%</b> → 적립금 <b>${fundNow}%</b>로 하락(최저보증 ${floorPct}% 아래) → <b style="color:var(--bad)">보증손실 커짐</b>. 현재가치 <b style="color:var(--bad)">−${pvLoss}</b>가 오늘 반영 → <b style="color:var(--bad)">안 헷지 자본 ${capU<=0?'소진(💥)':capU+'%'}</b>, <b style="color:#0a7c50">헷지 ${capH}%로 버텨요</b>.`;
+    ? `펀드(적립금)가 <b>최저 사망보증(GMDB)</b> 아래로 내려가면, 가입자 사망 시 회사가 <b>차액을 물어줘야</b> 해요 — 이게 <b style="color:var(--bad)">보증손실</b>이고 바로 <b>자본</b>을 깎아요. 슬라이더나 <b style="color:var(--bad)">▶ 위기 재생</b>으로 확인해 보세요.`
+    : `주가 <b>−${s}%</b> → 적립금 <b>${fundNow}%</b>로 하락(GMDB ${floorPct}% 아래) → 사망보증 차액 = <b style="color:var(--bad)">보증손실 커짐</b> → <b style="color:var(--bad)">안 헷지 자본 ${capU<=0?'소진(💥)':capU+'%'}</b>, <b style="color:#0a7c50">헷지 ${capH}%로 버텨요</b>.`;
 }
 function heroPlay(){
   if(heroPlaying) return; heroPlaying=true;

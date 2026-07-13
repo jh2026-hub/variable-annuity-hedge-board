@@ -432,18 +432,14 @@
 
   <div class="panel">
     <div class="cap">보증리스크가 왜 위험한가<span class="capb live">🖐 조작</span><span>주가를 떨어뜨려 보세요</span></div>
-    <div style="display:flex;align-items:center;gap:10px;margin:4px 0 10px;flex-wrap:wrap">
-      <button id="heroPlay" style="flex:0 0 auto;background:var(--bad);color:#fff;border:none;border-radius:9px;padding:9px 14px;font-family:inherit;font-weight:800;font-size:12.5px;cursor:pointer">▶ 위기 재생</button>
-      <div style="flex:1 1 160px;min-width:150px">
-        <label class="foot" style="margin:0">주가 충격 <b id="heroShockLab" class="mono" style="color:var(--bad)">−0%</b></label>
-        <input type="range" id="heroShock" min="0" max="40" step="1" value="0" style="width:100%">
-      </div>
+    <div style="margin:4px 0 10px">
+      <label class="foot" style="margin:0">주가 충격 <b id="heroShockLab" class="mono" style="color:var(--bad)">−0%</b></label>
+      <input type="range" id="heroShock" min="0" max="40" step="1" value="0" style="width:100%">
     </div>
     <div class="chartwrap"><svg id="heroSvg" viewBox="0 0 520 250" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"></svg></div>
     <div class="leg" style="margin-top:8px">
       <span><i style="background:var(--bad)"></i>보증손실 — 자본을 깎아요</span>
       <span><i style="background:var(--pay)"></i>남은 자본</span>
-      <span><i style="background:var(--good)"></i>헷지로 지킨 자본</span>
     </div>
     <p class="foot" id="heroMsg" style="margin-top:9px"></p>
   </div>
@@ -1756,15 +1752,13 @@ function drawCasc(){
 if($("bufCsm")) $("bufCsm").addEventListener("input",drawBuffer);
 if($("mechHedge")) $("mechHedge").addEventListener("input",renderMech);
 
-/* ⓪ 히어로 — 미래의 보증부담이 '현재가치'로 오늘 자본을 때린다 (조작·재생) */
-let heroRAF=null, heroPlaying=false;
+/* ⓪ 히어로 — 보증리스크가 회사 자본을 깎는다 (조작) */
 function drawHero(){
   const svg=$("heroSvg"); if(!svg)return;
   const s=Math.max(0,parseFloat($("heroShock")?.value)||0);
   if($("heroShockLab")) $("heroShockLab").textContent="−"+s+"%";
   const f=Math.pow(s/30,1.7);
-  const capU=Math.round(100-100*f);                /* 안 헷지 자본 잔여 */
-  const capH=Math.round(100-3-100*f*0.15);         /* 헷지 자본 잔여(소액 비용+잔여) */
+  const cap=Math.round(100-100*f);                 /* 보증손실 반영 후 회사 자본 잔여 */
   const fundNow=Math.max(0,Math.round(100-s*2.5)); /* 적립금(펀드) 잔액 % */
   const floorPct=64;                                /* 최저 사망보증(GMDB) % */
   const W=520;
@@ -1781,43 +1775,30 @@ function drawHero(){
     if(rw>60) g.push(`<text x="${(rx+rw/2).toFixed(1)}" y="${gy+gh/2+4}" text-anchor="middle" font-size="10" font-weight="800" fill="var(--bad)">보증손실</text>`); }
   g.push(`<line x1="${xFloor.toFixed(1)}" y1="${gy-8}" x2="${xFloor.toFixed(1)}" y2="${gy+gh+8}" stroke="#0a7c50" stroke-width="1.4" stroke-dasharray="4 3"/>`);
   g.push(`<text x="${xFloor.toFixed(1)}" y="${gy+gh+20}" text-anchor="middle" font-size="9.5" font-weight="700" fill="#0a7c50">최저 사망보증(GMDB)</text>`);
-  /* ── ② 자본: 안 헷지 vs 헷지 (보증손실이 자본을 때린 결과) ── */
-  const tankW=92, th=90, topY=130, baseY=220, cxs=[148,372], caps=[capU,capH], hed=[false,true], labs=["안 헷지","헷지"];
-  g.push(`<line x1="${cxs[0]-tankW/2-12}" y1="${baseY}" x2="${cxs[1]+tankW/2+12}" y2="${baseY}" stroke="#AAB4C6" stroke-width="1.2"/>`);
-  for(let i=0;i<2;i++){
-    const cx=cxs[i], cap=caps[i], hedged=hed[i], x=cx-tankW/2;
-    const fillH=Math.max(0,Math.min(100,cap))/100*th, fillY=baseY-fillH, lostH=th-fillH;
-    const stat=hedged?'🛡️ 버텨요':(cap<=0?'💥 자본 소진':(cap<25?'⚠️ 위태':'견딤'));
-    g.push(`<text x="${cx}" y="${topY-28}" text-anchor="middle" font-size="18">🏛️</text>`);
-    g.push(`<text x="${cx}" y="${topY-13}" text-anchor="middle" font-size="12" font-weight="800" fill="${hedged?'#0a7c50':'var(--bad)'}">${labs[i]} 자본</text>`);
-    g.push(`<text x="${cx}" y="${topY-1}" text-anchor="middle" font-size="10.5" font-weight="700" fill="${hedged?'#0a7c50':(cap<=0?'var(--bad)':'var(--ink)')}">${cap}% · ${stat}</text>`);
-    if(fillH>0.5){ g.push(`<rect x="${x}" y="${fillY.toFixed(1)}" width="${tankW}" height="${fillH.toFixed(1)}" fill="${hedged?'#D6F0E4':'#DCE7FB'}" rx="4"/>`);
-      if(fillH>16) g.push(`<text x="${cx}" y="${(fillY+fillH/2+4).toFixed(1)}" text-anchor="middle" font-size="10.5" font-weight="800" fill="${hedged?'#0a7c50':'#2F63E0'}">자본</text>`); }
-    if(lostH>0.5){ g.push(`<rect x="${x}" y="${topY}" width="${tankW}" height="${lostH.toFixed(1)}" fill="#F7C9D1" rx="4"${(!hedged&&f>0.05)?`><animate attributeName="opacity" values="1;.6;1" dur="1.3s" repeatCount="indefinite"/></rect>`:'/>'}`);
-      if(lostH>16) g.push(`<text x="${cx}" y="${(topY+lostH/2+4).toFixed(1)}" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--bad)">보증손실</text>`); }
-    g.push(`<rect x="${x}" y="${topY}" width="${tankW}" height="${th}" fill="none" stroke="${hedged?'#5BD99A':(cap<=0?'#E24A62':'#C9D2E2')}" stroke-width="1.6" rx="5"/>`);
-    if(cap<0){ const uh=Math.min(26,-cap/100*th);
-      g.push(`<rect x="${x}" y="${baseY}" width="${tankW}" height="${uh.toFixed(1)}" fill="#E24A62" opacity="0.85" rx="4"><animate attributeName="opacity" values="0.85;.4;0.85" dur="1.1s" repeatCount="indefinite"/></rect>`);
-      g.push(`<text x="${cx}" y="${(baseY+uh/2+4).toFixed(1)}" text-anchor="middle" font-size="9" font-weight="800" fill="#fff">−${-cap}%</text>`); }
-  }
+  /* ── 연결 문구 ── */
+  g.push(`<text x="${W/2}" y="104" text-anchor="middle" font-size="10" font-weight="700" fill="var(--bad)">↓ 이 보증손실이 회사 자본을 곧바로 깎아요</text>`);
+  /* ── ② 회사 자본(단일) — 보증손실이 깎은 결과 ── */
+  const tankW=150, cx=W/2, x=cx-tankW/2, topY=150, baseY=224, th=74;
+  const fillH=Math.max(0,Math.min(100,cap))/100*th, fillY=baseY-fillH, lostH=th-fillH;
+  const stat=cap<=0?'💥 자본 소진':(cap<25?'⚠️ 위태':(cap<95?'자본 감소':'정상'));
+  g.push(`<line x1="${x-14}" y1="${baseY}" x2="${x+tankW+14}" y2="${baseY}" stroke="#AAB4C6" stroke-width="1.2"/>`);
+  g.push(`<text x="${cx}" y="${topY-28}" text-anchor="middle" font-size="18">🏛️</text>`);
+  g.push(`<text x="${cx}" y="${topY-13}" text-anchor="middle" font-size="12.5" font-weight="800" fill="var(--ink)">회사 자본</text>`);
+  g.push(`<text x="${cx}" y="${topY-1}" text-anchor="middle" font-size="11" font-weight="700" fill="${cap>=95?'var(--ink)':'var(--bad)'}">${cap}% · ${stat}</text>`);
+  if(fillH>0.5){ g.push(`<rect x="${x}" y="${fillY.toFixed(1)}" width="${tankW}" height="${fillH.toFixed(1)}" fill="#DCE7FB" rx="4"/>`);
+    if(fillH>16) g.push(`<text x="${cx}" y="${(fillY+fillH/2+4).toFixed(1)}" text-anchor="middle" font-size="11" font-weight="800" fill="#2F63E0">남은 자본</text>`); }
+  if(lostH>0.5){ g.push(`<rect x="${x}" y="${topY}" width="${tankW}" height="${lostH.toFixed(1)}" fill="#F7C9D1" rx="4"${f>0.05?`><animate attributeName="opacity" values="1;.6;1" dur="1.3s" repeatCount="indefinite"/></rect>`:'/>'}`);
+    if(lostH>16) g.push(`<text x="${cx}" y="${(topY+lostH/2+4).toFixed(1)}" text-anchor="middle" font-size="10" font-weight="700" fill="var(--bad)">보증손실</text>`); }
+  g.push(`<rect x="${x}" y="${topY}" width="${tankW}" height="${th}" fill="none" stroke="${cap<=0?'#E24A62':'#C9D2E2'}" stroke-width="1.6" rx="5"/>`);
+  if(cap<0){ const uh=Math.min(22,-cap/100*th);
+    g.push(`<rect x="${x}" y="${baseY}" width="${tankW}" height="${uh.toFixed(1)}" fill="#E24A62" opacity="0.85" rx="4"><animate attributeName="opacity" values="0.85;.4;0.85" dur="1.1s" repeatCount="indefinite"/></rect>`);
+    g.push(`<text x="${cx}" y="${(baseY+uh/2+4).toFixed(1)}" text-anchor="middle" font-size="9.5" font-weight="800" fill="#fff">자본 −${-cap}%</text>`); }
   svg.innerHTML=g.join("");
   if($("heroMsg")) $("heroMsg").innerHTML = s===0
-    ? `펀드(적립금)가 <b>최저 사망보증(GMDB)</b> 아래로 내려가면, 가입자 사망 시 회사가 <b>차액을 물어줘야</b> 해요 — 이게 <b style="color:var(--bad)">보증손실</b>이고 바로 <b>자본</b>을 깎아요. 슬라이더나 <b style="color:var(--bad)">▶ 위기 재생</b>으로 확인해 보세요.`
-    : `주가 <b>−${s}%</b> → 적립금 <b>${fundNow}%</b>로 하락(GMDB ${floorPct}% 아래) → 사망보증 차액 = <b style="color:var(--bad)">보증손실 커짐</b> → <b style="color:var(--bad)">안 헷지 자본 ${capU<=0?'소진(💥)':capU+'%'}</b>, <b style="color:#0a7c50">헷지 ${capH}%로 버텨요</b>.`;
+    ? `펀드(적립금)가 <b>최저 사망보증(GMDB)</b> 아래로 내려가면, 가입자 사망 시 회사가 <b>차액을 물어줘야</b> 해요 — 이게 <b style="color:var(--bad)">보증손실</b>이고 <b>회사 자본</b>을 곧바로 깎아요. 슬라이더를 내려 보세요.`
+    : `주가 <b>−${s}%</b> → 적립금 <b>${fundNow}%</b>(GMDB ${floorPct}% 아래) → <b style="color:var(--bad)">보증손실</b>이 <b>회사 자본을 ${cap<=0?'소진(💥)':cap+'%로 감소'}</b>시켜요.`;
 }
-function heroPlay(){
-  if(heroPlaying) return; heroPlaying=true;
-  const sld=$("heroShock"), btn=$("heroPlay"); if(btn) btn.textContent="⏸ 재생 중…";
-  const dur=2600, start=performance.now();
-  (function frame(t){
-    const k=Math.min(1,(t-start)/dur); let s;
-    if(k<0.5){ const u=k/0.5; s=34*(1-Math.pow(1-u,2)); } else { const u=(k-0.5)/0.5; s=34-6*u; }
-    if(sld) sld.value=Math.round(s); drawHero();
-    if(k<1){ heroRAF=requestAnimationFrame(frame); } else { heroPlaying=false; if(btn) btn.textContent="▶ 다시 재생"; }
-  })(performance.now());
-}
-if($("heroShock")) $("heroShock").addEventListener("input",()=>{ if(heroPlaying){cancelAnimationFrame(heroRAF);heroPlaying=false;const b=$("heroPlay");if(b)b.textContent="▶ 위기 재생";} drawHero(); });
-if($("heroPlay")) $("heroPlay").addEventListener("click",heroPlay);
+if($("heroShock")) $("heroShock").addEventListener("input",drawHero);
 
 /* ④ 헷지 vs CSM 비교표 */
 function drawCompare(){

@@ -519,16 +519,16 @@
 
   <div class="panel">
     <div class="cap">자본 변동성이란 — 순포지션이 흔들려요<span class="capb live">▶ 애니메이션</span><span>시간에 따라</span></div>
-    <p style="font-size:13px;color:var(--muted);line-height:1.7;margin:2px 0 8px">회사는 <b style="color:var(--pay)">변액펀드(자산·지금 값)</b>와 <b style="color:var(--leak)">변액보증(부채·미래 최소지급)</b>을 <b>함께</b> 들고 있어요. 시장이 오르내리면 둘 사이 <b style="color:var(--bad)">빨간 폭(자본이 메꾸는 부분)</b>이 <b>계속 흔들려요</b>.</p>
+    <p style="font-size:13px;color:var(--muted);line-height:1.7;margin:2px 0 8px"><b style="color:var(--pay)">자산(펀드)</b>은 시장 따라 <b>크게</b> 움직이는데, <b style="color:var(--leak)">부채(보증)</b>는 더 <b>경직</b>돼(보증 때문에 일정 수준 이하로 잘 안 내려감) <b>다르게</b> 움직여요. 그 <b style="color:var(--sym)">둘의 차이(순포지션)</b>가 계속 흔들리는 게 <b>자본 변동성</b>이에요.</p>
     <div style="display:flex;align-items:center;gap:11px;margin:2px 0 8px;flex-wrap:wrap">
       <button id="cvPlay" style="flex:0 0 auto;background:var(--sym);color:#fff;border:none;border-radius:9px;padding:8px 15px;font-family:inherit;font-weight:800;font-size:12.5px;cursor:pointer">⏸ 정지</button>
-      <span class="foot" style="margin:0;flex:1 1 160px">시장이 자동으로 <b>오르내려요</b> — <b style="color:var(--bad)">빨간 폭(자본)</b>이 흔들리는 걸 보세요</span>
+      <span class="foot" style="margin:0;flex:1 1 160px">시장이 자동으로 <b>오르내려요</b> — 아래 <b style="color:var(--sym)">순포지션 선</b>이 흔들리는 걸 보세요</span>
     </div>
     <div class="chartwrap"><svg id="cvSvg" viewBox="0 0 560 300" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"></svg></div>
     <div class="leg" style="margin-top:8px">
-      <span><i style="background:var(--pay)"></i>변액펀드(자산) · 지금 값</span>
-      <span><i style="background:var(--leak)"></i>변액보증(부채) · 미래 최소지급</span>
-      <span><i style="background:var(--bad)"></i>자본 부족분(빨강) — 이 폭이 흔들려요 = <b>변동성</b></span>
+      <span><i style="background:var(--pay)"></i>변액펀드(자산) · 시장 따라 크게</span>
+      <span><i style="background:var(--leak)"></i>변액보증(부채) · 더 경직 · 보증 이하로 잘 안 내려감</span>
+      <span><i style="background:var(--sym)"></i>순포지션(자산−부채)=회사 자본 · <b>이게 흔들림=변동성</b></span>
     </div>
     <p class="foot" id="cvMsg" style="margin-top:9px;min-height:2.8em"></p>
     <div class="callout key" style="margin-top:10px"><span class="ci">⭐</span><div><span class="clab">핵심</span> 자산은 <b>지금 값</b>이라 시장 따라 다 움직이는데, 부채는 <b>미래 최소지급(보증)</b>이라 <b>바닥에 걸려 덜 움직여요</b>. 그래서 <b>순포지션(자산−부채)이 흔들리고</b>, 그게 바로 <b>자본 변동성</b>이에요.</div></div>
@@ -1802,40 +1802,47 @@ const CV_BASE=100, CV_FLOOR=85, CV_N=70, CV_DT=0.016, CV_SPD=0.010;
 const cvWave=t=>{const gentle=0.06*Math.sin(t*2*Math.PI)+0.045*Math.sin(t*2*Math.PI*1.7+0.6); const spike=Math.pow(Math.max(0,Math.sin(t*Math.PI/1.7)),4); const depth=0.42+0.10*Math.sin(t*0.37+2); const q=Math.round(t/CV_DT); const noise=(hsh(q)+hsh(q*1.7+3)-1)*0.05; return gentle-depth*spike+noise;};   /* 평소 잔잔+지글지글(노이즈) + 한번씩 푹 빠짐(crash) */
 function cvDraw(){
   const svg=$("cvSvg"); if(!svg)return;
-  const base=CV_BASE, floor=CV_FLOOR;
+  const base=CV_BASE, GUAR=88;
   const W=560,L=46,R=16,iw=W-L-R,g=[];
   const X=i=>L+iw*i/(CV_N-1);
   const fundA=[],liabA=[],netA=[];
-  for(let i=0;i<CV_N;i++){ const m=cvWave(cvPhase-(CV_N-1-i)*CV_DT); const f=base*(1+m); const l=Math.max(f,floor); fundA.push(f); liabA.push(l); netA.push(f-l); }
-  const li=CV_N-1, gap=liabA[li]-fundA[li];
+  for(let i=0;i<CV_N;i++){
+    const tt=cvPhase-(CV_N-1-i)*CV_DT, m=cvWave(tt), q=Math.round(tt/CV_DT);
+    const f=base*(1+m);
+    const l=Math.max(GUAR, base*(1+m*0.5)+(hsh(q*3.3+7)-0.5)*2.4);   /* 부채: 절반진폭(경직)+보증 하한 */
+    fundA.push(f); liabA.push(l); netA.push(f-l);
+  }
+  const li=CV_N-1, net=netA[li];
   const poly=(arr,Y)=>arr.map((v,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1)).join(' ');
-  const band=(topY,botArr,Y)=>{const t=[],bt=[];for(let i=0;i<CV_N;i++)t.push(`${X(i).toFixed(1)} ${topY.toFixed(1)}`);for(let i=CV_N-1;i>=0;i--)bt.push(`${X(i).toFixed(1)} ${Y(botArr[i]).toFixed(1)}`);return `M${t.join(' L')} L${bt.join(' L')} Z`;};
-  /* ===== ① 위: 자산 vs 부채 ===== */
-  const t1=32,b1=150,vMax=125,Y1=v=>t1+(b1-t1)*(1-v/vMax);
-  g.push(`<text class="eflabel" x="${L}" y="${(t1-9).toFixed(1)}" fill="var(--muted)" font-weight="700">① 자산 vs 부채 — 시간 →</text>`);
+  /* ===== ① 위: 자산 · 부채 (둘 다 요동, 부채가 더 경직) ===== */
+  const t1=30,b1=152,vMax=125,Y1=v=>t1+(b1-t1)*(1-v/vMax);
+  g.push(`<text class="eflabel" x="${L}" y="${(t1-8).toFixed(1)}" fill="var(--muted)" font-weight="700">① 자산(펀드) · 부채(보증) — 시간 →</text>`);
   g.push(`<line x1="${L}" y1="${Y1(100).toFixed(1)}" x2="${W-R}" y2="${Y1(100).toFixed(1)}" stroke="#EEF1F7" stroke-width="1"/>`);
   g.push(`<text class="eflabel" x="${(L-5).toFixed(1)}" y="${(Y1(100)+3).toFixed(1)}" text-anchor="end">100</text>`);
-  g.push(`<line x1="${L}" y1="${Y1(floor).toFixed(1)}" x2="${W-R}" y2="${Y1(floor).toFixed(1)}" stroke="var(--leak)" stroke-width="1.3" stroke-dasharray="5 4" opacity="0.8"/>`);
-  g.push(`<text x="${W-R}" y="${(Y1(floor)-4).toFixed(1)}" text-anchor="end" font-size="10" font-weight="800" fill="var(--leak)" font-family="sans-serif">보증 바닥 ${floor}</text>`);
-  { const t=[],bt=[];for(let i=0;i<CV_N;i++)t.push(`${X(i).toFixed(1)} ${Y1(liabA[i]).toFixed(1)}`);for(let i=CV_N-1;i>=0;i--)bt.push(`${X(i).toFixed(1)} ${Y1(fundA[i]).toFixed(1)}`);g.push(`<path d="M${t.join(' L')} L${bt.join(' L')} Z" fill="var(--bad)" opacity="0.24"/>`); }
-  g.push(`<path d="${poly(liabA,Y1)}" fill="none" stroke="var(--leak)" stroke-width="2.2"/>`);
+  g.push(`<path d="${poly(liabA,Y1)}" fill="none" stroke="var(--leak)" stroke-width="2.6"/>`);
   g.push(`<path d="${poly(fundA,Y1)}" fill="none" stroke="var(--pay)" stroke-width="2.4"/>`);
-  g.push(`<circle cx="${X(li).toFixed(1)}" cy="${Y1(fundA[li]).toFixed(1)}" r="4" fill="var(--pay)" stroke="#fff" stroke-width="1.5"/>`);
-  g.push(`<circle cx="${X(li).toFixed(1)}" cy="${Y1(liabA[li]).toFixed(1)}" r="4" fill="var(--leak)" stroke="#fff" stroke-width="1.5"/>`);
-  /* ===== ② 아래: 순포지션(회사 자본) = 자산 − 부채 ===== */
-  const t2=196,b2=286,nMax=6,nMin=-46,Y2=v=>t2+(b2-t2)*(nMax-v)/(nMax-nMin);
-  g.push(`<text class="eflabel" x="${L}" y="${(t2-9).toFixed(1)}" fill="var(--muted)" font-weight="700">② 순포지션(회사 자본) = 자산 − 부채</text>`);
+  g.push(`<circle cx="${X(li).toFixed(1)}" cy="${Y1(fundA[li]).toFixed(1)}" r="4.5" fill="var(--pay)" stroke="#fff" stroke-width="1.6"/>`);
+  g.push(`<circle cx="${X(li).toFixed(1)}" cy="${Y1(liabA[li]).toFixed(1)}" r="4.5" fill="var(--leak)" stroke="#fff" stroke-width="1.6"/>`);
+  g.push(`<text x="${(X(li)-7).toFixed(1)}" y="${(Y1(fundA[li])+(fundA[li]>=liabA[li]?-8:15)).toFixed(1)}" text-anchor="end" font-size="10.5" font-weight="800" fill="var(--pay)" font-family="sans-serif">자산</text>`);
+  g.push(`<text x="${(X(li)-7).toFixed(1)}" y="${(Y1(liabA[li])+(liabA[li]>fundA[li]?-8:15)).toFixed(1)}" text-anchor="end" font-size="10.5" font-weight="800" fill="var(--leak)" font-family="sans-serif">부채</text>`);
+  /* ===== ② 아래: 순포지션 = 자산 − 부채 ===== */
+  const t2=196,b2=286,nMax=14,nMin=-48,Y2=v=>t2+(b2-t2)*(nMax-v)/(nMax-nMin);
+  g.push(`<text class="eflabel" x="${L}" y="${(t2-8).toFixed(1)}" fill="var(--muted)" font-weight="700">② 순포지션(회사 자본) = 자산 − 부채</text>`);
   g.push(`<line x1="${L}" y1="${Y2(0).toFixed(1)}" x2="${W-R}" y2="${Y2(0).toFixed(1)}" stroke="#9aa2b1" stroke-width="1.2"/>`);
   g.push(`<text class="eflabel" x="${(L-5).toFixed(1)}" y="${(Y2(0)+3).toFixed(1)}" text-anchor="end">0</text>`);
-  g.push(`<text class="eflabel" x="${(L-5).toFixed(1)}" y="${(Y2(-40)+3).toFixed(1)}" text-anchor="end">-40</text>`);
-  g.push(`<path d="${band(Y2(0),netA,Y2)}" fill="var(--bad)" opacity="0.30"/>`);
-  g.push(`<path d="${poly(netA,Y2)}" fill="none" stroke="var(--bad)" stroke-width="2.4"/>`);
-  g.push(`<circle cx="${X(li).toFixed(1)}" cy="${Y2(netA[li]).toFixed(1)}" r="4.5" fill="var(--bad)" stroke="#fff" stroke-width="1.6"/>`);
-  if(gap>1) g.push(`<text x="${(X(li)-8).toFixed(1)}" y="${(Y2(netA[li])+4).toFixed(1)}" text-anchor="end" font-size="12" font-weight="800" fill="var(--bad)" font-family="sans-serif">자본 −${gap.toFixed(0)}</text>`);
+  { const negA=netA.map(v=>Math.min(0,v)), posA=netA.map(v=>Math.max(0,v));
+    const tn=[],bn=[],tp=[],bp=[];
+    for(let i=0;i<CV_N;i++){tn.push(`${X(i).toFixed(1)} ${Y2(0).toFixed(1)}`);tp.push(`${X(i).toFixed(1)} ${Y2(0).toFixed(1)}`);}
+    for(let i=CV_N-1;i>=0;i--){bn.push(`${X(i).toFixed(1)} ${Y2(negA[i]).toFixed(1)}`);bp.push(`${X(i).toFixed(1)} ${Y2(posA[i]).toFixed(1)}`);}
+    g.push(`<path d="M${tp.join(' L')} L${bp.join(' L')} Z" fill="var(--good)" opacity="0.15"/>`);
+    g.push(`<path d="M${tn.join(' L')} L${bn.join(' L')} Z" fill="var(--bad)" opacity="0.30"/>`); }
+  g.push(`<path d="${poly(netA,Y2)}" fill="none" stroke="var(--sym)" stroke-width="2.6"/>`);
+  g.push(`<circle cx="${X(li).toFixed(1)}" cy="${Y2(net).toFixed(1)}" r="4.8" fill="var(--sym)" stroke="#fff" stroke-width="1.7"/>`);
+  g.push(`<text x="${(X(li)-8).toFixed(1)}" y="${(Y2(net)+(net<0?15:-8)).toFixed(1)}" text-anchor="end" font-size="12" font-weight="800" fill="${net<0?'var(--bad)':'#0a7c50'}" font-family="sans-serif">자본 ${net>=0?'+':'−'}${Math.abs(net).toFixed(0)}</text>`);
   svg.innerHTML=g.join('');
-  if($("cvMsg")) $("cvMsg").innerHTML = gap>0.5
-    ? `자산 <b style="color:var(--pay)">${fundA[li].toFixed(0)}</b>이 보증 <b style="color:var(--leak)">${floor}</b>보다 <b style="color:var(--bad)">${gap.toFixed(0)}</b> 낮아요 → 그만큼 <b>회사 자본이 메꿔요</b>.`
-    : `자산 <b style="color:var(--pay)">${fundA[li].toFixed(0)}</b>이 보증 <b style="color:var(--leak)">${floor}</b> 위 → <b>자본 부담 0</b>.`;
+  if($("cvMsg")) $("cvMsg").innerHTML = net<-0.5
+    ? `자산 <b style="color:var(--pay)">${fundA[li].toFixed(0)}</b> · 부채 <b style="color:var(--leak)">${liabA[li].toFixed(0)}</b> → <b style="color:var(--bad)">순포지션 −${(-net).toFixed(0)}</b> · <b>회사 자본이 메꿔요</b>.`
+    : `자산 <b style="color:var(--pay)">${fundA[li].toFixed(0)}</b> · 부채 <b style="color:var(--leak)">${liabA[li].toFixed(0)}</b> → <b style="color:#0a7c50">순포지션 +${net.toFixed(0)}</b> · 여유.`;
 }
 function cvTick(){
   if(!$("cvSvg")||!tabOn("p1")){ if(cvRAF)cancelAnimationFrame(cvRAF); cvRAF=null; return; }

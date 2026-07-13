@@ -408,9 +408,20 @@
 
 <!-- ① 배경 -->
 <section class="page" id="pbg">
-  <p class="lede">왜 헷지해야 할까요? 회사는 고객에게 <b>최저 보증</b>을 약속하고 그 대가로 <b>수수료</b>를 받았어요. 시장이 나빠지면 그 약속이 회사 <b>자본</b>을 흔드는 큰 부담이 돼요. <b>왜 막아야 하는지</b>, <b>안 하면 어떻게 되는지</b>, 그리고 <b>2008년 실제로 회사들의 운명이 어떻게 갈렸는지</b> 봐요.</p>
+  <p class="lede">왜 헷지가 필요한지 <b>순서대로</b> 봐요 — <b>①변액보험 보증</b>이 뭔지 → <b>②왜 위험한지</b> → <b>③2008년 실제 사례</b> → <b>④헷지의 역할</b>.</p>
+
+  <div class="panel concept">
+    <div class="cap">그런데 '변액보험 보증'이 뭔가요?<span>기본부터</span></div>
+    <p class="lede" style="font-size:13.5px">변액보험은 고객 돈을 <b>펀드에 굴리되</b> "<b>최소한 이만큼은 보장</b>"(최저보증)을 약속하는 상품이에요. 회사는 그 대가로 <b>보증수수료</b>를 받아요.</p>
+    <div style="display:flex;flex-direction:column;gap:9px;margin-top:2px">
+      <div class="qstep"><span class="qstepn" style="background:var(--pay)">약속</span><div><b>보증 = 회사의 약속(부채)</b><small>시장이 아무리 나빠도 <b>최저선은 지급</b>해야 해요. 이 약속이 회사 <b>부채</b>가 돼요.</small></div></div>
+      <div class="qstep"><span class="qstepn" style="background:var(--sym)">변동</span><div><b>왜 자본이 흔들리나 — 자본 변동성</b><small>시장이 나빠지면 그 <b>보증(부채)이 커져</b> → <b>자본이 흔들려요</b>. 시장 등락이 그대로 회사 자본을 출렁이게 하는 거예요.</small></div></div>
+    </div>
+    <div class="callout key"><span class="ci">⭐</span><div><span class="clab">핵심</span> 팔 땐 좋아 보여도, <b>시장이 나빠지면 그 보증이 회사 자본을 흔드는 폭탄</b>이 돼요. <b>그래서 이 변동성을 관리(헷지)</b>해야 해요.</div></div>
+  </div>
 
   <div class="panel">
+    <div class="cap">보증리스크가 왜 위험한가<span>안 막으면 자본이 터져요</span></div>
     <div class="pair2">
       <div style="text-align:center;border:1.5px solid var(--bad-line);border-radius:11px;padding:13px 10px;background:#FBEEF1">
         <div style="font-size:32px;line-height:1">🏛️💥</div>
@@ -424,34 +435,6 @@
       </div>
     </div>
     <p class="foot" style="margin-top:10px;text-align:center">이 한 장이 전부예요 — <b>아래에서 실제로, 왜 그런지</b> 봐요.</p>
-  </div>
-
-  <div class="panel concept">
-    <div class="cap">2008년, 실제로 이렇게 갈렸어요<span class="capb ex">🌍 실제 주가</span><span>같이 급락 → 회복이 갈림</span></div>
-    <p class="lede" style="font-size:13.5px">이건 이론이 아니에요. 2008 금융위기에 <b>세 보험사 주가가 다 급락</b>했어요(시장 전체 공포). 하지만 <b>보증 리스크를 어떻게 다뤘느냐</b>가 <b>그 뒤 회복과 치른 대가</b>를 갈랐어요.</p>
-    <div class="chartwrap"><svg id="cases2008" viewBox="0 0 640 250" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"></svg></div>
-    <div class="chartleg">
-      <span class="lk"><i class="ln" style="background:var(--good)"></i>🟢 Prudential (헷지) — 회복 66</span>
-      <span class="lk"><i class="ln" style="background:var(--bad)"></i>🔴 Manulife (미헷지) — 회복 43</span>
-      <span class="lk"><i class="ln" style="background:var(--leak)"></i>🟠 Hartford (부분헷지) — 회복 28</span>
-    </div>
-    <p class="foot" style="margin-top:6px">주가 <b>2007년 초 = 100</b>. <b>급락 깊이는 시장 전체 공포</b> 탓이라 다 빠졌어요 — 진짜 차이는 <b>'그 뒤'</b>예요. <b style="color:#0a7c50">헷지로 자본 지킨 Prudential</b>은 가장 잘 돌아오고 구제금융도 거절, <b style="color:var(--leak)">부분헷지 Hartford</b>는 <b>구제금융·VA 철수</b>로 최악, <b style="color:var(--bad)">미헷지 Manulife</b>는 <b>배당 50% 삭감·대규모 증자</b>로 버텼어요.</p>
-    <div style="border:1.5px solid #F1CAD3;border-radius:10px;padding:11px;background:#FBEEF1;margin-top:12px">
-      <div style="font-weight:800;color:var(--bad);font-size:13px">🌏 일본 VA 시장 — 미헷지 붐</div>
-      <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px">보증을 <b>제대로 안 막고</b> 급성장했다가, 2008 급락에 비용이 폭발하자 <b>다수 보험사가 판매를 중단</b>했어요. 안 막은 시장은 <b>동반 위축</b>됐어요.</div>
-    </div>
-    <div class="callout key" style="margin-top:12px"><span class="ci">⭐</span><div><span class="clab">핵심</span> 위기는 누구에게나 와요. 하지만 <b>제대로 헷지한 곳만 자본을 지켜 다시 일어섰어요.</b> 안 막거나 잘못 막은 곳은 <b>배당 삭감·구제금융·사업 철수</b>로 대가를 치렀고요. <b>헷지는 '있으면 좋은 것'이 아니라 회사가 사느냐 죽느냐예요.</b></div></div>
-    <p class="foot" style="margin-top:8px">주가 = <b>Yahoo Finance 월별 종가</b>(2007–2010), 사례·수치는 <b>각 사 공시·주요 언론 보도(2008–2013)</b>에 근거한 <b>공개 사실</b>이에요 — 교육용 인용이며, 특정 회사에 대한 평가가 아니에요.</p>
-  </div>
-
-  <div class="panel concept">
-    <div class="cap">그런데 '변액보험 보증'이 뭔가요?<span>기본부터</span></div>
-    <p class="lede" style="font-size:13.5px">변액보험은 고객 돈을 <b>펀드에 굴리되</b> "<b>최소한 이만큼은 보장</b>"(최저보증)을 약속하는 상품이에요. 회사는 그 대가로 <b>보증수수료</b>를 받아요.</p>
-    <div style="display:flex;flex-direction:column;gap:9px;margin-top:2px">
-      <div class="qstep"><span class="qstepn" style="background:var(--pay)">약속</span><div><b>보증 = 회사의 약속(부채)</b><small>시장이 아무리 나빠도 <b>최저선은 지급</b>해야 해요. 이 약속이 회사 <b>부채</b>가 돼요.</small></div></div>
-      <div class="qstep"><span class="qstepn" style="background:var(--sym)">변동</span><div><b>왜 자본이 흔들리나 — 자본 변동성</b><small>시장이 나빠지면 그 <b>보증(부채)이 커져</b> → <b>자본이 흔들려요</b>. 시장 등락이 그대로 회사 자본을 출렁이게 하는 거예요.</small></div></div>
-    </div>
-    <div class="callout key"><span class="ci">⭐</span><div><span class="clab">핵심</span> 팔 땐 좋아 보여도, <b>시장이 나빠지면 그 보증이 회사 자본을 흔드는 폭탄</b>이 돼요. <b>그래서 이 변동성을 관리(헷지)</b>해야 해요.</div></div>
   </div>
 
   <div class="panel">
@@ -493,7 +476,25 @@
   </div>
 
   <div class="panel concept">
-    <div class="cap">도대체 헷지는 왜?<span class="capb data">📊 실측</span><span>헷지↑ → 변동폭↓</span></div>
+    <div class="cap">2008년, 실제로 이렇게 갈렸어요<span class="capb ex">🌍 실제 주가</span><span>같이 급락 → 회복이 갈림</span></div>
+    <p class="lede" style="font-size:13.5px">이건 이론이 아니에요. 2008 금융위기에 <b>세 보험사 주가가 다 급락</b>했어요(시장 전체 공포). 하지만 <b>보증 리스크를 어떻게 다뤘느냐</b>가 <b>그 뒤 회복과 치른 대가</b>를 갈랐어요.</p>
+    <div class="chartwrap"><svg id="cases2008" viewBox="0 0 640 250" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"></svg></div>
+    <div class="chartleg">
+      <span class="lk"><i class="ln" style="background:var(--good)"></i>🟢 Prudential (헷지) — 회복 66</span>
+      <span class="lk"><i class="ln" style="background:var(--bad)"></i>🔴 Manulife (미헷지) — 회복 43</span>
+      <span class="lk"><i class="ln" style="background:var(--leak)"></i>🟠 Hartford (부분헷지) — 회복 28</span>
+    </div>
+    <p class="foot" style="margin-top:6px">주가 <b>2007년 초 = 100</b>. <b>급락 깊이는 시장 전체 공포</b> 탓이라 다 빠졌어요 — 진짜 차이는 <b>'그 뒤'</b>예요. <b style="color:#0a7c50">헷지로 자본 지킨 Prudential</b>은 가장 잘 돌아오고 구제금융도 거절, <b style="color:var(--leak)">부분헷지 Hartford</b>는 <b>구제금융·VA 철수</b>로 최악, <b style="color:var(--bad)">미헷지 Manulife</b>는 <b>배당 50% 삭감·대규모 증자</b>로 버텼어요.</p>
+    <div style="border:1.5px solid #F1CAD3;border-radius:10px;padding:11px;background:#FBEEF1;margin-top:12px">
+      <div style="font-weight:800;color:var(--bad);font-size:13px">🌏 일본 VA 시장 — 미헷지 붐</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px">보증을 <b>제대로 안 막고</b> 급성장했다가, 2008 급락에 비용이 폭발하자 <b>다수 보험사가 판매를 중단</b>했어요. 안 막은 시장은 <b>동반 위축</b>됐어요.</div>
+    </div>
+    <div class="callout key" style="margin-top:12px"><span class="ci">⭐</span><div><span class="clab">핵심</span> 위기는 누구에게나 와요. 하지만 <b>제대로 헷지한 곳만 자본을 지켜 다시 일어섰어요.</b> 안 막거나 잘못 막은 곳은 <b>배당 삭감·구제금융·사업 철수</b>로 대가를 치렀고요. <b>헷지는 '있으면 좋은 것'이 아니라 회사가 사느냐 죽느냐예요.</b></div></div>
+    <p class="foot" style="margin-top:8px">주가 = <b>Yahoo Finance 월별 종가</b>(2007–2010), 사례·수치는 <b>각 사 공시·주요 언론 보도(2008–2013)</b>에 근거한 <b>공개 사실</b>이에요 — 교육용 인용이며, 특정 회사에 대한 평가가 아니에요.</p>
+  </div>
+
+  <div class="panel concept">
+    <div class="cap">헷지의 역할 — 흔들림을 줄여요<span class="capb data">📊 실측</span><span>헷지↑ → 변동폭↓</span></div>
     <div class="chartwrap"><svg id="conceptLines" viewBox="0 0 640 280" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"><text x="320" y="140" text-anchor="middle" class="eflabel">데이터 불러오는 중…</text></svg></div>
     <div id="conceptLeg" style="display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;font-size:11.5px"></div>
     <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-top:8px"><b style="color:var(--sym)">안 막으면</b> 흔들림 범위가 <b>가장 넓어요(바깥 보라)</b>. 헷지 비율을 <b>0→50→100%</b>로 올릴수록 범위가 <b>안쪽으로 좁아져요(→초록)</b>. 100%로 막아도 0은 아니에요 — 나머지 요인으로 좁게 남아요. 헷지는 <b>없애기가 아니라 크게 줄이기</b>예요. <b>안 막으면 가장 넓게 흔들려 자본이 위험해요.</b></p>
@@ -551,11 +552,12 @@
     </div>
     <div class="callout warn"><span class="ci">⚠️</span><div><span class="clab">주의</span> <b>막으면 작은 비용, 안 막으면 큰 지급</b> — 기준은 "비용 vs 수익"이 아니라 <b>"안 막았을 때의 손실"</b>이에요.</div></div>
   </div>
+
 </section>
 
 <!-- ② 개념 -->
 <section class="page" id="p1">
-  <p class="lede">헷지의 <b>작동 원리</b>를 정리해요 — <b>색의 뜻</b>, 비용과 흔들림의 <b>트레이드오프</b>, 위험의 <b>세 갈래</b>. (왜 해야 하는지·안 하면·해외 사례는 <b>① 배경</b> 탭에.)</p>
+  <p class="lede">헷지의 <b>작동 원리</b>를 순서대로 봐요 — <b>①자본이 왜 흔들리나</b> → <b>②완충(CSM)</b> → <b>③어떻게 막나(파생)</b> → <b>④막으면 얼마나 줄고 비용은</b>(🖐 직접 조작) → <b>⑤변동성·비용 관계</b>.</p>
 
   <div class="panel">
     <div class="cap">색 읽는 법<span>이 색은 페이지 전체에서 같은 뜻이에요</span></div>
@@ -569,7 +571,7 @@
   </div>
 
   <div class="panel">
-    <div class="cap">한눈에</div>
+    <div class="cap">자본 변동성이란 — 왜 흔들리나<span>보증이 시장 따라 흔들려요</span></div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:4px">
       <div style="display:flex;gap:10px;align-items:flex-start"><div style="font-size:26px;line-height:1">🤝</div><div><div style="font-weight:800;font-size:13.5px;color:var(--ink)">보증 제공 → 수수료 수취</div><div style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:2px">최저 보장 대가로 <b>수수료</b>를 받아요. 이 보증이 회사 <b>부채</b>가 돼요.</div></div></div>
       <div style="display:flex;gap:10px;align-items:flex-start"><div style="font-size:26px;line-height:1">🌊</div><div><div style="font-weight:800;font-size:13.5px;color:var(--ink)">시장 변동 → 보증 부채 변동</div><div style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:2px">주가·금리가 움직이면 부채도 흔들려요. 그대로 두면 <b>손익이 크게 흔들려요</b>.</div></div></div>
@@ -577,6 +579,41 @@
       <div style="display:flex;gap:10px;align-items:flex-start"><div style="font-size:26px;line-height:1">⚖️</div><div><div style="font-weight:800;font-size:13.5px;color:var(--ink)">노출(CSM) vs 헷지 — 얇으면 헷지</div><div style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:2px">안 하면 <b>완충(CSM)</b>이 대신 받아요. 완충이 얇거나 바닥나면 손실이 <b>그대로 손익·자본에</b> 와요 — <b>얇을수록 헷지예요</b>.</div></div></div>
     </div>
     <p class="foot" style="margin-top:10px">용어는 아래 <b>그림·색</b>으로 자연히 따라와요.</p>
+  </div>
+
+  <div class="panel concept">
+    <div class="cap">완충이 되나? — VFA vs PL법<span class="capb data">회계</span><span>노출을 완충할 수 있느냐</span></div>
+    <p class="lede" style="font-size:13.5px">회계기준이 <b>노출을 완충(CSM)으로 버틸 수 있는지</b>를 가름해요.</p>
+    <div class="pair2" style="margin-top:4px">
+      <div style="border:1.5px solid #BFE6D3;border-radius:10px;padding:11px;background:#EAF7F1">
+        <div style="font-weight:800;color:#0a7c50;font-size:13px">✅ VFA (완충 있음)</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px">노출을 <b>완충(CSM)이 먼저 흡수</b> → <b>헷지할지, 노출로 둘지 선택</b>할 수 있어요.</div>
+      </div>
+      <div style="border:1.5px solid var(--bad-line);border-radius:10px;padding:11px;background:#FBEEF1">
+        <div style="font-weight:800;color:var(--bad);font-size:13px">⚠️ PL법 (완충 없음)</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px">노출이 <b>바로 그 해 손익</b>으로 → 완충이 없어 <b>헷지가 사실상 필수</b>예요.</div>
+      </div>
+    </div>
+    <div class="callout key"><span class="ci">⭐</span><div><span class="clab">핵심</span> <b>완충(CSM)이 얇을수록 헷지 압력↑.</b> 완충의 작동은 <b>→ ⑤ 손익 인식</b>에서 슬라이더로 직접 봐요.</div></div>
+  </div>
+  <div class="panel concept">
+    <div class="cap">헷지방법론 — 파생으로 매칭<span>방향=선물·스왑, 감마·꼬리=옵션</span></div>
+    <div class="chartwrap"><svg viewBox="0 0 560 100" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
+      <defs><linearGradient id="riskGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="var(--pay)"/><stop offset="1" stop-color="var(--leak)"/></linearGradient></defs>
+      <text x="30" y="22" font-size="10.5" font-weight="800" fill="var(--pay)" font-family="sans-serif">🛡️ 헷지로 제거</text>
+      <text x="530" y="22" text-anchor="end" font-size="10.5" font-weight="800" fill="var(--leak)" font-family="sans-serif">🛟 노출(완충)</text>
+      <rect x="30" y="32" width="500" height="12" rx="6" fill="url(#riskGrad)" opacity="0.85"/>
+      <g opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="0.2s" fill="freeze"/><circle cx="96" cy="38" r="10" fill="#fff" stroke="var(--pay)" stroke-width="2.5"/><text x="96" y="42" text-anchor="middle" font-size="11" font-weight="800" fill="var(--pay)" font-family="sans-serif">1</text><text x="96" y="64" text-anchor="middle" font-size="10.5" font-weight="800" fill="var(--pay)" font-family="sans-serif">방향</text><text x="96" y="79" text-anchor="middle" font-size="8.5" fill="var(--muted)" font-family="sans-serif">선물·스왑·쌈</text></g>
+      <g opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="0.45s" fill="freeze"/><circle cx="290" cy="38" r="10" fill="#fff" stroke="var(--sym)" stroke-width="2.5"/><text x="290" y="42" text-anchor="middle" font-size="11" font-weight="800" fill="var(--sym)" font-family="sans-serif">2</text><text x="290" y="64" text-anchor="middle" font-size="10.5" font-weight="800" fill="var(--sym)" font-family="sans-serif">감마</text><text x="290" y="79" text-anchor="middle" font-size="8.5" fill="var(--muted)" font-family="sans-serif">옵션·비쌈</text></g>
+      <g opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="0.7s" fill="freeze"/><circle cx="486" cy="38" r="10" fill="#fff" stroke="var(--leak)" stroke-width="2.5"/><text x="486" y="42" text-anchor="middle" font-size="11" font-weight="800" fill="var(--leak)" font-family="sans-serif">3</text><text x="486" y="64" text-anchor="middle" font-size="10.5" font-weight="800" fill="var(--leak)" font-family="sans-serif">기타</text><text x="486" y="79" text-anchor="middle" font-size="8.5" fill="var(--muted)" font-family="sans-serif">이전 불가</text></g>
+    </svg></div>
+    <div class="grpbox g0"><h4><span class="hn">1</span>방향 위험 — 헷지가 저렴</h4>
+      <p>주가·금리가 움직이면 손익도 <b>곧바로 따라</b> 움직여요(1차 민감도). 선물·스왑으로 <b>추가 비용 없이 제거</b>해서 보통 헷지해요.</p></div>
+    <div class="grpbox g2"><h4><span class="hn">2</span>변동성·감마 — 비용이 큼</h4>
+      <p><b>급변할수록 손실이 더 빨리 커지는 성질(감마)</b>이에요. 옵션으로 넘길 수 있지만 <b>값이 비싸요</b>. <b>헷지할지 노출할지</b>가 핵심이에요.</p></div>
+    <div class="grpbox g1"><h4><span class="hn">3</span>기타 — 이전이 어려움</h4>
+      <p>펀드 성과차·고객 해지·모형 오차예요. <b>넘길 시장이 없어</b> 대개 <b>노출</b>해요.</p></div>
+    <p class="foot">각 요인의 원리는 <b>③ 항목별 설명</b>, 처리 선택은 <b>⑥ 시뮬레이션</b>에서 다뤄요.</p>
   </div>
 
   <div class="panel concept">
@@ -624,7 +661,7 @@
   </div>
 
   <div class="panel concept">
-    <div class="cap">핵심 트레이드오프 — 비용과 손익변동성<span>안전 vs 비용, 균형점</span></div>
+    <div class="cap">변동성 ↔ 비용 관계<span>안전 vs 비용, 균형점</span></div>
     <p class="lede" style="font-size:13.5px">헷지를 <b>많이</b> 하면 <b>안전하지만 비싸고</b>, <b>적게</b> 하면 <b>싸지만 위험해요</b>. 정답은 <b>예산(받은 수수료) 안에서 가장 덜 흔들리는 점</b>이에요.</p>
     <div class="chartwrap"><svg viewBox="0 0 640 214" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
       <line x1="62" y1="24" x2="62" y2="182" stroke="#AAB4C6" stroke-width="1.5"/>
@@ -645,26 +682,6 @@
   </div>
 
   <div class="panel concept">
-    <div class="cap">위험의 세 갈래 · 처리 방식<span>왼쪽일수록 헷지가 쉽고 싸요</span></div>
-    <div class="chartwrap"><svg viewBox="0 0 560 100" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
-      <defs><linearGradient id="riskGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="var(--pay)"/><stop offset="1" stop-color="var(--leak)"/></linearGradient></defs>
-      <text x="30" y="22" font-size="10.5" font-weight="800" fill="var(--pay)" font-family="sans-serif">🛡️ 헷지로 제거</text>
-      <text x="530" y="22" text-anchor="end" font-size="10.5" font-weight="800" fill="var(--leak)" font-family="sans-serif">🛟 노출(완충)</text>
-      <rect x="30" y="32" width="500" height="12" rx="6" fill="url(#riskGrad)" opacity="0.85"/>
-      <g opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="0.2s" fill="freeze"/><circle cx="96" cy="38" r="10" fill="#fff" stroke="var(--pay)" stroke-width="2.5"/><text x="96" y="42" text-anchor="middle" font-size="11" font-weight="800" fill="var(--pay)" font-family="sans-serif">1</text><text x="96" y="64" text-anchor="middle" font-size="10.5" font-weight="800" fill="var(--pay)" font-family="sans-serif">방향</text><text x="96" y="79" text-anchor="middle" font-size="8.5" fill="var(--muted)" font-family="sans-serif">선물·스왑·쌈</text></g>
-      <g opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="0.45s" fill="freeze"/><circle cx="290" cy="38" r="10" fill="#fff" stroke="var(--sym)" stroke-width="2.5"/><text x="290" y="42" text-anchor="middle" font-size="11" font-weight="800" fill="var(--sym)" font-family="sans-serif">2</text><text x="290" y="64" text-anchor="middle" font-size="10.5" font-weight="800" fill="var(--sym)" font-family="sans-serif">감마</text><text x="290" y="79" text-anchor="middle" font-size="8.5" fill="var(--muted)" font-family="sans-serif">옵션·비쌈</text></g>
-      <g opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="0.7s" fill="freeze"/><circle cx="486" cy="38" r="10" fill="#fff" stroke="var(--leak)" stroke-width="2.5"/><text x="486" y="42" text-anchor="middle" font-size="11" font-weight="800" fill="var(--leak)" font-family="sans-serif">3</text><text x="486" y="64" text-anchor="middle" font-size="10.5" font-weight="800" fill="var(--leak)" font-family="sans-serif">기타</text><text x="486" y="79" text-anchor="middle" font-size="8.5" fill="var(--muted)" font-family="sans-serif">이전 불가</text></g>
-    </svg></div>
-    <div class="grpbox g0"><h4><span class="hn">1</span>방향 위험 — 헷지가 저렴</h4>
-      <p>주가·금리가 움직이면 손익도 <b>곧바로 따라</b> 움직여요(1차 민감도). 선물·스왑으로 <b>추가 비용 없이 제거</b>해서 보통 헷지해요.</p></div>
-    <div class="grpbox g2"><h4><span class="hn">2</span>변동성·감마 — 비용이 큼</h4>
-      <p><b>급변할수록 손실이 더 빨리 커지는 성질(감마)</b>이에요. 옵션으로 넘길 수 있지만 <b>값이 비싸요</b>. <b>헷지할지 노출할지</b>가 핵심이에요.</p></div>
-    <div class="grpbox g1"><h4><span class="hn">3</span>기타 — 이전이 어려움</h4>
-      <p>펀드 성과차·고객 해지·모형 오차예요. <b>넘길 시장이 없어</b> 대개 <b>노출</b>해요.</p></div>
-    <p class="foot">각 요인의 원리는 <b>③ 항목별 설명</b>, 처리 선택은 <b>⑥ 시뮬레이션</b>에서 다뤄요.</p>
-  </div>
-
-  <div class="panel concept">
     <div class="cap">구성 안내</div>
     <div style="display:flex;flex-direction:column;gap:2px">
       <div style="display:flex;gap:10px;align-items:flex-start;padding:6px 0;font-size:12.5px;line-height:1.5"><span class="hn" style="background:#12A870">3</span><div><b>항목별 설명</b> — 각 위험의 <b>원리(그림)</b>와 헷지·노출 성격.</div></div>
@@ -675,6 +692,7 @@
       <div style="display:flex;gap:10px;align-items:flex-start;padding:6px 0;font-size:12.5px;line-height:1.5"><span class="hn" style="background:#8A94A6">＋</span><div><b>입력 가정</b> — 규모·민감도 등 전제값(직접 입력).</div></div>
     </div>
   </div>
+
 </section>
 
 <!-- Q&A -->

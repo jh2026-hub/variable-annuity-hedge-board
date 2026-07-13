@@ -223,6 +223,20 @@
   .eftip{position:fixed;pointer-events:none;background:#FFFFFF;border:1px solid var(--hair);border-radius:7px;
     padding:7px 9px;font-size:11px;color:var(--ink);z-index:50;opacity:0;transition:opacity .1s;max-width:220px;line-height:1.5}
   .eftip b{font-family:"IBM Plex Sans KR",sans-serif}
+  .c8card{border:1px solid var(--hair);border-radius:10px;padding:10px 12px;margin-bottom:9px;background:#fff}
+  .c8head{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;font-weight:700;gap:8px}
+  .c8score{font-size:11.5px;font-weight:800;white-space:nowrap}.c8score small{color:#9aa2b1;font-size:9.5px;font-weight:600}
+  .c8chips{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 7px}
+  .c8chip{font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;opacity:0;transform:translateY(5px);animation:c8in .45s ease forwards}
+  .c8chip.good{background:var(--good-bg);color:var(--good-ink)}
+  .c8chip.bad{background:var(--bad-bg);color:#E24A62}
+  .c8chip.warn{background:var(--leak-bg);color:#E68A17}
+  .c8chip.neu{background:#EEF1F7;color:var(--muted)}
+  @keyframes c8in{to{opacity:1;transform:translateY(0)}}
+  .c8track{height:11px;background:#EEF1F7;border-radius:6px;overflow:hidden}
+  .c8bar{height:100%;width:0;border-radius:6px;box-shadow:inset 0 1.5px 0 rgba(255,255,255,.35);animation:c8grow 1.1s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes c8grow{to{width:var(--w)}}
+  .c8verdict{font-size:11.5px;font-weight:700;margin-top:7px}
   .leg{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;font-size:11px;color:var(--muted)}
   .leg i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
   .leg .dash{display:inline-block;width:16px;border-top:2px dashed var(--line);margin-right:5px;vertical-align:4px}
@@ -475,37 +489,12 @@
   <div class="panel concept">
     <div class="cap">2008년, 실제로 이렇게 갈렸어요<span class="capb ex">🌍 실제 주가</span><span>같이 급락 → 회복이 갈림</span></div>
     <p class="lede" style="font-size:13.5px">2008 금융위기 — 세 보험사 다 급락했지만, <b>보증 리스크를 어떻게 다뤘느냐</b>가 <b>그 뒤 회복과 대가</b>를 갈랐어요.</p>
-    <div class="chartwrap" style="text-align:left;padding:15px 14px 13px">
-      <div style="display:flex;justify-content:space-between;align-items:baseline;font-size:11.5px;color:var(--muted);margin-bottom:13px">
-        <b style="font-weight:700">위기 후 회복 · 2007초=100 → 2010 (실측 주가)</b>
-        <span style="font-weight:800;color:#9aa2b1">위기 전 100 ┊</span>
+    <div class="chartwrap" style="text-align:left;padding:14px 13px 12px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;font-size:11px;color:var(--muted);margin-bottom:10px;flex-wrap:wrap;gap:4px">
+        <b style="font-weight:700">보증리스크 대응 → 결과 (2008 위기)</b>
+        <span style="font-weight:700;color:#9aa2b1">✅ 잘함 · ⚠️ 부분 · ❌ 대가</span>
       </div>
-      <div style="display:flex;flex-direction:column;gap:16px">
-        <div>
-          <div style="display:flex;justify-content:space-between;align-items:baseline;font-size:13px;margin-bottom:5px"><b style="color:#0a7c50">🟢 Prudential · 헷지</b><span><b style="color:#0a7c50;font-size:16px">66</b><span style="font-size:10.5px;color:#9aa2b1"> /100</span></span></div>
-          <div style="position:relative;height:23px;background:#EEF1F7;border-radius:7px">
-            <div class="recbar" style="position:absolute;left:0;top:0;height:100%;width:66%;background:linear-gradient(90deg,#12b877,#0a7c50);border-radius:7px;box-shadow:inset 0 1.5px 0 rgba(255,255,255,.35),0 1px 2px rgba(0,0,0,.10)"></div>
-            <div style="position:absolute;right:0;top:-4px;bottom:-4px;border-left:1.5px dashed #C2C8D4"></div>
-          </div>
-          <div style="font-size:11.5px;color:var(--muted);margin-top:5px">구제금융 <b>거절</b> · 배당 <b>유지</b> → 가장 잘 회복 ✓</div>
-        </div>
-        <div>
-          <div style="display:flex;justify-content:space-between;align-items:baseline;font-size:13px;margin-bottom:5px"><b style="color:var(--bad)">🔴 Manulife · 미헷지</b><span><b style="color:var(--bad);font-size:16px">43</b><span style="font-size:10.5px;color:#9aa2b1"> /100</span></span></div>
-          <div style="position:relative;height:23px;background:#EEF1F7;border-radius:7px">
-            <div class="recbar" style="position:absolute;left:0;top:0;height:100%;width:43%;background:linear-gradient(90deg,#f2687d,var(--bad));border-radius:7px;box-shadow:inset 0 1.5px 0 rgba(255,255,255,.35),0 1px 2px rgba(0,0,0,.10)"></div>
-            <div style="position:absolute;right:0;top:-4px;bottom:-4px;border-left:1.5px dashed #C2C8D4"></div>
-          </div>
-          <div style="font-size:11.5px;color:var(--muted);margin-top:5px"><b>배당 50% 삭감 · 대규모 증자</b> (안 막은 대가)</div>
-        </div>
-        <div>
-          <div style="display:flex;justify-content:space-between;align-items:baseline;font-size:13px;margin-bottom:5px"><b style="color:var(--leak)">🟠 Hartford · 부분헷지</b><span><b style="color:var(--leak);font-size:16px">28</b><span style="font-size:10.5px;color:#9aa2b1"> /100</span></span></div>
-          <div style="position:relative;height:23px;background:#EEF1F7;border-radius:7px">
-            <div class="recbar" style="position:absolute;left:0;top:0;height:100%;width:28%;background:linear-gradient(90deg,#f7ab4e,var(--leak));border-radius:7px;box-shadow:inset 0 1.5px 0 rgba(255,255,255,.35),0 1px 2px rgba(0,0,0,.10)"></div>
-            <div style="position:absolute;right:0;top:-4px;bottom:-4px;border-left:1.5px dashed #C2C8D4"></div>
-          </div>
-          <div style="font-size:11.5px;color:var(--muted);margin-top:5px"><b>구제금융 · VA 사업 철수</b> → 최악</div>
-        </div>
-      </div>
+      <div id="cases2008"></div>
     </div>
     <p class="foot" style="margin-top:6px">막대 = 2010년 회복(위기 전=100). <span style="color:var(--muted)">주가 낙폭은 다 컸어요 — 진짜 차이는 <b>회복·배당·존립</b>에서.</span></p>
     <div style="border:1.5px solid #F1CAD3;border-radius:10px;padding:11px;background:#FBEEF1;margin-top:12px">
@@ -1870,24 +1859,23 @@ function renderMech(){
 }
 function renderCases2008(){
   const box=$("cases2008"); if(!box)return;
-  const S=CASES2008, n=S.pru.length;
-  const W=640,H=250,L=40,R=16,T=20,B=30,iw=W-L-R,ih=H-T-B,g=[];
-  const vMax=145, X=i=>L+iw*i/(n-1), Y=v=>T+ih-(v/vMax)*ih;
-  g.push(`<rect x="${X(20).toFixed(1)}" y="${T}" width="${(X(26)-X(20)).toFixed(1)}" height="${ih}" fill="var(--bad)" opacity="0.07"/>`);
-  g.push(`<text class="eflabel" x="${X(23).toFixed(1)}" y="${T+11}" text-anchor="middle" fill="var(--bad)" font-weight="800" font-size="14.5">2008 위기</text>`);
-  g.push(`<line x1="${L}" y1="${Y(100).toFixed(1)}" x2="${W-R}" y2="${Y(100).toFixed(1)}" stroke="#AAB4C6" stroke-width="1" stroke-dasharray="5 4"/>`);
-  [0,50,100].forEach(v=>g.push(`<text class="eflabel" x="${L-4}" y="${(Y(v)+3).toFixed(1)}" text-anchor="end">${v}</text>`));
-  [[0,'2007'],[12,'2008'],[24,'2009'],[36,'2010']].forEach(a=>g.push(`<text class="eflabel" x="${X(a[0]).toFixed(1)}" y="${H-B+16}" text-anchor="middle">${a[1]}</text>`));
-  const path=a=>a.map((v,i)=>(i?"L":"M")+X(i).toFixed(1)+" "+Y(v).toFixed(1)).join(" ");
-  const draw=(a,c,w,beg)=>`<path d="${path(a)}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linejoin="round" opacity="0.95" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"><animate attributeName="stroke-dashoffset" from="1" to="0" dur="1.7s" begin="${beg}s" fill="freeze"/></path>`;
-  g.push(draw(S.hig,'var(--leak)',2,0.2));
-  g.push(draw(S.mfc,'var(--bad)',2,0.5));
-  g.push(draw(S.pru,'var(--good)',2.8,0.8));
-  [[S.pru,'var(--good)'],[S.mfc,'var(--bad)'],[S.hig,'var(--leak)']].forEach(a=>g.push(`<circle cx="${X(n-1).toFixed(1)}" cy="${Y(a[0][n-1]).toFixed(1)}" r="4.2" fill="${a[1]}" opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="2.5s" fill="freeze"/></circle>`));
-  const mark=(arr,i,c,lab)=>{ const x=X(i),y=Y(arr[i]); g.push(`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3.4" fill="#fff" stroke="${c}" stroke-width="2" opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="2.7s" fill="freeze"/></circle>`); g.push(`<text class="eflabel" x="${x.toFixed(1)}" y="${(y-8).toFixed(1)}" text-anchor="middle" fill="${c}" font-weight="800" font-size="13.5" opacity="0">${lab}<animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="2.8s" fill="freeze"/></text>`); };
-  mark(S.hig,25,'var(--leak)','구제금융');
-  mark(S.mfc,31,'var(--bad)','배당↓');
-  box.innerHTML=g.join("");
+  const rows=[
+    {name:'Prudential', tag:'헷지', dot:'🟢', col:'#0a7c50', bar:'linear-gradient(90deg,#12b877,#0a7c50)', score:66,
+     chips:[['보증 헷지','✅','good'],['배당 유지','✅','good'],['구제금융 거절','✅','good'],['가장 빨리 회복','✅','good']],
+     verdict:'제대로 헷지 → 위기에도 생존·회복'},
+    {name:'Manulife', tag:'미헷지', dot:'🔴', col:'#E24A62', bar:'linear-gradient(90deg,#f2687d,#E24A62)', score:43,
+     chips:[['보증 미헷지','❌','bad'],['배당 50% 삭감','❌','bad'],['대규모 증자','⚠️','warn'],['사업 유지','·','neu']],
+     verdict:'안 막은 대가 → 배당·자본 훼손'},
+    {name:'Hartford', tag:'부분헷지', dot:'🟠', col:'#E68A17', bar:'linear-gradient(90deg,#f7ab4e,#E68A17)', score:28,
+     chips:[['헷지 부족·노출 과다','⚠️','warn'],['배당 삭감','❌','bad'],['구제금융(TARP)','❌','bad'],['VA 사업 철수','❌','bad']],
+     verdict:'노출 > 헷지 → 최악'},
+  ];
+  box.innerHTML=rows.map((r,ri)=>`<div class="c8card">
+    <div class="c8head"><span>${r.dot} <b style="color:${r.col}">${r.name}</b> · ${r.tag}</span><span class="c8score" style="color:${r.col}">회복 ${r.score}<small> /100</small></span></div>
+    <div class="c8chips">${r.chips.map((c,ci)=>`<span class="c8chip ${c[2]}" style="animation-delay:${(ri*0.3+ci*0.12).toFixed(2)}s">${c[1]} ${c[0]}</span>`).join('')}</div>
+    <div class="c8track"><div class="c8bar" style="--w:${r.score}%;background:${r.bar};animation-delay:${(ri*0.3+0.4).toFixed(2)}s"></div></div>
+    <div class="c8verdict" style="color:${r.col}">${r.verdict}</div>
+  </div>`).join('');
 }
 /* 조합별 주간 손익선(애니메이션) — 헷지 비율(0→50→80→100%)을 올릴수록 밴드(변동폭)가 단계적으로 줄어듦을 한 스케일에 겹쳐 보여줌 */
 function renderConceptCombo(){
@@ -2408,7 +2396,7 @@ if($("g2Curve")){ document.querySelectorAll(".g2c").forEach(b=>b.addEventListene
   g2Restart(); }
 
 renderFactorAnim(); renderPayoff();
-render(); syncCsm2(); drawCasc(); drawBuffer(); drawHero();
+render(); syncCsm2(); drawCasc(); drawBuffer(); drawHero(); renderCases2008();
 loadMarket();  /* 개념탭 조합차트·시뮬 모두 데이터 필요 → 로드 시 자동 반영 */
 </script>
 </body>

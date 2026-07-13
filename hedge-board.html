@@ -1813,7 +1813,7 @@ function cvTick(){
   cvDraw();
   cvRAF=requestAnimationFrame(cvTick);
 }
-function renderCapVol(){ if(!$("cvSvg"))return; if(cvRAF)return; cvTick(); }
+function renderCapVol(){ if(!$("cvSvg"))return; cvDraw(); if(!cvRAF && tabOn("p1")) cvTick(); }
 function cvToggle(){ cvPlaying=!cvPlaying; const b=$("cvPlay"); if(b) b.textContent=cvPlaying?'⏸ 정지':'▶ 재생'; }
 function renderMech(){
   const box=$("mechSvg"); if(!box)return;
@@ -2376,8 +2376,8 @@ function g2Restart(){ Object.assign(GAME2,{r:0,bud:G2_BUD0,csm:G2_CSM0,over:fals
 if($("g2Curve")){ document.querySelectorAll(".g2c").forEach(b=>b.addEventListener("click",()=>g2Play(b.dataset.a)));
   g2Restart(); }
 
-renderFactorAnim(); renderPayoff();
-render(); syncCsm2(); drawCasc(); drawBuffer(); drawHero(); renderCases2008(); renderMech();
+/* 초기 렌더 — 각 호출을 격리(하나가 throw해도 나머지·loadMarket은 진행). 간헐 미표시·conceptLines stuck 방지 */
+[renderFactorAnim,renderPayoff,render,syncCsm2,drawCasc,drawBuffer,drawHero,renderCases2008,renderMech,renderCapVol].forEach(fn=>{try{fn();}catch(e){console.error('[init]',fn&&fn.name,e);}});
 loadMarket();  /* 개념탭 조합차트·시뮬 모두 데이터 필요 → 로드 시 자동 반영 */
 </script>
 </body>

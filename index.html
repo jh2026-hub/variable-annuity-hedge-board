@@ -1655,7 +1655,7 @@ async function loadMarket(){
   try{
     const r=await fetch("./data/market.json"); if(!r.ok) throw new Error(r.status);
     SIM.data=await r.json(); SIM.loaded=true;
-    if($("simStatus")){ $("simStatus").innerHTML=`KOSPI·국고 실측 <b>${SIM.data.meta.from}–${SIM.data.meta.to}</b> (${SIM.data.meta.n.toLocaleString()}거래일) 로드 완료.`; $("simStatus").style.color="var(--muted)"; }
+    if($("simStatus")){ $("simStatus").innerHTML=`KOSPI·국고 20년 <b>${SIM.data.meta.from}–${SIM.data.meta.to}</b> (${SIM.data.meta.n.toLocaleString()}거래일) 로드 완료.`; $("simStatus").style.color="var(--muted)"; }
     simRefresh(); ccRefresh(); renderDerived();
   }catch(e){ if($("simStatus")){$("simStatus").innerHTML=`시장데이터를 불러오지 못했어요 (${e.message}).`; $("simStatus").style.color="var(--bad)";} }
 }

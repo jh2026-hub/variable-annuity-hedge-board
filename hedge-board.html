@@ -411,10 +411,33 @@
   <p class="lede">왜 헷지해야 할까요? 회사는 고객에게 <b>최저 보증</b>을 약속하고 그 대가로 <b>수수료</b>를 받았어요. 시장이 나빠지면 그 약속이 회사 <b>자본</b>을 흔드는 큰 부담이 돼요. <b>왜 막아야 하는지</b>, <b>안 하면 어떻게 되는지</b>, 그리고 <b>2008년 실제로 회사들의 운명이 어떻게 갈렸는지</b> 봐요.</p>
 
   <div class="panel">
-    <div class="cap">헷지든 미헷지든 → 결국 자본에<span class="capb data">📊 실측</span><span>완충이 받다 넘치면 자본으로</span></div>
-    <div class="chartwrap"><svg id="capPaths" viewBox="0 0 640 240" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"><text x="320" y="120" text-anchor="middle" class="eflabel">데이터 불러오는 중…</text></svg></div>
-    <div id="capLeg" style="display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;font-size:11.5px"></div>
-    <p class="foot" style="margin-top:8px">손익은 <b>결국 자본에 반영</b>돼요 — <b>완충(CSM · 손실을 먼저 흡수하는 여유분)</b>이 받다가, <b>넘치면 그대로 자본으로</b> 터져요. 안 막으면 <b>완충 밖으로 튀는 주(빨강 점)</b>가 잦아요. <b>얼마나 줄일 수 있는지</b>는 바로 아래에서 봐요.</p>
+    <div class="cap">헷지든 미헷지든 → 결국 자본에<span>완충이 받다 넘치면 자본으로</span></div>
+    <div class="chartwrap"><svg viewBox="0 0 560 196" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
+      <defs><marker id="faR" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#AAB4C6"/></marker></defs>
+      <text x="12" y="52" font-size="16">🛡️</text>
+      <rect x="42" y="28" width="208" height="40" rx="6" fill="#EAF7F1"/>
+      <clipPath id="whA"><rect x="42" y="28" width="208" height="40" rx="6"/></clipPath>
+      <g clip-path="url(#whA)"><g><animateTransform attributeName="transform" type="translate" from="0 0" to="-40 0" dur="1.4s" repeatCount="indefinite"/><path d="M2 48 Q22 43 42 48 T82 48 T122 48 T162 48 T202 48 T242 48 T282 48" fill="none" stroke="var(--good)" stroke-width="2.6"/></g></g>
+      <text x="12" y="140" font-size="16">🌊</text>
+      <rect x="42" y="100" width="208" height="72" rx="6" fill="#F1EEFB"/>
+      <clipPath id="whB"><rect x="42" y="100" width="208" height="72" rx="6"/></clipPath>
+      <g clip-path="url(#whB)"><g><animateTransform attributeName="transform" type="translate" from="0 0" to="-40 0" dur="1.9s" repeatCount="indefinite"/><path d="M2 136 Q22 104 42 136 T82 136 T122 136 T162 136 T202 136 T242 136 T282 136" fill="none" stroke="var(--sym)" stroke-width="2.8"/></g></g>
+      <path d="M252 48 C286 48 290 84 302 92" fill="none" stroke="#AAB4C6" stroke-width="1.5" marker-end="url(#faR)"/>
+      <path d="M252 136 C286 136 290 104 302 100" fill="none" stroke="#AAB4C6" stroke-width="1.5" marker-end="url(#faR)"/>
+      <rect x="308" y="70" width="64" height="54" rx="8" fill="#D6F0E4" stroke="#5BD99A" stroke-width="1.5"/>
+      <text x="340" y="93" text-anchor="middle" font-size="12" font-weight="800" fill="#0a7c50">완충</text>
+      <text x="340" y="107" text-anchor="middle" font-size="9.5" fill="#0a7c50">CSM</text>
+      <text x="340" y="62" text-anchor="middle" font-size="13" opacity="0"><animate attributeName="opacity" values="0;1;0" dur="2s" begin="0.6s" repeatCount="indefinite"/>💧</text>
+      <path d="M374 97 L404 97" stroke="#AAB4C6" stroke-width="1.5" marker-end="url(#faR)"/>
+      <rect x="410" y="70" width="134" height="54" rx="10" fill="#EEF3FE" stroke="#9DBBF3" stroke-width="1.5"/>
+      <text x="477" y="94" text-anchor="middle" font-size="14" font-weight="800" fill="#2F63E0">🏛️ 자본</text>
+      <text x="477" y="111" text-anchor="middle" font-size="9.5" fill="var(--muted)">둘 다 여기로</text>
+    </svg></div>
+    <div class="chartleg">
+      <span class="lk"><i class="ln" style="background:var(--good)"></i>🛡️ 헷지 — 작은 흔들림</span>
+      <span class="lk"><i class="ln" style="background:var(--sym)"></i>🌊 미헷지 — 큰 흔들림</span>
+    </div>
+    <p class="foot" style="margin-top:8px">헷지든 아니든 손익은 <b>결국 자본에 반영</b>돼요 — <b>완충(CSM · 손실을 먼저 흡수하는 여유분)</b>이 받다가 <b>넘치면 그대로 자본으로</b> 터져요(💧). 차이는 딱 하나 — <b>헷지하면(초록) 훨씬 작게 흔들려요.</b> <b>얼마나</b> 줄어드는지는 바로 아래에서 봐요.</p>
   </div>
 
   <div class="panel concept">
@@ -426,7 +449,7 @@
 
   <div class="panel concept">
     <div class="cap">그 해 적자여도, 전 기간 누적은 흑자<span>한 해만 보면 안 돼요</span></div>
-    <p class="lede" style="font-size:13.5px">헷지 비용은 <b>대부분의 해</b>엔 수수료보다 작아서 <b>남는 이익(초록)</b>이 돼요. 하지만 <b>변동성이 큰 해</b>엔 비용이 수수료를 넘어 <b>그 해엔 적자(빨강)</b>가 돼요. 이건 <b>계약 전체 기간의 누적</b>으로 봐야 해요 — 누적하면 <b>수수료 &gt; 비용(흑자)</b>이에요.</p>
+    <p class="lede" style="font-size:13.5px">헷지 비용은 <b>대부분의 해</b>엔 수수료보다 작아서 <b>남는 이익(초록)</b>이 돼요. 하지만 <b>변동성이 큰 해</b>엔 <b>오르내림을 따라 되사고 되파느라</b> 비용이 수수료를 넘어 <b>그 해엔 적자(빨강)</b>가 돼요. 이건 <b>계약 전체 기간의 누적</b>으로 봐야 해요 — 누적하면 <b>수수료 &gt; 비용(흑자)</b>이에요.</p>
     <div style="font-size:12.5px;font-weight:800;color:var(--ink);margin:12px 0 3px">① 해마다 — 대부분 이익, 가끔 적자</div>
     <div class="chartwrap"><svg viewBox="0 0 560 116" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
       <line x1="20" y1="60" x2="540" y2="60" stroke="#AAB4C6" stroke-width="1.2"/>
@@ -453,18 +476,26 @@
     </svg></div>
     <p class="foot" style="margin-top:6px">이익과 적자를 <b>모두 쌓으면(누적)</b> 초록 선이 <b>한 번도 0 아래로 내려가지 않아요</b> — 위기의 해에 잠깐 주춤해도(가운데 점) <b>계약 전 기간으로는 계속 흑자</b>예요.</p>
     <div class="callout key"><span class="ci">⭐</span><div><span class="clab">핵심</span> <b>한 해로 보면 적자, 전 기간으로 보면 흑자</b> — 한 해 적자로 헷지를 판단하지 마세요.</div></div>
+  </div>
 
-    <div class="cap" style="margin-top:16px">그럼 안 하면? — 진짜 대가는 <b>보증 실지급</b><span>수수료를 압도</span></div>
+  <div class="panel concept">
+    <div class="cap">그럼 안 하면? — 진짜 대가는 <b>보증 실지급</b><span class="capb ex">⚠️ 핵심</span><span>수수료를 압도</span></div>
     <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-top:2px">헷지 비용을 아끼려 <b>안 하면</b>, 위기 때 <b>약속한 최저 보증을 실제로 지급</b>해야 해요. 그 손실은 그동안 받은 <b>수수료를 훨씬 초과</b> — 비용을 아끼려다 꼬리에서 <b>몇 배를 토해내는</b> 셈이에요.</p>
-    <div class="chartwrap"><svg viewBox="0 0 560 176" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
-      <circle cx="92" cy="96" r="20" fill="#1B2437" opacity="0.9"/>
-      <circle cx="384" cy="96" r="0" fill="var(--bad)" opacity="0.82"><animate attributeName="r" from="0" to="76" dur="0.9s" begin="0.3s" fill="freeze"/></circle>
-      <circle cx="384" cy="96" r="20" fill="none" stroke="#fff" stroke-width="1.6" opacity="0"><animate attributeName="opacity" from="0" to="0.9" dur="0.4s" begin="1.2s" fill="freeze"/></circle>
-      <text x="384" y="101" text-anchor="middle" font-size="15" font-weight="800" fill="#fff" opacity="0" font-family="sans-serif">여러 배<animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="1.2s" fill="freeze"/></text>
+    <div class="chartwrap"><svg viewBox="0 0 560 150" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
+      <rect x="26" y="70" width="40" height="40" rx="5" fill="#1B2437" opacity="0.9"/>
+      <text x="94" y="98" font-size="22" font-weight="800" fill="var(--muted)" font-family="sans-serif">≪</text>
+      <rect x="132" y="70" width="36" height="40" rx="4" fill="var(--bad)" opacity="0"><animate attributeName="opacity" from="0" to="0.88" dur="0.25s" begin="0.4s" fill="freeze"/></rect>
+      <rect x="176" y="70" width="36" height="40" rx="4" fill="var(--bad)" opacity="0"><animate attributeName="opacity" from="0" to="0.88" dur="0.25s" begin="0.58s" fill="freeze"/></rect>
+      <rect x="220" y="70" width="36" height="40" rx="4" fill="var(--bad)" opacity="0"><animate attributeName="opacity" from="0" to="0.88" dur="0.25s" begin="0.76s" fill="freeze"/></rect>
+      <rect x="264" y="70" width="36" height="40" rx="4" fill="var(--bad)" opacity="0"><animate attributeName="opacity" from="0" to="0.88" dur="0.25s" begin="0.94s" fill="freeze"/></rect>
+      <rect x="308" y="70" width="36" height="40" rx="4" fill="var(--bad)" opacity="0"><animate attributeName="opacity" from="0" to="0.88" dur="0.25s" begin="1.12s" fill="freeze"/></rect>
+      <rect x="352" y="70" width="36" height="40" rx="4" fill="var(--bad)" opacity="0"><animate attributeName="opacity" from="0" to="0.88" dur="0.25s" begin="1.30s" fill="freeze"/></rect>
+      <rect x="396" y="70" width="36" height="40" rx="4" fill="var(--bad)" opacity="0"><animate attributeName="opacity" from="0" to="0.88" dur="0.25s" begin="1.48s" fill="freeze"/></rect>
+      <text x="470" y="98" font-size="13" font-weight="800" fill="var(--bad)" font-family="sans-serif" opacity="0">여러 배 ≫<animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="1.7s" fill="freeze"/></text>
     </svg></div>
     <div class="chartleg">
-      <span class="lk"><i style="background:#1B2437"></i>연 수수료 (받는 돈) — 작아요</span>
-      <span class="lk"><i style="background:var(--bad)"></i>안 헷지 시 위기 보증 실지급 — 수수료의 <b>여러 배</b></span>
+      <span class="lk"><i style="background:#1B2437"></i>연 수수료 = <b>1</b> (받는 돈)</span>
+      <span class="lk"><i style="background:var(--bad)"></i>안 헷지 시 위기 보증 실지급 = 수수료 <b>여러 배</b></span>
     </div>
     <div class="callout warn"><span class="ci">⚠️</span><div><span class="clab">주의</span> <b>막으면 작은 비용, 안 막으면 큰 지급</b> — 기준은 "비용 vs 수익"이 아니라 <b>"안 막았을 때의 손실"</b>이에요.</div></div>
   </div>
@@ -485,6 +516,8 @@
       <circle cx="604" cy="62" r="4.6" fill="var(--good)" opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.3s" begin="1.7s" fill="freeze"/></circle>
       <circle cx="604" cy="108" r="4.6" fill="var(--leak)" opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.3s" begin="1.7s" fill="freeze"/></circle>
       <circle cx="604" cy="150" r="4.6" fill="var(--bad)" opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.3s" begin="1.7s" fill="freeze"/><animate attributeName="r" values="4.6;6.6;4.6" dur="1.8s" begin="2s" repeatCount="indefinite"/></circle>
+      <text x="600" y="54" text-anchor="end" font-size="10.5" font-weight="800" fill="#0a7c50" font-family="sans-serif">버팀</text>
+      <text x="600" y="170" text-anchor="end" font-size="10.5" font-weight="800" fill="var(--bad)" font-family="sans-serif">추락 ↓</text>
     </svg></div>
     <div class="chartleg">
       <span class="lk"><i class="ln" style="background:var(--good)"></i>🟢 헷지 (Prudential) — 무사 통과</span>
@@ -787,10 +820,9 @@
         <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px"><b>자본이 터지는 걸 막아요</b>. 이게 헷지의 값어치.</div></div>
     </div>
     <ul class="qalist">
-      <li>헷지 비용은 <b>내 수익을 까먹는 새 지출이 아니에요</b> — 애초에 <b>이 위험을 관리하라고 받은 보증수수료</b>에서 나가요.</li>
-      <li><b>대부분의 해</b>엔 수수료가 비용보다 커서 <b>오히려 남아요</b>. 비용이 수수료를 넘는 건 <b>드문 위기 해</b>뿐인데, 그 해에도 안 했으면 <b>수수료의 여러 배</b>를 잃어요 (→ ① 배경 · 해외 사례 Manulife).</li>
-      <li>그래서 헷지는 "수익을 까먹는 비용"이 아니라 <b>큰 손실을 막는 값싼 보험</b>이에요 — <b>완충이 얇을수록</b> 그 값어치가 커져요. (→ ⑥ 시뮬레이션)</li>
+      <li><b>대부분의 해</b>엔 수수료가 비용보다 커서 <b>남아요</b>. 비용이 넘는 건 <b>드문 위기 해</b>뿐 — 그 해에도 안 했으면 <b>수수료의 여러 배</b>를 잃어요.</li>
     </ul>
+    <div class="qref">→ 헷지는 <b>수익을 까먹는 비용</b>이 아니라 <b>큰 손실을 막는 값싼 보험</b>이에요. (→ ① 배경 · ⑥ 시뮬레이션)</div>
   </div>
 </section>
 
@@ -1284,7 +1316,7 @@ $("tabs").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)
   window.scrollTo({top:0,behavior:"smooth"});
   /* 탭 재진입 시 차트 애니메이션 재생 */
   const p=b.dataset.p;
-  if(p==="pbg"){ if(SIM.loaded){ renderCapitalPaths(); renderConceptCombo(); } document.querySelectorAll('#pbg .chartwrap svg:not(#capPaths):not(#conceptLines)').forEach(e=>{e.innerHTML=e.innerHTML;}); }
+  if(p==="pbg"){ if(SIM.loaded){ renderConceptCombo(); } document.querySelectorAll('#pbg .chartwrap svg:not(#conceptLines)').forEach(e=>{e.innerHTML=e.innerHTML;}); }
   else if(p==="p2"&&SIM.loaded){ renderSim(); render(); }
   else if(p==="p3"){ drawBuffer(); }
   else if(p==="p4") renderFactorAnim();
@@ -1429,7 +1461,7 @@ function drawVolBarK(){ if(!$("vkBar"))return; volBarKBuild();
 /* 최적화 — 현재 보이는 탭만 무거운 차트 갱신(숨은 탭은 전환 시 갱신) */
 const tabOn=id=>{const e=$(id);return !!(e&&e.classList.contains("on"));};
 function simRefresh(){ if(SIM.loaded && tabOn("p2")) renderSim(); }
-function ccRefresh(){ if(SIM.loaded && tabOn("pbg")){ renderCapitalPaths(); renderConceptCombo(); } }
+function ccRefresh(){ if(SIM.loaded && tabOn("pbg")){ renderConceptCombo(); } }
 /* 변동성 국면 프리셋 — 평상시(23·24년) vs 위기시(26년, 전반 단가↑)
    vol=RV·IV 입력, bp=헷지 단가(위기엔 스프레드 확대로 전반 상승) */
 const REGIME={
@@ -1689,36 +1721,6 @@ function renderConceptCombo(){
   if(leg) leg.innerHTML=RAT.map(s=>`<span style="display:inline-flex;align-items:center;gap:5px"><span style="width:16px;height:3px;border-radius:2px;background:${s.c};display:inline-block"></span>${s.n} · ±${won(s.sig)}억</span>`).join("");
 }
 /* 헷지든 미헷지든 — 실측 주간 손익: 미헷지(보라·큰 흔들림) vs 헷지(초록·작은 흔들림). 둘 다 결국 자본에, 크기만 다름 */
-function renderCapitalPaths(){
-  const box=$("capPaths"); if(!box||!SIM.loaded)return;
-  const d=SIM.data, rk=SIM.rateKey, eqd=val("eqd"),rvd=val("rvd");
-  const U=[],idx=[];
-  for(let i=1;i<d.dates.length;i++){
-    const rEqBp=(d.eq[i]/d.eq[i-1]-1)*10000, dRtBp=(d[rk][i]-d[rk][i-1])*100;
-    U.push(eqd*rEqBp - rvd*dRtBp); idx.push(i);
-  }
-  const wU=weekly(U), n=wU.length;
-  const wYr=[];for(let i=0;i<U.length;i+=5)wYr.push(idx[Math.min(i,idx.length-1)]);
-  const amp=Math.max(...wU.map(Math.abs),1)*1.08, csm=amp*0.40;
-  const W=640,H=240,L=54,R=14,T=16,B=26,iw=W-L-R,ih=H-T-B,g=[];
-  const X=i=>L+iw*i/(n-1), Y=v=>T+ih/2-(Math.max(-amp,Math.min(amp,v))/amp)*(ih/2);
-  g.push(`<clipPath id="cpc"><rect x="${L}" y="${T}" width="${iw}" height="${ih}"/></clipPath>`);
-  g.push(`<rect x="${L}" y="${T}" width="${iw}" height="${(Y(csm)-T).toFixed(1)}" fill="var(--bad)" opacity="0.06"/>`);
-  g.push(`<rect x="${L}" y="${Y(-csm).toFixed(1)}" width="${iw}" height="${(T+ih-Y(-csm)).toFixed(1)}" fill="var(--bad)" opacity="0.06"/>`);
-  g.push(`<rect x="${L}" y="${Y(csm).toFixed(1)}" width="${iw}" height="${(Y(-csm)-Y(csm)).toFixed(1)}" fill="var(--good)" opacity="0.16"/>`);
-  [csm,-csm].forEach(sv=>g.push(`<line x1="${L}" y1="${Y(sv).toFixed(1)}" x2="${W-R}" y2="${Y(sv).toFixed(1)}" stroke="var(--good)" stroke-width="1" stroke-dasharray="4 3" opacity="0.6"/>`));
-  g.push(`<text class="eflabel" x="${L+6}" y="${(Y(csm)-4).toFixed(1)}" fill="var(--good)">완충(CSM) 감당 범위</text>`);
-  g.push(`<line x1="${L}" y1="${Y(0).toFixed(1)}" x2="${W-R}" y2="${Y(0).toFixed(1)}" stroke="#AAB4C6" stroke-width="1.1"/>`);
-  let cy=null;const dts=d.dates;
-  wYr.forEach((di,i)=>{const yr=dts[di]?dts[di].slice(0,4):'';if(yr&&yr!==cy){cy=yr;g.push(`<text class="eflabel" x="${X(i).toFixed(1)}" y="${H-B+16}" text-anchor="middle">${yr}</text>`);}});
-  const path=wU.map((v,i)=>(i?"L":"M")+X(i).toFixed(1)+" "+Y(v).toFixed(1)).join(" ");
-  g.push(`<g clip-path="url(#cpc)"><path d="${path}" fill="none" stroke="var(--sym)" stroke-width="1.7" stroke-linejoin="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"><animate attributeName="stroke-dashoffset" from="1" to="0" dur="1.4s" fill="freeze"/></path></g>`);
-  const spills=wU.map((v,i)=>({i,v,ex:Math.abs(v)-csm})).filter(o=>o.ex>0).sort((a,b)=>b.ex-a.ex).slice(0,6);
-  spills.forEach((o,k)=>g.push(`<circle cx="${X(o.i).toFixed(1)}" cy="${Y(o.v).toFixed(1)}" r="0" fill="var(--bad)" stroke="#fff" stroke-width="1.2"><animate attributeName="r" from="0" to="4.2" dur="0.4s" begin="${(1.4+k*0.1).toFixed(2)}s" fill="freeze"/></circle>`));
-  box.innerHTML=g.join("");
-  const leg=$("capLeg");
-  if(leg) leg.innerHTML=`<span style="display:inline-flex;align-items:center;gap:5px"><span style="width:16px;height:3px;border-radius:2px;background:var(--sym);display:inline-block"></span>🌊 미헷지 손익(실측)</span><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:14px;height:11px;border-radius:2px;background:var(--good);opacity:0.55;display:inline-block"></span>완충(CSM) 감당 범위</span><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:11px;height:11px;border-radius:50%;background:var(--bad);display:inline-block"></span>완충 밖 → 자본으로</span>`;
-}
 /* PL 인식 — 완충이 얇아지면 모든 요인에 헷지 압력이 커지는 것을 시각화(슬라이더+애니 파동) */
 const BUFF=[
   {k:'주식 델타',   c:'var(--pay)',  cost:3,  vr:0.42},

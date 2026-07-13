@@ -411,33 +411,40 @@
   <p class="lede">왜 헷지해야 할까요? 회사는 고객에게 <b>최저 보증</b>을 약속하고 그 대가로 <b>수수료</b>를 받았어요. 시장이 나빠지면 그 약속이 회사 <b>자본</b>을 흔드는 큰 부담이 돼요. <b>왜 막아야 하는지</b>, <b>안 하면 어떻게 되는지</b>, 그리고 <b>2008년 실제로 회사들의 운명이 어떻게 갈렸는지</b> 봐요.</p>
 
   <div class="panel">
-    <div class="cap">헷지든 미헷지든 → 결국 자본에<span>완충이 받다 넘치면 자본으로</span></div>
+    <div class="cap">헷지든 미헷지든 → 결국 자본에<span>길은 달라도 둘 다 자본으로</span></div>
     <div class="chartwrap"><svg viewBox="0 0 560 196" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
       <defs><marker id="faR" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#AAB4C6"/></marker></defs>
-      <text x="12" y="52" font-size="16">🛡️</text>
-      <rect x="42" y="28" width="208" height="40" rx="6" fill="#EAF7F1"/>
-      <clipPath id="whA"><rect x="42" y="28" width="208" height="40" rx="6"/></clipPath>
-      <g clip-path="url(#whA)"><g><animateTransform attributeName="transform" type="translate" from="0 0" to="-40 0" dur="1.4s" repeatCount="indefinite"/><path d="M2 48 Q22 43 42 48 T82 48 T122 48 T162 48 T202 48 T242 48 T282 48" fill="none" stroke="var(--good)" stroke-width="2.6"/></g></g>
-      <text x="12" y="140" font-size="16">🌊</text>
-      <rect x="42" y="100" width="208" height="72" rx="6" fill="#F1EEFB"/>
-      <clipPath id="whB"><rect x="42" y="100" width="208" height="72" rx="6"/></clipPath>
-      <g clip-path="url(#whB)"><g><animateTransform attributeName="transform" type="translate" from="0 0" to="-40 0" dur="1.9s" repeatCount="indefinite"/><path d="M2 136 Q22 104 42 136 T82 136 T122 136 T162 136 T202 136 T242 136 T282 136" fill="none" stroke="var(--sym)" stroke-width="2.8"/></g></g>
-      <path d="M252 48 C286 48 290 84 302 92" fill="none" stroke="#AAB4C6" stroke-width="1.5" marker-end="url(#faR)"/>
-      <path d="M252 136 C286 136 290 104 302 100" fill="none" stroke="#AAB4C6" stroke-width="1.5" marker-end="url(#faR)"/>
-      <rect x="308" y="70" width="64" height="54" rx="8" fill="#D6F0E4" stroke="#5BD99A" stroke-width="1.5"/>
-      <text x="340" y="93" text-anchor="middle" font-size="12" font-weight="800" fill="#0a7c50">완충</text>
-      <text x="340" y="107" text-anchor="middle" font-size="9.5" fill="#0a7c50">CSM</text>
-      <text x="340" y="62" text-anchor="middle" font-size="13" opacity="0"><animate attributeName="opacity" values="0;1;0" dur="2s" begin="0.6s" repeatCount="indefinite"/>💧</text>
-      <path d="M374 97 L404 97" stroke="#AAB4C6" stroke-width="1.5" marker-end="url(#faR)"/>
-      <rect x="410" y="70" width="134" height="54" rx="10" fill="#EEF3FE" stroke="#9DBBF3" stroke-width="1.5"/>
-      <text x="477" y="94" text-anchor="middle" font-size="14" font-weight="800" fill="#2F63E0">🏛️ 자본</text>
-      <text x="477" y="111" text-anchor="middle" font-size="9.5" fill="var(--muted)">둘 다 여기로</text>
+      <!-- 헷지 레인: 작은 파동 → 헷지손익 → 자본 -->
+      <text x="10" y="50" font-size="15">🛡️</text>
+      <rect x="36" y="28" width="160" height="40" rx="6" fill="#EAF7F1"/>
+      <clipPath id="whA"><rect x="36" y="28" width="160" height="40" rx="6"/></clipPath>
+      <g clip-path="url(#whA)"><g><animateTransform attributeName="transform" type="translate" from="0 0" to="-40 0" dur="1.4s" repeatCount="indefinite"/><path d="M0 48 Q20 43 40 48 T80 48 T120 48 T160 48 T200 48 T240 48" fill="none" stroke="var(--good)" stroke-width="2.6"/></g></g>
+      <path d="M198 48 L214 48" stroke="#AAB4C6" stroke-width="1.5" marker-end="url(#faR)"/>
+      <rect x="218" y="32" width="86" height="32" rx="7" fill="#E7EFFD" stroke="#9DBBF3" stroke-width="1.3"/>
+      <text x="261" y="52" text-anchor="middle" font-size="10.5" font-weight="800" fill="#2F63E0">헷지손익</text>
+      <path d="M306 48 C350 48 366 62 420 82" fill="none" stroke="#AAB4C6" stroke-width="1.5" marker-end="url(#faR)"/>
+      <!-- 미헷지 레인: 더 큰 파동 → 완충(CSM) → 자본 -->
+      <text x="10" y="140" font-size="15">🌊</text>
+      <rect x="36" y="100" width="160" height="72" rx="6" fill="#F1EEFB"/>
+      <clipPath id="whB"><rect x="36" y="100" width="160" height="72" rx="6"/></clipPath>
+      <g clip-path="url(#whB)"><g><animateTransform attributeName="transform" type="translate" from="0 0" to="-40 0" dur="1.9s" repeatCount="indefinite"/><path d="M0 136 Q20 104 40 136 T80 136 T120 136 T160 136 T200 136 T240 136" fill="none" stroke="var(--sym)" stroke-width="2.8"/></g></g>
+      <path d="M198 136 L214 136" stroke="#AAB4C6" stroke-width="1.5" marker-end="url(#faR)"/>
+      <rect x="218" y="112" width="86" height="50" rx="8" fill="#D6F0E4" stroke="#5BD99A" stroke-width="1.5"/>
+      <text x="261" y="133" text-anchor="middle" font-size="11.5" font-weight="800" fill="#0a7c50">완충</text>
+      <text x="261" y="148" text-anchor="middle" font-size="9.5" fill="#0a7c50">CSM</text>
+      <text x="261" y="104" text-anchor="middle" font-size="12" opacity="0"><animate attributeName="opacity" values="0;1;0" dur="2s" begin="0.6s" repeatCount="indefinite"/>💧</text>
+      <path d="M306 136 C350 136 366 122 420 104" fill="none" stroke="#AAB4C6" stroke-width="1.5" marker-end="url(#faR)"/>
+      <text x="360" y="160" text-anchor="middle" font-size="8.5" fill="var(--muted)">넘치면</text>
+      <!-- 공통 종착: 자본 -->
+      <rect x="424" y="62" width="120" height="62" rx="10" fill="#EEF3FE" stroke="#9DBBF3" stroke-width="1.5"/>
+      <text x="484" y="90" text-anchor="middle" font-size="14" font-weight="800" fill="#2F63E0">🏛️ 자본</text>
+      <text x="484" y="107" text-anchor="middle" font-size="9" fill="var(--muted)">둘 다 여기로</text>
     </svg></div>
     <div class="chartleg">
-      <span class="lk"><i class="ln" style="background:var(--good)"></i>🛡️ 헷지 — 작은 흔들림</span>
-      <span class="lk"><i class="ln" style="background:var(--sym)"></i>🌊 미헷지 — 큰 흔들림</span>
+      <span class="lk"><i class="ln" style="background:var(--good)"></i>🛡️ 헷지 → 헷지손익 → <b>바로</b> 자본 (작게 확정)</span>
+      <span class="lk"><i class="ln" style="background:var(--sym)"></i>🌊 미헷지 → 더 큰 변동성 → <b>완충(CSM)</b> → 자본</span>
     </div>
-    <p class="foot" style="margin-top:8px">헷지든 아니든 손익은 <b>결국 자본에 반영</b>돼요 — <b>완충(CSM · 손실을 먼저 흡수하는 여유분)</b>이 받다가 <b>넘치면 그대로 자본으로</b> 터져요(💧). 차이는 딱 하나 — <b>헷지하면(초록) 훨씬 작게 흔들려요.</b> <b>얼마나</b> 줄어드는지는 바로 아래에서 봐요.</p>
+    <p class="foot" style="margin-top:8px">둘 다 <b>결국 자본으로</b> 가지만 <b>길이 달라요</b>. <b>🛡️ 헷지</b>는 흔들림을 작게 확정해 <b>헷지손익 → 바로 자본</b>. <b>🌊 미헷지</b>는 <b>더 크게 흔들려도 완충(CSM · 손실을 먼저 흡수하는 여유분)</b>이 먼저 받고, <b>넘치면(💧)</b> 자본으로. <b>얼마나</b> 줄어드는지는 바로 아래에서 봐요.</p>
   </div>
 
   <div class="panel concept">
@@ -791,25 +798,20 @@
   <div class="panel">
     <div class="qah"><div class="qan">Q6</div><div class="qat">헷지 비용이 수익을 다 까먹는 것 아닌가요? 💸</div></div>
     <div class="q6flip">
-      <div class="q6wrong">✗ <s>"헷지 <b>비용</b>이 <b>수익</b>을 다 까먹는다"</s> — 이건 <b>틀린 비교</b>예요.</div>
-      <div class="q6arrow">↓ 진짜 비교는</div>
-      <div class="q6right">✓ <b>평소 여러 해 작은 비용</b>을 다 합쳐도 &lt; <b>안 막았을 때 위기 한 번의 손실</b><br><span style="font-weight:500;font-size:12px;color:var(--muted)">게다가 이 비용은 <b style="color:var(--ink)">새 지출이 아니라, 그 위험 막으라고 이미 받은 보증수수료</b>에서 나가요.</span></div>
+      <div class="q6right" style="text-align:center">❌ "비용 vs 수익" &nbsp;→&nbsp; ⭕ <b>작은 비용 vs 안 막았을 때 큰 손실</b><br><span style="font-weight:800;color:#0a7c50">헷지는 <b>보험</b>이에요 — 평소 조금 내고, 위기 때 큰 손실을 막아요.</span></div>
     </div>
-    <div class="chartwrap" style="margin:2px 0 12px"><svg viewBox="0 0 560 128" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
-      <rect x="26"  y="56" width="16" height="16" rx="3" fill="var(--pay)" opacity="0"><animate attributeName="opacity" from="0" to="0.9" dur="0.3s" begin="0.1s" fill="freeze"/></rect>
-      <rect x="48"  y="56" width="16" height="16" rx="3" fill="var(--pay)" opacity="0"><animate attributeName="opacity" from="0" to="0.9" dur="0.3s" begin="0.28s" fill="freeze"/></rect>
-      <rect x="70"  y="56" width="16" height="16" rx="3" fill="var(--pay)" opacity="0"><animate attributeName="opacity" from="0" to="0.9" dur="0.3s" begin="0.46s" fill="freeze"/></rect>
-      <rect x="92"  y="56" width="16" height="16" rx="3" fill="var(--pay)" opacity="0"><animate attributeName="opacity" from="0" to="0.9" dur="0.3s" begin="0.64s" fill="freeze"/></rect>
-      <rect x="114" y="56" width="16" height="16" rx="3" fill="var(--pay)" opacity="0"><animate attributeName="opacity" from="0" to="0.9" dur="0.3s" begin="0.82s" fill="freeze"/></rect>
-      <rect x="136" y="56" width="16" height="16" rx="3" fill="var(--pay)" opacity="0"><animate attributeName="opacity" from="0" to="0.9" dur="0.3s" begin="1.0s" fill="freeze"/></rect>
-      <text x="94" y="92" text-anchor="middle" font-size="10" font-weight="700" fill="var(--pay)" font-family="sans-serif">평소 비용(해마다 조금)</text>
-      <text x="238" y="72" text-anchor="middle" font-size="30" font-weight="800" fill="var(--muted)" font-family="sans-serif" opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="1.2s" fill="freeze"/>&lt;</text>
-      <g opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="1.5s" fill="freeze"/>
-        <animateTransform attributeName="transform" type="translate" from="0 -26" to="0 0" dur="0.6s" begin="1.5s" fill="freeze"/>
-        <rect x="290" y="24" width="248" height="72" rx="8" fill="var(--bad)" opacity="0.9"/>
-        <text x="414" y="58" text-anchor="middle" font-size="13" font-weight="800" fill="#fff" font-family="sans-serif">위기 손실 한 번</text>
-        <text x="414" y="74" text-anchor="middle" font-size="9.5" fill="#fff" opacity="0.92" font-family="sans-serif">= 수수료의 여러 배</text></g>
-      <text x="414" y="112" text-anchor="middle" font-size="10" font-weight="700" fill="var(--bad)" font-family="sans-serif">안 막았을 때</text>
+    <div class="chartwrap"><svg viewBox="0 0 560 176" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
+      <line x1="280" y1="16" x2="280" y2="160" stroke="var(--hair)" stroke-dasharray="4 3"/>
+      <text x="140" y="28" text-anchor="middle" font-size="12.5" font-weight="800" fill="var(--bad)">안 헷지 · 비용 0</text>
+      <text x="140" y="134" text-anchor="middle" font-size="42">🏛️</text>
+      <text x="140" y="0" font-size="27" text-anchor="middle"><animateTransform attributeName="transform" type="translate" values="0 44;0 106;0 106;0 44" keyTimes="0;0.42;0.74;1" dur="2.6s" repeatCount="indefinite"/>💥</text>
+      <text x="176" y="116" font-size="18" opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.44;0.52;0.72" dur="2.6s" repeatCount="indefinite"/>💥</text>
+      <text x="140" y="158" text-anchor="middle" font-size="11.5" font-weight="800" fill="var(--bad)">위기에 터짐 💔</text>
+      <text x="420" y="28" text-anchor="middle" font-size="12.5" font-weight="800" fill="#0a7c50">헷지 · 작은 비용</text>
+      <text x="420" y="134" text-anchor="middle" font-size="42">🏛️</text>
+      <text x="420" y="88" text-anchor="middle" font-size="27">🛡️</text>
+      <text x="420" y="0" font-size="27" text-anchor="middle"><animateTransform attributeName="transform" type="translate" values="0 44;0 72;0 48;0 44" keyTimes="0;0.42;0.62;1" dur="2.6s" repeatCount="indefinite"/>💥</text>
+      <text x="420" y="158" text-anchor="middle" font-size="11.5" font-weight="800" fill="#0a7c50">막아서 버팀 ✓</text>
     </svg></div>
     <div class="pair2" style="margin:4px 0 12px">
       <div style="border:1.5px solid var(--good);border-radius:10px;padding:11px;background:#EAF7F1">

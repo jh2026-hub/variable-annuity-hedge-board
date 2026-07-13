@@ -512,25 +512,20 @@
   <p class="lede">헷지의 <b>작동 원리</b>를 순서대로 봐요 — <b>①자본이 왜 흔들리나</b> → <b>②완충(CSM)</b> → <b>③어떻게 막나(파생)</b> → <b>④막으면 얼마나 줄고 비용은</b>(🖐 직접 조작) → <b>⑤변동성·비용 관계</b>.</p>
 
   <div class="panel">
-    <div class="cap">색 읽는 법<span>이 색은 페이지 전체에서 같은 뜻이에요</span></div>
-    <div style="display:flex;flex-wrap:wrap;gap:9px 16px;margin-top:2px">
-      <span class="ckey"><i style="background:var(--pay)"></i><b>파랑</b> 헷지(막기·비용)</span>
-      <span class="ckey"><i style="background:var(--leak)"></i><b>주황</b> 미헷지·노출(누수)</span>
-      <span class="ckey"><i style="background:var(--sym)"></i><b>보라</b> 흔들림의 크기</span>
-      <span class="ckey"><i style="background:var(--good)"></i><b>초록</b> 안전(작게·흡수)</span>
-      <span class="ckey"><i style="background:var(--bad)"></i><b>빨강</b> 위험(터짐·소진)</span>
+    <div class="cap">자본 변동성이란 — 왜 변액보험이 흔들리나<span>차이는 '보증' 하나</span></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:6px">
+      <div style="border:1.5px solid #CDE9DB;border-radius:11px;padding:13px 14px;background:#F4FBF7">
+        <div style="font-weight:800;font-size:13.5px;color:#0a7c50">📊 변액펀드 <span style="font-weight:600;color:var(--muted)">(보증 없음)</span></div>
+        <div style="font-size:12.5px;color:var(--muted);line-height:1.65;margin-top:7px">펀드가 오르내려도 <b>손익은 전부 고객 몫</b>. 회사는 <b>운용만 대행</b>해요.</div>
+        <div style="margin-top:10px;font-size:12.5px;font-weight:800;color:#0a7c50">→ 회사 자본은 <b>안 흔들려요</b> ✓</div>
+      </div>
+      <div style="border:1.5px solid #F3D6B8;border-radius:11px;padding:13px 14px;background:#FDF4EA">
+        <div style="font-weight:800;font-size:13.5px;color:var(--leak)">🛟 변액보험 <span style="font-weight:600;color:var(--muted)">(최저보증 붙음)</span></div>
+        <div style="font-size:12.5px;color:var(--muted);line-height:1.65;margin-top:7px">펀드가 아무리 떨어져도 <b>"최소 이만큼" 지급</b> 약속. 모자란 만큼은 <b>회사가 메꿔야</b> 해요.</div>
+        <div style="margin-top:10px;font-size:12.5px;font-weight:800;color:var(--leak)">→ 시장 나쁠수록 <b>회사 자본이 흔들려요</b></div>
+      </div>
     </div>
-  </div>
-
-  <div class="panel">
-    <div class="cap">자본 변동성이란 — 왜 흔들리나<span>보증이 시장 따라 흔들려요</span></div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:4px">
-      <div style="display:flex;gap:10px;align-items:flex-start"><div style="font-size:26px;line-height:1">🤝</div><div><div style="font-weight:800;font-size:13.5px;color:var(--ink)">보증 제공 → 수수료 수취</div><div style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:2px">최저 보장 대가로 <b>수수료</b>를 받아요. 이 보증이 회사 <b>부채</b>가 돼요.</div></div></div>
-      <div style="display:flex;gap:10px;align-items:flex-start"><div style="font-size:26px;line-height:1">🌊</div><div><div style="font-weight:800;font-size:13.5px;color:var(--ink)">시장 변동 → 보증 부채 변동</div><div style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:2px">주가·금리가 움직이면 부채도 흔들려요. 그대로 두면 <b>손익이 크게 흔들려요</b>.</div></div></div>
-      <div style="display:flex;gap:10px;align-items:flex-start"><div style="font-size:26px;line-height:1">🛡️</div><div><div style="font-weight:800;font-size:13.5px;color:var(--ink)">헷지 → 손익 변동성 축소</div><div style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:2px">반대로 걸어 서로 상쇄해요. <b>비용</b>이 들지만, 얼마나 줄일지는 <b>비용과의 맞바꿈</b>이에요.</div></div></div>
-      <div style="display:flex;gap:10px;align-items:flex-start"><div style="font-size:26px;line-height:1">⚖️</div><div><div style="font-weight:800;font-size:13.5px;color:var(--ink)">노출(CSM) vs 헷지 — 얇으면 헷지</div><div style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:2px">안 하면 <b>완충(CSM)</b>이 대신 받아요. 완충이 얇거나 바닥나면 손실이 <b>그대로 손익·자본에</b> 와요 — <b>얇을수록 헷지예요</b>.</div></div></div>
-    </div>
-    <p class="foot" style="margin-top:10px">용어는 아래 <b>그림·색</b>으로 자연히 따라와요.</p>
+    <div class="callout key" style="margin-top:12px"><span class="ci">⭐</span><div><span class="clab">핵심</span> 둘의 차이는 <b>보증</b> 하나예요. 보증이 <b>고객 펀드의 출렁임</b>을 <b>회사 자본의 출렁임</b>으로 옮겨와요 — 그래서 변액보험은 <b>자본 변동성</b>이 생겨요.</div></div>
   </div>
 
   <div class="panel concept">
@@ -719,13 +714,6 @@
 <!-- Q&A -->
 <section class="page on" id="pqa">
   <p class="lede">자주 나오는 질문을 <b>그림 위주</b>로, <b>쉬운 말로</b> 답해요. 더 자세한 내용은 각 탭에 있어요.</p>
-  <div style="display:flex;flex-wrap:wrap;gap:7px 14px;padding:8px 12px;background:var(--panel);border:1px solid var(--hair);border-radius:10px;margin-top:12px">
-    <span class="ckey"><i style="background:var(--pay)"></i><b>파랑</b> 헷지</span>
-    <span class="ckey"><i style="background:var(--leak)"></i><b>주황</b> 미헷지·노출</span>
-    <span class="ckey"><i style="background:var(--sym)"></i><b>보라</b> 흔들림 크기</span>
-    <span class="ckey"><i style="background:var(--good)"></i><b>초록</b> 안전</span>
-    <span class="ckey"><i style="background:var(--bad)"></i><b>빨강</b> 위험</span>
-  </div>
 
   <div class="panel">
     <div class="cap">먼저 알아둘 3가지<span>이것만 알면 술술 읽혀요</span></div>

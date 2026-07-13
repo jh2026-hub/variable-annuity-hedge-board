@@ -29,6 +29,8 @@
   .chartleg .lk{display:inline-flex;align-items:center;gap:5px}
   .chartleg .lk i{width:12px;height:12px;border-radius:3px;flex:0 0 auto}
   .chartleg .lk i.ln{height:4px;width:18px;border-radius:2px}
+  .recbar{animation:recgrow 1.1s cubic-bezier(.2,.8,.2,1) both;transform-origin:left}
+  @keyframes recgrow{from{transform:scaleX(0)}}
   .q6flip{margin:8px 0 12px}
   .q6wrong{background:#FBEEF1;border:1px solid var(--bad-line);border-radius:8px;padding:8px 11px;font-size:12.5px;color:var(--muted)}
   .q6wrong s{color:var(--muted);text-decoration-color:var(--bad)}
@@ -449,19 +451,27 @@
   <div class="panel concept">
     <div class="cap">2008년, 실제로 이렇게 갈렸어요<span class="capb ex">🌍 실제 주가</span><span>같이 급락 → 회복이 갈림</span></div>
     <p class="lede" style="font-size:13.5px">이건 이론이 아니에요. 2008 금융위기에 <b>세 보험사 주가가 다 급락</b>했어요(시장 전체 공포). 하지만 <b>보증 리스크를 어떻게 다뤘느냐</b>가 <b>그 뒤 회복과 치른 대가</b>를 갈랐어요.</p>
-    <div class="chartwrap"><svg id="cases2008" viewBox="0 0 640 250" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"></svg></div>
-    <div class="chartleg">
-      <span class="lk"><i class="ln" style="background:var(--good)"></i>🟢 Prudential (헷지) — 회복 66</span>
-      <span class="lk"><i class="ln" style="background:var(--bad)"></i>🔴 Manulife (미헷지) — 회복 43</span>
-      <span class="lk"><i class="ln" style="background:var(--leak)"></i>🟠 Hartford (부분헷지) — 회복 28</span>
+    <div class="chartwrap" style="text-align:left;padding:14px 13px 12px">
+      <div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:11px">위기 후 회복 · 2007년 초 = 100 → 2010년 (실측 주가)</div>
+      <div style="display:flex;flex-direction:column;gap:13px">
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><b style="color:#0a7c50">🟢 Prudential · 헷지</b><b style="color:#0a7c50">66</b></div>
+          <div style="height:18px;background:#EEF1F7;border-radius:6px;overflow:hidden"><div class="recbar" style="height:100%;width:66%;background:var(--good);border-radius:6px"></div></div>
+          <div style="font-size:11.5px;color:var(--muted);margin-top:3px">구제금융 <b>거절</b> · 배당 <b>유지</b> → 가장 잘 회복 ✓</div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><b style="color:var(--bad)">🔴 Manulife · 미헷지</b><b style="color:var(--bad)">43</b></div>
+          <div style="height:18px;background:#EEF1F7;border-radius:6px;overflow:hidden"><div class="recbar" style="height:100%;width:43%;background:var(--bad);border-radius:6px"></div></div>
+          <div style="font-size:11.5px;color:var(--muted);margin-top:3px"><b>배당 50% 삭감 · 대규모 증자</b> (안 막은 대가)</div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><b style="color:var(--leak)">🟠 Hartford · 부분헷지</b><b style="color:var(--leak)">28</b></div>
+          <div style="height:18px;background:#EEF1F7;border-radius:6px;overflow:hidden"><div class="recbar" style="height:100%;width:28%;background:var(--leak);border-radius:6px"></div></div>
+          <div style="font-size:11.5px;color:var(--muted);margin-top:3px"><b>구제금융 · VA 사업 철수</b> → 최악</div>
+        </div>
+      </div>
     </div>
-    <p class="foot" style="margin-top:6px">※ <b>주가 낙폭 자체는 시장 공포</b>라 셋 다 빠졌어요 — <b>Manulife(미헷지)가 덜 빠진 건 캐나다 시장이 덜 충격</b>받아서예요. 헷지의 <b>진짜 효과는 주가가 아니라 자본·배당·존립</b>에서 났어요:</p>
-    <div style="font-size:12.5px;font-weight:800;color:var(--ink);margin:8px 0 6px">결과 — <b>보증 리스크를 어떻게 다뤘나</b>가 갈랐어요</div>
-    <div style="display:flex;flex-direction:column;gap:7px">
-      <div style="border-left:4px solid var(--good);background:#EAF7F1;border-radius:8px;padding:9px 11px;font-size:12.5px;line-height:1.5"><b style="color:#0a7c50">🟢 Prudential · 헷지</b> — 구제금융 <b>거절</b> · 배당 <b>유지</b> → <b>가장 잘 회복</b></div>
-      <div style="border-left:4px solid var(--bad);background:#FBEEF1;border-radius:8px;padding:9px 11px;font-size:12.5px;line-height:1.5"><b style="color:var(--bad)">🔴 Manulife · 미헷지</b> — <b>배당 50% 삭감 · 대규모 증자</b>(안 막은 대가) → 버팀</div>
-      <div style="border-left:4px solid var(--leak);background:#FBF4E8;border-radius:8px;padding:9px 11px;font-size:12.5px;line-height:1.5"><b style="color:var(--leak)">🟠 Hartford · 부분헷지</b> — <b>구제금융 · VA 사업 철수</b> → 최악</div>
-    </div>
+    <p class="foot" style="margin-top:6px">막대 = 위기 전(100) 대비 <b>2010년 회복 수준</b>. <b>제대로 헷지한 Prudential이 가장 잘 돌아왔고</b>, 못 막거나 잘못 막은 곳일수록 <b>대가를 크게 치렀어요</b>. <span style="color:var(--muted)">(주가 낙폭 자체는 시장 공포라 다 빠졌어요 — 진짜 차이는 이 회복과 자본·배당·존립에서.)</span></p>
     <div style="border:1.5px solid #F1CAD3;border-radius:10px;padding:11px;background:#FBEEF1;margin-top:12px">
       <div style="font-weight:800;color:var(--bad);font-size:13px">🌏 일본 VA 시장 — 미헷지 붐</div>
       <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px">보증을 <b>제대로 안 막고</b> 급성장했다가, 2008 급락에 비용이 폭발하자 <b>다수 보험사가 판매를 중단</b>했어요. 안 막은 시장은 <b>동반 위축</b>됐어요.</div>

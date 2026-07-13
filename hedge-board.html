@@ -410,6 +410,22 @@
 <section class="page" id="pbg">
   <p class="lede">왜 헷지해야 할까요? 회사는 고객에게 <b>최저 보증</b>을 약속하고 그 대가로 <b>수수료</b>를 받았어요. 시장이 나빠지면 그 약속이 회사 <b>자본</b>을 흔드는 큰 부담이 돼요. <b>왜 막아야 하는지</b>, <b>안 하면 어떻게 되는지</b>, 그리고 <b>2008년 실제로 회사들의 운명이 어떻게 갈렸는지</b> 봐요.</p>
 
+  <div class="panel">
+    <div class="pair2">
+      <div style="text-align:center;border:1.5px solid var(--bad-line);border-radius:11px;padding:13px 10px;background:#FBEEF1">
+        <div style="font-size:32px;line-height:1">🏛️💥</div>
+        <div style="font-weight:800;color:var(--bad);font-size:13.5px;margin-top:5px">안 헷지</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px">위기에 <b>자본이 터져요</b></div>
+      </div>
+      <div style="text-align:center;border:1.5px solid #BFE6D3;border-radius:11px;padding:13px 10px;background:#EAF7F1">
+        <div style="font-size:32px;line-height:1">🏛️🛡️</div>
+        <div style="font-weight:800;color:#0a7c50;font-size:13.5px;margin-top:5px">헷지</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px">위기에도 <b>버텨요</b></div>
+      </div>
+    </div>
+    <p class="foot" style="margin-top:10px;text-align:center">이 한 장이 전부예요 — <b>아래에서 실제로, 왜 그런지</b> 봐요.</p>
+  </div>
+
   <div class="panel concept">
     <div class="cap">2008년, 실제로 이렇게 갈렸어요<span class="capb ex">🌍 실제 주가</span><span>같이 급락 → 회복이 갈림</span></div>
     <p class="lede" style="font-size:13.5px">이건 이론이 아니에요. 2008 금융위기에 <b>세 보험사 주가가 다 급락</b>했어요(시장 전체 공포). 하지만 <b>보증 리스크를 어떻게 다뤘느냐</b>가 <b>그 뒤 회복과 치른 대가</b>를 갈랐어요.</p>
@@ -452,7 +468,8 @@
       <text x="261" y="149" text-anchor="middle" font-size="10.5" fill="#0a7c50">CSM</text>
       <text x="261" y="104" text-anchor="middle" font-size="12" opacity="0"><animate attributeName="opacity" values="0;1;0" dur="2s" begin="0.6s" repeatCount="indefinite"/>💧</text>
       <path d="M306 136 C350 136 366 122 420 104" fill="none" stroke="#AAB4C6" stroke-width="1.5" marker-end="url(#faR)"/>
-      <text x="360" y="160" text-anchor="middle" font-size="8.5" fill="var(--muted)">넘치면</text>
+      <text x="360" y="162" text-anchor="middle" font-size="8.5" fill="var(--bad)" font-weight="700">넘치면 터져요</text>
+      <text x="402" y="118" text-anchor="middle" font-size="16"><animate attributeName="opacity" values="0.15;1;0.15" dur="1.6s" begin="0.8s" repeatCount="indefinite"/>💥</text>
       <!-- 공통 종착: 자본 -->
       <rect x="424" y="62" width="120" height="62" rx="10" fill="#EEF3FE" stroke="#9DBBF3" stroke-width="1.5"/>
       <text x="484" y="90" text-anchor="middle" font-size="14" font-weight="800" fill="#2F63E0">🏛️ 자본</text>
@@ -1700,6 +1717,9 @@ function renderCases2008(){
   g.push(draw(S.mfc,'var(--bad)',2,0.5));
   g.push(draw(S.pru,'var(--good)',2.8,0.8));
   [[S.pru,'var(--good)'],[S.mfc,'var(--bad)'],[S.hig,'var(--leak)']].forEach(a=>g.push(`<circle cx="${X(n-1).toFixed(1)}" cy="${Y(a[0][n-1]).toFixed(1)}" r="4.2" fill="${a[1]}" opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="2.5s" fill="freeze"/></circle>`));
+  const mark=(arr,i,c,lab)=>{ const x=X(i),y=Y(arr[i]); g.push(`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3.4" fill="#fff" stroke="${c}" stroke-width="2" opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="2.7s" fill="freeze"/></circle>`); g.push(`<text class="eflabel" x="${x.toFixed(1)}" y="${(y-8).toFixed(1)}" text-anchor="middle" fill="${c}" font-weight="800" opacity="0">${lab}<animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="2.8s" fill="freeze"/></text>`); };
+  mark(S.hig,25,'var(--leak)','구제금융');
+  mark(S.mfc,31,'var(--bad)','배당↓');
   box.innerHTML=g.join("");
 }
 /* 조합별 주간 손익선(애니메이션) — 헷지 비율(0→50→80→100%)을 올릴수록 밴드(변동폭)가 단계적으로 줄어듦을 한 스케일에 겹쳐 보여줌 */

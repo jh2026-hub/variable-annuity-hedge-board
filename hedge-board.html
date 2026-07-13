@@ -635,7 +635,7 @@
 
   <div class="panel concept">
     <div class="cap">그 해 적자여도, 전 기간 누적은 흑자<span>한 해만 보면 안 돼요</span></div>
-    <p class="lede" style="font-size:13.5px">헷지 비용은 <b>대부분의 해</b>엔 수수료보다 작아서 <b>남는 이익(초록)</b>이 돼요. 하지만 <b>변동성이 큰 해</b>엔 <b>오르내림을 따라 되사고 되파느라</b> 비용이 수수료를 넘어 <b>그 해엔 적자(빨강)</b>가 돼요. 이건 <b>계약 전체 기간의 누적</b>으로 봐야 해요 — 누적하면 <b>수수료 &gt; 비용(흑자)</b>이에요.</p>
+    <p class="lede" style="font-size:13.5px">헷지 비용은 시장이 오르내릴 때 포지션을 <b>되사고 되파는</b> 데서 나와요. 대부분의 해엔 이 비용이 받은 수수료보다 작아 <b>이익(초록)</b>이 남고, <b>변동성이 큰 해</b>엔 되사고 되파는 일이 잦아져 비용이 수수료를 넘어 <b>적자(빨강)</b>가 나요. 그래서 손익은 <b>한 해가 아니라 계약 전체 기간의 누적</b>으로 봐요.</p>
     <div style="font-size:12.5px;font-weight:800;color:var(--ink);margin:12px 0 3px">① 해마다 — 대부분 이익, 가끔 적자</div>
     <div class="chartwrap"><svg viewBox="0 0 560 116" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
       <line x1="20" y1="60" x2="540" y2="60" stroke="#AAB4C6" stroke-width="1.2"/>
@@ -693,10 +693,22 @@
 
   <div class="panel">
     <div class="qah"><div class="qan">Q1</div><div class="qat">헷지를 왜 해야 하나요? 🤔</div></div>
-    <div style="display:flex;flex-direction:column;gap:9px;margin:4px 0 12px">
-      <div class="qabar"><span class="qalab">안 하면</span><div class="qatrack"><div style="width:100%;background:var(--bad)"></div></div><span class="qaval" style="color:var(--bad)">손익이 크게 출렁</span></div>
-      <div class="qabar"><span class="qalab">하면</span><div class="qatrack"><div style="width:20%;background:var(--good)"></div></div><span class="qaval" style="color:var(--good)">흔들림이 작음</span></div>
-    </div>
+    <div class="chartwrap"><svg viewBox="0 0 560 164" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
+      <text x="280" y="18" text-anchor="middle" font-size="12" font-weight="800" fill="var(--bad)">같은 시장 충격이 오면 ▼<animate attributeName="opacity" values="1;.45;1" dur="1.5s" repeatCount="indefinite"/></text>
+      <line x1="96" y1="138" x2="464" y2="138" stroke="#D6DCE8" stroke-width="1.2"/>
+      <text x="150" y="36" text-anchor="middle" font-size="12.5" font-weight="800" fill="var(--bad)">안 헷지</text>
+      <rect x="106" y="44" width="88" height="0" rx="6" fill="#F7C9D1"><animate attributeName="height" values="0;0;80;80;0" keyTimes="0;0.28;0.5;0.82;1" dur="2.8s" repeatCount="indefinite"/></rect>
+      <rect x="106" y="44" width="88" height="94" rx="6" fill="#DCE7FB" stroke="#9DBBF3" stroke-width="1.3"><animate attributeName="y" values="44;44;124;124;44" keyTimes="0;0.28;0.5;0.82;1" dur="2.8s" repeatCount="indefinite"/><animate attributeName="height" values="94;94;14;14;94" keyTimes="0;0.28;0.5;0.82;1" dur="2.8s" repeatCount="indefinite"/></rect>
+      <text x="150" y="131" text-anchor="middle" font-size="10.5" font-weight="800" fill="#2F63E0">자본</text>
+      <text x="150" y="82" text-anchor="middle" font-size="17" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.44;0.5;0.82;1" dur="2.8s" repeatCount="indefinite"/>💥</text>
+      <text x="150" y="158" text-anchor="middle" font-size="11.5" font-weight="800" fill="var(--bad)">자본 붕괴 💔</text>
+      <text x="410" y="36" text-anchor="middle" font-size="12.5" font-weight="800" fill="#0a7c50">헷지</text>
+      <rect x="366" y="44" width="88" height="0" rx="6" fill="#F7C9D1"><animate attributeName="height" values="0;0;14;14;0" keyTimes="0;0.28;0.5;0.82;1" dur="2.8s" repeatCount="indefinite"/></rect>
+      <rect x="366" y="44" width="88" height="94" rx="6" fill="#DCE7FB" stroke="#9DBBF3" stroke-width="1.3"><animate attributeName="y" values="44;44;58;58;44" keyTimes="0;0.28;0.5;0.82;1" dur="2.8s" repeatCount="indefinite"/><animate attributeName="height" values="94;94;80;80;94" keyTimes="0;0.28;0.5;0.82;1" dur="2.8s" repeatCount="indefinite"/></rect>
+      <text x="410" y="106" text-anchor="middle" font-size="10.5" font-weight="800" fill="#2F63E0">자본</text>
+      <text x="410" y="62" text-anchor="middle" font-size="15">🛡️</text>
+      <text x="410" y="158" text-anchor="middle" font-size="11.5" font-weight="800" fill="#0a7c50">버팀 ✓</text>
+    </svg></div>
     <ul class="qalist">
       <li>회사는 <b>"최소한 이만큼 보장"</b>을 약속했고, <b>시장이 나쁠수록 부담이 커져요</b>.</li>
       <li>안 하면 그 출렁임이 그대로 손익 — <b>안 할 때 흔들림 &gt; 헷지 비용</b>이에요.</li>
@@ -709,18 +721,15 @@
     <div class="q6flip">
       <div class="q6right" style="text-align:center">❌ "비용 vs 수익" &nbsp;→&nbsp; ⭕ <b>작은 비용 vs 안 막았을 때 큰 손실</b><br><span style="font-weight:800;color:#0a7c50">헷지는 <b>보험</b>이에요 — 평소 조금 내고, 위기 때 큰 손실을 막아요.</span></div>
     </div>
-    <div class="chartwrap"><svg viewBox="0 0 560 176" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
-      <line x1="280" y1="16" x2="280" y2="160" stroke="var(--hair)" stroke-dasharray="4 3"/>
-      <text x="140" y="28" text-anchor="middle" font-size="12.5" font-weight="800" fill="var(--bad)">안 헷지 · 비용 0</text>
-      <text x="140" y="134" text-anchor="middle" font-size="42">🏛️</text>
-      <text x="140" y="0" font-size="27" text-anchor="middle"><animateTransform attributeName="transform" type="translate" values="0 44;0 106;0 106;0 44" keyTimes="0;0.42;0.74;1" dur="2.6s" repeatCount="indefinite"/>💥</text>
-      <text x="176" y="116" font-size="18" opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.44;0.52;0.72" dur="2.6s" repeatCount="indefinite"/>💥</text>
-      <text x="140" y="158" text-anchor="middle" font-size="11.5" font-weight="800" fill="var(--bad)">위기에 터짐 💔</text>
-      <text x="420" y="28" text-anchor="middle" font-size="12.5" font-weight="800" fill="#0a7c50">헷지 · 작은 비용</text>
-      <text x="420" y="134" text-anchor="middle" font-size="42">🏛️</text>
-      <text x="420" y="88" text-anchor="middle" font-size="27">🛡️</text>
-      <text x="420" y="0" font-size="27" text-anchor="middle"><animateTransform attributeName="transform" type="translate" values="0 44;0 72;0 48;0 44" keyTimes="0;0.42;0.62;1" dur="2.6s" repeatCount="indefinite"/>💥</text>
-      <text x="420" y="158" text-anchor="middle" font-size="11.5" font-weight="800" fill="#0a7c50">막아서 버팀 ✓</text>
+    <div class="chartwrap"><svg viewBox="0 0 560 150" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
+      <rect x="150" y="32" width="0" height="24" rx="5" fill="#DCE7FB" stroke="#9DBBF3"><animate attributeName="width" from="0" to="48" dur="0.9s" fill="freeze"/></rect>
+      <text x="140" y="49" text-anchor="end" font-size="11" font-weight="700" fill="var(--pay)">헷지 비용</text>
+      <text x="206" y="49" font-size="11" font-weight="800" fill="#0a7c50">작아요 · 대부분 해 남음</text>
+      <rect x="150" y="90" width="0" height="28" rx="5" fill="#F7C9D1" stroke="#E24A62"><animate attributeName="width" from="0" to="372" dur="1.2s" begin="0.25s" fill="freeze"/></rect>
+      <text x="140" y="100" text-anchor="end" font-size="11" font-weight="700" fill="var(--bad)">안 막을 때<tspan x="140" dy="13">위기 손실</tspan></text>
+      <text x="336" y="108" text-anchor="middle" font-size="11.5" font-weight="800" fill="var(--bad)" opacity="0">수수료의 여러 배 💔<animate attributeName="opacity" values="0;1" begin="1.1s" dur="0.4s" fill="freeze"/></text>
+      <line x1="270" y1="20" x2="270" y2="130" stroke="#0a7c50" stroke-width="1.4" stroke-dasharray="4 3"/>
+      <text x="270" y="146" text-anchor="middle" font-size="10" font-weight="800" fill="#0a7c50">받은 수수료 수준</text>
     </svg></div>
     <div class="pair2" style="margin:4px 0 12px">
       <div style="border:1.5px solid var(--good);border-radius:10px;padding:11px;background:#EAF7F1">
@@ -762,6 +771,17 @@
 
   <div class="panel">
     <div class="qah"><div class="qan">Q4</div><div class="qat">어떻게 막나요? 무슨 수단으로? 🧰</div></div>
+    <div class="chartwrap"><svg viewBox="0 0 560 150" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
+      <path d="M170 116 A110 110 0 0 1 390 116" fill="none" stroke="#E68A17" stroke-width="6" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"><animate attributeName="stroke-dashoffset" from="1" to="0" dur="0.7s" begin="0.9s" fill="freeze"/></path>
+      <path d="M196 116 A84 84 0 0 1 364 116" fill="none" stroke="#3B6FE6" stroke-width="6" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"><animate attributeName="stroke-dashoffset" from="1" to="0" dur="0.7s" begin="0.5s" fill="freeze"/></path>
+      <path d="M222 116 A58 58 0 0 1 338 116" fill="none" stroke="#5BD99A" stroke-width="6" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"><animate attributeName="stroke-dashoffset" from="1" to="0" dur="0.7s" begin="0.1s" fill="freeze"/></path>
+      <rect x="248" y="118" width="64" height="26" rx="5" fill="#DCE7FB" stroke="#9DBBF3"/>
+      <text x="280" y="135" text-anchor="middle" font-size="10.5" font-weight="800" fill="#2F63E0">🏛️ 자본</text>
+      <text x="280" y="76" text-anchor="middle" font-size="10.5" font-weight="800" fill="#0a7c50">① 방향 <tspan fill="var(--muted)" font-weight="600">선물·스왑 · 저</tspan></text>
+      <text x="280" y="48" text-anchor="middle" font-size="10.5" font-weight="800" fill="#3B6FE6">② 급변 <tspan fill="var(--muted)" font-weight="600">옵션 · 중</tspan></text>
+      <text x="280" y="20" text-anchor="middle" font-size="10.5" font-weight="800" fill="#E68A17">③ 꼬리 <tspan fill="var(--muted)" font-weight="600">옵션 · 고</tspan></text>
+      <text x="470" y="128" font-size="10" fill="var(--muted)">바깥층일수록<tspan x="470" dy="13" font-weight="800" fill="var(--leak)">비용 ↑</tspan></text>
+    </svg></div>
     <div style="display:flex;flex-direction:column;gap:9px;margin:6px 0 12px">
       <div class="qstep"><span class="qstepn" style="background:var(--good)">1</span><div><b>방향 막기</b> · 선물·스왑 <span style="color:var(--muted)">— 가장 저렴 · 필수</span></div></div>
       <div class="qstep"><span class="qstepn" style="background:var(--pay)">2</span><div><b>급변 막기</b> · 옵션 <span style="color:var(--muted)">— 중간 비용</span></div></div>
@@ -784,30 +804,22 @@
         <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px">작은 손실도 곧장 <b>손익으로 터져요</b>. 그래서 <b>더 많이 막아야</b> 해요.</div>
       </div>
     </div>
-    <div class="chartwrap" style="margin:0 0 8px"><svg viewBox="0 0 440 162" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
-      <!-- 완충 두꺼움 -->
-      <text x="118" y="22" text-anchor="middle" font-size="13" font-weight="800" fill="#0a7c50">🛟 완충 두꺼움</text>
-      <text x="118" y="41" text-anchor="middle" font-size="11" fill="var(--leak)" font-weight="700">🌊 충격</text>
-      <rect x="74" y="96" width="88" height="34" fill="#D6F0E4" stroke="#5BD99A" stroke-width="1.5" rx="5"/>
-      <text x="118" y="117" text-anchor="middle" font-size="11" fill="#0a7c50" font-weight="700">완충</text>
-      <rect x="74" y="130" width="88" height="9" fill="#F7C9D1"/>
-      <circle cx="118" r="8" fill="var(--leak)"><animate attributeName="cy" values="54;88;88;54" keyTimes="0;0.4;0.8;1" dur="2.4s" repeatCount="indefinite"/></circle>
-      <text x="118" y="156" text-anchor="middle" font-size="12.5" font-weight="800" fill="#0a7c50">완충이 흡수 ✓</text>
-      <line x1="220" y1="34" x2="220" y2="146" stroke="var(--hair)" stroke-dasharray="4 3"/>
-      <!-- 완충 얇음 -->
-      <text x="322" y="22" text-anchor="middle" font-size="13" font-weight="800" fill="var(--bad)">🪫 완충 얇음</text>
-      <text x="322" y="41" text-anchor="middle" font-size="11" fill="var(--leak)" font-weight="700">🌊 충격</text>
-      <rect x="278" y="129" width="88" height="15" fill="#F7C9D1"/>
-      <rect x="278" y="129" width="88" height="15" fill="var(--bad)"><animate attributeName="opacity" values="0;0;.65;.65;0" keyTimes="0;0.36;0.44;0.62;0.78" dur="2.4s" repeatCount="indefinite"/></rect>
-      <!-- 완충: 통과 전엔 한 조각으로 붙어 있다가, 공이 통과하는 순간 사라지고 파편이 쨍그랑 날아감 -->
-      <rect x="278" y="120" width="88" height="9" fill="#D6F0E4" stroke="#5BD99A" stroke-width="1.5" rx="3"><animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.38;0.44;0.88;0.94" dur="2.4s" repeatCount="indefinite"/></rect>
-      <rect x="280" y="120" width="20" height="8" fill="#D6F0E4" stroke="#5BD99A" stroke-width="1.2" rx="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.4;0.46;0.6;0.72" dur="2.4s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" additive="sum" values="0 0;0 0;-34 -26;-48 0" keyTimes="0;0.4;0.58;0.72" dur="2.4s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="rotate" additive="sum" values="0 290 124;0 290 124;-62 290 124;-92 290 124" keyTimes="0;0.4;0.58;0.72" dur="2.4s" repeatCount="indefinite"/></rect>
-      <rect x="302" y="120" width="18" height="8" fill="#D6F0E4" stroke="#5BD99A" stroke-width="1.2" rx="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.4;0.46;0.6;0.72" dur="2.4s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" additive="sum" values="0 0;0 0;-12 -42;-16 -12" keyTimes="0;0.4;0.58;0.72" dur="2.4s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="rotate" additive="sum" values="0 311 124;0 311 124;-32 311 124;-54 311 124" keyTimes="0;0.4;0.58;0.72" dur="2.4s" repeatCount="indefinite"/></rect>
-      <rect x="324" y="120" width="18" height="8" fill="#D6F0E4" stroke="#5BD99A" stroke-width="1.2" rx="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.4;0.46;0.6;0.72" dur="2.4s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" additive="sum" values="0 0;0 0;12 -42;16 -12" keyTimes="0;0.4;0.58;0.72" dur="2.4s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="rotate" additive="sum" values="0 333 124;0 333 124;32 333 124;54 333 124" keyTimes="0;0.4;0.58;0.72" dur="2.4s" repeatCount="indefinite"/></rect>
-      <rect x="344" y="120" width="20" height="8" fill="#D6F0E4" stroke="#5BD99A" stroke-width="1.2" rx="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.4;0.46;0.6;0.72" dur="2.4s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" additive="sum" values="0 0;0 0;34 -26;48 0" keyTimes="0;0.4;0.58;0.72" dur="2.4s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="rotate" additive="sum" values="0 354 124;0 354 124;62 354 124;92 354 124" keyTimes="0;0.4;0.58;0.72" dur="2.4s" repeatCount="indefinite"/></rect>
-      <circle cx="322" r="8" fill="var(--bad)"><animate attributeName="cy" values="54;116;116;142;142;54" keyTimes="0;0.38;0.44;0.56;0.82;1" dur="2.4s" repeatCount="indefinite"/></circle>
-      <text x="322" y="114" font-size="16" text-anchor="middle" opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.4;0.48;0.64" dur="2.4s" repeatCount="indefinite"/>💥</text>
-      <text x="322" y="158" text-anchor="middle" font-size="12.5" font-weight="800" fill="var(--bad)">터짐 → 더 헷지</text>
+    <div class="chartwrap" style="margin:0 0 8px"><svg viewBox="0 0 560 160" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
+      <line x1="280" y1="30" x2="280" y2="148" stroke="var(--hair)" stroke-dasharray="4 3"/>
+      <text x="150" y="20" text-anchor="middle" font-size="12" font-weight="800" fill="#0a7c50">🛟 완충 두꺼움</text>
+      <rect x="104" y="118" width="92" height="26" rx="4" fill="#DCE7FB" stroke="#9DBBF3"/>
+      <text x="150" y="135" text-anchor="middle" font-size="9.5" font-weight="800" fill="#2F63E0">자본</text>
+      <rect x="104" y="86" width="92" height="30" rx="4" fill="#D6F0E4" stroke="#5BD99A"/>
+      <text x="150" y="105" text-anchor="middle" font-size="9.5" font-weight="700" fill="#0a7c50">완충</text>
+      <circle cx="150" cy="36" r="9" fill="var(--leak)"><animate attributeName="cy" values="36;77;77;36" keyTimes="0;0.42;0.82;1" dur="2.6s" repeatCount="indefinite"/></circle>
+      <text x="150" y="156" text-anchor="middle" font-size="11" font-weight="800" fill="#0a7c50">완충이 흡수 ✓</text>
+      <text x="410" y="20" text-anchor="middle" font-size="12" font-weight="800" fill="var(--bad)">🪫 완충 얇음</text>
+      <rect x="364" y="118" width="92" height="26" rx="4" fill="#DCE7FB" stroke="#9DBBF3"/>
+      <text x="410" y="135" text-anchor="middle" font-size="9.5" font-weight="800" fill="#2F63E0">자본</text>
+      <rect x="364" y="106" width="92" height="10" rx="3" fill="#D6F0E4" stroke="#5BD99A"><animate attributeName="opacity" values="1;1;.2;.2;1" keyTimes="0;0.44;0.52;0.86;1" dur="2.6s" repeatCount="indefinite"/></rect>
+      <circle cx="410" cy="36" r="9" fill="var(--bad)"><animate attributeName="cy" values="36;97;131;131;36" keyTimes="0;0.44;0.6;0.86;1" dur="2.6s" repeatCount="indefinite"/></circle>
+      <text x="410" y="126" font-size="15" text-anchor="middle" opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.56;0.62;0.82" dur="2.6s" repeatCount="indefinite"/>💥</text>
+      <text x="410" y="156" text-anchor="middle" font-size="11" font-weight="800" fill="var(--bad)">뚫려서 손익 터짐</text>
     </svg></div>
     <ul class="qalist"><li><b>완충이 손실을 먼저 흡수하다 소진되면 그대로 손익·자본으로 터져요.</b> 얇을수록 헷지가 답이에요.</li></ul>
     <span class="qgo" onclick="document.querySelector('#tabs [data-p=p3]').click()">자세히 → ⑤ 손익 인식 (완충 CSM)</span>
@@ -818,10 +830,19 @@
     <div class="q6flip">
       <div class="q6right" style="text-align:center">정답은 <b>예산(받은 수수료) 안에서</b> 항목을 골라 <b>가장 덜 흔들리게</b> — 방향부터 싸게, 급변·꼬리는 완충 봐가며.</div>
     </div>
-    <div style="display:flex;flex-direction:column;gap:9px;margin:10px 0 4px">
-      <div class="qabar"><span class="qalab">항목 추가</span><div class="qatrack"><div style="width:34%;background:var(--sym)"></div></div><span class="qaval" style="color:var(--sym)">흔들림 ↓</span></div>
-      <div class="qabar"><span class="qalab">그 대가</span><div class="qatrack"><div style="width:64%;background:var(--pay)"></div></div><span class="qaval" style="color:var(--pay)">비용 ↑</span></div>
-    </div>
+    <div class="chartwrap" style="margin-top:10px"><svg viewBox="0 0 560 150" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
+      <line x1="54" y1="20" x2="54" y2="120" stroke="#AAB4C6" stroke-width="1.2"/>
+      <line x1="54" y1="120" x2="536" y2="120" stroke="#AAB4C6" stroke-width="1.2"/>
+      <text x="90" y="138" text-anchor="middle" font-size="9.5" fill="var(--muted)">0개</text>
+      <text x="500" y="138" text-anchor="middle" font-size="9.5" fill="var(--muted)">많이</text>
+      <text x="295" y="138" text-anchor="middle" font-size="10" font-weight="700" fill="var(--muted)">헷지 항목 추가 →</text>
+      <path d="M72 34 C200 60,360 92,520 108" fill="none" stroke="var(--sym)" stroke-width="2.6" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"><animate attributeName="stroke-dashoffset" from="1" to="0" dur="1.2s" fill="freeze"/></path>
+      <circle cx="520" cy="108" r="4.5" fill="var(--sym)"/><text x="514" y="102" text-anchor="end" font-size="10.5" font-weight="800" fill="var(--sym)">흔들림 ↓</text>
+      <path d="M72 112 C200 104,360 66,520 34" fill="none" stroke="var(--pay)" stroke-width="2.6" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"><animate attributeName="stroke-dashoffset" from="1" to="0" dur="1.2s" begin="0.3s" fill="freeze"/></path>
+      <circle cx="520" cy="34" r="4.5" fill="var(--pay)"/><text x="514" y="30" text-anchor="end" font-size="10.5" font-weight="800" fill="var(--pay)">비용 ↑</text>
+      <circle cx="300" cy="84" r="8" fill="none" stroke="#12A870" stroke-width="2.5"><animate attributeName="r" values="8;11;8" dur="1.8s" repeatCount="indefinite"/></circle>
+      <text x="300" y="68" text-anchor="middle" font-size="10.5" font-weight="800" fill="#0a7c50">균형점</text>
+    </svg></div>
     <ul class="qalist"><li>헷지 항목을 <b>하나씩 켜 보며</b> 흔들림과 비용의 균형을 직접 찾아요 — 실측 데이터로 결과가 바로 나와요.</li></ul>
     <span class="qgo" onclick="document.querySelector('#tabs [data-p=p2]').click()">자세히 → ⑥ 시뮬레이션에서 직접 해보기</span>
   </div>

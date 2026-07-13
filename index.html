@@ -809,27 +809,27 @@
   </div>
 
   <div class="panel">
-    <div class="qah"><div class="qan">Q5</div><div class="qat">헷지를 하지 않으면 어떻게 되나요? 🛟</div></div>
+    <div class="qah"><div class="qan">Q5</div><div class="qat">헷지하지 않은 항목은 어떻게 되나요? 🧩</div></div>
     <div class="pair2" style="margin:4px 0 12px">
       <div style="border:1.5px solid var(--good);border-radius:10px;padding:11px;background:#EAF7F1">
-        <div style="font-weight:800;color:var(--good);font-size:13px">🛟 완충(CSM)이 버텨요</div>
-        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px">헷지하지 않은 변동은 <b>완충이 먼저 흡수</b>해요 — 그동안 손익은 조용해요.</div>
+        <div style="font-weight:800;color:var(--good);font-size:13px">🛡️ 헷지한 항목</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px">비용을 내고 변동을 제거해요 — <b>손익이 확정</b>돼요.</div>
       </div>
       <div style="border:1.5px solid var(--bad-line);border-radius:10px;padding:11px;background:#FBEEF1">
-        <div style="font-weight:800;color:var(--bad);font-size:13px">🪫 완충이 소진되면</div>
-        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px">변동이 <b>그대로 손익·자본으로</b> 와요 — <b>손익·자본 변동성이 커져요</b>.</div>
+        <div style="font-weight:800;color:var(--bad);font-size:13px">🌊 헷지하지 않은 항목(노출)</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px"><b>완충(CSM)이 대신 버텨요</b> — 소진되면 <b>손익·자본 변동성이 커져요</b>.</div>
       </div>
     </div>
     <div class="chartwrap" style="margin:0 0 8px"><svg viewBox="0 0 560 160" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
       <line x1="280" y1="30" x2="280" y2="148" stroke="var(--hair)" stroke-dasharray="4 3"/>
-      <text x="150" y="20" text-anchor="middle" font-size="12" font-weight="800" fill="#337A5F">🛟 완충이 버틸 때</text>
+      <text x="150" y="20" text-anchor="middle" font-size="12" font-weight="800" fill="#337A5F">🛟 완충이 여유 있을 때</text>
       <rect x="104" y="118" width="92" height="26" rx="4" fill="#DCE7FB" stroke="#9DBBF3"/>
       <text x="150" y="135" text-anchor="middle" font-size="9.5" font-weight="800" fill="#4A6FC4">자본</text>
       <rect x="104" y="86" width="92" height="30" rx="4" fill="#D6F0E4" stroke="#93D4B4"/>
       <text x="150" y="105" text-anchor="middle" font-size="9.5" font-weight="700" fill="#337A5F">완충</text>
       <circle cx="150" cy="36" r="9" fill="var(--leak)"><animate attributeName="cy" values="36;77;77;36" keyTimes="0;0.42;0.82;1" dur="2.6s" repeatCount="indefinite"/></circle>
       <text x="150" y="156" text-anchor="middle" font-size="11" font-weight="800" fill="#337A5F">완충이 흡수 ✓</text>
-      <text x="410" y="20" text-anchor="middle" font-size="12" font-weight="800" fill="var(--bad)">🪫 소진된 뒤</text>
+      <text x="410" y="20" text-anchor="middle" font-size="12" font-weight="800" fill="var(--bad)">🪫 완충이 소진되면</text>
       <rect x="364" y="118" width="92" height="26" rx="4" fill="#DCE7FB" stroke="#9DBBF3"/>
       <text x="410" y="135" text-anchor="middle" font-size="9.5" font-weight="800" fill="#4A6FC4">자본</text>
       <rect x="364" y="106" width="92" height="10" rx="3" fill="#D6F0E4" stroke="#93D4B4"><animate attributeName="opacity" values="1;1;.2;.2;1" keyTimes="0;0.44;0.52;0.86;1" dur="2.6s" repeatCount="indefinite"/></rect>
@@ -837,7 +837,7 @@
       <text x="410" y="126" font-size="15" text-anchor="middle" opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.56;0.62;0.82" dur="2.6s" repeatCount="indefinite"/>💥</text>
       <text x="410" y="156" text-anchor="middle" font-size="11" font-weight="800" fill="var(--bad)">손익·자본으로 직행</text>
     </svg></div>
-    <ul class="qalist"><li><b>헷지를 하지 않으면 완충(CSM)으로 버텨야 해요.</b> 완충이 소진되면 변동이 그대로 손익·자본으로 와 <b>변동성이 커져요</b>.</li></ul>
+    <ul class="qalist"><li><b>위험은 항목별로 헷지 여부를 골라요.</b> 고르지 않은 항목은 완충(CSM)이 버텨야 하니, <b>완충 두께를 봐가며</b> 선택해요.</li></ul>
     <span class="qgo" onclick="document.querySelector('#tabs [data-p=p3]').click()">자세히 → ⑤ 손익 인식 (완충 CSM)</span>
   </div>
 

@@ -660,8 +660,8 @@
       <polyline points="55,63 115,47 175,36 235,54 295,41 355,25 415,17 475,14" fill="none" stroke="#0a7c50" stroke-width="2.6" stroke-linejoin="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"><animate attributeName="stroke-dashoffset" from="1" to="0" dur="1.2s" fill="freeze"/></polyline>
       <circle cx="235" cy="54" r="3" fill="#0a7c50"/><circle cx="475" cy="14" r="3.4" fill="#0a7c50"/>
     </svg></div>
-    <p class="foot" style="margin-top:6px">이익과 적자를 <b>모두 쌓으면(누적)</b> 초록 선이 <b>한 번도 0 아래로 내려가지 않아요</b> — 위기의 해에 잠깐 주춤해도(가운데 점) <b>계약 전 기간으로는 계속 흑자</b>예요.</p>
-    <div class="callout key"><span class="ci">⭐</span><div><span class="clab">핵심</span> <b>한 해로 보면 적자, 전 기간으로 보면 흑자</b> — 한 해 적자로 헷지를 판단하지 마세요.</div></div>
+    <p class="foot" style="margin-top:6px">해마다의 이익과 적자를 <b>누적</b>하면, 위기의 해엔 증가가 잠깐 주춤하지만(가운데 점) 누적선은 계속 위로 쌓여요. 받은 수수료의 합이 비용의 합보다 크면 <b>단년 적자가 전 기간 흑자를 뒤집지 않아요</b>.</p>
+    <div class="callout key"><span class="ci">⭐</span><div><span class="clab">핵심</span> <b>판단 단위는 한 해가 아니라 계약 전 기간</b> — 단년 적자는 비용이 몰린 시점일 뿐, 누적 손익과 구분해서 봐요.</div></div>
   </div>
 
   <div class="panel concept">
@@ -1836,6 +1836,14 @@ function cvTick(){
 }
 function renderCapVol(){ if(!$("cvSvg"))return; cvDraw(); if(!cvRAF && tabOn("p1")) cvTick(); }
 function cvToggle(){ cvPlaying=!cvPlaying; const b=$("cvPlay"); if(b) b.textContent=cvPlaying?'⏸ 정지':'▶ 재생'; }
+const MECH_ITEMS=[
+  {id:'eq',  n:'주가 방향', tool:'선물', vol:300, cost:60,  on:0},
+  {id:'rate',n:'금리 방향', tool:'스왑', vol:160, cost:40,  on:0},
+  {id:'gam', n:'감마',      tool:'옵션', vol:90,  cost:180, on:0},
+  {id:'veg', n:'베가',      tool:'옵션', vol:50,  cost:130, on:0},
+  {id:'beta',n:'펀드 베타', tool:'선물', vol:35,  cost:32,  on:0},
+];
+const MECH_BASE=40; /* 해지율 등 못 막는 잔여 */
 function renderMech(){
   const box=$("mechSvg"); if(!box)return;
   const ch=$("mechChips");

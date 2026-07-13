@@ -177,7 +177,7 @@
   .stairarrow{font-size:11px;font-weight:700;color:var(--muted);margin:3px 0;padding-left:49px}
   /* 패널 제목 유형 배지 */
   .capb{display:inline-block;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;margin-left:6px;vertical-align:1.5px;letter-spacing:.02em}
-  .capb.data{background:#EAF7F1;color:#337A5F} .capb.live{background:#EEF3FE;color:var(--pay)} .capb.ex{background:#FBF4E8;color:var(--leak)}
+  .capb.data{background:#EAF7F1;color:#337A5F} .capb.live{background:#EEF3FE;color:var(--pay)} .capb.ex{background:#FBF4E8;color:var(--leak)} .capb.info{background:#F1EEFB;color:#7B84D4}
   .qstep{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink)}
   .qstep small{color:var(--muted);margin-left:6px;font-size:11px}
   .qstepn{flex:0 0 auto;width:22px;height:22px;border-radius:50%;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:12px}
@@ -434,7 +434,7 @@
 <section class="page" id="pbg">
 
   <div class="panel concept">
-    <div class="cap">'변액보험 보증'이 뭔가요?</div>
+    <div class="cap">'변액보험 보증'이 뭔가요?<span class="capb info">💡 개념</span></div>
     <p class="lede" style="font-size:13.5px"><b>① 변액보험</b> = 고객 돈을 <b>펀드에 투자</b>해요. 그래서 계좌가 <b>오르락내리락</b>해요.</p>
     <p style="font-size:13.5px;color:var(--ink);line-height:1.7;margin:8px 0 0"><b>② 보증(최저보증)</b> = 펀드가 아무리 떨어져도 <b>보험금·연금은 "최소 이만큼"은 반드시 지급</b>한다는 약속이에요. 회사는 그 대가로 <b>보증수수료</b>를 받아요.</p>
     <div class="chartwrap" style="margin-top:8px"><svg viewBox="0 0 560 182" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
@@ -534,7 +534,7 @@
   </div>
 
   <div class="panel">
-    <div class="cap">헷지든 미헷지든 → 결국 자본 변동성에<span>길은 달라도 둘 다 자본 변동성으로</span></div>
+    <div class="cap">헷지든 미헷지든 → 결국 자본 변동성에<span class="capb info">💡 개념</span><span>길은 달라도 둘 다 자본 변동성으로</span></div>
     <div class="chartwrap"><svg viewBox="0 0 560 196" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
       <defs><marker id="faR" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#AAB4C6"/></marker></defs>
       <!-- 미헷지 레인(위): 더 큰 파동 → 완충(CSM) → 자본변동성, 넘치면 터짐 -->
@@ -571,7 +571,7 @@
     <p class="foot" style="margin-top:8px"><b>미헷지</b>는 완충(CSM)이 먼저 받고 <b>넘치면 자본으로</b>, <b>헷지</b>는 작게 확정돼 <b>바로 자본으로</b> 가요. 결국 <b>미헷지의 큰 변동성도 자본에 반영</b>돼요 — 그래서 헷지가 필요해요.</p>
   </div>
   <div class="panel concept">
-    <div class="cap">헷지방법론 — 파생으로 매칭<span>방향=선물·스왑, 감마·꼬리=옵션</span></div>
+    <div class="cap">헷지방법론 — 파생으로 매칭<span class="capb info">💡 개념</span><span>방향=선물·스왑, 감마·꼬리=옵션</span></div>
     <div class="chartwrap"><svg viewBox="0 0 560 100" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
       <defs><linearGradient id="riskGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="var(--pay)"/><stop offset="1" stop-color="var(--leak)"/></linearGradient></defs>
       <text x="30" y="22" font-size="10.5" font-weight="800" fill="var(--pay)" font-family="sans-serif">🛡️ 헷지로 제거</text>
@@ -605,7 +605,7 @@
   </div>
 
   <div class="panel concept">
-    <div class="cap">변동성이 커지면 — 잔여도, 비용도 커져요<span>시장변동성 ↑ → 헷지 후 변동성·비용 ↑</span></div>
+    <div class="cap">변동성이 커지면 — 잔여도, 비용도 커져요<span class="capb info">💡 개념</span><span>시장변동성 ↑ → 헷지 후 변동성·비용 ↑</span></div>
     <p class="lede" style="font-size:13.5px">시장 변동성이 커지면 <b>헷지 후 잔여 변동성</b>도, <b>헷지 비용</b>도 함께 커져요 — 큰 변동성은 피할 수 없는 부담이에요.</p>
     <div class="chartwrap"><svg viewBox="0 0 640 214" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
       <line x1="62" y1="24" x2="62" y2="182" stroke="#AAB4C6" stroke-width="1.5"/>
@@ -632,7 +632,7 @@
   </div>
 
   <div class="panel concept">
-    <div class="cap">그 해 적자여도, 전 기간 누적은 흑자<span>한 해만 보면 안 돼요</span></div>
+    <div class="cap">그 해 적자여도, 전 기간 누적은 흑자<span class="capb info">💡 개념</span><span>한 해만 보면 안 돼요</span></div>
     <p class="lede" style="font-size:13.5px">대부분의 해엔 <b>수수료 &gt; 비용</b>으로 이익(초록), 변동성이 큰 해엔 비용이 수수료를 넘어 <b>적자(빨강)</b>가 나요. 그래서 손익은 <b>계약 전 기간 누적</b>으로 봐요.</p>
     <div style="font-size:12.5px;font-weight:800;color:var(--ink);margin:12px 0 3px">① 해마다 — 대부분 이익, 가끔 적자</div>
     <div class="chartwrap"><svg viewBox="0 0 560 116" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
@@ -663,7 +663,7 @@
   </div>
 
   <div class="panel concept">
-    <div class="cap">구성 안내</div>
+    <div class="cap">구성 안내<span class="capb info">🧭 안내</span></div>
     <div style="display:flex;flex-direction:column;gap:2px">
       <div style="display:flex;gap:10px;align-items:flex-start;padding:6px 0;font-size:12.5px;line-height:1.5"><span class="hn" style="background:#4FAE8C">3</span><div><b>항목별 설명</b> — 각 위험의 <b>원리(그림)</b>와 헷지·노출 성격.</div></div>
       <div style="display:flex;gap:10px;align-items:flex-start;padding:6px 0;font-size:12.5px;line-height:1.5"><span class="hn" style="background:#D69A55">4</span><div><b>헷지수단</b> — 선물·스왑·옵션의 <b>비용과 효과</b>.</div></div>
@@ -680,7 +680,7 @@
 <section class="page on" id="pqa">
 
   <div class="panel">
-    <div class="cap">먼저 알아둘 3가지<span>이 세 가지면 충분해요</span></div>
+    <div class="cap">먼저 알아둘 3가지<span class="capb info">💡 기초</span><span>이 세 가지면 충분해요</span></div>
     <ul class="qalist" style="margin-top:2px">
       <li><b>헷지</b> = 손해 날 쪽 <b>반대편에 미리 걸어두기</b>. 한쪽에서 손실이 나면 반대쪽 이익이 메워요(보험처럼).</li>
       <li><b>수수료 ≠ 비용</b> — 수수료는 <b>받은 돈</b>, 비용은 헷지에 <b>쓰는 돈</b>. 받은 돈으로 보험 드는 셈이에요.</li>
@@ -846,7 +846,7 @@
   </div>
 
   <div class="panel">
-    <div class="cap">한 장 결론 — 이것만 기억하세요<span>왜 중요한가 · 무엇을 할까</span></div>
+    <div class="cap">한 장 결론 — 이것만 기억하세요<span class="capb ex">⭐ 요약</span><span>왜 중요한가 · 무엇을 할까</span></div>
     <div style="font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.03em;margin:2px 0 6px">🎯 명심할 3가지</div>
     <div style="display:flex;flex-direction:column;gap:9px">
       <div class="qstep"><span class="qstepn" style="background:#8A94A6">1</span><div><b>헷지하지 않아도 변동성은 그대로예요.</b><small>완충(CSM)이 흡수하다 소진되면 손익·자본으로 그대로 이어져요</small></div></div>
@@ -868,7 +868,7 @@
     <span class="qchip">❓ 정답 없음</span>
   </div>
   <div class="panel">
-    <div class="cap">게임 1 · 델타 헷지 🎮<span>매일 따라붙기</span></div>
+    <div class="cap">게임 1 · 델타 헷지 🎮<span class="capb data">📊 실측</span><span>매일 따라붙기</span></div>
     <details style="margin-bottom:10px"><summary style="cursor:pointer;font-size:12.5px;font-weight:700;color:var(--pay)">❓ 게임 방법 (처음이라면)</summary>
       <div style="font-size:12px;color:var(--muted);line-height:1.75;margin-top:8px;padding:10px 12px;background:var(--panel2);border-radius:8px">
         · <b>검은 점 = 오늘 시장 위치.</b> 곡선의 <b>꼭대기에서 멀어질수록 손실</b>이 커져요.<br>
@@ -905,7 +905,7 @@
   </div>
 
   <div class="panel">
-    <div class="cap">게임 2 · 노출 vs 헷지 🌊<span>완충(CSM)을 지켜라</span></div>
+    <div class="cap">게임 2 · 노출 vs 헷지 🌊<span class="capb ex">🧮 예시값</span><span>완충(CSM)을 지켜라</span></div>
     <details style="margin-bottom:10px"><summary style="cursor:pointer;font-size:12.5px;font-weight:700;color:var(--pay)">❓ 방법 (30초)</summary>
       <div style="font-size:12px;color:var(--muted);line-height:1.7;margin-top:6px;padding:8px 10px;background:var(--panel2);border-radius:8px">매 라운드 시장이 <b>오르내려요</b>(방향은 <b>선택 후 공개</b>). <b>🌊 노출</b> = 완충으로 받기 — <b>오르면 완충 채우고 이익</b>, <b>내리면</b> 완충 소진, <b>부족하면 손실</b>. <b>🛡️ 헷지</b> = 재원 내고 <b>오르내림 자체를 차단</b>(손익 0, <b>이익도 포기</b>).<br><b>재원 0 = 끝.</b> <b>하락이 상승보다 자주·크게</b> 와요(보증의 속성) — 큰 잠재변동·얇은 완충이면 헷지가 안전.</div>
     </details>
@@ -937,7 +937,7 @@
   </div>
   <div class="callout warn"><span class="ci">⚠️</span><div><span class="clab">주의</span> 여기 숫자는 <b>개념용 예시</b>예요. 자기 회사 값은 <b>입력 가정</b> 탭에서 넣으면 즉시 반영돼요.</div></div>
   <div class="panel">
-    <div class="cap">이렇게 보면 돼요 — 3단계</div>
+    <div class="cap">이렇게 보면 돼요 — 3단계<span class="capb info">🧭 안내</span></div>
     <div style="display:flex;flex-direction:column;gap:10px;margin-top:2px">
       <div class="qstep"><span class="qstepn" style="background:#4FA8A8">1</span><div><b>재원(보증수수료) 확인</b><small>이 예산 안에서 헷지</small></div></div>
       <div class="qstep"><span class="qstepn" style="background:#4FA8A8">2</span><div><b>항목을 헷지 ↔ 노출로 선택</b><small>바로 아래 막대·판정이 즉시 반응</small></div></div>
@@ -946,7 +946,7 @@
     </div>
   </div>
   <div class="panel">
-    <div class="cap">비용 · 흔들림 한눈에<span class="capb ex">예시값</span><span>미헷지 vs 헷지 · 비용</span></div>
+    <div class="cap">비용 · 흔들림 한눈에<span class="capb ex">🧮 예시값</span><span>미헷지 vs 헷지 · 비용</span></div>
     <div>
       <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
         <div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:2px"><span class="hn" style="background:var(--sym);width:20px;height:20px;font-size:12px">1</span><b style="font-size:13.5px;color:var(--ink)">CSM 변동성</b><span class="qchip" style="font-size:10px;padding:2px 7px;background:#FBEEF1;color:var(--bad)">비용 0 · 변동성 큼</span></div><div id="vkNum" style="font-size:30px;font-weight:800;color:var(--sym);letter-spacing:-.5px">±0억</div></div>
@@ -982,7 +982,7 @@
     </div>
   </div>
   <div class="panel">
-    <div class="cap">헷지할 항목 선택<span class="capb data">VFA 기준</span><span>헷지(PL) 또는 CSM 흡수</span></div>
+    <div class="cap">헷지할 항목 선택<span class="capb live">🖐 조작</span><span>헷지(PL) 또는 CSM 흡수</span></div>
     <div class="callout info" style="margin-bottom:8px"><span class="ci">🧾</span><div><span class="clab">회계전제</span> <b>노출(CSM)</b>은 완충 있는 <b>VFA</b>(완충을 쌓아 손실을 먼저 흡수하는 회계 방식)라서 가능한 선택지 — <b>PL법이면 헷지 필수</b>. (→ ⑤)</div></div>
     <div style="margin-bottom:8px;border:1px solid #F1CAD3;background:#FBEEF1;border-radius:10px;padding:11px 12px">
       <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap"><span style="font-size:14px">🔒</span><span class="clab" style="background:var(--bad);color:#fff;font-weight:800;font-size:10px;letter-spacing:.05em;padding:1px 6px;border-radius:5px">순서 제약</span><b style="font-size:12.5px">아래층부터만 — 방향을 막아야 감마도 막을 수 있어요</b></div>
@@ -1002,7 +1002,7 @@
   <p class="lede">실제 시장데이터(KOSPI·<b>국고 20년</b>, 약 6.5년)로 손익을 재현해요. <b>미헷지</b>는 시장 등락이 그대로 손익이 되어 <b>크게 출렁이고</b>, 헷지는 그 흔들림을 줄여요. <span id="simStatus" style="color:var(--muted)">데이터 불러오는 중…</span></p>
   <div class="verdict ok" id="vd"><div class="ic" id="vdi">✓</div><div><h3 id="vdt"></h3><p id="vdp"></p></div></div>
   <div class="panel">
-    <div class="cap">상황별(평상시·위기) 프리셋<span>입력 가정을 한 번에 세팅 · 프론티어가 즉시 이동</span></div>
+    <div class="cap">상황별(평상시·위기) 프리셋<span class="capb live">🖐 조작</span><span>입력 가정을 한 번에 세팅 · 프론티어가 즉시 이동</span></div>
     <div class="pobtns" id="regimeSeg">
       <button data-rg="normal" class="on">🙂 평상시 <small style="opacity:.7">23·24년</small></button>
       <button data-rg="crisis">🌪️ 위기시 <small style="opacity:.7">26년</small></button>
@@ -1038,7 +1038,7 @@
     <p class="foot">음영 띠 = <b>±1σ 범위</b> — 넓은 띠→좁은 띠로 준 만큼이 <b>헷지 효과</b>예요.</p>
   </div>
   <div class="panel">
-    <div class="cap">연도별 변동성 · 감마 손실<span>실제 시장 변동성으로 재현</span></div>
+    <div class="cap">연도별 변동성 · 감마 손실<span class="capb data">📊 실측</span><span>실제 시장 변동성으로 재현</span></div>
     <div class="foot" id="simStrat" style="margin-top:6px"></div>
     <div class="stat" id="simStat"></div>
     <div class="chartwrap"><svg class="sim" id="sim" viewBox="0 0 640 280" preserveAspectRatio="xMidYMid meet"></svg></div>
@@ -1050,7 +1050,7 @@
     <p class="foot"><b>노출(주황)</b>은 변동성 큰 해에 누수가 <b>급증</b>, <b>헷지(파랑)</b>는 <b>미리 정한 비용으로 확정</b> — 불확실을 확정으로 바꾸는 거예요. <span style="opacity:.75">(RV=실현변동성 실측)</span></p>
   </div>
   <div class="panel">
-    <div class="cap">항목별 손익요소<span>현재 전략 · 연 기준</span></div>
+    <div class="cap">항목별 손익요소<span class="capb data">📊 실측</span><span>현재 전략 · 연 기준</span></div>
     <div class="chartwrap"><table class="mtx" id="simBreak"><thead><tr><th>위험 요인</th><th>처리</th><th>연간 손익요소</th><th>비고</th></tr></thead><tbody></tbody></table></div>
     <p class="foot">헷지 항목=확정 비용, 노출 감마=실측 변동성 기반 <b>연평균 누수</b>, 그 외 노출=σ 기여로 표시해요.</p>
   </div>
@@ -1065,7 +1065,7 @@
     <span class="qchip">🛡️ 옵션 = <b>감마·꼬리 · 비쌈</b></span>
   </div>
   <div class="panel">
-    <div class="cap">막는 단계 — 뒤로 갈수록 비싸고 확실</div>
+    <div class="cap">막는 단계 — 뒤로 갈수록 비싸고 확실<span class="capb info">💡 개념</span></div>
     <div style="display:flex;flex-direction:column;gap:10px;margin-top:2px">
       <div class="qstep"><span class="qstepn" style="background:var(--good)">1</span><div><b>방향 막기</b> · 선물·스왑 <span class="qstar" style="color:var(--good)">★</span><small>가장 저렴 · 거의 상시 · 롤오버·베이시스는 감수</small></div></div>
       <div class="qstep"><span class="qstepn" style="background:var(--pay)">2</span><div><b>급변까지 막기</b> · 옵션 <span class="qstar" style="color:var(--pay)">★★</span><small>중간 · 프리미엄 지불</small></div></div>
@@ -1081,7 +1081,7 @@
     </div>
   </div>
   <div class="panel">
-    <div class="cap">주식 위험 수단</div>
+    <div class="cap">주식 위험 수단<span class="capb info">🧰 수단</span></div>
     <table class="mtx imt">
       <thead><tr><th>수단</th><th>비용</th><th>효과</th></tr></thead>
       <tbody>
@@ -1092,7 +1092,7 @@
     </table>
   </div>
   <div class="panel">
-    <div class="cap">금리 위험 수단</div>
+    <div class="cap">금리 위험 수단<span class="capb info">🧰 수단</span></div>
     <table class="mtx imt">
       <thead><tr><th>수단</th><th>비용</th><th>효과</th></tr></thead>
       <tbody>
@@ -1104,7 +1104,7 @@
     </table>
   </div>
   <div class="panel">
-    <div class="cap">수단별 payoff 미리보기<span>바를 움직여 손익 형태를 확인</span></div>
+    <div class="cap">수단별 payoff 미리보기<span class="capb live">🖐 조작</span><span>바를 움직여 손익 형태를 확인</span></div>
     <div class="pobtns" id="poBtns">
       <button data-t="lin" class="on">선물·스왑(선형)</button>
       <button data-t="put">옵션 매수(곡률 방어)</button>
@@ -1127,7 +1127,7 @@
     <span class="qchip">⚠️ 얇을수록 <b>헷지</b></span>
   </div>
   <div class="panel">
-    <div class="cap">회계기준이 <b>선택권을 가름</b><span>VFA vs PL법</span></div>
+    <div class="cap">회계기준이 <b>선택권을 가름</b><span class="capb info">🧾 회계</span><span>VFA vs PL법</span></div>
     <div class="pair2" style="margin:4px 0 2px">
       <div style="border:1.5px solid var(--good);border-radius:10px;padding:11px;background:#EAF7F1">
         <div style="font-weight:800;color:var(--good);font-size:13px">✅ VFA <span style="font-weight:600;font-size:11px">변동수수료접근법·직접참가</span></div>
@@ -1141,7 +1141,7 @@
     <div class="callout key" style="margin-top:9px"><span class="ci">⭐</span><div><span class="clab">핵심</span> 완충이 있으면(<b>VFA</b>) 헷지·노출을 <b>선택</b>, 없으면(<b>PL법</b>) <b>헷지 필수</b>.</div></div>
   </div>
   <div class="panel">
-    <div class="cap">완충이 손익을 지키는 2단계</div>
+    <div class="cap">완충이 손익을 지키는 2단계<span class="capb info">💡 개념</span></div>
     <div style="display:flex;flex-direction:column;gap:10px;margin-top:2px">
       <div class="qstep"><span class="qstepn" style="background:#4FAE8C">1</span><div><b>충격을 CSM 완충이 먼저 흡수</b><small>손익은 조용 · 완충만 깎임</small></div></div>
       <div class="qstep"><span class="qstepn" style="background:var(--bad)">2</span><div><b>완충 소진 → 초과분이 손익으로 전이</b><small>얇을수록 이 단계가 빨리 와요</small></div></div>
@@ -1188,11 +1188,11 @@
   </div>
   <div class="callout warn"><span class="ci">⚠️</span><div><span class="clab">주의</span> <b>노출 = 안전이 아니에요.</b> 손익만 조용할 뿐 <b>자본은 그대로 흔들리고</b>, 완충이 얇으면 손익으로 전이돼요.</div></div>
   <div class="panel">
-    <div class="cap">요인별 원리<span>무엇이 왜 위험인가</span></div>
+    <div class="cap">요인별 원리<span class="capb live">▶ 애니메이션</span><span>무엇이 왜 위험인가</span></div>
     <div id="facAnim"></div>
   </div>
   <div class="panel">
-    <div class="cap">두 경로의 성격</div>
+    <div class="cap">두 경로의 성격<span class="capb info">💡 개념</span></div>
     <div class="grpbox g0"><h4><span class="hn">1</span>헷지 → 투자손익(PL)</h4>
       <p>비용(프리미엄)을 내고 변동을 제거 → <b>손익 예측 가능</b>. 대신 비용은 매년 지출.</p></div>
     <div class="grpbox g1"><h4><span class="hn">2</span>CSM으로 → 완충 흡수</h4>
@@ -1200,7 +1200,7 @@
     <p class="foot"><b>투자손익·보험손익</b>은 이름만 다를 뿐 <b>둘 다 그 해 손익(PL)</b>이에요 — 헷지분은 <b>투자손익</b>, 완충 넘친 노출분은 <b>보험손익</b>으로 잡혀요.</p>
   </div>
   <div class="panel">
-    <div class="cap">항목별 비교<span>현재 입력값 기준</span></div>
+    <div class="cap">항목별 비교<span class="capb ex">🧮 예시값</span><span>현재 입력값 기준</span></div>
     <div class="chartwrap"><table class="mtx" id="cmpTbl"><thead><tr><th>위험 요인</th><th>변동성</th><th>헷지 난이도</th></tr></thead><tbody></tbody></table></div>
     <p class="foot"><b>방향</b>은 크지만 헷지가 쉽고, <b>변동성·펀드·해지율</b>은 어렵고, <b>모형·제도</b>는 불가 — 선택은 <b>⑥ 시뮬레이션</b>에서. (예시값)</p>
   </div>
@@ -1211,22 +1211,22 @@
 <section class="page" id="p8">
   <div class="callout tip"><span class="ci">💡</span><div><span class="clab">팁</span> <b>자기 회사 숫자</b>를 넣어 보세요 — ⑥ 시뮬이 바로 반응해요.</div></div>
   <div class="panel">
-    <div class="cap">파생 결과<span>입력을 바꾸면 실시간 반영 · 깜빡이며 갱신</span></div>
+    <div class="cap">파생 결과<span class="capb live">🔄 실시간</span><span>입력을 바꾸면 실시간 반영 · 깜빡이며 갱신</span></div>
     <div class="derived" id="derived"></div>
     <p class="foot">입력값들이 어떻게 이어지는지 보여줘요 — 헷지 재원은 <b>보증수수료×적립금</b>, 감마 누수/프리미엄은 <b>Γ·변동성</b>에서 나와요.</p>
   </div>
   <div class="panel">
-    <div class="cap"><span class="hn" style="background:#4E8B93">1</span>규모·재원<span>얼마를 굴리고, 예산·완충은 얼마인가</span></div>
+    <div class="cap"><span class="hn" style="background:#4E8B93">1</span>규모·재원<span class="capb live">🖐 입력</span><span>얼마를 굴리고, 예산·완충은 얼마인가</span></div>
     <div class="inhdr"><b>적립금</b>이 모든 bp의 기준. <b>재원 = 수수료(bp) × 적립금</b>. CSM = 완충.</div>
     <div class="sheet" id="sheetFin"></div>
   </div>
   <div class="panel">
-    <div class="cap"><span class="hn" style="background:#4E8B93">2</span>방향·변동성 민감도<span>시장이 움직이면 손익이 얼마나 흔들리나</span></div>
+    <div class="cap"><span class="hn" style="background:#4E8B93">2</span>방향·변동성 민감도<span class="capb live">🖐 입력</span><span>시장이 움직이면 손익이 얼마나 흔들리나</span></div>
     <div class="inhdr"><b>민감도(Δ·DV01)</b> = 방향 손익 크기. <b>Γ·RV·IV</b> = 감마 누수·옵션 프리미엄. RV=실현·IV=내재변동성.</div>
     <div class="sheet" id="sheetVol"></div>
   </div>
   <div class="panel">
-    <div class="cap"><span class="hn" style="background:#4E8B93">3</span>요인별 노출·헷지단가<span>각 위험의 크기와 넘기는 값</span></div>
+    <div class="cap"><span class="hn" style="background:#4E8B93">3</span>요인별 노출·헷지단가<span class="capb live">🖐 입력</span><span>각 위험의 크기와 넘기는 값</span></div>
     <div class="inhdr">각 위험의 <b>노출</b>과 <b>헷지단가</b>. 방향형(Δ·ρ)은 bp로 입력. <b>감마</b>는 직접 입력 X — 델타 헷지 후 드러나는 <b>잔여</b>(③에서 자동). 처리 선택은 <b>⑥</b>에서.</div>
     <div class="chartwrap"><table class="mtx" id="mtx"><thead><tr><th>위험 요인</th><th>노출(흔들림 기여)</th><th>헷지단가</th></tr></thead><tbody></tbody></table></div>
   </div>
@@ -1242,7 +1242,7 @@
   </div>
   <div class="callout tip"><span class="ci">💡</span><div><span class="clab">팁</span> 숫자·수식이 어렵다면 각 항목의 <b>굵은 첫 줄</b>만 읽어도 충분해요.</div></div>
   <div class="panel">
-    <div class="cap">쉬운 요약</div>
+    <div class="cap">쉬운 요약<span class="capb info">💡 개념</span></div>
     <ul class="qalist">
       <li>보증은 <b>하락을 막아 주는 옵션</b>이라, 옵션을 다루는 이론으로 관리해요.</li>
       <li>선물·스왑으로 <b>방향</b>을 막아도 시장이 크게 움직이면 <b>감마</b>가 손실을 내요 — 아무리 자주 조정해도 완전히는 못 없애요.</li>
@@ -1253,7 +1253,7 @@
     <p class="foot">아래는 근거 이론과 문헌(전문 용어 포함)이에요.</p>
   </div>
   <div class="panel refs">
-    <div class="cap">핵심 이론</div>
+    <div class="cap">핵심 이론<span class="capb info">📖 이론</span></div>
     <h3><span class="hn" style="background:#7B84D4">1</span>동적 헷지 (Greeks 기반 복제)</h3>
     <p><b>보증을 델타·로·베가로 흉내 내 상쇄해요.</b> 완전복제는 연속 재조정이 전제지만, 현실은 이산·거래비용으로 잔차가 남아요. (Brennan–Schwartz 1976; Boyle–Hardy 2003)</p>
     <h3><span class="hn" style="background:#7B84D4">2</span>감마와 리밸런싱 손실</h3>

@@ -11,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{--bg:#E9ECF3;--panel:#FFFFFF;--panel2:#EEF1F7;--hair:#DEE3EE;--ink:#16202F;--muted:#566275;
-        /* 색=의미 규약(전 페이지 공통, ② 개념 탭에 범례): pay=헷지(막기·실행·비용·프리미엄) · leak=미헷지/노출(누수·비용) · sym=흔들림의 크기(σ, 헷지 전 큰 파동) · good=안전(작게·완충 흡수·좋은 결과) · bad=위험(큰 변동·완충 소진·터짐) */
+        /* 색=의미 규약(전 페이지 공통, ② 개념 탭에 범례): pay=헷지(막기·실행·비용·프리미엄) · leak=미헷지/노출(누수·비용) · sym=흔들림의 크기(σ, 헷지 전 큰 파동) · good=안전(작게·완충 흡수·좋은 결과) · bad=위험(큰 변동·완충 소진·터짐) · 역할고정: pay=헷지 행위·비용 / good=안전한 결과(잔여·완충 안) */
         --pay:#5C82CF;--leak:#D69A55;--sym:#9282DC;--bad:#D6738A;--good:#4FAE8C;--line:#1B2437;
         --good-ink:#337A5F;--pay-ink:#4A6FC4;--bad-line:#E7B9C2;
         --good-bg:#EAF7F1;--bad-bg:#FBEEF1;--leak-bg:#FBF4E8;--pay-bg:#EEF3FE}
@@ -121,7 +121,7 @@
   .svollab{font-size:9.5px;color:var(--muted);margin-top:3px;font-family:"IBM Plex Sans KR",sans-serif;white-space:nowrap}
   .sname{flex:1 1 130px;font-size:13px;font-weight:600}.sname small{display:block;color:var(--muted);font-size:10.5px;font-weight:400;margin-top:1px}
   .difftag{flex:0 0 auto;font-size:10px;font-weight:700;padding:3px 9px;border-radius:99px;white-space:nowrap}
-  .difftag.good{background:#E4F6EE;color:#4FAE8C}.difftag.pay{background:#E7EFFD;color:#5C82CF}
+  .difftag.good{background:#E4F6EE;color:#337A5F}.difftag.pay{background:#E7EFFD;color:#4A6FC4}
   .difftag.leak{background:#FBEAD2;color:#C7770A}.difftag.muted{background:#EEF1F8;color:#566275}
   table.imt{table-layout:auto} table.imt td{vertical-align:top;padding:11px 8px}
   table.imt th:last-child,table.imt td:last-child{text-align:left;font-weight:400;white-space:normal;line-height:1.55;color:var(--muted);font-size:11.5px}
@@ -176,8 +176,11 @@
   .stairbox.wide{flex-basis:100%}
   .stairarrow{font-size:11px;font-weight:700;color:var(--muted);margin:3px 0;padding-left:49px}
   /* 패널 제목 유형 배지 */
-  .capb{display:inline-block;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;margin-left:6px;vertical-align:1.5px;letter-spacing:.02em}
-  .capb.data{background:#EAF7F1;color:#337A5F} .capb.live{background:#EEF3FE;color:var(--pay)} .capb.ex{background:#FBF4E8;color:var(--leak)} .capb.info{background:#F1EEFB;color:#7B84D4}
+  .capb{display:inline-block;font-size:10px;font-weight:700;padding:1px 6px;border-radius:6px;margin-left:6px;vertical-align:1.5px;letter-spacing:.02em}
+  .capb.data{background:#EAF7F1;color:#337A5F} .capb.live{background:#EEF3FE;color:var(--pay-ink)} .capb.ex{background:#FBF4E8;color:#A96A1C} .capb.info{background:#F1EEFB;color:#5F68B8}
+  body{word-break:keep-all;overflow-wrap:break-word}
+  @media(pointer:coarse){.qgo,.mchip,.pobtns button,.seg2 button{min-height:44px}}
+  @media(max-width:640px){.tabs{-webkit-mask-image:linear-gradient(90deg,#000 90%,transparent);mask-image:linear-gradient(90deg,#000 90%,transparent)}}
   .qstep{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink)}
   .qstep small{color:var(--muted);margin-left:6px;font-size:11px}
   .qstepn{flex:0 0 auto;width:22px;height:22px;border-radius:50%;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:12px}
@@ -229,12 +232,12 @@
   .eftip b{font-family:"IBM Plex Sans KR",sans-serif}
   .c8card{border:1px solid var(--hair);border-radius:10px;padding:10px 12px;margin-bottom:9px;background:#fff}
   .c8head{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;font-weight:700;gap:8px}
-  .c8score{font-size:11.5px;font-weight:800;white-space:nowrap}.c8score small{color:#9aa2b1;font-size:9.5px;font-weight:600}
+  .c8score{font-size:11.5px;font-weight:800;white-space:nowrap}.c8score small{color:var(--muted);font-size:9.5px;font-weight:600}
   .c8chips{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 7px}
   .c8chip{font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;opacity:0;transform:translateY(5px);animation:c8in .45s ease forwards}
   .c8chip.good{background:var(--good-bg);color:var(--good-ink)}
-  .c8chip.bad{background:var(--bad-bg);color:#D6738A}
-  .c8chip.warn{background:var(--leak-bg);color:#D69A55}
+  .c8chip.bad{background:var(--bad-bg);color:#B25668}
+  .c8chip.warn{background:var(--leak-bg);color:#A96A1C}
   .c8chip.neu{background:#EEF1F7;color:var(--muted)}
   @keyframes c8in{to{opacity:1;transform:translateY(0)}}
   .c8track{height:11px;background:#EEF1F7;border-radius:6px;overflow:hidden}
@@ -411,10 +414,7 @@
     <h1>도대체 <em>헷지</em>는 왜??</h1>
     <div class="sub">최저보증 헷지가 왜 필요한지, 보증수수료·비용·손익변동성의 관계, <b>완충(CSM · 손실을 먼저 흡수하는 회계상 여유분)</b>의 역할을 입력값과 실제 시장데이터로 살펴봐요.</div>
   </div>
-  <div style="flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:3px;background:#fff;border:1px solid var(--hair);border-radius:12px;padding:8px 8px 5px">
-    <svg viewBox="0 0 37 37" width="104" height="104" style="display:block;shape-rendering:crispEdges" role="img" aria-label="이 페이지 주소 QR"><rect width="37" height="37" fill="#fff"/><path fill="#16202F" d="M2 2h7v1h-7zM12 2h1v1h-1zM14 2h3v1h-3zM18 2h1v1h-1zM21 2h2v1h-2zM24 2h3v1h-3zM28 2h7v1h-7zM2 3h1v1h-1zM8 3h1v1h-1zM12 3h1v1h-1zM14 3h7v1h-7zM22 3h2v1h-2zM26 3h1v1h-1zM28 3h1v1h-1zM34 3h1v1h-1zM2 4h1v1h-1zM4 4h3v1h-3zM8 4h1v1h-1zM10 4h6v1h-6zM18 4h1v1h-1zM20 4h1v1h-1zM23 4h4v1h-4zM28 4h1v1h-1zM30 4h3v1h-3zM34 4h1v1h-1zM2 5h1v1h-1zM4 5h3v1h-3zM8 5h1v1h-1zM10 5h2v1h-2zM13 5h2v1h-2zM16 5h1v1h-1zM18 5h2v1h-2zM21 5h1v1h-1zM28 5h1v1h-1zM30 5h3v1h-3zM34 5h1v1h-1zM2 6h1v1h-1zM4 6h3v1h-3zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h3v1h-3zM17 6h1v1h-1zM20 6h4v1h-4zM25 6h1v1h-1zM28 6h1v1h-1zM30 6h3v1h-3zM34 6h1v1h-1zM2 7h1v1h-1zM8 7h1v1h-1zM10 7h9v1h-9zM22 7h1v1h-1zM24 7h1v1h-1zM26 7h1v1h-1zM28 7h1v1h-1zM34 7h1v1h-1zM2 8h7v1h-7zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h1v1h-1zM18 8h1v1h-1zM20 8h1v1h-1zM22 8h1v1h-1zM24 8h1v1h-1zM26 8h1v1h-1zM28 8h7v1h-7zM10 9h4v1h-4zM17 9h1v1h-1zM20 9h1v1h-1zM22 9h2v1h-2zM2 10h1v1h-1zM4 10h5v1h-5zM14 10h4v1h-4zM19 10h1v1h-1zM21 10h1v1h-1zM28 10h5v1h-5zM2 11h5v1h-5zM10 11h1v1h-1zM12 11h3v1h-3zM19 11h4v1h-4zM25 11h2v1h-2zM28 11h2v1h-2zM31 11h2v1h-2zM34 11h1v1h-1zM3 12h3v1h-3zM8 12h3v1h-3zM14 12h1v1h-1zM17 12h3v1h-3zM22 12h3v1h-3zM26 12h1v1h-1zM30 12h1v1h-1zM32 12h2v1h-2zM4 13h1v1h-1zM6 13h1v1h-1zM9 13h1v1h-1zM11 13h2v1h-2zM14 13h1v1h-1zM16 13h1v1h-1zM18 13h1v1h-1zM21 13h4v1h-4zM26 13h2v1h-2zM30 13h4v1h-4zM3 14h6v1h-6zM12 14h1v1h-1zM14 14h1v1h-1zM19 14h1v1h-1zM24 14h1v1h-1zM27 14h1v1h-1zM29 14h3v1h-3zM34 14h1v1h-1zM2 15h2v1h-2zM10 15h3v1h-3zM15 15h7v1h-7zM25 15h1v1h-1zM28 15h1v1h-1zM32 15h3v1h-3zM2 16h2v1h-2zM5 16h1v1h-1zM7 16h2v1h-2zM11 16h1v1h-1zM13 16h2v1h-2zM16 16h1v1h-1zM20 16h1v1h-1zM22 16h3v1h-3zM27 16h2v1h-2zM31 16h3v1h-3zM3 17h1v1h-1zM5 17h2v1h-2zM10 17h4v1h-4zM15 17h2v1h-2zM18 17h1v1h-1zM20 17h1v1h-1zM22 17h3v1h-3zM26 17h3v1h-3zM30 17h3v1h-3zM3 18h2v1h-2zM6 18h1v1h-1zM8 18h2v1h-2zM11 18h2v1h-2zM15 18h1v1h-1zM19 18h1v1h-1zM24 18h2v1h-2zM27 18h1v1h-1zM29 18h2v1h-2zM34 18h1v1h-1zM2 19h1v1h-1zM5 19h1v1h-1zM7 19h1v1h-1zM11 19h2v1h-2zM14 19h1v1h-1zM18 19h1v1h-1zM21 19h2v1h-2zM25 19h2v1h-2zM28 19h2v1h-2zM31 19h2v1h-2zM34 19h1v1h-1zM5 20h5v1h-5zM11 20h8v1h-8zM20 20h1v1h-1zM23 20h1v1h-1zM26 20h5v1h-5zM32 20h2v1h-2zM2 21h1v1h-1zM4 21h1v1h-1zM6 21h1v1h-1zM10 21h2v1h-2zM14 21h1v1h-1zM17 21h1v1h-1zM21 21h3v1h-3zM25 21h2v1h-2zM28 21h5v1h-5zM34 21h1v1h-1zM4 22h2v1h-2zM7 22h3v1h-3zM12 22h4v1h-4zM19 22h1v1h-1zM21 22h1v1h-1zM24 22h1v1h-1zM26 22h2v1h-2zM29 22h3v1h-3zM2 23h1v1h-1zM12 23h3v1h-3zM16 23h2v1h-2zM21 23h2v1h-2zM25 23h1v1h-1zM28 23h2v1h-2zM32 23h1v1h-1zM34 23h1v1h-1zM2 24h1v1h-1zM4 24h1v1h-1zM6 24h1v1h-1zM8 24h1v1h-1zM12 24h1v1h-1zM14 24h1v1h-1zM16 24h3v1h-3zM22 24h2v1h-2zM28 24h1v1h-1zM33 24h1v1h-1zM2 25h1v1h-1zM4 25h1v1h-1zM6 25h1v1h-1zM9 25h2v1h-2zM12 25h3v1h-3zM16 25h1v1h-1zM18 25h1v1h-1zM21 25h3v1h-3zM28 25h1v1h-1zM31 25h2v1h-2zM34 25h1v1h-1zM2 26h1v1h-1zM4 26h1v1h-1zM8 26h2v1h-2zM11 26h1v1h-1zM14 26h2v1h-2zM19 26h1v1h-1zM24 26h1v1h-1zM26 26h5v1h-5zM34 26h1v1h-1zM10 27h1v1h-1zM12 27h1v1h-1zM16 27h1v1h-1zM18 27h1v1h-1zM20 27h2v1h-2zM23 27h4v1h-4zM30 27h1v1h-1zM32 27h3v1h-3zM2 28h7v1h-7zM11 28h1v1h-1zM15 28h3v1h-3zM19 28h2v1h-2zM23 28h4v1h-4zM28 28h1v1h-1zM30 28h1v1h-1zM32 28h2v1h-2zM2 29h1v1h-1zM8 29h1v1h-1zM10 29h1v1h-1zM12 29h2v1h-2zM15 29h1v1h-1zM18 29h1v1h-1zM20 29h2v1h-2zM23 29h2v1h-2zM26 29h1v1h-1zM30 29h4v1h-4zM2 30h1v1h-1zM4 30h3v1h-3zM8 30h1v1h-1zM10 30h4v1h-4zM16 30h1v1h-1zM19 30h1v1h-1zM24 30h1v1h-1zM26 30h6v1h-6zM2 31h1v1h-1zM4 31h3v1h-3zM8 31h1v1h-1zM10 31h1v1h-1zM13 31h2v1h-2zM16 31h1v1h-1zM20 31h4v1h-4zM26 31h2v1h-2zM30 31h2v1h-2zM33 31h2v1h-2zM2 32h1v1h-1zM4 32h3v1h-3zM8 32h1v1h-1zM10 32h3v1h-3zM16 32h2v1h-2zM19 32h2v1h-2zM23 32h2v1h-2zM28 32h2v1h-2zM32 32h1v1h-1zM2 33h1v1h-1zM8 33h1v1h-1zM12 33h2v1h-2zM17 33h2v1h-2zM20 33h1v1h-1zM22 33h4v1h-4zM27 33h2v1h-2zM30 33h3v1h-3zM2 34h7v1h-7zM10 34h2v1h-2zM14 34h2v1h-2zM17 34h1v1h-1zM19 34h2v1h-2zM24 34h3v1h-3zM28 34h2v1h-2zM33 34h1v1h-1z"/></svg>
-    <div style="font-size:9.5px;font-weight:700;color:var(--muted);text-align:center;line-height:1.25">📱 스캔·공유</div>
-  </div>
+  
 </div>
 
 <div class="tabs" id="tabs">
@@ -494,12 +494,12 @@
   </div>
 
   <div class="panel concept">
-    <div class="cap">2008년, 실제로 이렇게 갈렸어요<span class="capb ex">🌍 실제 주가</span><span>같이 급락 → 회복이 갈림</span></div>
+    <div class="cap">2008년, 실제로 이렇게 갈렸어요<span class="capb data">🌍 실제 주가</span><span>같이 급락 → 회복이 갈림</span></div>
     <p class="lede" style="font-size:13.5px">2008 금융위기 — 세 보험사 다 급락했지만, <b>보증 리스크를 어떻게 다뤘느냐</b>가 <b>그 뒤 회복과 대가</b>를 갈랐어요.</p>
     <div class="chartwrap" style="text-align:left;padding:14px 13px 12px">
       <div style="display:flex;justify-content:space-between;align-items:baseline;font-size:11px;color:var(--muted);margin-bottom:10px;flex-wrap:wrap;gap:4px">
         <b style="font-weight:700">보증리스크 대응 → 결과 (2008 위기)</b>
-        <span style="font-weight:700;color:#9aa2b1">✅ 잘함 · ⚠️ 부분 · ❌ 대가</span>
+        <span style="font-weight:700;color:var(--muted)">✅ 잘함 · ⚠️ 부분 · ❌ 대가</span>
       </div>
       <div id="cases2008"></div>
     </div>
@@ -547,8 +547,8 @@
       <text x="261" y="49" text-anchor="middle" font-size="13.5" font-weight="800" fill="#337A5F">완충</text>
       <text x="261" y="65" text-anchor="middle" font-size="10.5" fill="#337A5F">CSM</text>
       <text x="261" y="19" text-anchor="middle" font-size="12" opacity="0"><animate attributeName="opacity" values="0;1;0" dur="2s" begin="0.6s" repeatCount="indefinite"/>💧</text>
-      <path d="M306 52 C350 52 372 70 420 86" fill="none" stroke="#AAB4C6" stroke-width="1.5" marker-end="url(#faR)"/>
-      <text x="360" y="98" text-anchor="middle" font-size="8.5" fill="var(--bad)" font-weight="700">넘치면 손익으로</text>
+      <path d="M306 52 C350 52 372 70 420 86" fill="none" stroke="var(--bad)" stroke-width="2" marker-end="url(#faR)"/>
+      <text x="360" y="98" text-anchor="middle" font-size="10.5" fill="var(--bad)" font-weight="800">넘치면 손익으로</text>
       <text x="406" y="80" text-anchor="middle" font-size="16"><animate attributeName="opacity" values="0.15;1;0.15" dur="1.6s" begin="0.8s" repeatCount="indefinite"/>💥</text>
       <!-- 헷지 레인(아래): 작은 파동 → 헷지손익 → 자본변동성 -->
       <text x="5" y="142" font-size="11.5" font-weight="800" fill="#337A5F">헷지 시</text>
@@ -562,13 +562,13 @@
       <!-- 공통 종착: 자본 변동성 -->
       <rect x="424" y="62" width="120" height="66" rx="10" fill="#EEF3FE" stroke="#9DBBF3" stroke-width="1.5"/>
       <text x="484" y="92" text-anchor="middle" font-size="12.5" font-weight="800" fill="#4A6FC4">🏛️ 자본 변동성</text>
-      <text x="484" y="109" text-anchor="middle" font-size="9" fill="var(--muted)">둘 다 여기로</text>
+      <text x="484" y="109" text-anchor="middle" font-size="10.5" fill="var(--muted)">둘 다 여기로</text>
     </svg></div>
     <div class="chartleg">
       <span class="lk"><i class="ln" style="background:var(--sym)"></i>미헷지 → 더 큰 변동성 → <b>완충(CSM)</b> → 자본 변동성</span>
       <span class="lk"><i class="ln" style="background:var(--good)"></i>헷지 → 헷지손익 → <b>바로</b> 자본 변동성 (작게 확정)</span>
     </div>
-    <p class="foot" style="margin-top:8px"><b>미헷지</b>는 완충(CSM)이 먼저 받고 <b>넘치면 자본으로</b>, <b>헷지</b>는 작게 확정돼 <b>바로 자본으로</b> 가요. 결국 <b>미헷지의 큰 변동성도 자본에 반영</b>돼요 — 그래서 헷지가 필요해요.</p>
+    <p class="foot" style="margin-top:8px"><b>미헷지</b>는 완충(CSM)이 먼저 받고 <b>넘치면 자본으로</b>, <b>헷지</b>는 작게 확정돼 <b>바로 자본으로</b> 가요. 완충이 소진되면 <b>미헷지 변동성이 자본에 반영</b>돼요 — 그래서 헷지가 필요해요.</p>
   </div>
   <div class="panel concept">
     <div class="cap">헷지방법론 — 파생으로 매칭<span class="capb info">💡 개념</span><span>방향=선물·스왑, 감마·꼬리=옵션</span></div>
@@ -577,9 +577,9 @@
       <text x="30" y="22" font-size="10.5" font-weight="800" fill="var(--pay)" font-family="sans-serif">🛡️ 헷지로 제거</text>
       <text x="530" y="22" text-anchor="end" font-size="10.5" font-weight="800" fill="var(--leak)" font-family="sans-serif">🛟 노출(완충)</text>
       <rect x="30" y="32" width="500" height="12" rx="6" fill="url(#riskGrad)" opacity="0.85"/>
-      <g opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="0.2s" fill="freeze"/><circle cx="96" cy="38" r="10" fill="#fff" stroke="var(--pay)" stroke-width="2.5"/><text x="96" y="42" text-anchor="middle" font-size="11" font-weight="800" fill="var(--pay)" font-family="sans-serif">1</text><text x="96" y="64" text-anchor="middle" font-size="10.5" font-weight="800" fill="var(--pay)" font-family="sans-serif">방향</text><text x="96" y="79" text-anchor="middle" font-size="8.5" fill="var(--muted)" font-family="sans-serif">선물·스왑·쌈</text></g>
-      <g opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="0.45s" fill="freeze"/><circle cx="290" cy="38" r="10" fill="#fff" stroke="var(--sym)" stroke-width="2.5"/><text x="290" y="42" text-anchor="middle" font-size="11" font-weight="800" fill="var(--sym)" font-family="sans-serif">2</text><text x="290" y="64" text-anchor="middle" font-size="10.5" font-weight="800" fill="var(--sym)" font-family="sans-serif">감마</text><text x="290" y="79" text-anchor="middle" font-size="8.5" fill="var(--muted)" font-family="sans-serif">옵션·비쌈</text></g>
-      <g opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="0.7s" fill="freeze"/><circle cx="486" cy="38" r="10" fill="#fff" stroke="var(--leak)" stroke-width="2.5"/><text x="486" y="42" text-anchor="middle" font-size="11" font-weight="800" fill="var(--leak)" font-family="sans-serif">3</text><text x="486" y="64" text-anchor="middle" font-size="10.5" font-weight="800" fill="var(--leak)" font-family="sans-serif">기타</text><text x="486" y="79" text-anchor="middle" font-size="8.5" fill="var(--muted)" font-family="sans-serif">이전 불가</text></g>
+      <g opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="0.2s" fill="freeze"/><circle cx="96" cy="38" r="10" fill="#fff" stroke="var(--pay)" stroke-width="2.5"/><text x="96" y="42" text-anchor="middle" font-size="11" font-weight="800" fill="var(--pay)" font-family="sans-serif">1</text><text x="96" y="64" text-anchor="middle" font-size="10.5" font-weight="800" fill="var(--pay)" font-family="sans-serif">방향</text><text x="96" y="79" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="sans-serif">선물·스왑 · 저렴</text></g>
+      <g opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="0.45s" fill="freeze"/><circle cx="290" cy="38" r="10" fill="#fff" stroke="var(--sym)" stroke-width="2.5"/><text x="290" y="42" text-anchor="middle" font-size="11" font-weight="800" fill="var(--sym)" font-family="sans-serif">2</text><text x="290" y="64" text-anchor="middle" font-size="10.5" font-weight="800" fill="var(--sym)" font-family="sans-serif">감마</text><text x="290" y="79" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="sans-serif">옵션·비쌈</text></g>
+      <g opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="0.7s" fill="freeze"/><circle cx="486" cy="38" r="10" fill="#fff" stroke="var(--leak)" stroke-width="2.5"/><text x="486" y="42" text-anchor="middle" font-size="11" font-weight="800" fill="var(--leak)" font-family="sans-serif">3</text><text x="486" y="64" text-anchor="middle" font-size="10.5" font-weight="800" fill="var(--leak)" font-family="sans-serif">기타</text><text x="486" y="79" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="sans-serif">이전 불가</text></g>
     </svg></div>
     <div class="grpbox g0"><h4><span class="hn">1</span>방향 위험 — 헷지가 저렴</h4>
       <p>주가·금리가 움직이면 손익도 <b>곧바로 따라</b> 움직여요(1차 민감도). 선물·스왑으로 <b>추가 비용 없이 제거</b>해서 보통 헷지해요.</p></div>
@@ -591,19 +591,21 @@
   </div>
 
   <div class="panel concept">
-    <div class="cap">숫자로 직접 — 헷지 항목을 추가해 보세요<span class="capb live">🖐 조작</span><span>시뮬과 같은 로직 · 예시값</span></div>
+    <div class="cap">숫자로 직접 — 헷지 항목을 추가해 보세요<span class="capb live">🖐 조작</span><span>개념 예시값</span></div>
     <p class="lede" style="font-size:13.5px">미헷지 변동성은 <b>방향(주가·금리)</b>이 대부분이에요. 항목을 켤수록 <b>흔들림 ↓ · 비용 ↑</b> — 방향(선물·스왑)은 싸고, 감마·베가(옵션)는 비싸요. 직접 켜 보세요.</p>
     <div id="mechChips" style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px"></div>
     <div class="chartwrap"><svg id="mechSvg" viewBox="0 0 560 108" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"></svg></div>
     <div class="chartleg">
       <span class="lk"><i style="background:var(--sym)"></i>아직 헷지 전 변동성 (항목 추가로 제거)</span>
-      <span class="lk"><i style="background:var(--good);opacity:0.5"></i>못 막는 잔여(해지율 등)</span>
+      <span class="lk"><i style="background:var(--sym);opacity:0.45"></i>못 막는 잔여(모형·제도 등)</span>
       <span class="lk"><i style="background:var(--pay)"></i>든 비용</span>
     </div>
     <div class="foot" id="mechRead" style="margin-top:6px"></div>
-    <div class="callout key"><span class="ci">⭐</span><div><span class="clab">핵심</span> 흔들림은 <b>0이 되지 않고</b>, 비용은 <b>받은 수수료(재원)</b>가 덮어요. 정밀 조정은 <b>⑥ 시뮬레이션</b>에서.</div></div>
+    <div class="callout key"><span class="ci">⭐</span><div><span class="clab">핵심</span> 흔들림은 <b>0이 되지 않고</b>, 비용은 대체로 <b>받은 수수료(재원) 안</b>이에요. 정밀 조정은 <b>⑥ 시뮬레이션</b>에서.</div></div>
   </div>
 
+  <details class="deep">
+    <summary>🔬 더 보기 — 변동성·비용 관계 · 누적 손익 <small>(선택)</small></summary>
   <div class="panel concept">
     <div class="cap">변동성이 커지면 — 잔여도, 비용도 커져요<span class="capb info">💡 개념</span><span>시장변동성 ↑ → 헷지 후 변동성·비용 ↑</span></div>
     <p class="lede" style="font-size:13.5px">시장 변동성이 커지면 <b>헷지 후 잔여 변동성</b>도, <b>헷지 비용</b>도 함께 커져요 — 큰 변동성은 피할 수 없는 부담이에요.</p>
@@ -662,6 +664,8 @@
     <div class="callout key"><span class="ci">⭐</span><div><span class="clab">핵심</span> <b>판단 단위는 한 해가 아니라 계약 전 기간</b> — 단년 적자는 비용이 몰린 시점일 뿐, 누적 손익과 구분해서 봐요.</div></div>
   </div>
 
+  </details>
+
   <div class="panel concept">
     <div class="cap">구성 안내<span class="capb info">🧭 안내</span></div>
     <div style="display:flex;flex-direction:column;gap:2px">
@@ -692,7 +696,7 @@
   <div class="panel">
     <div class="qah"><div class="qan">Q1</div><div class="qat">헷지를 왜 해야 하나요? 🤔</div></div>
     <div class="chartwrap"><svg viewBox="0 0 560 164" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
-      <text x="280" y="18" text-anchor="middle" font-size="12" font-weight="800" fill="var(--bad)">같은 시장 충격이 오면 ▼<animate attributeName="opacity" values="1;.45;1" dur="1.5s" repeatCount="indefinite"/></text>
+      <text x="280" y="18" text-anchor="middle" font-size="12" font-weight="800" fill="var(--bad)">같은 시장 충격이 오면 ▼</text>
       <line x1="96" y1="138" x2="464" y2="138" stroke="#D6DCE8" stroke-width="1.2"/>
       <text x="150" y="36" text-anchor="middle" font-size="11.5" font-weight="800" fill="var(--bad)">헷지를 안 할 경우</text>
       <rect x="106" y="44" width="88" height="0" rx="6" fill="#F7C9D1"><animate attributeName="height" values="0;0;80;80;0" keyTimes="0;0.28;0.5;0.82;1" dur="2.8s" repeatCount="indefinite"/></rect>
@@ -754,8 +758,8 @@
       <!-- 메인 파동: 큰 흔들림 → 좁게 수축(헷지가 흔들림을 줄임) -->
       <path fill="none" stroke="var(--good)" stroke-width="2.6" stroke-linejoin="round"><animate attributeName="d" dur="5s" repeatCount="indefinite" keyTimes="0;0.4;0.82;1" values="M20 65 L50 34 L90 96 L130 36 L170 92 L210 30 L250 14 L290 98 L330 40 L370 88 L410 44 L450 84 L490 48 L540 65 ; M20 65 L50 59 L90 71 L130 60 L170 70 L210 61 L250 43 L290 72 L330 62 L370 69 L410 62 L450 68 L490 63 L540 65 ; M20 65 L50 59 L90 71 L130 60 L170 70 L210 61 L250 43 L290 72 L330 62 L370 69 L410 62 L450 68 L490 63 L540 65 ; M20 65 L50 34 L90 96 L130 36 L170 92 L210 30 L250 14 L290 98 L330 40 L370 88 L410 44 L450 84 L490 48 L540 65"/></path>
       <!-- 잔여 스파이크(급변 땐 조금 샘 = 0 아님) -->
-      <circle cx="250" cy="43" r="4" fill="var(--leak)" stroke="#fff" stroke-width="1.4"><animate attributeName="r" values="4;6;4" dur="1.6s" repeatCount="indefinite"/></circle>
-      <text x="250" y="30" fill="var(--leak)" font-size="10" text-anchor="middle" font-weight="700">급변 시 일부 남음 (0 아님)</text>
+      <circle cx="250" cy="43" r="4" fill="var(--sym)" stroke="#fff" stroke-width="1.4"><animate attributeName="r" values="4;6;4" dur="1.6s" repeatCount="indefinite"/></circle>
+      <text x="250" y="30" fill="var(--sym)" font-size="11" text-anchor="middle" font-weight="700">급변 시 일부 남음 (0 아님)</text>
       <text x="24" y="118" fill="var(--sym)" font-size="9.5" opacity="0.7">헷지 전: 크게 흔들림</text>
       <text x="536" y="118" fill="var(--good)" font-size="10" font-weight="700" text-anchor="end">헷지 후: 좁게만 흔들림 ↓</text>
     </svg></div>
@@ -772,35 +776,35 @@
     <div class="chartwrap"><svg viewBox="0 0 560 226" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
       <text x="280" y="24" text-anchor="middle" font-size="12" font-weight="800" fill="var(--muted)" font-family="sans-serif">예: 주가가 내리면 ▼</text>
       <text x="60" y="98" text-anchor="middle" font-size="13" font-weight="800" fill="var(--ink)" font-family="sans-serif">📉 주가</text>
-      <text x="60" y="120" text-anchor="middle" font-size="16" font-weight="800" fill="var(--bad)" font-family="sans-serif">−10%<animate attributeName="opacity" values="0;1;1;1;0" keyTimes="0;0.08;0.1;0.9;1" dur="5s" repeatCount="indefinite"/></text>
+      <text x="60" y="120" text-anchor="middle" font-size="16" font-weight="800" fill="var(--bad)" font-family="sans-serif">−10%<animate attributeName="opacity" values="0;1;1;1;0" keyTimes="0;0.08;0.1;0.96;1" dur="5s" repeatCount="indefinite"/></text>
       <path d="M112 108 L138 108 M131 101 L139 108 L131 115" stroke="#AAB4C6" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
       <line x1="152" y1="108" x2="362" y2="108" stroke="#CBD2DE" stroke-width="1.2"/>
-      <rect x="172" y="108" width="56" height="0" rx="5" fill="var(--sym)" opacity="0.9"><animate attributeName="height" values="0;0;52;52;0" keyTimes="0;0.13;0.28;0.9;1" dur="5s" repeatCount="indefinite"/></rect>
-      <text x="200" y="180" text-anchor="middle" font-size="13" font-weight="800" fill="var(--sym)" font-family="sans-serif" opacity="0">−100<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.26;0.32;0.9;1" dur="5s" repeatCount="indefinite"/></text>
+      <rect x="172" y="108" width="56" height="0" rx="5" fill="var(--sym)" opacity="0.9"><animate attributeName="height" values="0;0;52;52;0" keyTimes="0;0.13;0.28;0.96;1" dur="5s" repeatCount="indefinite"/></rect>
+      <text x="200" y="180" text-anchor="middle" font-size="13" font-weight="800" fill="var(--sym)" font-family="sans-serif" opacity="0">−100<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.26;0.32;0.96;1" dur="5s" repeatCount="indefinite"/></text>
       <text x="200" y="99" text-anchor="middle" font-size="10" font-weight="800" fill="var(--sym)" font-family="sans-serif">순포지션</text>
       <text x="200" y="86" text-anchor="middle" font-size="9" fill="var(--muted)" font-family="sans-serif">(펀드−부채) 변동</text>
       <text x="252" y="114" text-anchor="middle" font-size="17" font-weight="800" fill="var(--muted)" font-family="sans-serif">＋</text>
-      <rect x="278" y="108" width="56" height="0" rx="0" fill="var(--good)" opacity="0.92"><animate attributeName="y" values="108;108;71.6;71.6;108" keyTimes="0;0.34;0.46;0.9;1" dur="5s" repeatCount="indefinite"/><animate attributeName="height" values="0;0;36.4;36.4;0" keyTimes="0;0.34;0.46;0.9;1" dur="5s" repeatCount="indefinite"/></rect>
-      <rect x="278" y="71.6" width="56" height="0" fill="var(--pay)" opacity="0.92"><animate attributeName="y" values="71.6;71.6;61.2;61.2;71.6" keyTimes="0;0.46;0.54;0.9;1" dur="5s" repeatCount="indefinite"/><animate attributeName="height" values="0;0;10.4;10.4;0" keyTimes="0;0.46;0.54;0.9;1" dur="5s" repeatCount="indefinite"/></rect>
-      <rect x="278" y="61.2" width="56" height="0" fill="var(--leak)" opacity="0.92"><animate attributeName="y" values="61.2;61.2;56;56;61.2" keyTimes="0;0.54;0.6;0.9;1" dur="5s" repeatCount="indefinite"/><animate attributeName="height" values="0;0;5.2;5.2;0" keyTimes="0;0.54;0.6;0.9;1" dur="5s" repeatCount="indefinite"/></rect>
-      <text x="306" y="48" text-anchor="middle" font-size="13" font-weight="800" fill="var(--pay)" font-family="sans-serif" opacity="0">+100<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.6;0.66;0.9;1" dur="5s" repeatCount="indefinite"/></text>
+      <rect x="278" y="108" width="56" height="0" rx="0" fill="var(--pay)" opacity="0.92"><animate attributeName="y" values="108;108;71.6;71.6;108" keyTimes="0;0.34;0.46;0.96;1" dur="5s" repeatCount="indefinite"/><animate attributeName="height" values="0;0;36.4;36.4;0" keyTimes="0;0.34;0.46;0.96;1" dur="5s" repeatCount="indefinite"/></rect>
+      <rect x="278" y="71.6" width="56" height="0" fill="var(--sym)" opacity="0.92"><animate attributeName="y" values="71.6;71.6;61.2;61.2;71.6" keyTimes="0;0.46;0.54;0.96;1" dur="5s" repeatCount="indefinite"/><animate attributeName="height" values="0;0;10.4;10.4;0" keyTimes="0;0.46;0.54;0.96;1" dur="5s" repeatCount="indefinite"/></rect>
+      <rect x="278" y="61.2" width="56" height="0" fill="var(--leak)" opacity="0.92"><animate attributeName="y" values="61.2;61.2;56;56;61.2" keyTimes="0;0.54;0.6;0.96;1" dur="5s" repeatCount="indefinite"/><animate attributeName="height" values="0;0;5.2;5.2;0" keyTimes="0;0.54;0.6;0.96;1" dur="5s" repeatCount="indefinite"/></rect>
+      <text x="306" y="48" text-anchor="middle" font-size="13" font-weight="800" fill="var(--pay)" font-family="sans-serif" opacity="0">+100<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.6;0.66;0.96;1" dur="5s" repeatCount="indefinite"/></text>
       <text x="306" y="99" text-anchor="middle" font-size="10" font-weight="800" fill="var(--pay)" font-family="sans-serif">파생상품</text>
       <g font-family="sans-serif" font-size="9" font-weight="700">
-        <rect x="280" y="118" width="7" height="7" rx="2" fill="var(--good)"/><text x="291" y="125" fill="#337A5F">방향 +70 · 선물·스왑</text>
-        <rect x="280" y="131" width="7" height="7" rx="2" fill="var(--pay)"/><text x="291" y="138" fill="var(--pay)">급변 +20 · 옵션</text>
+        <rect x="280" y="118" width="7" height="7" rx="2" fill="var(--pay)"/><text x="291" y="125" fill="var(--pay)">방향 +70 · 선물·스왑</text>
+        <rect x="280" y="131" width="7" height="7" rx="2" fill="var(--sym)"/><text x="291" y="138" fill="var(--sym)">급변 +20 · 옵션</text>
         <rect x="280" y="144" width="7" height="7" rx="2" fill="var(--leak)"/><text x="291" y="151" fill="var(--leak)">기타 +10 · 맞춤스왑</text>
       </g>
       <text x="376" y="114" text-anchor="middle" font-size="17" font-weight="800" fill="var(--muted)" font-family="sans-serif">＝</text>
-      <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.66;0.74;0.9;1" dur="5s" repeatCount="indefinite"/>
+      <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.6;0.68;0.96;1" dur="5s" repeatCount="indefinite"/>
         <rect x="392" y="84" width="150" height="48" rx="9" fill="#EAF7F1" stroke="#93D4B4" stroke-width="1.5"/>
-        <text x="467" y="104" text-anchor="middle" font-size="13" font-weight="800" fill="#337A5F" font-family="sans-serif">합계 0 ✓</text>
-        <text x="467" y="121" text-anchor="middle" font-size="9.5" fill="#337A5F" font-family="sans-serif">자본 영향 없음</text>
+        <text x="467" y="104" text-anchor="middle" font-size="13" font-weight="800" fill="#337A5F" font-family="sans-serif">합계 ≈ 0 ✓</text>
+        <text x="467" y="121" text-anchor="middle" font-size="9.5" fill="#337A5F" font-family="sans-serif">잔여만 조금 남아요</text>
       </g>
       <text x="280" y="214" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="sans-serif">오를 땐 반대로 — 순포지션 +100을 파생 −100이 받아요. 어느 쪽이든 서로 지워져요.</text>
     </svg></div>
     <div style="display:flex;flex-direction:column;gap:9px;margin:6px 0 12px">
-      <div class="qstep"><span class="qstepn" style="background:var(--good)">1</span><div><b>방향 막기</b> · 선물·스왑 <span style="color:var(--muted)">— 가장 저렴 · 필수</span></div></div>
-      <div class="qstep"><span class="qstepn" style="background:var(--pay)">2</span><div><b>급변 막기</b> · 옵션 <span style="color:var(--muted)">— 중간 비용</span></div></div>
+      <div class="qstep"><span class="qstepn" style="background:var(--pay)">1</span><div><b>방향 막기</b> · 선물·스왑 <span style="color:var(--muted)">— 가장 저렴 · 필수</span></div></div>
+      <div class="qstep"><span class="qstepn" style="background:var(--sym)">2</span><div><b>급변 막기</b> · 옵션 <span style="color:var(--muted)">— 중간 비용</span></div></div>
       <div class="qstep"><span class="qstepn" style="background:var(--leak)">3</span><div><b>기타 막기</b> · 맞춤스왑 등 <span style="color:var(--muted)">— 펀드 추적오차 등 · 일부만 가능</span></div></div>
     </div>
     <ul class="qalist"><li><b>순포지션(펀드−부채)의 변동을 파생상품이 정반대로 받아</b> 서로 지워요 — 이게 매칭이에요.</li><li>방향은 <b>싸고 필수</b>, 급변·기타는 <b>비싸서 완충 봐가며</b> 골라 조합해요.</li></ul>
@@ -844,7 +848,7 @@
   <div class="panel">
     <div class="qah"><div class="qan">Q6</div><div class="qat">그래서 얼마나 막아야 하나요? 🎯</div></div>
     <div class="q6flip">
-      <div class="q6right" style="text-align:center">정답은 <b>예산(받은 수수료) 안에서</b> 항목을 골라 <b>가장 덜 흔들리게</b> — 방향부터 싸게, 급변·꼬리는 완충 봐가며.</div>
+      <div class="q6right" style="text-align:center">핵심은 <b>예산(받은 수수료) 안에서</b> 항목을 골라 <b>가장 덜 흔들리게</b> — 방향부터 싸게, 급변·기타는 완충 봐가며.</div>
     </div>
     <div class="chartwrap" style="margin-top:10px"><svg viewBox="0 0 560 150" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
       <line x1="54" y1="20" x2="54" y2="120" stroke="#AAB4C6" stroke-width="1.2"/>
@@ -925,7 +929,7 @@
   <div class="panel">
     <div class="cap">게임 2 · 노출 vs 헷지 🌊<span class="capb ex">🧮 예시값</span><span>완충(CSM)을 지켜라</span></div>
     <details style="margin-bottom:10px"><summary style="cursor:pointer;font-size:12.5px;font-weight:700;color:var(--pay)">❓ 방법 (30초)</summary>
-      <div style="font-size:12px;color:var(--muted);line-height:1.7;margin-top:6px;padding:8px 10px;background:var(--panel2);border-radius:8px">매 라운드 시장이 <b>오르내려요</b>(방향은 <b>선택 후 공개</b>). <b>🌊 노출</b> = 완충으로 받기 — <b>오르면 완충 채우고 이익</b>, <b>내리면</b> 완충 소진, <b>부족하면 손실</b>. <b>🛡️ 헷지</b> = 재원 내고 <b>오르내림 자체를 차단</b>(손익 0, <b>이익도 포기</b>).<br><b>재원 0 = 끝.</b> <b>하락이 상승보다 자주·크게</b> 와요(보증의 속성) — 큰 잠재변동·얇은 완충이면 헷지가 안전.</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.7;margin-top:6px;padding:8px 10px;background:var(--panel2);border-radius:8px">매 라운드 시장이 <b>오르내려요</b>(방향은 <b>선택 후 공개</b>). <b>🌊 노출</b> = 완충으로 받기 — <b>오르면 완충 채우고 이익</b>, <b>내리면</b> 완충 소진, <b>부족하면 손실</b>. <b>🛡️ 헷지</b> = 재원 내고 <b>오르내림 자체를 차단</b>(손익 0, <b>이익도 포기</b>).<br><b>재원 0 = 끝.</b> <b>하락 손실이 이익보다 커요</b>(보증의 비대칭) — 큰 잠재변동·얇은 완충이면 헷지가 안전.</div>
     </details>
     <div style="display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px">
       <span class="qchip">🌊 노출 = <b>양방향(이익·손실)</b></span>
@@ -955,10 +959,10 @@
   </div>
   <div class="callout warn"><span class="ci">⚠️</span><div><span class="clab">주의</span> 여기 숫자는 <b>개념용 예시</b>예요. 자기 회사 값은 <b>입력 가정</b> 탭에서 넣으면 즉시 반영돼요.</div></div>
   <div class="panel">
-    <div class="cap">이렇게 보면 돼요 — 3단계<span class="capb info">🧭 안내</span></div>
+    <div class="cap">이렇게 보면 돼요 — 4단계<span class="capb info">🧭 안내</span></div>
     <div style="display:flex;flex-direction:column;gap:10px;margin-top:2px">
       <div class="qstep"><span class="qstepn" style="background:#4FA8A8">1</span><div><b>재원(보증수수료) 확인</b><small>이 예산 안에서 헷지</small></div></div>
-      <div class="qstep"><span class="qstepn" style="background:#4FA8A8">2</span><div><b>항목을 헷지 ↔ 노출로 선택</b><small>바로 아래 막대·판정이 즉시 반응</small></div></div>
+      <div class="qstep"><span class="qstepn" style="background:#4FA8A8">2</span><div><b>항목을 헷지 ↔ 노출로 선택</b><small>위 막대·아래 판정이 즉시 반응</small></div></div>
       <div class="qstep"><span class="qstepn" style="background:#4FA8A8">3</span><div><b>결과 확인</b> — 흔들림·판정·실측 차트<small>비용과 변동성의 균형</small></div></div>
       <div class="qstep"><span class="qstepn" style="background:#4FA8A8">4</span><div><b>최적 조합 찾기</b> — 상황 프리셋·프론티어<small>맨 아래 · 심화 (선택)</small></div></div>
     </div>
@@ -976,7 +980,7 @@
         <div id="vkCsmLine" style="position:absolute;top:-1px;bottom:-1px;left:100%;width:0;border-left:2px dashed var(--good);transition:left .55s cubic-bezier(.2,.7,.3,1)"></div>
       </div>
       <div id="vkLegend" style="display:flex;flex-wrap:wrap;gap:5px 10px;margin-top:9px;font-size:11px"></div>
-      <p class="foot" style="margin-top:9px">이 변동성을 <b>CSM 완충</b>(초록 점선)이 흡수해요. <b>넘치면</b>(빨강) 손익·자본으로 넘어와요 — <b>완충이 얇을수록 그대로 내게 와요.</b></p>
+      <p class="foot" style="margin-top:9px">이 변동성을 <b>CSM 완충</b>(초록 점선)이 흡수해요. <b>넘치면</b>(빨강) 손익·자본으로 넘어와요 — <b>완충이 얇을수록 그대로 내게 와요.</b> <span style="opacity:.75">(점선=CSM의 절반 · ±양방향 기준)</span></p>
     </div>
     <div style="border-top:1px dashed var(--hair);margin-top:14px;padding-top:12px">
       <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
@@ -989,7 +993,10 @@
       <div id="vbLegend" style="display:flex;flex-wrap:wrap;gap:5px 10px;margin-top:9px;font-size:11px"></div>
       <p class="foot" style="margin-top:9px">큰 변동성이 <b>작은 잔여</b>로 줄어요(<b>0은 아님</b>) — 대신 <b>비용</b>을 지불.</p>
     </div>
-    <div style="margin-top:12px">
+  </div>
+  <div class="panel">
+    <div class="cap">든 비용<span class="capb ex">🧮 예시값</span><span>헷지 비용 + 노출 누수 → 재원에서 차감</span></div>
+    <div style="margin-top:2px">
       <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
         <div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:2px"><span style="font-size:16px">💰</span><b style="font-size:13.5px;color:var(--ink)">든 비용</b><span class="qchip" style="font-size:10px;padding:2px 7px;background:var(--panel2);color:var(--muted)">헷지 + 노출 누수</span></div><div id="feeBig" style="font-size:30px;font-weight:800;color:var(--ink);letter-spacing:-.5px"></div></div>
         <div style="color:var(--muted);font-size:12px;line-height:1.7" id="feeSub"></div>
@@ -1015,7 +1022,7 @@
     </div>
     <div id="selList"></div>
     <div class="callout tip"><span class="ci">💡</span><div><span class="clab">팁</span> 각 항목을 눌러 <b>헷지 ↔ 노출</b>을 바꿔 보세요. 위 막대·프론티어가 즉시 반응해요.</div></div>
-    <p class="foot">막대 = 항목별 흔들림. <b style="color:var(--good)">헷지</b>=비용 내고 짧게(초록) / <b style="color:var(--bad)">노출</b>=비용 0·길게(빨강).</p>
+    <p class="foot">막대 = 항목별 흔들림. <b style="color:var(--pay)">헷지</b>=비용 내고 짧게(파랑) / <b style="color:var(--leak)">노출</b>=비용 0·길게(주황).</p>
   </div>
   <p class="lede">실제 시장데이터(KOSPI·<b>국고 20년</b>, 약 6.5년)로 손익을 재현해요. <b>미헷지</b>는 시장 등락이 그대로 손익이 되어 <b>크게 출렁이고</b>, 헷지는 그 흔들림을 줄여요. <span id="simStatus" style="color:var(--muted)">데이터 불러오는 중…</span></p>
   <div class="verdict ok" id="vd"><div class="ic" id="vdi">✓</div><div><h3 id="vdt"></h3><p id="vdp"></p></div></div>
@@ -1085,9 +1092,9 @@
   <div class="panel">
     <div class="cap">막는 단계 — 뒤로 갈수록 비싸고 확실<span class="capb info">💡 개념</span></div>
     <div style="display:flex;flex-direction:column;gap:10px;margin-top:2px">
-      <div class="qstep"><span class="qstepn" style="background:var(--good)">1</span><div><b>방향 막기</b> · 선물·스왑 <span class="qstar" style="color:var(--good)">★</span><small>가장 저렴 · 거의 상시 · 롤오버·베이시스는 감수</small></div></div>
-      <div class="qstep"><span class="qstepn" style="background:var(--pay)">2</span><div><b>급변까지 막기</b> · 옵션 <span class="qstar" style="color:var(--pay)">★★</span><small>중간 · 프리미엄 지불</small></div></div>
-      <div class="qstep"><span class="qstepn" style="background:var(--leak)">3</span><div><b>큰 하락(꼬리)까지 막기</b> · 옵션 <span class="qstar" style="color:var(--leak)">★★★</span><small>비쌈 · 확실 · 변동성을 확정비용으로</small></div></div>
+      <div class="qstep"><span class="qstepn" style="background:var(--pay)">1</span><div><b>방향 막기</b> · 선물·스왑 <span class="qstar" style="color:var(--pay)">★</span><small>가장 저렴 · 거의 상시 · 롤오버·베이시스는 감수</small></div></div>
+      <div class="qstep"><span class="qstepn" style="background:var(--sym)">2</span><div><b>급변까지 막기</b> · 옵션 <span class="qstar" style="color:var(--sym)">★★</span><small>중간 · 프리미엄 지불</small></div></div>
+      <div class="qstep"><span class="qstepn" style="background:var(--leak)">3</span><div><b>기타까지 막기</b> · 맞춤스왑 등 <span class="qstar" style="color:var(--leak)">★★★</span><small>펀드 추적오차 등 · 일부만 가능</small></div></div>
     </div>
     <div class="pair2" style="margin-top:14px">
       <div style="border:1.5px solid var(--good);border-radius:10px;padding:11px;background:#EAF7F1">
@@ -1100,18 +1107,18 @@
   </div>
   <div class="panel">
     <div class="cap">주식 위험 수단<span class="capb info">🧰 수단</span></div>
-    <table class="mtx imt">
+    <div class="chartwrap"><table class="mtx imt">
       <thead><tr><th>수단</th><th>비용</th><th>효과</th></tr></thead>
       <tbody>
         <tr><td>선물<small>KOSPI200</small></td><td><span class="difftag good">매우 낮음</span></td><td>오르내림(방향) 완전 제거 · 사고팔기 쉬움 · 단 <b>만기마다 갈아타는 롤오버 비용</b>과 <b>현물−선물 값 차이(베이시스)</b>에 노출</td></tr>
         <tr><td>스왑<small>주식스왑·TRS</small></td><td><span class="difftag pay">낮음~중</span></td><td>방향 제거 + 펀드−지수 베이시스까지 맞춤 · 장외(상대방 한도)</td></tr>
         <tr><td>옵션<small>지수옵션</small></td><td><span class="difftag leak">높음(프리미엄)</span></td><td>감마·베가까지 헷지 · 하락 꼬리 방어 · 변동성을 확정비용으로 전환</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
   <div class="panel">
     <div class="cap">금리 위험 수단<span class="capb info">🧰 수단</span></div>
-    <table class="mtx imt">
+    <div class="chartwrap"><table class="mtx imt">
       <thead><tr><th>수단</th><th>비용</th><th>효과</th></tr></thead>
       <tbody>
         <tr><td>채권<small>국고채 현물</small></td><td><span class="difftag pay">낮으나 자금부담</span></td><td>금리 오르내림 헷지 + 급변 대응 일부 · 현물 보유라 자금·현금 부담</td></tr>
@@ -1119,7 +1126,7 @@
         <tr><td>스왑<small>국고스왑 / IRS</small></td><td><span class="difftag pay">국고 높음·IRS 낮음</span></td><td>금리 오르내림 헷지 · IRS는 저비용이나 <b>국고−IRS 스프레드(베이시스)에 노출</b></td></tr>
         <tr><td>옵션<small>국고/IRS 옵션(스왑션)</small></td><td><span class="difftag leak">높음(프리미엄)</span></td><td>금리 감마·베가 헷지 · 곡률(볼록성)을 확정비용으로 전환</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
   <div class="panel">
     <div class="cap">수단별 payoff 미리보기<span class="capb live">🖐 조작</span><span>바를 움직여 손익 형태를 확인</span></div>
@@ -1134,7 +1141,7 @@
     <div class="foot" id="poRead" style="margin-top:4px"></div>
     <p class="foot"><b>부채(회색)</b>는 <b>곡선</b>(방향+곡률=감마). <b>선물·스왑</b>은 기울기만 상쇄 → <b>곡률(감마)이 남음</b>. <b>옵션</b>은 곡률까지 잡아 평탄, 대신 <b>프리미엄</b>. <b>미헷지</b> = 곡선 그대로.</p>
   </div>
-  <div class="callout key"><span class="ci">⭐</span><div><span class="clab">핵심</span> 방향은 <b>선물·스왑(저렴)</b>, 감마·꼬리는 <b>옵션</b> — 둘을 <b>조합</b>하는 게 정답. <b>확정 비용으로 감마를 막는 건 옵션뿐</b>이에요.</div></div>
+  <div class="callout key"><span class="ci">⭐</span><div><span class="clab">핵심</span> 방향은 <b>선물·스왑(저렴)</b>, 감마·꼬리는 <b>옵션</b> — 둘의 <b>조합</b>이 일반적 접근이에요. <b>확정 비용으로 감마를 막는 건 옵션뿐</b>이에요.</div></div>
 </section>
 
 <!-- ⑤ CSM 완충 -->
@@ -1153,7 +1160,7 @@
       </div>
       <div style="border:1.5px solid var(--bad-line);border-radius:10px;padding:11px;background:#FBEEF1">
         <div style="font-weight:800;color:var(--bad);font-size:13px">⚠️ PL법 <span style="font-weight:600;font-size:11px">일반측정(GMM)</span></div>
-        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px"><b>완충이 불가</b>해요. 변동이 <b>전액 그 해 손익으로 즉시</b> 인식 → <b>노출이라는 선택지가 없어요</b>. 사실상 <b>헷지 필수</b>.</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px">보증 변동이 <b>완충 조정을 받지 못해</b> 그 해 손익으로 <b>즉시 인식</b>돼요 → 사실상 <b>헷지 필수</b>.</div>
       </div>
     </div>
     <div class="callout key" style="margin-top:9px"><span class="ci">⭐</span><div><span class="clab">핵심</span> 완충이 있으면(<b>VFA</b>) 헷지·노출을 <b>선택</b>, 없으면(<b>PL법</b>) <b>헷지 필수</b>.</div></div>
@@ -1218,7 +1225,7 @@
     <p class="foot"><b>투자손익·보험손익</b>은 이름만 다를 뿐 <b>둘 다 그 해 손익(PL)</b>이에요 — 헷지분은 <b>투자손익</b>, 완충 넘친 노출분은 <b>보험손익</b>으로 잡혀요.</p>
   </div>
   <div class="panel">
-    <div class="cap">항목별 비교<span class="capb ex">🧮 예시값</span><span>현재 입력값 기준</span></div>
+    <div class="cap">항목별 비교<span class="capb info">💡 개념</span><span>정성 등급 · 고정</span></div>
     <div class="chartwrap"><table class="mtx" id="cmpTbl"><thead><tr><th>위험 요인</th><th>변동성</th><th>헷지 난이도</th></tr></thead><tbody></tbody></table></div>
     <p class="foot"><b>방향</b>은 크지만 헷지가 쉽고, <b>변동성·펀드·해지율</b>은 어렵고, <b>모형·제도</b>는 불가 — 선택은 <b>⑥ 시뮬레이션</b>에서. (예시값)</p>
   </div>
@@ -1245,7 +1252,7 @@
   </div>
   <div class="panel">
     <div class="cap"><span class="hn" style="background:#4E8B93">3</span>요인별 노출·헷지단가<span class="capb live">🖐 입력</span><span>각 위험의 크기와 넘기는 값</span></div>
-    <div class="inhdr">각 위험의 <b>노출</b>과 <b>헷지단가</b>. 방향형(Δ·ρ)은 bp로 입력. <b>감마</b>는 직접 입력 X — 델타 헷지 후 드러나는 <b>잔여</b>(③에서 자동). 처리 선택은 <b>⑥</b>에서.</div>
+    <div class="inhdr">각 위험의 <b>노출</b>과 <b>헷지단가</b>. 방향형(Δ·ρ)은 bp로 입력. <b>감마</b>는 직접 입력 X — 델타 헷지 후 드러나는 <b>잔여</b>(②의 Γ·변동성에서 자동). 처리 선택은 <b>⑥</b>에서.</div>
     <div class="chartwrap"><table class="mtx" id="mtx"><thead><tr><th>위험 요인</th><th>노출(흔들림 기여)</th><th>헷지단가</th></tr></thead><tbody></tbody></table></div>
   </div>
 </section>
@@ -1304,6 +1311,10 @@
     <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--hair)">
       <div style="font-size:13px;font-weight:700;color:var(--ink)">문의하실 곳</div>
       <div style="font-size:13px;color:var(--muted);margin-top:4px">010-2059-4228</div>
+      <div style="margin-top:12px;display:flex;justify-content:flex-start"><div style="flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:3px;background:#fff;border:1px solid var(--hair);border-radius:12px;padding:8px 8px 5px">
+    <svg viewBox="0 0 37 37" width="104" height="104" style="display:block;shape-rendering:crispEdges" role="img" aria-label="이 페이지 주소 QR"><rect width="37" height="37" fill="#fff"/><path fill="#16202F" d="M2 2h7v1h-7zM12 2h1v1h-1zM14 2h3v1h-3zM18 2h1v1h-1zM21 2h2v1h-2zM24 2h3v1h-3zM28 2h7v1h-7zM2 3h1v1h-1zM8 3h1v1h-1zM12 3h1v1h-1zM14 3h7v1h-7zM22 3h2v1h-2zM26 3h1v1h-1zM28 3h1v1h-1zM34 3h1v1h-1zM2 4h1v1h-1zM4 4h3v1h-3zM8 4h1v1h-1zM10 4h6v1h-6zM18 4h1v1h-1zM20 4h1v1h-1zM23 4h4v1h-4zM28 4h1v1h-1zM30 4h3v1h-3zM34 4h1v1h-1zM2 5h1v1h-1zM4 5h3v1h-3zM8 5h1v1h-1zM10 5h2v1h-2zM13 5h2v1h-2zM16 5h1v1h-1zM18 5h2v1h-2zM21 5h1v1h-1zM28 5h1v1h-1zM30 5h3v1h-3zM34 5h1v1h-1zM2 6h1v1h-1zM4 6h3v1h-3zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h3v1h-3zM17 6h1v1h-1zM20 6h4v1h-4zM25 6h1v1h-1zM28 6h1v1h-1zM30 6h3v1h-3zM34 6h1v1h-1zM2 7h1v1h-1zM8 7h1v1h-1zM10 7h9v1h-9zM22 7h1v1h-1zM24 7h1v1h-1zM26 7h1v1h-1zM28 7h1v1h-1zM34 7h1v1h-1zM2 8h7v1h-7zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h1v1h-1zM18 8h1v1h-1zM20 8h1v1h-1zM22 8h1v1h-1zM24 8h1v1h-1zM26 8h1v1h-1zM28 8h7v1h-7zM10 9h4v1h-4zM17 9h1v1h-1zM20 9h1v1h-1zM22 9h2v1h-2zM2 10h1v1h-1zM4 10h5v1h-5zM14 10h4v1h-4zM19 10h1v1h-1zM21 10h1v1h-1zM28 10h5v1h-5zM2 11h5v1h-5zM10 11h1v1h-1zM12 11h3v1h-3zM19 11h4v1h-4zM25 11h2v1h-2zM28 11h2v1h-2zM31 11h2v1h-2zM34 11h1v1h-1zM3 12h3v1h-3zM8 12h3v1h-3zM14 12h1v1h-1zM17 12h3v1h-3zM22 12h3v1h-3zM26 12h1v1h-1zM30 12h1v1h-1zM32 12h2v1h-2zM4 13h1v1h-1zM6 13h1v1h-1zM9 13h1v1h-1zM11 13h2v1h-2zM14 13h1v1h-1zM16 13h1v1h-1zM18 13h1v1h-1zM21 13h4v1h-4zM26 13h2v1h-2zM30 13h4v1h-4zM3 14h6v1h-6zM12 14h1v1h-1zM14 14h1v1h-1zM19 14h1v1h-1zM24 14h1v1h-1zM27 14h1v1h-1zM29 14h3v1h-3zM34 14h1v1h-1zM2 15h2v1h-2zM10 15h3v1h-3zM15 15h7v1h-7zM25 15h1v1h-1zM28 15h1v1h-1zM32 15h3v1h-3zM2 16h2v1h-2zM5 16h1v1h-1zM7 16h2v1h-2zM11 16h1v1h-1zM13 16h2v1h-2zM16 16h1v1h-1zM20 16h1v1h-1zM22 16h3v1h-3zM27 16h2v1h-2zM31 16h3v1h-3zM3 17h1v1h-1zM5 17h2v1h-2zM10 17h4v1h-4zM15 17h2v1h-2zM18 17h1v1h-1zM20 17h1v1h-1zM22 17h3v1h-3zM26 17h3v1h-3zM30 17h3v1h-3zM3 18h2v1h-2zM6 18h1v1h-1zM8 18h2v1h-2zM11 18h2v1h-2zM15 18h1v1h-1zM19 18h1v1h-1zM24 18h2v1h-2zM27 18h1v1h-1zM29 18h2v1h-2zM34 18h1v1h-1zM2 19h1v1h-1zM5 19h1v1h-1zM7 19h1v1h-1zM11 19h2v1h-2zM14 19h1v1h-1zM18 19h1v1h-1zM21 19h2v1h-2zM25 19h2v1h-2zM28 19h2v1h-2zM31 19h2v1h-2zM34 19h1v1h-1zM5 20h5v1h-5zM11 20h8v1h-8zM20 20h1v1h-1zM23 20h1v1h-1zM26 20h5v1h-5zM32 20h2v1h-2zM2 21h1v1h-1zM4 21h1v1h-1zM6 21h1v1h-1zM10 21h2v1h-2zM14 21h1v1h-1zM17 21h1v1h-1zM21 21h3v1h-3zM25 21h2v1h-2zM28 21h5v1h-5zM34 21h1v1h-1zM4 22h2v1h-2zM7 22h3v1h-3zM12 22h4v1h-4zM19 22h1v1h-1zM21 22h1v1h-1zM24 22h1v1h-1zM26 22h2v1h-2zM29 22h3v1h-3zM2 23h1v1h-1zM12 23h3v1h-3zM16 23h2v1h-2zM21 23h2v1h-2zM25 23h1v1h-1zM28 23h2v1h-2zM32 23h1v1h-1zM34 23h1v1h-1zM2 24h1v1h-1zM4 24h1v1h-1zM6 24h1v1h-1zM8 24h1v1h-1zM12 24h1v1h-1zM14 24h1v1h-1zM16 24h3v1h-3zM22 24h2v1h-2zM28 24h1v1h-1zM33 24h1v1h-1zM2 25h1v1h-1zM4 25h1v1h-1zM6 25h1v1h-1zM9 25h2v1h-2zM12 25h3v1h-3zM16 25h1v1h-1zM18 25h1v1h-1zM21 25h3v1h-3zM28 25h1v1h-1zM31 25h2v1h-2zM34 25h1v1h-1zM2 26h1v1h-1zM4 26h1v1h-1zM8 26h2v1h-2zM11 26h1v1h-1zM14 26h2v1h-2zM19 26h1v1h-1zM24 26h1v1h-1zM26 26h5v1h-5zM34 26h1v1h-1zM10 27h1v1h-1zM12 27h1v1h-1zM16 27h1v1h-1zM18 27h1v1h-1zM20 27h2v1h-2zM23 27h4v1h-4zM30 27h1v1h-1zM32 27h3v1h-3zM2 28h7v1h-7zM11 28h1v1h-1zM15 28h3v1h-3zM19 28h2v1h-2zM23 28h4v1h-4zM28 28h1v1h-1zM30 28h1v1h-1zM32 28h2v1h-2zM2 29h1v1h-1zM8 29h1v1h-1zM10 29h1v1h-1zM12 29h2v1h-2zM15 29h1v1h-1zM18 29h1v1h-1zM20 29h2v1h-2zM23 29h2v1h-2zM26 29h1v1h-1zM30 29h4v1h-4zM2 30h1v1h-1zM4 30h3v1h-3zM8 30h1v1h-1zM10 30h4v1h-4zM16 30h1v1h-1zM19 30h1v1h-1zM24 30h1v1h-1zM26 30h6v1h-6zM2 31h1v1h-1zM4 31h3v1h-3zM8 31h1v1h-1zM10 31h1v1h-1zM13 31h2v1h-2zM16 31h1v1h-1zM20 31h4v1h-4zM26 31h2v1h-2zM30 31h2v1h-2zM33 31h2v1h-2zM2 32h1v1h-1zM4 32h3v1h-3zM8 32h1v1h-1zM10 32h3v1h-3zM16 32h2v1h-2zM19 32h2v1h-2zM23 32h2v1h-2zM28 32h2v1h-2zM32 32h1v1h-1zM2 33h1v1h-1zM8 33h1v1h-1zM12 33h2v1h-2zM17 33h2v1h-2zM20 33h1v1h-1zM22 33h4v1h-4zM27 33h2v1h-2zM30 33h3v1h-3zM2 34h7v1h-7zM10 34h2v1h-2zM14 34h2v1h-2zM17 34h1v1h-1zM19 34h2v1h-2zM24 34h3v1h-3zM28 34h2v1h-2zM33 34h1v1h-1z"/></svg>
+    <div style="font-size:9.5px;font-weight:700;color:var(--muted);text-align:center;line-height:1.25">📱 스캔·공유</div>
+  </div></div>
     </div>
   </div>
 </section>
@@ -1362,11 +1373,15 @@ $("tabs").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)
   /* 탭 재진입 시 차트 애니메이션 재생 */
   const p=b.dataset.p;
   if(p==="pbg"){ if(SIM.loaded){ renderConceptCombo(); } renderCases2008(); document.querySelectorAll('#pbg .chartwrap svg:not(#conceptLines):not(#cases2008):not(#heroSvg)').forEach(e=>{e.innerHTML=e.innerHTML;}); drawHero(); }
-  else if(p==="p1"){ renderMech(); renderCapVol(); }
+  else if(p==="p1"){ renderMech(); renderCapVol(); document.querySelectorAll('#p1 .chartwrap svg:not(#cvSvg):not(#mechSvg)').forEach(e=>{e.innerHTML=e.innerHTML;}); }
   else if(p==="p2"&&SIM.loaded){ renderSim(); render(); }
   else if(p==="p3"){ drawBuffer(); }
   else if(p==="p4") renderFactorAnim();
+  else if(p==="pqa"){ document.querySelectorAll('#pqa .chartwrap svg').forEach(e=>{e.innerHTML=e.innerHTML;}); }
+  svgPauseSync();
 });
+/* 화면 밖 페이지의 SMIL 정지(배터리·타임라인 보존) */
+function svgPauseSync(){ document.querySelectorAll(".page svg").forEach(sv=>{ try{ const on=sv.closest(".page").classList.contains("on"); on?sv.unpauseAnimations():sv.pauseAnimations(); }catch(e){} }); }
 
 function numRow(o){ return `<div class="srow"><div class="lab">${o.n}<small>${o.s}</small></div>
   <input type="number" inputmode="decimal" id="in_${o.id}" value="${o.v}" step="any" min="0"><span class="unit">${o.u}</span></div>`; }
@@ -1396,12 +1411,12 @@ function renderSelect(){
     if(r.grp!==cur){ cur=r.grp; html+=`<div class="selgrp">${r.grp}</div>`; }
     const dt=DIFF[r.diff], dtag=`<span class="difftag ${dt.c}">${dt.t}</span>`;
     const full=VC[r.id]||0, res=vres(r.id);
-    if(r.kind==="na"){ html+=`<div class="selrow"><div class="sname">${r.n}<small>${r.note} · 이전 불가</small></div>${dtag}<div class="svol">${svol(full,'var(--bad)')}<div class="svollab">노출 · 비용 0 · 흔들림 <b style="color:var(--bad)">±${won(full)}</b></div></div><span class="segfix">CSM</span></div>`; return; }
+    if(r.kind==="na"){ html+=`<div class="selrow"><div class="sname">${r.n}<small>${r.note} · 이전 불가</small></div>${dtag}<div class="svol">${svol(full,'var(--leak)')}<div class="svollab">노출 · 비용 0 · 흔들림 <b style="color:var(--leak)">±${won(full)}</b></div></div><span class="segfix">CSM</span></div>`; return; }
     let volNow, costTxt;
     if(r.kind==="bp"){ volNow=r.on?res:full; costTxt=r.on?`헷지 −${won((r.bp||0)*AV)}억`:`노출 · 비용 0`; }
     else { const dep=r.dep?RISK.find(x=>x.id===r.dep).on:1; const {prem}=leakPrem(r);
       if(!dep){ volNow=full; costTxt=`방향 먼저 헷지`; } else { volNow=r.on?res:full; costTxt=r.on?`헷지 −${won(prem)}억`:`노출 · 비용 0`; } }
-    const barCol=r.on?'var(--good)':'var(--bad)';
+    const barCol=r.on?'var(--pay)':'var(--leak)';
     html+=`<div class="selrow ${r.on?'selon':'seloff'}"><div class="sname">${r.n}<small>${r.note}</small></div>${dtag}<div class="svol">${svol(volNow,barCol)}<div class="svollab">${costTxt} · 흔들림 <b style="color:${barCol}">±${won(volNow)}</b></div></div>
       <div class="seg2" data-id="${r.id}"><button class="${r.on?'on':''}" data-v="1">헷지</button><button class="${r.on?'':'on'}" data-v="0">CSM</button></div></div>`;
   });
@@ -1470,7 +1485,7 @@ function drawVolBar(){ if(!$("vbBar"))return; volBarBuild();
   const cur=Math.sqrt(RISK.reduce((a,r)=>a+(vcHedged(r)?Math.pow(vres(r.id),2):0),0));
   $("vbBar").style.width=Math.max(0,Math.min(100,cur/EXPMAX*100)).toFixed(1)+'%';
   RISK.forEach(r=>{ const seg=$("vbBar").querySelector(`[data-id="${r.id}"]`), lg=$("vbLegend")&&$("vbLegend").querySelector(`[data-lg="${r.id}"]`), h=vcHedged(r);
-    if(seg){ seg.style.flexGrow=h?Math.pow(vres(r.id),2):0; seg.style.opacity=h?1:0; seg.title=r.n+(h?' · 헷지 잔여 ±'+won(vres(r.id))+'억':' · 노출→① 미헷지 바'); }
+    if(seg){ seg.style.flexGrow=h?vres(r.id):0; seg.style.opacity=h?1:0; seg.title=r.n+(h?' · 헷지 잔여 ±'+won(vres(r.id))+'억':' · 노출→① 미헷지 바'); }
     if(lg) lg.style.opacity=h?1:0.32; });
   tween("vbNum",cur,v=>'±'+won(v)+'억');
 }
@@ -1494,7 +1509,7 @@ function drawVolBarK(){ if(!$("vkBar"))return; volBarKBuild();
   const bornePct=Math.max(0,Math.min(100,vborne/EXPMAX*100)), linePct=Math.max(0,Math.min(100,csmSig/EXPMAX*100));
   $("vkBar").style.width=bornePct.toFixed(1)+'%';
   RISK.forEach(r=>{ const seg=$("vkBar").querySelector(`[data-id="${r.id}"]`), lg=$("vkLegend")&&$("vkLegend").querySelector(`[data-lg="${r.id}"]`), h=vcHedged(r);
-    if(seg){ seg.style.flexGrow=h?0:Math.pow(VC[r.id]||0,2); seg.style.opacity=h?0:1; seg.title=r.n+(h?' · 헷지됨':' ±'+won(VC[r.id]||0)+'억 · 흡수(CSM으로)'); }
+    if(seg){ seg.style.flexGrow=h?0:(VC[r.id]||0); seg.style.opacity=h?0:1; seg.title=r.n+(h?' · 헷지됨':' ±'+won(VC[r.id]||0)+'억 · 흡수(CSM으로)'); }
     if(lg) lg.style.opacity=h?0.32:1; });
   const cl=$("vkCsmLine"); if(cl) cl.style.left=linePct.toFixed(1)+'%';
   const ov=$("vkXferOv"); if(ov){ const l=Math.min(linePct,bornePct); ov.style.left=l.toFixed(1)+'%'; ov.style.width=Math.max(0,bornePct-l).toFixed(1)+'%';
@@ -1549,7 +1564,7 @@ function render(){
   else if(L995>CSM){cls="warn";ic="~";t="평시는 버티나 극단은 손익으로 전이돼요";
     p=`나쁜 해는 CSM이 흡수하나, <b>최악의 해</b>엔 <b>${won(L995-CSM)}억</b>이 손익으로 전이.${opt?` 예산 내 최적: 변동성 <b>${won(opt.sig)}억</b>까지 축소.`:``}`;}
   else{cls="ok";ic="✓";t="현재 조합에서 손익은 안정적이에요";
-    p=`연간 <b>${won(outW)}억</b>(수수료의 ${feeW>0?Math.round(outW/feeW*100):0}%) 지출, <b>최악의 해</b>도 CSM이 흡수.${opt&&opt.sig<cur.sig-1?` 변동성 <b>${won(cur.sig)}→${won(opt.sig)}억</b> 추가 축소 여지.`:``}`;}
+    p=`연간 <b>${won(outW)}억</b>(수수료의 ${feeW>0?Math.round(outW/feeW*100):0}%) 지출, <b>최악의 해</b>(모형 99.5%)도 CSM 흡수로 계산돼요.${opt&&opt.sig<cur.sig-1?` 변동성 <b>${won(cur.sig)}→${won(opt.sig)}억</b> 추가 축소 여지.`:``}`;}
   vd.className="verdict "+cls;$("vdi").textContent=ic;$("vdt").textContent=t;$("vdp").innerHTML=p;
 
   drawCasc(); drawCompare(); renderSelect(); renderDerived(); drawVolBar(); drawVolBarK();
@@ -1614,7 +1629,7 @@ function drawEF(pts,fr,cur,opt,budget){
     g.push(`<text class="eflabel" x="${mx.toFixed(1)}" y="${(my-3).toFixed(1)}" text-anchor="middle" fill="#337A5F" font-weight="800">여기로 ✓ 더 좋음</text>`); }
   if(opt) g.push(`<circle cx="${X(opt.sig).toFixed(1)}" cy="${Y(opt.cost).toFixed(1)}" r="8" fill="none" stroke="var(--good)" stroke-width="3"><animate attributeName="r" values="8;13;8" dur="1.9s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;.45;1" dur="1.9s" repeatCount="indefinite"/></circle>`);
   g.push(`<circle cx="${X(cur.sig).toFixed(1)}" cy="${Y(cur.cost).toFixed(1)}" r="9.5" fill="var(--leak)" stroke="#fff" stroke-width="3"/>`);
-  g.push(`<text class="eflabel" x="${(X(cur.sig)+12).toFixed(1)}" y="${(Y(cur.cost)+4).toFixed(1)}" fill="var(--leak)" font-weight="800">현재</text>`);
+  { const _cx=X(cur.sig), _fl=_cx>560; g.push(`<text class="eflabel" x="${(_fl?_cx-12:_cx+12).toFixed(1)}" y="${(Y(cur.cost)+4).toFixed(1)}"${_fl?' text-anchor="end"':''} fill="var(--leak)" font-weight="800">현재</text>`); }
   $("ef").innerHTML=g.join("");
   EFGEO={L,iw,T,ih,xMax,yMax};
   const tip=$("eftip");
@@ -1724,33 +1739,33 @@ function drawHero(){
   const g=[];
   /* ── ① 적립금(펀드) vs 최저 사망보증(GMDB) → 펀드 하락이 보증손실을 키운다 ── */
   const gx=70, gw=380, gy=36, gh=28, xFloor=gx+floorPct/100*gw, fundW=fundNow/100*gw;
-  g.push(`<text x="${W/2}" y="18" text-anchor="middle" font-size="10.5" font-weight="800" fill="var(--ink)">펀드 하락 → <tspan fill="var(--bad)">최저 사망보증(GMDB)과 격차 ↑</tspan> → 보증손실이 커져요</text>`);
+  g.push(`<text x="${W/2}" y="18" text-anchor="middle" font-size="12" font-weight="800" fill="var(--ink)">펀드 하락 → <tspan fill="var(--bad)">최저 사망보증(GMDB)과 격차 ↑</tspan> → 보증손실이 커져요</text>`);
   g.push(`<rect x="${gx}" y="${gy}" width="${gw}" height="${gh}" fill="#F4F6FA" stroke="#D6DCE8" rx="5"/>`);
   g.push(`<rect x="${gx}" y="${gy}" width="${Math.max(0,fundW).toFixed(1)}" height="${gh}" fill="#DCE7FB" stroke="#9DBBF3" rx="5"/>`);
-  if(fundW>46) g.push(`<text x="${(gx+fundW/2).toFixed(1)}" y="${gy+gh/2+4}" text-anchor="middle" font-size="10.5" font-weight="800" fill="#4A6FC4">적립금 ${fundNow}%</text>`);
-  if(fundNow<=10) g.push(`<text x="${gx+34}" y="${gy-5}" text-anchor="middle" font-size="9.5" font-weight="800" fill="var(--bad)">적립금 고갈 💧</text>`);
+  if(fundW>46) g.push(`<text x="${(gx+fundW/2).toFixed(1)}" y="${gy+gh/2+4}" text-anchor="middle" font-size="12" font-weight="800" fill="#4A6FC4">적립금 ${fundNow}%</text>`);
+  if(fundNow<=10) g.push(`<text x="${gx+34}" y="${gy-5}" text-anchor="middle" font-size="11.5" font-weight="800" fill="var(--bad)">적립금 고갈 💧</text>`);
   if(fundNow<floorPct){ const rx=gx+fundW, rw=xFloor-rx;
     g.push(`<rect x="${rx.toFixed(1)}" y="${gy}" width="${rw.toFixed(1)}" height="${gh}" fill="#F7C9D1" stroke="#D6738A" rx="4"${f>0.05?`><animate attributeName="opacity" values="1;.6;1" dur="1.3s" repeatCount="indefinite"/></rect>`:'/>'}`);
-    if(rw>60) g.push(`<text x="${(rx+rw/2).toFixed(1)}" y="${gy+gh/2+4}" text-anchor="middle" font-size="10" font-weight="800" fill="var(--bad)">보증손실</text>`); }
+    if(rw>60) g.push(`<text x="${(rx+rw/2).toFixed(1)}" y="${gy+gh/2+4}" text-anchor="middle" font-size="11.5" font-weight="800" fill="var(--bad)">보증손실</text>`); }
   g.push(`<line x1="${xFloor.toFixed(1)}" y1="${gy-8}" x2="${xFloor.toFixed(1)}" y2="${gy+gh+8}" stroke="#337A5F" stroke-width="1.4" stroke-dasharray="4 3"/>`);
-  g.push(`<text x="${xFloor.toFixed(1)}" y="${gy+gh+20}" text-anchor="middle" font-size="9.5" font-weight="700" fill="#337A5F">최저 사망보증(GMDB)</text>`);
+  g.push(`<text x="${xFloor.toFixed(1)}" y="${gy+gh+20}" text-anchor="middle" font-size="11.5" font-weight="700" fill="#337A5F">최저 사망보증(GMDB)</text>`);
   /* ── ② 받은 보증수수료 vs 치른 보증손실 (수수료 이상의 손실) ── */
-  g.push(`<text x="${W/2}" y="104" text-anchor="middle" font-size="10.5" font-weight="800" fill="var(--ink)">회사가 <tspan fill="#337A5F">받은 보증수수료</tspan> vs <tspan fill="var(--bad)">치른 보증손실</tspan></text>`);
+  g.push(`<text x="${W/2}" y="104" text-anchor="middle" font-size="12" font-weight="800" fill="var(--ink)">회사가 <tspan fill="#337A5F">받은 보증수수료</tspan> vs <tspan fill="var(--bad)">치른 보증손실</tspan></text>`);
   const bx=132, bw=326, sMax=Math.max(70,guarLoss+8), toW=v=>v/sMax*bw, xFee=bx+toW(fee);
-  g.push(`<text x="${bx-8}" y="136" text-anchor="end" font-size="9.5" font-weight="700" fill="#337A5F">받은 수수료</text>`);
+  g.push(`<text x="${bx-8}" y="136" text-anchor="end" font-size="11.5" font-weight="700" fill="#337A5F">받은 수수료</text>`);
   g.push(`<rect x="${bx}" y="122" width="${Math.max(2,toW(fee)).toFixed(1)}" height="20" fill="#D6F0E4" stroke="#93D4B4" rx="4"/>`);
-  g.push(`<text x="${(bx+Math.max(2,toW(fee))+6).toFixed(1)}" y="136" font-size="9.5" font-weight="800" fill="#337A5F">+${fee}</text>`);
-  g.push(`<text x="${bx-8}" y="168" text-anchor="end" font-size="9.5" font-weight="700" fill="var(--bad)">치른 손실</text>`);
+  g.push(`<text x="${(bx+Math.max(2,toW(fee))+6).toFixed(1)}" y="136" font-size="11.5" font-weight="800" fill="#337A5F">+${fee}</text>`);
+  g.push(`<text x="${bx-8}" y="168" text-anchor="end" font-size="11.5" font-weight="700" fill="var(--bad)">치른 손실</text>`);
   if(guarLoss>0){
     g.push(`<rect x="${bx}" y="154" width="${toW(Math.min(fee,guarLoss)).toFixed(1)}" height="22" fill="#FBDCE2" rx="4"/>`);
     if(netLoss>0) g.push(`<rect x="${xFee.toFixed(1)}" y="154" width="${toW(netLoss).toFixed(1)}" height="22" fill="#F7C9D1" stroke="#D6738A" rx="4"><animate attributeName="opacity" values="1;.6;1" dur="1.3s" repeatCount="indefinite"/></rect>`);
-    g.push(`<text x="${(bx+toW(guarLoss)+6).toFixed(1)}" y="169" font-size="9.5" font-weight="800" fill="var(--bad)">−${guarLoss}</text>`);
+    g.push(`<text x="${(bx+toW(guarLoss)+6).toFixed(1)}" y="169" font-size="11.5" font-weight="800" fill="var(--bad)">−${guarLoss}</text>`);
   } else {
-    g.push(`<text x="${bx+4}" y="169" font-size="9.5" font-weight="700" fill="var(--muted)">아직 손실 0 (수수료만 수취)</text>`);
+    g.push(`<text x="${bx+4}" y="169" font-size="11.5" font-weight="700" fill="var(--muted)">아직 손실 0 (수수료만 수취)</text>`);
   }
   g.push(`<line x1="${xFee.toFixed(1)}" y1="116" x2="${xFee.toFixed(1)}" y2="182" stroke="#337A5F" stroke-width="1.2" stroke-dasharray="3 3" opacity="0.7"/>`);
-  if(netLoss>0) g.push(`<text x="${W/2}" y="199" text-anchor="middle" font-size="10.5" font-weight="800" fill="var(--bad)">수수료로 못 메운 순손실 ${netLoss} → 회사 자본 차감 💥</text>`);
-  else g.push(`<text x="${W/2}" y="199" text-anchor="middle" font-size="10" font-weight="700" fill="#337A5F">손실이 수수료 이내 — 아직 자본 영향 없음</text>`);
+  if(netLoss>0) g.push(`<text x="${W/2}" y="199" text-anchor="middle" font-size="12" font-weight="800" fill="var(--bad)">수수료로 못 메운 순손실 ${netLoss} → 회사 자본 차감 💥</text>`);
+  else g.push(`<text x="${W/2}" y="199" text-anchor="middle" font-size="11.5" font-weight="700" fill="#337A5F">손실이 수수료 이내 — 아직 자본 영향 없음</text>`);
   svg.innerHTML=g.join("");
   if($("heroMsg")) $("heroMsg").innerHTML = s===0
     ? `회사는 보증을 팔고 <b style="color:#337A5F">보증수수료(예: ${fee})</b>를 받아요. 평시엔 이득이지만 — <b>보증리스크 = 받은 수수료 이상의 손실을 보게 만드는 위험</b>. 주가가 빠져 펀드가 <b>GMDB 아래</b>로 가면 확인돼요. 슬라이더를 내려 보세요.`
@@ -1844,7 +1859,7 @@ function cvDraw(){
   /* ===== ② 아래: 순포지션 = 자산 − 부채 ===== */
   const t2=196,b2=286,nMax=14,nMin=-48,Y2=v=>t2+(b2-t2)*(nMax-v)/(nMax-nMin);
   g.push(`<text class="eflabel" x="${L}" y="${(t2-8).toFixed(1)}" fill="var(--muted)" font-weight="700">② 순포지션(회사 자본) = 자산 − 부채</text>`);
-  g.push(`<line x1="${L}" y1="${Y2(0).toFixed(1)}" x2="${W-R}" y2="${Y2(0).toFixed(1)}" stroke="#9aa2b1" stroke-width="1.2"/>`);
+  g.push(`<line x1="${L}" y1="${Y2(0).toFixed(1)}" x2="${W-R}" y2="${Y2(0).toFixed(1)}" stroke="var(--muted)" stroke-width="1.2"/>`);
   g.push(`<text class="eflabel" x="${(L-5).toFixed(1)}" y="${(Y2(0)+3).toFixed(1)}" text-anchor="end">0</text>`);
   { const negA=netA.map(v=>Math.min(0,v)), posA=netA.map(v=>Math.max(0,v));
     const tn=[],bn=[],tp=[],bp=[];
@@ -1887,7 +1902,7 @@ function renderMech(){
   const x0=100, maxW=430, sc=maxW/totVol, g=[];
   const baseW=MECH_BASE*sc, openW=(vol-MECH_BASE)*sc;
   g.push(`<text x="12" y="32" font-size="12" font-weight="800" fill="var(--ink)" font-family="sans-serif">흔들림</text>`);
-  g.push(`<rect x="${x0}" y="18" width="${baseW.toFixed(1)}" height="22" rx="4" fill="var(--good)" opacity="0.5"/>`);
+  g.push(`<rect x="${x0}" y="18" width="${baseW.toFixed(1)}" height="22" rx="4" fill="var(--sym)" opacity="0.4"/>`);
   if(openW>0.5) g.push(`<rect x="${(x0+baseW).toFixed(1)}" y="18" width="${openW.toFixed(1)}" height="22" fill="var(--sym)" opacity="0.85"/>`);
   g.push(`<text x="${Math.min(x0+baseW+Math.max(openW,0)+6,540).toFixed(1)}" y="34" font-size="12.5" font-weight="800" fill="var(--sym)" font-family="sans-serif">±${won(vol)}억</text>`);
   g.push(`<text x="12" y="84" font-size="12" font-weight="800" fill="var(--pay)" font-family="sans-serif">비용</text>`);
@@ -2035,7 +2050,7 @@ function drawVolChart(){
   const rAll=rnd(volAll), rCur=rnd(volCur);
   $("volStat").innerHTML=`
     <div><div class="sl">안 막을 때 손익 흔들림(연)</div><div class="sv" style="color:var(--sym)">±${won(rAll)}억</div></div>
-    <div><div class="sl">지금 전략의 흔들림(연)</div><div class="sv" style="color:var(--pay)">±${won(rCur)}억</div></div>
+    <div><div class="sl">지금 전략의 흔들림(연)</div><div class="sv" style="color:#337A5F">±${won(rCur)}억</div></div>
     <div><div class="sl">헷지가 줄인 흔들림</div><div class="sv" style="color:var(--good)">${won(Math.max(0,rAll-rCur))}억</div></div>`;
   const W=640,H=280,L=52,R=14,T=14,B=26,iw=W-L-R,ih=H-T-B,g=[];
   const amp=Math.max(...wU.map(Math.abs),1)*1.1, n=wU.length;
@@ -2124,20 +2139,20 @@ const VIZ={
     b:`<svg class="anim" viewBox="0 0 120 84"><line x1="12" y1="42" x2="108" y2="42" stroke="#AAB4C6" stroke-width="1" stroke-dasharray="3 2"/><line x1="12" y1="66" x2="108" y2="18" stroke="#9282DC" stroke-width="2.5"/><g transform="translate(12,66)"><circle class="a-dot" r="5" fill="#9282DC"/></g><text x="60" y="79" fill="#566275" font-size="8" text-anchor="middle">오르내림 = 손익 ±</text></svg>`,
     a:`<svg class="anim" viewBox="0 0 120 84"><line x1="12" y1="44" x2="108" y2="44" stroke="#AAB4C6" stroke-width="1" stroke-dasharray="3 2"/><line x1="12" y1="66" x2="96" y2="20" stroke="#9282DC" stroke-width="1.5" opacity="0.5"/><line x1="12" y1="22" x2="96" y2="68" stroke="#5C82CF" stroke-width="1.5" opacity="0.5"/><g transform="translate(12,66)"><circle class="a-dot" r="3.5" fill="#9282DC" opacity="0.75"/></g><g transform="translate(12,22)"><circle class="a-dot-dn" r="3.5" fill="#5C82CF" opacity="0.75"/></g><g transform="translate(12,44)"><circle class="a-dot-flat" r="5" fill="#4FAE8C"/></g><text x="60" y="79" fill="#4FAE8C" font-size="8" text-anchor="middle">부채+헷지 = 손익 0</text></svg>`},
   gamma:{
-    b:`<svg class="anim" viewBox="0 0 120 84"><path d="M10 36 L110 36 L110 66 Q60 6 10 66 Z" fill="#D6738A" opacity="0.16"/><path d="M10 66 Q60 6 110 66" fill="none" stroke="#566275" stroke-width="2"/><line x1="10" y1="36" x2="110" y2="36" stroke="#5C82CF" stroke-width="1.6" stroke-dasharray="4 3"/><text x="13" y="33" fill="#5C82CF" font-size="7">곧은 자(헷지)</text><circle r="3.6" fill="#1B2437"><animateMotion dur="2.2s" repeatCount="indefinite" path="M60 36 Q85 36 110 66"/></circle><g transform="translate(110,66)"><circle r="0" fill="none" stroke="#D6738A" stroke-width="2.4"><animate attributeName="r" values="0;17;0" dur="2.2s" begin="1.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0;0" dur="2.2s" begin="1.4s" repeatCount="indefinite"/></circle><text x="0" y="4.5" font-size="14" text-anchor="middle"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.6;0.66;1" dur="2.2s" repeatCount="indefinite"/>💥</text></g><text x="60" y="80" fill="#D6738A" font-size="7.5" text-anchor="middle" font-weight="700">멀어질수록 틈↑ → 끝에서 손해 폭발</text></svg>`,
-    a:`<svg class="anim" viewBox="0 0 120 84"><path d="M14 44 L106 44 L106 54 Q60 30 14 54 Z" fill="#4FAE8C" opacity="0.12"/><path d="M14 54 Q60 30 106 54" fill="none" stroke="#566275" stroke-width="2"/><line x1="14" y1="44" x2="106" y2="44" stroke="#5C82CF" stroke-width="1.4" stroke-dasharray="4 3"/><text x="15" y="41" fill="#5C82CF" font-size="7">곧은 자(헷지)</text><circle r="3.2" fill="#4FAE8C"><animateMotion dur="2.6s" repeatCount="indefinite" keyPoints="0.5;0;1;0.5" keyTimes="0;0.33;0.66;1" calcMode="linear" path="M14 54 Q60 30 106 54"/></circle><text x="60" y="80" fill="#4FAE8C" font-size="7.5" text-anchor="middle" font-weight="700">틈 완화 · 폭발 없음(비용 확정)</text></svg>`},
+    b:`<svg class="anim" viewBox="0 0 120 84"><path d="M10 36 L110 36 L110 66 Q60 6 10 66 Z" fill="#D6738A" opacity="0.16"/><path d="M10 66 Q60 6 110 66" fill="none" stroke="#566275" stroke-width="2"/><line x1="10" y1="36" x2="110" y2="36" stroke="#5C82CF" stroke-width="1.6" stroke-dasharray="4 3"/><text x="13" y="33" fill="#5C82CF" font-size="8.5">곧은 자(헷지)</text><circle r="3.6" fill="#1B2437"><animateMotion dur="2.2s" repeatCount="indefinite" path="M60 36 Q85 36 110 66"/></circle><g transform="translate(110,66)"><circle r="0" fill="none" stroke="#D6738A" stroke-width="2.4"><animate attributeName="r" values="0;17;0" dur="2.2s" begin="1.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0;0" dur="2.2s" begin="1.4s" repeatCount="indefinite"/></circle><text x="0" y="4.5" font-size="14" text-anchor="middle"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.6;0.66;1" dur="2.2s" repeatCount="indefinite"/>💥</text></g><text x="60" y="80" fill="#D6738A" font-size="9" text-anchor="middle" font-weight="700">멀어질수록 손해가 커져요</text></svg>`,
+    a:`<svg class="anim" viewBox="0 0 120 84"><path d="M14 44 L106 44 L106 54 Q60 30 14 54 Z" fill="#4FAE8C" opacity="0.12"/><path d="M14 54 Q60 30 106 54" fill="none" stroke="#566275" stroke-width="2"/><line x1="14" y1="44" x2="106" y2="44" stroke="#5C82CF" stroke-width="1.4" stroke-dasharray="4 3"/><text x="15" y="41" fill="#5C82CF" font-size="8.5">곧은 자(헷지)</text><circle r="3.2" fill="#4FAE8C"><animateMotion dur="2.6s" repeatCount="indefinite" keyPoints="0.5;0;1;0.5" keyTimes="0;0.33;0.66;1" calcMode="linear" path="M14 54 Q60 30 106 54"/></circle><text x="60" y="80" fill="#4FAE8C" font-size="9" text-anchor="middle" font-weight="700">틈 완화 · 폭발 없음(비용 확정)</text></svg>`},
   gammaR:{
-    b:`<svg class="anim" viewBox="0 0 120 84"><path d="M10 36 L110 36 L110 66 Q60 6 10 66 Z" fill="#5C82CF" opacity="0.14"/><path d="M10 66 Q60 6 110 66" fill="none" stroke="#566275" stroke-width="2"/><line x1="10" y1="36" x2="110" y2="36" stroke="#5C82CF" stroke-width="1.6" stroke-dasharray="4 3"/><text x="13" y="33" fill="#5C82CF" font-size="7">곧은 자(헷지)</text><circle r="3.4" fill="#1B2437"><animateMotion dur="3s" repeatCount="indefinite" keyPoints="0.5;0;1;0.5" keyTimes="0;0.33;0.66;1" calcMode="linear" path="M10 66 Q60 6 110 66"/></circle><g transform="translate(10,66)"><circle r="0" fill="none" stroke="#5C82CF" stroke-width="2.2"><animate attributeName="r" values="0;15;0" dur="3s" begin="0.7s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0;0" dur="3s" begin="0.7s" repeatCount="indefinite"/></circle><text x="0" y="4.5" font-size="13" text-anchor="middle"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.28;0.34;1" dur="3s" repeatCount="indefinite"/>💥</text></g><g transform="translate(110,66)"><circle r="0" fill="none" stroke="#5C82CF" stroke-width="2.2"><animate attributeName="r" values="0;15;0" dur="3s" begin="2.1s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0;0" dur="3s" begin="2.1s" repeatCount="indefinite"/></circle><text x="0" y="4.5" font-size="13" text-anchor="middle"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.66;0.72;1" dur="3s" repeatCount="indefinite"/>💥</text></g><text x="60" y="80" fill="#5C82CF" font-size="7.5" text-anchor="middle" font-weight="700">금리 양방향 급변 → 양끝에서 폭발</text></svg>`,
-    a:`<svg class="anim" viewBox="0 0 120 84"><path d="M14 44 L106 44 L106 54 Q60 30 14 54 Z" fill="#5C82CF" opacity="0.12"/><path d="M14 54 Q60 30 106 54" fill="none" stroke="#566275" stroke-width="2"/><line x1="14" y1="44" x2="106" y2="44" stroke="#5C82CF" stroke-width="1.4" stroke-dasharray="4 3"/><text x="15" y="41" fill="#5C82CF" font-size="7">곧은 자(헷지)</text><circle r="3.2" fill="#4FAE8C"><animateMotion dur="2.8s" repeatCount="indefinite" keyPoints="0.5;0;1;0.5" keyTimes="0;0.33;0.66;1" calcMode="linear" path="M14 54 Q60 30 106 54"/></circle><text x="60" y="80" fill="#4FAE8C" font-size="7.5" text-anchor="middle" font-weight="700">틈 완화 · 폭발 없음(스왑션)</text></svg>`},
+    b:`<svg class="anim" viewBox="0 0 120 84"><path d="M10 36 L110 36 L110 66 Q60 6 10 66 Z" fill="#5C82CF" opacity="0.14"/><path d="M10 66 Q60 6 110 66" fill="none" stroke="#566275" stroke-width="2"/><line x1="10" y1="36" x2="110" y2="36" stroke="#5C82CF" stroke-width="1.6" stroke-dasharray="4 3"/><text x="13" y="33" fill="#5C82CF" font-size="8.5">곧은 자(헷지)</text><circle r="3.4" fill="#1B2437"><animateMotion dur="3s" repeatCount="indefinite" keyPoints="0.5;0;1;0.5" keyTimes="0;0.33;0.66;1" calcMode="linear" path="M10 66 Q60 6 110 66"/></circle><g transform="translate(10,66)"><circle r="0" fill="none" stroke="#5C82CF" stroke-width="2.2"><animate attributeName="r" values="0;15;0" dur="3s" begin="0.7s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0;0" dur="3s" begin="0.7s" repeatCount="indefinite"/></circle><text x="0" y="4.5" font-size="13" text-anchor="middle"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.28;0.34;1" dur="3s" repeatCount="indefinite"/>💥</text></g><g transform="translate(110,66)"><circle r="0" fill="none" stroke="#5C82CF" stroke-width="2.2"><animate attributeName="r" values="0;15;0" dur="3s" begin="2.1s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0;0" dur="3s" begin="2.1s" repeatCount="indefinite"/></circle><text x="0" y="4.5" font-size="13" text-anchor="middle"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.66;0.72;1" dur="3s" repeatCount="indefinite"/>💥</text></g><text x="60" y="80" fill="#5C82CF" font-size="9" text-anchor="middle" font-weight="700">금리 급변 → 양끝에서 손해</text></svg>`,
+    a:`<svg class="anim" viewBox="0 0 120 84"><path d="M14 44 L106 44 L106 54 Q60 30 14 54 Z" fill="#5C82CF" opacity="0.12"/><path d="M14 54 Q60 30 106 54" fill="none" stroke="#566275" stroke-width="2"/><line x1="14" y1="44" x2="106" y2="44" stroke="#5C82CF" stroke-width="1.4" stroke-dasharray="4 3"/><text x="15" y="41" fill="#5C82CF" font-size="8.5">곧은 자(헷지)</text><circle r="3.2" fill="#4FAE8C"><animateMotion dur="2.8s" repeatCount="indefinite" keyPoints="0.5;0;1;0.5" keyTimes="0;0.33;0.66;1" calcMode="linear" path="M14 54 Q60 30 106 54"/></circle><text x="60" y="80" fill="#4FAE8C" font-size="9" text-anchor="middle" font-weight="700">틈 완화 · 폭발 없음(스왑션)</text></svg>`},
   rate:{
-    b:`<svg class="anim" viewBox="0 0 120 84"><line x1="14" y1="72" x2="108" y2="72" stroke="#AAB4C6" stroke-width="1"/><text x="16" y="82" fill="#566275" font-size="6.5">단기</text><text x="98" y="82" fill="#566275" font-size="6.5">장기(20·30년)</text><line x1="14" y1="46" x2="108" y2="46" stroke="#AAB4C6" stroke-width="0.8" stroke-dasharray="3 2"/><g class="a-curveshift"><path d="M14 52 Q46 40 108 30" fill="none" stroke="#9282DC" stroke-width="2.6"/><circle cx="30" cy="49" r="2.4" fill="#9282DC" opacity="0.55"/><circle cx="108" cy="30" r="5" fill="#9282DC"/></g><text x="60" y="14" fill="#566275" font-size="8" text-anchor="middle">커브가 위·아래로 → 손익 ±</text><text x="98" y="24" fill="#9282DC" font-size="6.5" text-anchor="end">장기일수록 크게</text></svg>`,
-    a:`<svg class="anim" viewBox="0 0 120 84"><line x1="14" y1="72" x2="108" y2="72" stroke="#AAB4C6" stroke-width="1"/><g class="a-curveshift-sm"><path d="M14 46 Q46 36 108 28" fill="none" stroke="#9282DC" stroke-width="1.6" opacity="0.45"/></g><g class="a-curveshift-opp"><path d="M14 58 Q46 60 108 62" fill="none" stroke="#5C82CF" stroke-width="1.6" opacity="0.45"/></g><line x1="14" y1="52" x2="108" y2="52" stroke="#4FAE8C" stroke-width="3"/><text x="16" y="35" fill="#9282DC" font-size="6.5">부채 커브</text><text x="16" y="68" fill="#5C82CF" font-size="6.5">국채·스왑(반대)</text><text x="60" y="80" fill="#4FAE8C" font-size="8" text-anchor="middle" font-weight="700">합쳐서 손익 0</text></svg>`},
+    b:`<svg class="anim" viewBox="0 0 120 84"><line x1="14" y1="72" x2="108" y2="72" stroke="#AAB4C6" stroke-width="1"/><text x="16" y="82" fill="#566275" font-size="8.5">단기</text><text x="98" y="82" fill="#566275" font-size="8.5">장기(20·30년)</text><line x1="14" y1="46" x2="108" y2="46" stroke="#AAB4C6" stroke-width="0.8" stroke-dasharray="3 2"/><g class="a-curveshift"><path d="M14 52 Q46 40 108 30" fill="none" stroke="#9282DC" stroke-width="2.6"/><circle cx="30" cy="49" r="2.4" fill="#9282DC" opacity="0.55"/><circle cx="108" cy="30" r="5" fill="#9282DC"/></g><text x="60" y="14" fill="#566275" font-size="8" text-anchor="middle">커브가 위·아래로 → 손익 ±</text><text x="98" y="24" fill="#9282DC" font-size="8.5" text-anchor="end">장기일수록 크게</text></svg>`,
+    a:`<svg class="anim" viewBox="0 0 120 84"><line x1="14" y1="72" x2="108" y2="72" stroke="#AAB4C6" stroke-width="1"/><g class="a-curveshift-sm"><path d="M14 46 Q46 36 108 28" fill="none" stroke="#9282DC" stroke-width="1.6" opacity="0.45"/></g><g class="a-curveshift-opp"><path d="M14 58 Q46 60 108 62" fill="none" stroke="#5C82CF" stroke-width="1.6" opacity="0.45"/></g><line x1="14" y1="52" x2="108" y2="52" stroke="#4FAE8C" stroke-width="3"/><text x="16" y="35" fill="#9282DC" font-size="8.5">부채 커브</text><text x="16" y="68" fill="#5C82CF" font-size="8.5">국채·스왑(반대)</text><text x="60" y="80" fill="#4FAE8C" font-size="8" text-anchor="middle" font-weight="700">합쳐서 손익 0</text></svg>`},
   vol:{
     b:`<svg class="anim" viewBox="0 0 120 84"><g class="a-breathe"><path d="M14 42 Q60 12 106 42" fill="none" stroke="#D6738A" stroke-width="2"/><path d="M14 42 Q60 72 106 42" fill="none" stroke="#4FAE8C" stroke-width="2"/></g><line x1="14" y1="42" x2="106" y2="42" stroke="#AAB4C6" stroke-width="1"/><text x="60" y="20" fill="#D6738A" font-size="8" text-anchor="middle">↑ 부채↑ 손실</text><text x="60" y="70" fill="#4FAE8C" font-size="8" text-anchor="middle">↓ 부채↓ 이득</text></svg>`,
     a:`<svg class="anim" viewBox="0 0 120 84"><g class="a-breathe-sm"><path d="M14 42 Q60 30 106 42" fill="none" stroke="#5C82CF" stroke-width="2"/><path d="M14 42 Q60 54 106 42" fill="none" stroke="#5C82CF" stroke-width="2"/></g><line x1="14" y1="42" x2="106" y2="42" stroke="#AAB4C6" stroke-width="1"/><text x="60" y="79" fill="#5C82CF" font-size="8" text-anchor="middle">변동폭 축소</text></svg>`},
   basis:{
-    b:`<svg class="anim" viewBox="0 0 120 84"><path d="M12 52 L23 47 L34 49 L45 40 L56 43 L67 34 L78 37 L89 28 L108 24" fill="none" stroke="#5C82CF" stroke-width="2.4" stroke-linejoin="round"/><text x="12" y="62" fill="#5C82CF" font-size="7.5" font-weight="700">수단(지수)</text><g class="a-fundlag"><path d="M12 52 L23 51 L34 45 L45 49 L56 41 L67 43 L78 34 L89 37 L108 32" fill="none" stroke="#D69A55" stroke-width="2.4" stroke-linejoin="round"/><circle r="3" fill="#D69A55"><animateMotion dur="2.6s" repeatCount="indefinite" path="M12 52 L23 51 L34 45 L45 49 L56 41 L67 43 L78 34 L89 37 L108 32"/></circle></g><text x="108" y="47" fill="#D69A55" font-size="7.5" text-anchor="end" font-weight="700">펀드(따라가려 함)</text><text x="60" y="79" fill="#566275" font-size="7.5" text-anchor="middle">못 따라가면 손실 · 앞서면 이익</text></svg>`,
-    a:`<svg class="anim" viewBox="0 0 120 84"><path d="M12 52 L23 47 L34 49 L45 40 L56 43 L67 34 L78 37 L89 28 L108 24" fill="none" stroke="#5C82CF" stroke-width="2.4" stroke-linejoin="round"/><text x="12" y="62" fill="#5C82CF" font-size="7.5" font-weight="700">수단(지수)</text><g class="a-fundlag-sm"><path d="M12 52 L23 48 L34 48 L45 41 L56 42 L67 35 L78 36 L89 29 L108 26" fill="none" stroke="#4FAE8C" stroke-width="2.4" stroke-linejoin="round"/><circle r="2.6" fill="#4FAE8C"><animateMotion dur="2.6s" repeatCount="indefinite" path="M12 52 L23 48 L34 48 L45 41 L56 42 L67 35 L78 36 L89 29 L108 26"/></circle></g><text x="108" y="34" fill="#4FAE8C" font-size="7.5" text-anchor="end" font-weight="700">펀드(바짝 추적)</text><text x="60" y="79" fill="#566275" font-size="7.5" text-anchor="middle">맞춤 복제 → 괴리(추적오차) 축소</text></svg>`},
+    b:`<svg class="anim" viewBox="0 0 120 84"><path d="M12 52 L23 47 L34 49 L45 40 L56 43 L67 34 L78 37 L89 28 L108 24" fill="none" stroke="#5C82CF" stroke-width="2.4" stroke-linejoin="round"/><text x="12" y="62" fill="#5C82CF" font-size="9" font-weight="700">수단(지수)</text><g class="a-fundlag"><path d="M12 52 L23 51 L34 45 L45 49 L56 41 L67 43 L78 34 L89 37 L108 32" fill="none" stroke="#D69A55" stroke-width="2.4" stroke-linejoin="round"/><circle r="3" fill="#D69A55"><animateMotion dur="2.6s" repeatCount="indefinite" path="M12 52 L23 51 L34 45 L45 49 L56 41 L67 43 L78 34 L89 37 L108 32"/></circle></g><text x="108" y="47" fill="#D69A55" font-size="9" text-anchor="end" font-weight="700">펀드(따라가려 함)</text><text x="60" y="79" fill="#566275" font-size="9" text-anchor="middle">못 따라가면 손실 · 앞서면 이익</text></svg>`,
+    a:`<svg class="anim" viewBox="0 0 120 84"><path d="M12 52 L23 47 L34 49 L45 40 L56 43 L67 34 L78 37 L89 28 L108 24" fill="none" stroke="#5C82CF" stroke-width="2.4" stroke-linejoin="round"/><text x="12" y="62" fill="#5C82CF" font-size="9" font-weight="700">수단(지수)</text><g class="a-fundlag-sm"><path d="M12 52 L23 48 L34 48 L45 41 L56 42 L67 35 L78 36 L89 29 L108 26" fill="none" stroke="#4FAE8C" stroke-width="2.4" stroke-linejoin="round"/><circle r="2.6" fill="#4FAE8C"><animateMotion dur="2.6s" repeatCount="indefinite" path="M12 52 L23 48 L34 48 L45 41 L56 42 L67 35 L78 36 L89 29 L108 26"/></circle></g><text x="108" y="34" fill="#4FAE8C" font-size="9" text-anchor="end" font-weight="700">펀드(바짝 추적)</text><text x="60" y="79" fill="#566275" font-size="9" text-anchor="middle">맞춤 복제 → 괴리(추적오차) 축소</text></svg>`},
   behav:{
     b:`<svg class="anim" viewBox="0 0 120 84"><rect x="12" y="32" width="96" height="18" rx="4" fill="#EAEDF5"/><rect class="a-drain" x="12" y="32" width="96" height="18" rx="4" fill="#9282DC"/><text x="60" y="79" fill="#566275" font-size="8" text-anchor="middle">해지 증감 → 노출 변동</text></svg>`,
     a:`<svg class="anim" viewBox="0 0 120 84"><rect x="12" y="32" width="96" height="18" rx="4" fill="#EAEDF5"/><rect class="a-drain-sm" x="12" y="32" width="96" height="18" rx="4" fill="#5C82CF"/><text x="60" y="79" fill="#5C82CF" font-size="8" text-anchor="middle">재보험으로 완화</text></svg>`},
@@ -2397,14 +2412,14 @@ function g2Draw(){ const b=GAME2, g=[], thin=b.csm<=G2_CSM0*0.3;
   const csmCol=b.csm>G2_CSM0*0.5?'var(--good)':b.csm>G2_CSM0*0.25?'var(--leak)':'var(--bad)';
   g.push(g2Tank(46,'재원','💰',b.bud,G2_BUD0,'var(--pay)',false));
   g.push(g2Tank(232,'CSM 완충','🛟',b.csm,G2_CSM0,csmCol,true));
-  if(thin&&!b.over) g.push(`<text x="278" y="30" text-anchor="middle" font-size="9.5" font-weight="800" fill="var(--bad)"><animate attributeName="opacity" values="1;.3;1" dur="1s" repeatCount="indefinite"/>⚠️ 완충 얇음 · 노출 위험</text>`);
+  if(thin&&!b.over) g.push(`<text x="278" y="30" text-anchor="middle" font-size="11" font-weight="800" fill="var(--bad)"><animate attributeName="opacity" values="1;.3;1" dur="1s" repeatCount="indefinite"/>⚠️ 완충 얇음 · 노출 위험</text>`);
   const sh=b.shock, lvl=sh>=30?'큼':sh>=15?'보통':'작음', scol=sh>=30?'var(--bad)':sh>=15?'var(--leak)':'#4FAE8C';
   g.push(`<text x="452" y="28" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">🌊 이번 잠재 변동</text>`);
   const amp=6+sh/3; let p=''; for(let x=0;x<=140;x+=7){ const y=92-amp*Math.sin(x/13); p+=(x?'L':'M')+(382+x).toFixed(1)+' '+y.toFixed(1); }
   g.push(`<path d="${p}" fill="none" stroke="${scol}" stroke-width="2.8" stroke-linecap="round"><animate attributeName="opacity" values="1;.45;1" dur="1.2s" repeatCount="indefinite"/></path>`);
   g.push(`<text x="452" y="150" text-anchor="middle" font-size="25" font-weight="800" fill="${scol}">±${won(sh)}</text>`);
   g.push(`<text x="452" y="169" text-anchor="middle" font-size="13" font-weight="800" fill="${scol}">${lvl}</text>`);
-  g.push(`<text x="452" y="184" text-anchor="middle" font-size="8.5" fill="var(--muted)">방향은 선택 후 공개</text>`);
+  g.push(`<text x="452" y="184" text-anchor="middle" font-size="10.5" fill="var(--muted)">방향은 선택 후 공개</text>`);
   $("g2Curve").innerHTML=g.join('');
 }
 function g2Play(a){ if(GAME2.over)return; const b=GAME2, m=b.shock, down=Math.random()<G2_PDOWN, real=down?Math.round(m*G2_DMUL):m, cost=g2HedgeCost(m); let msg,col,tag;
@@ -2440,6 +2455,8 @@ if($("g2Curve")){ document.querySelectorAll(".g2c").forEach(b=>b.addEventListene
 /* 초기 렌더 — 각 호출을 격리(하나가 throw해도 나머지·loadMarket은 진행). 간헐 미표시·conceptLines stuck 방지 */
 [renderFactorAnim,renderPayoff,render,syncCsm2,drawCasc,drawBuffer,drawHero,renderCases2008,renderMech,renderCapVol].forEach(fn=>{try{fn();}catch(e){console.error('[init]',fn&&fn.name,e);}});
 loadMarket();  /* 개념탭 조합차트·시뮬 모두 데이터 필요 → 로드 시 자동 반영 */
+svgPauseSync();
+document.addEventListener("touchstart",e=>{ const t=$("eftip"); if(t&&!e.target.closest(".ef")) t.style.opacity=0; },{passive:true});
 </script>
 </body>
 </html>

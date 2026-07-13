@@ -784,7 +784,7 @@
       <rect x="278" y="71.6" width="56" height="0" fill="var(--pay)" opacity="0.92"><animate attributeName="y" values="71.6;71.6;61.2;61.2;71.6" keyTimes="0;0.46;0.54;0.9;1" dur="5s" repeatCount="indefinite"/><animate attributeName="height" values="0;0;10.4;10.4;0" keyTimes="0;0.46;0.54;0.9;1" dur="5s" repeatCount="indefinite"/></rect>
       <rect x="278" y="61.2" width="56" height="0" fill="var(--leak)" opacity="0.92"><animate attributeName="y" values="61.2;61.2;56;56;61.2" keyTimes="0;0.54;0.6;0.9;1" dur="5s" repeatCount="indefinite"/><animate attributeName="height" values="0;0;5.2;5.2;0" keyTimes="0;0.54;0.6;0.9;1" dur="5s" repeatCount="indefinite"/></rect>
       <text x="306" y="48" text-anchor="middle" font-size="13" font-weight="800" fill="var(--pay)" font-family="sans-serif" opacity="0">+100<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.6;0.66;0.9;1" dur="5s" repeatCount="indefinite"/></text>
-      <text x="306" y="99" text-anchor="middle" font-size="10" font-weight="800" fill="var(--pay)" font-family="sans-serif">파생상품 3종</text>
+      <text x="306" y="99" text-anchor="middle" font-size="10" font-weight="800" fill="var(--pay)" font-family="sans-serif">파생상품</text>
       <g font-family="sans-serif" font-size="9" font-weight="700">
         <rect x="280" y="118" width="7" height="7" rx="2" fill="var(--good)"/><text x="291" y="125" fill="#337A5F">방향 +70 · 선물·스왑</text>
         <rect x="280" y="131" width="7" height="7" rx="2" fill="var(--pay)"/><text x="291" y="138" fill="var(--pay)">급변 +20 · 옵션</text>
@@ -809,35 +809,35 @@
   </div>
 
   <div class="panel">
-    <div class="qah"><div class="qan">Q5</div><div class="qat">완충(CSM)이 얇으면 어떻게 되나요? 🪫</div></div>
+    <div class="qah"><div class="qan">Q5</div><div class="qat">헷지를 하지 않으면 어떻게 되나요? 🛟</div></div>
     <div class="pair2" style="margin:4px 0 12px">
       <div style="border:1.5px solid var(--good);border-radius:10px;padding:11px;background:#EAF7F1">
-        <div style="font-weight:800;color:var(--good);font-size:13px">🛟 완충이 두꺼우면</div>
-        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px">웬만한 손실은 완충이 받아 줘요. <b>덜 막고 노출</b>해도 버틸 여유가 있어요.</div>
+        <div style="font-weight:800;color:var(--good);font-size:13px">🛟 완충(CSM)이 버텨요</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px">헷지하지 않은 변동은 <b>완충이 먼저 흡수</b>해요 — 그동안 손익은 조용해요.</div>
       </div>
       <div style="border:1.5px solid var(--bad-line);border-radius:10px;padding:11px;background:#FBEEF1">
-        <div style="font-weight:800;color:var(--bad);font-size:13px">🪫 완충이 얇으면</div>
-        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px">작은 손실도 곧장 <b>손익에 반영돼요</b>. 그래서 <b>더 많이 헷지해야</b> 해요.</div>
+        <div style="font-weight:800;color:var(--bad);font-size:13px">🪫 완충이 소진되면</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px">변동이 <b>그대로 손익·자본으로</b> 와요 — <b>손익·자본 변동성이 커져요</b>.</div>
       </div>
     </div>
     <div class="chartwrap" style="margin:0 0 8px"><svg viewBox="0 0 560 160" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
       <line x1="280" y1="30" x2="280" y2="148" stroke="var(--hair)" stroke-dasharray="4 3"/>
-      <text x="150" y="20" text-anchor="middle" font-size="12" font-weight="800" fill="#337A5F">🛟 완충 두꺼움</text>
+      <text x="150" y="20" text-anchor="middle" font-size="12" font-weight="800" fill="#337A5F">🛟 완충이 버틸 때</text>
       <rect x="104" y="118" width="92" height="26" rx="4" fill="#DCE7FB" stroke="#9DBBF3"/>
       <text x="150" y="135" text-anchor="middle" font-size="9.5" font-weight="800" fill="#4A6FC4">자본</text>
       <rect x="104" y="86" width="92" height="30" rx="4" fill="#D6F0E4" stroke="#93D4B4"/>
       <text x="150" y="105" text-anchor="middle" font-size="9.5" font-weight="700" fill="#337A5F">완충</text>
       <circle cx="150" cy="36" r="9" fill="var(--leak)"><animate attributeName="cy" values="36;77;77;36" keyTimes="0;0.42;0.82;1" dur="2.6s" repeatCount="indefinite"/></circle>
       <text x="150" y="156" text-anchor="middle" font-size="11" font-weight="800" fill="#337A5F">완충이 흡수 ✓</text>
-      <text x="410" y="20" text-anchor="middle" font-size="12" font-weight="800" fill="var(--bad)">🪫 완충 얇음</text>
+      <text x="410" y="20" text-anchor="middle" font-size="12" font-weight="800" fill="var(--bad)">🪫 소진된 뒤</text>
       <rect x="364" y="118" width="92" height="26" rx="4" fill="#DCE7FB" stroke="#9DBBF3"/>
       <text x="410" y="135" text-anchor="middle" font-size="9.5" font-weight="800" fill="#4A6FC4">자본</text>
       <rect x="364" y="106" width="92" height="10" rx="3" fill="#D6F0E4" stroke="#93D4B4"><animate attributeName="opacity" values="1;1;.2;.2;1" keyTimes="0;0.44;0.52;0.86;1" dur="2.6s" repeatCount="indefinite"/></rect>
       <circle cx="410" cy="36" r="9" fill="var(--bad)"><animate attributeName="cy" values="36;97;131;131;36" keyTimes="0;0.44;0.6;0.86;1" dur="2.6s" repeatCount="indefinite"/></circle>
       <text x="410" y="126" font-size="15" text-anchor="middle" opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.56;0.62;0.82" dur="2.6s" repeatCount="indefinite"/>💥</text>
-      <text x="410" y="156" text-anchor="middle" font-size="11" font-weight="800" fill="var(--bad)">소진 → 손익 반영</text>
+      <text x="410" y="156" text-anchor="middle" font-size="11" font-weight="800" fill="var(--bad)">손익·자본으로 직행</text>
     </svg></div>
-    <ul class="qalist"><li><b>완충이 손실을 먼저 흡수하다, 소진되면 그대로 손익·자본으로 이어져요.</b> 얇을수록 헷지 필요성이 커져요.</li></ul>
+    <ul class="qalist"><li><b>헷지를 하지 않으면 완충(CSM)으로 버텨야 해요.</b> 완충이 소진되면 변동이 그대로 손익·자본으로 와 <b>변동성이 커져요</b>.</li></ul>
     <span class="qgo" onclick="document.querySelector('#tabs [data-p=p3]').click()">자세히 → ⑤ 손익 인식 (완충 CSM)</span>
   </div>
 

@@ -661,18 +661,25 @@
 
   <div class="panel concept">
     <div class="cap">받는 돈과 쓰는 돈 — 회계상 가는 길이 달라요<span class="capb info">🧾 회계</span><span>수수료=CSM · 헷지손익=투자손익</span></div>
-    <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px">
-      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px">
-        <span style="font-weight:800;color:#337A5F">🪙 보증수수료</span><span style="color:var(--muted)">→</span>
-        <span style="background:#EAF7F1;border:1px solid #93D4B4;border-radius:8px;padding:5px 10px;font-weight:800;color:#337A5F">CSM(완충)</span>
-        <span style="color:var(--muted)">→ 여러 해에 나눠 <b>천천히 수익</b>으로</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px">
-        <span style="font-weight:800;color:var(--pay-ink)">🛡️ 헷지손익</span><span style="color:var(--muted)">→</span>
-        <span style="background:#EEF3FE;border:1px solid #9DBBF3;border-radius:8px;padding:5px 10px;font-weight:800;color:var(--pay-ink)">투자손익</span>
-        <span style="color:var(--muted)">→ <b>그 해 손익에 바로</b></span>
-      </div>
-    </div>
+    <div class="chartwrap" style="margin-top:6px"><svg viewBox="0 0 560 212" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
+      <text x="24" y="42" font-size="11.5" font-weight="800" fill="#337A5F" font-family="sans-serif">🪙 보증수수료</text>
+      <text x="24" y="170" font-size="11.5" font-weight="800" fill="var(--pay-ink)" font-family="sans-serif">🛡️ 헷지손익</text>
+      <path d="M256 61 C310 61 370 80 420 94" fill="none" stroke="#C9D4E8" stroke-width="1.2" stroke-dasharray="4 3"/>
+      <path d="M112 161 C230 161 330 130 420 118" fill="none" stroke="#C9D4E8" stroke-width="1.2" stroke-dasharray="4 3"/>
+      <rect x="152" y="38" width="104" height="46" rx="9" fill="#EAF7F1" stroke="#93D4B4" stroke-width="1.5"/>
+      <text x="204" y="58" text-anchor="middle" font-size="12" font-weight="800" fill="#337A5F" font-family="sans-serif">CSM(완충)</text>
+      <text x="204" y="74" text-anchor="middle" font-size="9.5" fill="#337A5F" font-family="sans-serif">여러 해 나눠</text>
+      <rect x="424" y="70" width="118" height="72" rx="10" fill="#F6F8FC" stroke="#C9D4E8" stroke-width="1.5"/>
+      <text x="483" y="102" text-anchor="middle" font-size="12.5" font-weight="800" fill="var(--ink)" font-family="sans-serif">그 해 손익</text>
+      <text x="483" y="119" text-anchor="middle" font-size="9.5" fill="var(--muted)" font-family="sans-serif">(PL)</text>
+      <circle r="7" fill="var(--good)"><animate attributeName="cx" values="120;120;168;168" keyTimes="0;0.04;0.16;1" dur="6s" repeatCount="indefinite"/><animate attributeName="cy" values="61;61;61;61" keyTimes="0;0.04;0.16;1" dur="6s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.04;0.15;0.18;1" dur="6s" repeatCount="indefinite"/></circle>
+      <circle r="4.5" fill="var(--good)"><animate attributeName="cx" values="256;256;424;424" keyTimes="0;0.30;0.41;1" dur="6s" repeatCount="indefinite"/><animate attributeName="cy" values="61;61;96;96" keyTimes="0;0.30;0.41;1" dur="6s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.30;0.31;0.40;0.41;1" dur="6s" repeatCount="indefinite"/></circle><circle r="4.5" fill="var(--good)"><animate attributeName="cx" values="256;256;424;424" keyTimes="0;0.45;0.56;1" dur="6s" repeatCount="indefinite"/><animate attributeName="cy" values="61;61;96;96" keyTimes="0;0.45;0.56;1" dur="6s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.45;0.46;0.55;0.56;1" dur="6s" repeatCount="indefinite"/></circle><circle r="4.5" fill="var(--good)"><animate attributeName="cx" values="256;256;424;424" keyTimes="0;0.60;0.71;1" dur="6s" repeatCount="indefinite"/><animate attributeName="cy" values="61;61;96;96" keyTimes="0;0.60;0.71;1" dur="6s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.60;0.61;0.70;0.71;1" dur="6s" repeatCount="indefinite"/></circle>
+      <text x="330" y="52" font-size="10" font-weight="700" fill="#337A5F" font-family="sans-serif">해마다 조금씩 →</text>
+      <rect width="14" height="14" rx="3" fill="var(--pay)"><animate attributeName="x" values="106;106;418;418" keyTimes="0;0.32;0.46;1" dur="6s" repeatCount="indefinite"/><animate attributeName="y" values="154;154;112;112" keyTimes="0;0.32;0.46;1" dur="6s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;1;1;0;0" keyTimes="0;0.32;0.33;0.45;0.47;1" dur="6s" repeatCount="indefinite"/></rect>
+      <text x="300" y="150" font-size="10" font-weight="700" fill="var(--pay-ink)" font-family="sans-serif">그 해 바로 →</text>
+      <text x="204" y="200" font-size="9.5" fill="var(--muted)" font-family="sans-serif" text-anchor="middle">받는 돈: 천천히 나눠서</text>
+      <text x="440" y="200" font-size="9.5" fill="var(--muted)" font-family="sans-serif" text-anchor="middle">쓰는 돈: 즉시</text>
+    </svg></div>
     <div class="callout key" style="margin-top:11px"><span class="ci">⭐</span><div><span class="clab">핵심</span> 받는 돈은 <b>CSM을 거쳐 천천히</b>, 쓰는 돈은 <b>그 해 바로</b> 잡혀요 — 시점이 어긋나 <b>단년 손익이 실제보다 나빠 보일 수 있어요</b>. 그래서 위처럼 <b>전 기간 누적</b>으로 봐요.</div></div>
   </div>
 
@@ -973,37 +980,10 @@
   <div class="panel">
     <div class="cap">이렇게 보면 돼요 — 4단계<span class="capb info">🧭 안내</span></div>
     <div style="display:flex;flex-direction:column;gap:10px;margin-top:2px">
-      <div class="qstep"><span class="qstepn" style="background:#4FA8A8">1</span><div><b>재원(보증수수료) 확인</b><small>이 예산 안에서 헷지</small></div></div>
-      <div class="qstep"><span class="qstepn" style="background:#4FA8A8">2</span><div><b>항목을 헷지 ↔ 노출로 선택</b><small>위 막대·아래 판정이 즉시 반응</small></div></div>
+      <div class="qstep"><span class="qstepn" style="background:#4FA8A8">1</span><div><b>재원(보증수수료) 확인</b><small>바로 아래 · 이 예산 안에서 헷지</small></div></div>
+      <div class="qstep"><span class="qstepn" style="background:#4FA8A8">2</span><div><b>항목을 헷지 ↔ 노출로 선택</b><small>아래 결과·판정이 즉시 반응</small></div></div>
       <div class="qstep"><span class="qstepn" style="background:#4FA8A8">3</span><div><b>결과 확인</b> — 흔들림·판정·실측 차트<small>비용과 변동성의 균형</small></div></div>
       <div class="qstep"><span class="qstepn" style="background:#4FA8A8">4</span><div><b>최적 조합 찾기</b> — 상황 프리셋·프론티어<small>맨 아래 · 심화 (선택)</small></div></div>
-    </div>
-  </div>
-  <div class="panel">
-    <div class="cap">비용 · 흔들림 한눈에<span class="capb ex">🧮 예시값</span><span>미헷지 vs 헷지 · 비용</span></div>
-    <div>
-      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
-        <div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:2px"><span class="hn" style="background:var(--sym);width:20px;height:20px;font-size:12px">1</span><b style="font-size:13.5px;color:var(--ink)">CSM 변동성</b><span class="qchip" style="font-size:10px;padding:2px 7px;background:#FBEEF1;color:var(--bad)">비용 0 · 변동성 큼</span></div><div id="vkNum" style="font-size:30px;font-weight:800;color:var(--sym);letter-spacing:-.5px">±0억</div></div>
-        <div style="color:var(--muted);font-size:12px;line-height:1.7" id="vkSub">CSM이 흡수하다 넘치면 손익·자본으로 넘어와요</div>
-      </div>
-      <div style="position:relative;height:38px;border-radius:9px;background:var(--panel2);border:1px solid var(--hair);margin-top:11px;overflow:hidden">
-        <div id="vkBar" style="display:flex;gap:2px;height:100%;width:100%;padding:2px;transition:width .55s cubic-bezier(.2,.7,.3,1)"></div>
-        <div id="vkXferOv" style="position:absolute;top:0;bottom:0;left:100%;width:0;background:var(--bad);display:none;pointer-events:none"></div>
-        <div id="vkCsmLine" style="position:absolute;top:-1px;bottom:-1px;left:100%;width:0;border-left:2px dashed var(--good);transition:left .55s cubic-bezier(.2,.7,.3,1)"></div>
-      </div>
-      <div id="vkLegend" style="display:flex;flex-wrap:wrap;gap:5px 10px;margin-top:9px;font-size:11px"></div>
-      <p class="foot" style="margin-top:9px">이 변동성을 <b>CSM 완충</b>(초록 점선)이 흡수해요. <b>넘치면</b>(빨강) 손익·자본으로 넘어와요 — <b>완충이 얇을수록 그대로 내게 와요.</b> <span style="opacity:.75">(점선=CSM의 절반 · ±양방향 기준)</span></p>
-    </div>
-    <div style="border-top:1px dashed var(--hair);margin-top:14px;padding-top:12px">
-      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
-        <div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:2px"><span class="hn" style="background:var(--pay);width:20px;height:20px;font-size:12px">2</span><b style="font-size:13.5px;color:var(--ink)">헷지 변동성</b><span class="qchip" style="font-size:10px;padding:2px 7px;background:#EAF7F1;color:var(--good)">비용 지불 · 변동성 작음</span></div><div id="vbNum" style="font-size:30px;font-weight:800;color:var(--pay);letter-spacing:-.5px">±0억</div></div>
-        <div style="color:var(--muted);font-size:12px;line-height:1.7">헷지 후 남는 <b style="color:var(--good)">잔여 변동성</b><br>비용(옵션 프리미엄)은 <b>아래 든 비용</b>으로</div>
-      </div>
-      <div style="position:relative;height:38px;border-radius:9px;background:var(--panel2);border:1px solid var(--hair);margin-top:11px;overflow:hidden">
-        <div id="vbBar" style="display:flex;gap:2px;height:100%;width:0%;padding:2px;transition:width .55s cubic-bezier(.2,.7,.3,1)"></div>
-      </div>
-      <div id="vbLegend" style="display:flex;flex-wrap:wrap;gap:5px 10px;margin-top:9px;font-size:11px"></div>
-      <p class="foot" style="margin-top:9px">큰 변동성이 <b>작은 잔여</b>로 줄어요(<b>0은 아님</b>) — 대신 <b>비용</b>을 지불.</p>
     </div>
   </div>
   <div class="panel">
@@ -1033,10 +1013,35 @@
       <div style="font-size:11.5px;color:var(--muted);margin-top:8px">주가·금리는 각자 계열(감마는 <b>같은 자산 방향</b> 뒤). 켜면 아래층이 같이 켜지고, 끄면 위층이 같이 꺼져요.</div>
     </div>
     <div id="selList"></div>
-    <div class="callout tip"><span class="ci">💡</span><div><span class="clab">팁</span> 각 항목을 눌러 <b>헷지 ↔ 노출</b>을 바꿔 보세요. 위 막대·프론티어가 즉시 반응해요.</div></div>
     <p class="foot">막대 = 항목별 흔들림. <b style="color:var(--pay)">헷지</b>=비용 내고 짧게(파랑) / <b style="color:var(--leak)">노출</b>=비용 0·길게(주황).</p>
   </div>
-  <p class="lede">실제 시장데이터(KOSPI·<b>국고 20년</b>, 약 6.5년)로 손익을 재현해요. <b>미헷지</b>는 시장 등락이 그대로 손익이 되어 <b>크게 출렁이고</b>, 헷지는 그 흔들림을 줄여요. <span id="simStatus" style="color:var(--muted)">데이터 불러오는 중…</span></p>
+  <div class="panel">
+    <div class="cap">비용 · 흔들림 한눈에<span class="capb ex">🧮 예시값</span><span>미헷지 vs 헷지 · 비용</span></div>
+    <div>
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:2px"><span class="hn" style="background:var(--sym);width:20px;height:20px;font-size:12px">1</span><b style="font-size:13.5px;color:var(--ink)">CSM 변동성</b><span class="qchip" style="font-size:10px;padding:2px 7px;background:#FBEEF1;color:var(--bad)">비용 0 · 변동성 큼</span></div><div id="vkNum" style="font-size:30px;font-weight:800;color:var(--sym);letter-spacing:-.5px">±0억</div></div>
+        <div style="color:var(--muted);font-size:12px;line-height:1.7" id="vkSub">CSM이 흡수하다 넘치면 손익·자본으로 넘어와요</div>
+      </div>
+      <div style="position:relative;height:38px;border-radius:9px;background:var(--panel2);border:1px solid var(--hair);margin-top:11px;overflow:hidden">
+        <div id="vkBar" style="display:flex;gap:2px;height:100%;width:100%;padding:2px;transition:width .55s cubic-bezier(.2,.7,.3,1)"></div>
+        <div id="vkXferOv" style="position:absolute;top:0;bottom:0;left:100%;width:0;background:var(--bad);display:none;pointer-events:none"></div>
+        <div id="vkCsmLine" style="position:absolute;top:-1px;bottom:-1px;left:100%;width:0;border-left:2px dashed var(--good);transition:left .55s cubic-bezier(.2,.7,.3,1)"></div>
+      </div>
+      <div id="vkLegend" style="display:flex;flex-wrap:wrap;gap:5px 10px;margin-top:9px;font-size:11px"></div>
+      <p class="foot" style="margin-top:9px">이 변동성을 <b>CSM 완충</b>(초록 점선)이 흡수해요. <b>넘치면</b>(빨강) 손익·자본으로 넘어와요 — <b>완충이 얇을수록 그대로 내게 와요.</b> <span style="opacity:.75">(점선=CSM의 절반 · ±양방향 기준)</span></p>
+    </div>
+    <div style="border-top:1px dashed var(--hair);margin-top:14px;padding-top:12px">
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:2px"><span class="hn" style="background:var(--pay);width:20px;height:20px;font-size:12px">2</span><b style="font-size:13.5px;color:var(--ink)">헷지 변동성</b><span class="qchip" style="font-size:10px;padding:2px 7px;background:#EAF7F1;color:var(--good)">비용 지불 · 변동성 작음</span></div><div id="vbNum" style="font-size:30px;font-weight:800;color:var(--pay);letter-spacing:-.5px">±0억</div></div>
+        <div style="color:var(--muted);font-size:12px;line-height:1.7">헷지 후 남는 <b style="color:var(--good)">잔여 변동성</b><br>비용(옵션 프리미엄)은 <b>아래 든 비용</b>으로</div>
+      </div>
+      <div style="position:relative;height:38px;border-radius:9px;background:var(--panel2);border:1px solid var(--hair);margin-top:11px;overflow:hidden">
+        <div id="vbBar" style="display:flex;gap:2px;height:100%;width:0%;padding:2px;transition:width .55s cubic-bezier(.2,.7,.3,1)"></div>
+      </div>
+      <div id="vbLegend" style="display:flex;flex-wrap:wrap;gap:5px 10px;margin-top:9px;font-size:11px"></div>
+      <p class="foot" style="margin-top:9px">큰 변동성이 <b>작은 잔여</b>로 줄어요(<b>0은 아님</b>) — 대신 <b>비용</b>을 지불.</p>
+    </div>
+  </div>
   <div class="verdict ok" id="vd"><div class="ic" id="vdi">✓</div><div><h3 id="vdt"></h3><p id="vdp"></p></div></div>
   <div class="panel">
     <div class="cap">상황별(평상시·위기) 프리셋<span class="capb live">🖐 조작</span><span>입력 가정을 한 번에 세팅 · 프론티어가 즉시 이동</span></div>
@@ -1060,6 +1065,7 @@
     </div>
     <p class="foot">가로=흔들림, 세로=비용 — <b>초록 구역 안 가장 왼쪽이 최적</b>(✓). 🖐 <b>선을 드래그</b>하고 <b>점을 눌러</b> 적용해 보세요.</p>
   </div>
+  <p class="lede">실제 시장데이터(KOSPI·<b>국고 20년</b>, 약 6.5년)로 손익을 재현해요. <b>미헷지</b>는 시장 등락이 그대로 손익이 되어 <b>크게 출렁이고</b>, 헷지는 그 흔들림을 줄여요. <span id="simStatus" style="color:var(--muted)">데이터 불러오는 중…</span></p>
   <details class="deep">
     <summary>🔬 심화 — 실측 재현 · 요소 분해 <small>(선택, 초심자는 건너뛰어도 좋아요)</small></summary>
   <div class="panel">

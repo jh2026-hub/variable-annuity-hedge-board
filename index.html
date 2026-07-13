@@ -431,15 +431,15 @@
   </div>
 
   <div class="panel">
-    <div class="cap">보증리스크가 왜 위험한가<span class="capb live">🖐 조작</span><span>주가를 떨어뜨려 보세요</span></div>
+    <div class="cap">보증리스크가 왜 위험한가<span class="capb live">🖐 조작</span><span>받은 수수료 이상의 손실을 보게 만드는 위험</span></div>
     <div style="margin:4px 0 10px">
       <label class="foot" style="margin:0">주가 충격 <b id="heroShockLab" class="mono" style="color:var(--bad)">−0%</b></label>
       <input type="range" id="heroShock" min="0" max="40" step="1" value="0" style="width:100%">
     </div>
-    <div class="chartwrap"><svg id="heroSvg" viewBox="0 0 520 250" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"></svg></div>
+    <div class="chartwrap"><svg id="heroSvg" viewBox="0 0 520 210" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"></svg></div>
     <div class="leg" style="margin-top:8px">
-      <span><i style="background:var(--bad)"></i>보증손실 — 자본을 깎아요</span>
-      <span><i style="background:var(--pay)"></i>남은 자본</span>
+      <span><i style="background:var(--good)"></i>받은 보증수수료</span>
+      <span><i style="background:var(--bad)"></i>치른 보증손실 (수수료 초과분 = 자본 순손실)</span>
     </div>
     <p class="foot" id="heroMsg" style="margin-top:9px"></p>
   </div>
@@ -1758,9 +1758,11 @@ function drawHero(){
   const s=Math.max(0,parseFloat($("heroShock")?.value)||0);
   if($("heroShockLab")) $("heroShockLab").textContent="−"+s+"%";
   const f=Math.pow(s/30,1.7);
-  const cap=Math.round(100-100*f);                 /* 보증손실 반영 후 회사 자본 잔여 */
   const fundNow=Math.max(0,Math.round(100-s*2.5)); /* 적립금(펀드) 잔액 % */
   const floorPct=64;                                /* 최저 사망보증(GMDB) % */
+  const guarLoss=Math.max(0,floorPct-fundNow);      /* 보증손실(펀드가 GMDB 아래로 내려간 격차) */
+  const fee=12;                                     /* 누적 보증수수료(예시·고정) */
+  const netLoss=Math.max(0,guarLoss-fee);           /* 수수료 초과 순손실 → 자본 차감 */
   const W=520;
   const g=[];
   /* ── ① 적립금(펀드) vs 최저 사망보증(GMDB) → 펀드 하락이 보증손실을 키운다 ── */
@@ -1775,28 +1777,29 @@ function drawHero(){
     if(rw>60) g.push(`<text x="${(rx+rw/2).toFixed(1)}" y="${gy+gh/2+4}" text-anchor="middle" font-size="10" font-weight="800" fill="var(--bad)">보증손실</text>`); }
   g.push(`<line x1="${xFloor.toFixed(1)}" y1="${gy-8}" x2="${xFloor.toFixed(1)}" y2="${gy+gh+8}" stroke="#0a7c50" stroke-width="1.4" stroke-dasharray="4 3"/>`);
   g.push(`<text x="${xFloor.toFixed(1)}" y="${gy+gh+20}" text-anchor="middle" font-size="9.5" font-weight="700" fill="#0a7c50">최저 사망보증(GMDB)</text>`);
-  /* ── 연결 문구 ── */
-  g.push(`<text x="${W/2}" y="104" text-anchor="middle" font-size="10" font-weight="700" fill="var(--bad)">↓ 이 보증손실이 회사 자본을 곧바로 깎아요</text>`);
-  /* ── ② 회사 자본(단일) — 보증손실이 깎은 결과 ── */
-  const tankW=150, cx=W/2, x=cx-tankW/2, topY=150, baseY=224, th=74;
-  const fillH=Math.max(0,Math.min(100,cap))/100*th, fillY=baseY-fillH, lostH=th-fillH;
-  const stat=cap<=0?'💥 자본 소진':(cap<25?'⚠️ 위태':(cap<95?'자본 감소':'정상'));
-  g.push(`<line x1="${x-14}" y1="${baseY}" x2="${x+tankW+14}" y2="${baseY}" stroke="#AAB4C6" stroke-width="1.2"/>`);
-  g.push(`<text x="${cx}" y="${topY-28}" text-anchor="middle" font-size="18">🏛️</text>`);
-  g.push(`<text x="${cx}" y="${topY-13}" text-anchor="middle" font-size="12.5" font-weight="800" fill="var(--ink)">회사 자본</text>`);
-  g.push(`<text x="${cx}" y="${topY-1}" text-anchor="middle" font-size="11" font-weight="700" fill="${cap>=95?'var(--ink)':'var(--bad)'}">${cap}% · ${stat}</text>`);
-  if(fillH>0.5){ g.push(`<rect x="${x}" y="${fillY.toFixed(1)}" width="${tankW}" height="${fillH.toFixed(1)}" fill="#DCE7FB" rx="4"/>`);
-    if(fillH>16) g.push(`<text x="${cx}" y="${(fillY+fillH/2+4).toFixed(1)}" text-anchor="middle" font-size="11" font-weight="800" fill="#2F63E0">남은 자본</text>`); }
-  if(lostH>0.5){ g.push(`<rect x="${x}" y="${topY}" width="${tankW}" height="${lostH.toFixed(1)}" fill="#F7C9D1" rx="4"${f>0.05?`><animate attributeName="opacity" values="1;.6;1" dur="1.3s" repeatCount="indefinite"/></rect>`:'/>'}`);
-    if(lostH>16) g.push(`<text x="${cx}" y="${(topY+lostH/2+4).toFixed(1)}" text-anchor="middle" font-size="10" font-weight="700" fill="var(--bad)">보증손실</text>`); }
-  g.push(`<rect x="${x}" y="${topY}" width="${tankW}" height="${th}" fill="none" stroke="${cap<=0?'#E24A62':'#C9D2E2'}" stroke-width="1.6" rx="5"/>`);
-  if(cap<0){ const uh=Math.min(22,-cap/100*th);
-    g.push(`<rect x="${x}" y="${baseY}" width="${tankW}" height="${uh.toFixed(1)}" fill="#E24A62" opacity="0.85" rx="4"><animate attributeName="opacity" values="0.85;.4;0.85" dur="1.1s" repeatCount="indefinite"/></rect>`);
-    g.push(`<text x="${cx}" y="${(baseY+uh/2+4).toFixed(1)}" text-anchor="middle" font-size="9.5" font-weight="800" fill="#fff">자본 −${-cap}%</text>`); }
+  /* ── ② 받은 보증수수료 vs 치른 보증손실 (수수료 이상의 손실) ── */
+  g.push(`<text x="${W/2}" y="104" text-anchor="middle" font-size="10.5" font-weight="800" fill="var(--ink)">회사가 <tspan fill="#0a7c50">받은 보증수수료</tspan> vs <tspan fill="var(--bad)">치른 보증손실</tspan></text>`);
+  const bx=132, bw=326, sMax=Math.max(70,guarLoss+8), toW=v=>v/sMax*bw, xFee=bx+toW(fee);
+  g.push(`<text x="${bx-8}" y="136" text-anchor="end" font-size="9.5" font-weight="700" fill="#0a7c50">받은 수수료</text>`);
+  g.push(`<rect x="${bx}" y="122" width="${Math.max(2,toW(fee)).toFixed(1)}" height="20" fill="#D6F0E4" stroke="#5BD99A" rx="4"/>`);
+  g.push(`<text x="${(bx+Math.max(2,toW(fee))+6).toFixed(1)}" y="136" font-size="9.5" font-weight="800" fill="#0a7c50">+${fee}</text>`);
+  g.push(`<text x="${bx-8}" y="168" text-anchor="end" font-size="9.5" font-weight="700" fill="var(--bad)">치른 손실</text>`);
+  if(guarLoss>0){
+    g.push(`<rect x="${bx}" y="154" width="${toW(Math.min(fee,guarLoss)).toFixed(1)}" height="22" fill="#FBDCE2" rx="4"/>`);
+    if(netLoss>0) g.push(`<rect x="${xFee.toFixed(1)}" y="154" width="${toW(netLoss).toFixed(1)}" height="22" fill="#F7C9D1" stroke="#E24A62" rx="4"><animate attributeName="opacity" values="1;.6;1" dur="1.3s" repeatCount="indefinite"/></rect>`);
+    g.push(`<text x="${(bx+toW(guarLoss)+6).toFixed(1)}" y="169" font-size="9.5" font-weight="800" fill="var(--bad)">−${guarLoss}</text>`);
+  } else {
+    g.push(`<text x="${bx+4}" y="169" font-size="9.5" font-weight="700" fill="var(--muted)">아직 손실 0 (수수료만 수취)</text>`);
+  }
+  g.push(`<line x1="${xFee.toFixed(1)}" y1="116" x2="${xFee.toFixed(1)}" y2="182" stroke="#0a7c50" stroke-width="1.2" stroke-dasharray="3 3" opacity="0.7"/>`);
+  if(netLoss>0) g.push(`<text x="${W/2}" y="199" text-anchor="middle" font-size="10.5" font-weight="800" fill="var(--bad)">수수료로 못 메운 순손실 ${netLoss} → 회사 자본 차감 💥</text>`);
+  else g.push(`<text x="${W/2}" y="199" text-anchor="middle" font-size="10" font-weight="700" fill="#0a7c50">손실이 수수료 이내 — 아직 자본 영향 없음</text>`);
   svg.innerHTML=g.join("");
   if($("heroMsg")) $("heroMsg").innerHTML = s===0
-    ? `펀드(적립금)가 <b>최저 사망보증(GMDB)</b> 아래로 내려가면, 가입자 사망 시 회사가 <b>차액을 물어줘야</b> 해요 — 이게 <b style="color:var(--bad)">보증손실</b>이고 <b>회사 자본</b>을 곧바로 깎아요. 슬라이더를 내려 보세요.`
-    : `주가 <b>−${s}%</b> → 적립금 <b>${fundNow}%</b>(GMDB ${floorPct}% 아래) → <b style="color:var(--bad)">보증손실</b>이 <b>회사 자본을 ${cap<=0?'소진(💥)':cap+'%로 감소'}</b>시켜요.`;
+    ? `회사는 보증을 팔고 <b style="color:#0a7c50">보증수수료(예: ${fee})</b>를 받아요. 평시엔 이득이지만 — <b>보증리스크 = 받은 수수료 이상의 손실을 보게 만드는 위험</b>. 주가가 빠져 펀드가 <b>GMDB 아래</b>로 가면 확인돼요. 슬라이더를 내려 보세요.`
+    : guarLoss<=fee
+      ? `주가 <b>−${s}%</b> → 보증손실 <b>${guarLoss}</b>는 아직 <b style="color:#0a7c50">받은 수수료 ${fee} 이내</b> — 회사엔 순손실 없음.`
+      : `주가 <b>−${s}%</b> → 보증손실 <b style="color:var(--bad)">${guarLoss}</b>이 수수료 <b>${fee}</b>의 <b>${(guarLoss/fee).toFixed(1)}배</b> → <b style="color:var(--bad)">순손실 ${netLoss}가 회사 자본을 직접 깎아요</b>. 수수료로는 못 막죠.`;
 }
 if($("heroShock")) $("heroShock").addEventListener("input",drawHero);
 

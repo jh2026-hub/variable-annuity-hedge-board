@@ -1759,13 +1759,18 @@ function drawCompare(){
 
 /* ⑤ 시뮬레이션 — 정적 시장데이터 */
 const SIM={loaded:false,data:null,rateKey:"y20"};
-async function loadMarket(){
+async function loadMarket(attempt){
+  attempt=attempt||1;
   try{
-    const r=await fetch("./data/market.json"); if(!r.ok) throw new Error(r.status);
+    const r=await fetch("./data/market.json?v="+attempt,{cache:"no-store"}); if(!r.ok) throw new Error("HTTP "+r.status);
     SIM.data=await r.json(); SIM.loaded=true;
     if($("simStatus")){ $("simStatus").innerHTML=`KOSPI·국고 20년 <b>${SIM.data.meta.from}–${SIM.data.meta.to}</b> (${SIM.data.meta.n.toLocaleString()}거래일) 로드 완료.`; $("simStatus").style.color="var(--muted)"; }
     simRefresh(); ccRefresh(); renderDerived();
-  }catch(e){ if($("simStatus")){$("simStatus").innerHTML=`시장데이터를 불러오지 못했어요 (${e.message}).`; $("simStatus").style.color="var(--bad)";} }
+  }catch(e){
+    if(attempt<3){ setTimeout(()=>loadMarket(attempt+1), 800*attempt); return; }  /* 모바일 일시적 실패 → 자동 재시도 */
+    if($("simStatus")){ $("simStatus").innerHTML=`시장데이터를 불러오지 못했어요 (${e.message}). <a href="#" onclick="loadMarket();return false" style="color:var(--pay);font-weight:700">다시 시도</a>`; $("simStatus").style.color="var(--bad)"; }
+    const cc=$("conceptLines"); if(cc) cc.innerHTML=`<text x="320" y="130" text-anchor="middle" class="eflabel" fill="var(--bad)" font-weight="700">데이터를 불러오지 못했어요</text><text x="320" y="152" text-anchor="middle" class="eflabel" fill="var(--muted)">잠시 후 새로고침 해주세요</text>`;
+  }
 }
 /* 전략 조합의 연간 손익변동성(1σ, 억) — 방향·감마(시장) + 베가·펀드·해지·모형(σ가중) 합성 */
 const NM_SCALE=40;

@@ -103,6 +103,7 @@
     border-radius:7px;padding:6px 10px;font-family:"IBM Plex Sans KR",sans-serif;font-size:15px;text-align:right}
   table.mtx input:focus{outline:2px solid var(--pay);border-color:var(--pay)}
   table.mtx th.selcol,table.mtx td.selcol{text-align:center;width:92px}
+  table#cmpTbl th:not(:first-child),table#cmpTbl td:not(:first-child){text-align:center}
   .selwrap{display:inline-flex;flex-direction:column;align-items:center;gap:3px}
   .selwrap .tag{font-size:9.5px;font-weight:700;font-family:"IBM Plex Sans KR",sans-serif}
   .selwrap .tag.pl{color:var(--pay)} .selwrap .tag.csm{color:var(--leak)}
@@ -1754,7 +1755,7 @@ function drawCompare(){
   body.innerHTML=RISK.map(r=>{
     const c=CMP_ATTR[r.id]||['—',0,'—'], vl=c[0], att=c[1], cl=c[2];
     const barCol=att>=80?'var(--good)':att>=50?'var(--pay)':att>0?'var(--leak)':'transparent';
-    const attCell=`<div style="display:flex;align-items:center;gap:6px"><div style="flex:0 0 44px;height:7px;background:#EEF1F7;border-radius:4px;overflow:hidden"><div style="height:100%;width:${att}%;background:${barCol};border-radius:4px"></div></div><span class="mono" style="font-size:11px;color:${att>0?'var(--ink)':'var(--muted)'}">${att>0?att+'%':'—'}</span></div>`;
+    const attCell=`<div style="display:flex;align-items:center;justify-content:center;gap:6px"><div style="flex:0 0 44px;height:7px;background:#EEF1F7;border-radius:4px;overflow:hidden"><div style="height:100%;width:${att}%;background:${barCol};border-radius:4px"></div></div><span class="mono" style="font-size:11px;color:${att>0?'var(--ink)':'var(--muted)'}">${att>0?att+'%':'—'}</span></div>`;
     return `<tr><td>${r.n}<small>${r.note}</small></td>`
       +`<td><span style="font-weight:800;color:${vcol[vl]||'var(--muted)'}">${vl}</span></td>`
       +`<td>${attCell}</td>`

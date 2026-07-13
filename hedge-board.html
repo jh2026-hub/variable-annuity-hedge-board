@@ -401,7 +401,7 @@
   <button data-p="p7">④ 헷지수단<small>비용·효과</small></button>
   <button data-p="p3">⑤ 손익 인식<small>완충(CSM)</small></button>
   <button data-p="p2">⑥ 시뮬레이션<small>선택→결과</small></button>
-  <button data-p="p6">⑦ 이론<small>참고문헌</small></button>
+  <button data-p="p6">⑦ 참고자료<small>참고문헌</small></button>
   <button data-p="pgame">🎮 게임<small>2종 체험</small></button>
   <button data-p="p8">입력 가정<small>심화·선택</small></button>
 </div>
@@ -688,7 +688,7 @@
       <div style="display:flex;gap:10px;align-items:flex-start;padding:6px 0;font-size:12.5px;line-height:1.5"><span class="hn" style="background:#E68A17">4</span><div><b>헷지수단</b> — 선물·스왑·옵션의 <b>비용과 효과</b>.</div></div>
       <div style="display:flex;gap:10px;align-items:flex-start;padding:6px 0;font-size:12.5px;line-height:1.5"><span class="hn" style="background:#E24A62">5</span><div><b>손익 인식</b> — 미헷지 손실이 <b>완충(CSM) → 손익</b>으로.</div></div>
       <div style="display:flex;gap:10px;align-items:flex-start;padding:6px 0;font-size:12.5px;line-height:1.5"><span class="hn" style="background:#0EA5A5">6</span><div><b>시뮬레이션</b> — 헷지·노출 선택 + <b>프론티어</b> + 연도별 재현.</div></div>
-      <div style="display:flex;gap:10px;align-items:flex-start;padding:6px 0;font-size:12.5px;line-height:1.5"><span class="hn" style="background:#4F5BD5">7</span><div><b>이론</b> — 근거 문헌.</div></div>
+      <div style="display:flex;gap:10px;align-items:flex-start;padding:6px 0;font-size:12.5px;line-height:1.5"><span class="hn" style="background:#4F5BD5">7</span><div><b>참고자료</b> — 근거 문헌.</div></div>
       <div style="display:flex;gap:10px;align-items:flex-start;padding:6px 0;font-size:12.5px;line-height:1.5"><span class="hn" style="background:#8A94A6">＋</span><div><b>입력 가정</b> — 규모·민감도 등 전제값(직접 입력).</div></div>
     </div>
   </div>
@@ -725,7 +725,7 @@
       <li>회사는 <b>"최소한 이만큼 보장"</b>을 약속했고, <b>시장이 나쁠수록 부담이 커져요</b>.</li>
       <li>안 하면 그 출렁임이 그대로 손익 — <b>안 할 때 흔들림 &gt; 헷지 비용</b>이에요.</li>
     </ul>
-    <div class="qref">근거가 되는 문헌은 <b>⑦ 이론</b> 탭에 정리돼 있어요.</div>
+    <div class="qref">근거가 되는 문헌은 <b>⑦ 참고자료</b> 탭에 정리돼 있어요.</div>
   </div>
 
   <div class="panel">
@@ -1265,7 +1265,7 @@
   </div>
 </section>
 
-<!-- ⑦ 이론 -->
+<!-- ⑦ 참고자료 -->
 <section class="page" id="p6">
   <p class="lede">이 도구가 기대는 이론과 대표 문헌이에요. 최저보증은 사실상 적립금에 <b>내장된 풋옵션(하락을 막아 주는 약속)</b>이라, 그 관리는 옵션 복제·헷지 이론에 뿌리를 둬요.</p>
   <div style="display:flex;flex-wrap:wrap;gap:6px;margin:0 0 4px">
@@ -1664,35 +1664,55 @@ function drawCasc(){
   const shock=parseFloat($("shock")?.value)||0;
   if(!$("casc"))return;
   $("shockLab").textContent=(shock>0?"+":"")+shock+"%";
-  const A0=eqf*10000, D=Math.max(0,A0-CSM), dA=A0*shock/100, A=A0+dA, cap=A-D; /* 억 */
-  const W=560,H=240,topY=30,baseY=H-38,colW=150,gap=86, cx1=W/2-gap/2-colW, cx2=W/2+gap/2;
-  const scaleMax=Math.max(A0,A,D,D+Math.max(cap,0),1), maxH=baseY-topY, hOf=v=>Math.max(0,v)/scaleMax*maxH;
-  const hA=hOf(A), hD=hOf(D), g=[];
-  g.push(`<line x1="${cx1-14}" y1="${baseY}" x2="${cx2+colW+14}" y2="${baseY}" stroke="#AAB4C6" stroke-width="1.5"/>`);
-  g.push(`<text x="${cx1+colW/2}" y="${topY-8}" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--ink)">자산</text>`);
-  g.push(`<text x="${cx2+colW/2}" y="${topY-8}" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--ink)">부채 + 자본</text>`);
+  const A0=eqf*10000, D=Math.max(0,A0-CSM), dA=A0*shock/100, A=Math.max(0,A0+dA); /* 억 */
+  const csmNow=Math.max(0,Math.min(CSM,A-D));   /* 흡수 후 남은 완충 */
+  const csmUsed=CSM-csmNow;                       /* 소진된 완충 */
+  const liab=D+csmNow;                            /* 부채 = 보증부채 + CSM */
+  const equity=A-liab;                            /* 자본 (음수 = 당기손실 반영) */
+  const plLoss=Math.min(0,A-D);                   /* 당기 보험손익 (0 또는 손실) */
+  const under=A<D;                                /* 자산 < 보증선 → 자본잠식 */
+  const W=560,H=250,topY=32,baseY=H-40,colW=140,gap=100, cx1=W/2-gap/2-colW, cx2=W/2+gap/2;
+  const scaleMax=Math.max(A0,A,liab,D,1), maxH=baseY-topY, hOf=v=>Math.max(0,v)/scaleMax*maxH;
+  const hA=hOf(A), hA0=hOf(A0), hD=hOf(D), hLiab=hOf(liab), yGuar=baseY-hD, g=[];
+  /* 기준선 + 보증선(점선) */
+  g.push(`<line x1="${cx1-16}" y1="${baseY}" x2="${cx2+colW+16}" y2="${baseY}" stroke="#AAB4C6" stroke-width="1.5"/>`);
+  g.push(`<line x1="${cx1-16}" y1="${yGuar.toFixed(1)}" x2="${cx2+colW+16}" y2="${yGuar.toFixed(1)}" stroke="#E24A62" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>`);
+  g.push(`<text x="${cx1-16}" y="${(yGuar-3).toFixed(1)}" font-size="9" font-weight="700" fill="var(--bad)" opacity="0.85">보증선 ${won(D)}</text>`);
+  g.push(`<text x="${cx1+colW/2}" y="${topY-11}" text-anchor="middle" font-size="12.5" font-weight="800" fill="var(--ink)">자산</text>`);
+  g.push(`<text x="${cx2+colW/2}" y="${topY-11}" text-anchor="middle" font-size="12.5" font-weight="800" fill="var(--ink)">부채 + 자본</text>`);
+  /* ── 자산 열 ── */
+  if(Math.abs(A-A0)>1) g.push(`<rect x="${cx1}" y="${(baseY-hA0).toFixed(1)}" width="${colW}" height="${hA0.toFixed(1)}" fill="none" stroke="#9DBBF3" stroke-width="1" stroke-dasharray="3 3" rx="5" opacity="0.6"/>`);
   g.push(`<rect x="${cx1}" y="${(baseY-hA).toFixed(1)}" width="${colW}" height="${hA.toFixed(1)}" fill="#DCE7FB" stroke="#9DBBF3" rx="5"/>`);
   g.push(`<text x="${cx1+colW/2}" y="${(baseY-hA/2+4).toFixed(1)}" text-anchor="middle" font-size="12" font-weight="700" fill="#2F63E0">변액자산 ${won(A)}</text>`);
-  if(cap>=0){
-    const csmRem=Math.min(CSM,cap), capEx=Math.max(0,cap-CSM), depleting=shock<0 && csmRem<CSM;
-    g.push(`<rect x="${cx2}" y="${(baseY-hD).toFixed(1)}" width="${colW}" height="${hD.toFixed(1)}" fill="#EBEEF4" stroke="#C9D2E2" rx="5"/>`);
-    if(hD>14) g.push(`<text x="${cx2+colW/2}" y="${(baseY-hD/2+4).toFixed(1)}" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--muted)">보증부채 ${won(D)}</text>`);
-    const hCsm=hOf(csmRem), hCap=hOf(capEx);
-    g.push(`<rect x="${cx2}" y="${(baseY-hD-hCsm).toFixed(1)}" width="${colW}" height="${hCsm.toFixed(1)}" fill="#D6F0E4" stroke="#5BD99A" rx="5"${depleting?`><animate attributeName="opacity" values="1;.5;1" dur="1.4s" repeatCount="indefinite"/></rect>`:'/>'}`);
-    if(hCsm>14) g.push(`<text x="${cx2+colW/2}" y="${(baseY-hD-hCsm/2+4).toFixed(1)}" text-anchor="middle" font-size="11" font-weight="700" fill="#0a7c50">CSM 완충 ${won(csmRem)}</text>`);
-    if(capEx>0){ g.push(`<rect x="${cx2}" y="${(baseY-hD-hCsm-hCap).toFixed(1)}" width="${colW}" height="${hCap.toFixed(1)}" fill="#FBE7CE" stroke="#F1D7A3" rx="5"/>`);
-      if(hCap>14) g.push(`<text x="${cx2+colW/2}" y="${(baseY-hD-hCsm-hCap/2+4).toFixed(1)}" text-anchor="middle" font-size="11" font-weight="700" fill="var(--leak)">자본 ${won(capEx)}</text>`); }
+  if(shock<0 && Math.abs(A-A0)>1) g.push(`<text x="${cx1+colW/2}" y="${(baseY-hA0-5).toFixed(1)}" text-anchor="middle" font-size="9" fill="var(--muted)">초기 ${won(A0)} · 충격 ${won(dA)}</text>`);
+  /* ── 부채 + 자본 열 ── */
+  g.push(`<rect x="${cx2}" y="${(baseY-hD).toFixed(1)}" width="${colW}" height="${hD.toFixed(1)}" fill="#EBEEF4" stroke="#C9D2E2" rx="5"/>`);
+  if(hD>16) g.push(`<text x="${cx2+colW/2}" y="${(baseY-Math.min(hA,hD)/2+4).toFixed(1)}" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--muted)">보증부채 ${won(D)}</text>`);
+  if(!under){
+    const hCsm=hOf(csmNow);
+    if(hCsm>2){ g.push(`<rect x="${cx2}" y="${(baseY-hD-hCsm).toFixed(1)}" width="${colW}" height="${hCsm.toFixed(1)}" fill="#D6F0E4" stroke="#5BD99A" rx="5"${(shock<0&&csmUsed>1)?`><animate attributeName="opacity" values="1;.5;1" dur="1.4s" repeatCount="indefinite"/></rect>`:'/>'}`);
+      if(hCsm>13) g.push(`<text x="${cx2+colW/2}" y="${(baseY-hD-hCsm/2+4).toFixed(1)}" text-anchor="middle" font-size="10.5" font-weight="700" fill="#0a7c50">CSM 완충 ${won(csmNow)}</text>`); }
+    if(equity>1){ const hEq=hOf(equity);
+      g.push(`<rect x="${cx2}" y="${(baseY-hLiab-hEq).toFixed(1)}" width="${colW}" height="${hEq.toFixed(1)}" fill="#EAF2FF" stroke="#9DBBF3" rx="5"/>`);
+      if(hEq>13) g.push(`<text x="${cx2+colW/2}" y="${(baseY-hLiab-hEq/2+4).toFixed(1)}" text-anchor="middle" font-size="10.5" font-weight="700" fill="#2F63E0">자본 +${won(equity)}</text>`); }
   } else {
-    g.push(`<rect x="${cx2}" y="${(baseY-hA).toFixed(1)}" width="${colW}" height="${hA.toFixed(1)}" fill="#EBEEF4" stroke="#C9D2E2" rx="5"/>`);
-    g.push(`<text x="${cx2+colW/2}" y="${(baseY-hA/2+4).toFixed(1)}" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--muted)">보증부채 ${won(D)}</text>`);
-    const hDef=hD-hA; g.push(`<rect x="${cx2}" y="${(baseY-hD).toFixed(1)}" width="${colW}" height="${hDef.toFixed(1)}" fill="#F7C9D1" stroke="#E24A62" rx="5"><animate attributeName="opacity" values="1;.5;1" dur="1.3s" repeatCount="indefinite"/></rect>`);
-    g.push(`<text x="${cx2+colW/2}" y="${(baseY-hD+hDef/2+4).toFixed(1)}" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--bad)">CSM 소진→손실(PL) ${won(-cap)}</text>`);
+    const hGap=hD-hA;
+    g.push(`<rect x="${cx2}" y="${(baseY-hD).toFixed(1)}" width="${colW}" height="${hGap.toFixed(1)}" fill="#F7C9D1" stroke="#E24A62" rx="5"><animate attributeName="opacity" values="1;.55;1" dur="1.3s" repeatCount="indefinite"/></rect>`);
+    if(hGap>13) g.push(`<text x="${cx2+colW/2}" y="${(baseY-hD+hGap/2+4).toFixed(1)}" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--bad)">자본 ${won(equity)}</text>`);
   }
+  const plCol=plLoss<0?'var(--bad)':'var(--good)', dCol=dA<0?'var(--bad)':(dA>0?'var(--good)':'var(--muted)');
+  const pl=`<div style="margin-top:11px;border:1px solid var(--hair);border-radius:9px;overflow:hidden;font-size:12px">
+    <div style="display:flex;justify-content:space-between;padding:6px 11px;background:var(--panel2);font-weight:700;color:var(--muted);font-size:10.5px;letter-spacing:.02em"><span>손익계산서 (당기)</span><span>단위 억</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 11px;border-top:1px solid var(--hair)"><span>자산 충격 <small style="color:var(--muted)">변액 ${won(A0)}→${won(A)}</small></span><b class="mono" style="color:${dCol}">${dA>=0?'+':''}${won(dA)}</b></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 11px;border-top:1px solid var(--hair)"><span>CSM 완충 흡수 <small style="color:var(--muted)">${(under||csmUsed>1)?'손익 무영향':'여력 유지'}</small></span><b class="mono" style="color:var(--good)">${csmUsed>1?'+'+won(csmUsed):(shock>0?'적립':'—')}</b></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 11px;border-top:1.5px solid var(--hair);background:${plLoss<0?'var(--bad-bg)':'var(--good-bg)'};font-weight:800"><span>당기 보험손익 (PL)</span><b class="mono" style="color:${plCol}">${plLoss<0?won(plLoss):'0'}</b></div></div>`;
   $("casc").innerHTML=`<div class="chartwrap"><svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto">${g.join("")}</svg></div>
-    <div class="foot" style="margin-top:2px">충격은 <b style="color:#0a7c50">CSM 완충</b>을 먼저 소진하고, 넘치면 <b style="color:var(--leak)">자본</b>·<b style="color:var(--bad)">손익(PL)</b>으로 전이돼요. ${shock>=0
-      ? `자산 증가 → CSM 완충·자본 확충, 당기 손익 영향 없음.`
-      : cap>=0 ? `자산 감소를 <b style="color:#0a7c50">CSM 완충(잔여 ${won(Math.min(CSM,cap))}억)</b>이 먼저 흡수 — 손익 영향 없음. <b>완충이 얇을수록</b> 곧 전이돼요.`
-      : `<b style="color:#0a7c50">CSM 완충 소진</b> 후 <b style="color:var(--bad)">${won(-cap)}억</b>이 자본 잠식·보험손익(PL)으로 인식.`}</div>`;
+    <div class="foot" style="margin-top:6px;text-align:center">B/S · 자산 <b>${won(A)}</b> = 부채 <b>${won(liab)}</b> + 자본 <b style="color:${equity<0?'var(--bad)':'var(--ink)'}">${equity>=0?'+':''}${won(equity)}</b></div>
+    ${pl}
+    <div class="foot" style="margin-top:8px">${shock>=0
+      ? `상승 → <b style="color:#0a7c50">CSM 완충·자본 확충</b>. 이익은 미리 안 잡고 <b>부채(CSM)로 쌓아둠</b> → 당기 손익 <b>0</b>.`
+      : under ? `자산이 <b style="color:var(--bad)">보증선(${won(D)}) 아래</b>로. <b style="color:#0a7c50">완충 ${won(csmUsed)}</b> 먼저 소진 → 초과 <b style="color:var(--bad)">${won(-plLoss)}</b>이 <b>자본 잠식·보험손익(PL) 손실</b>로 인식.`
+      : `자산 하락을 <b style="color:#0a7c50">CSM 완충(잔여 ${won(csmNow)})</b>이 흡수 — 아직 <b>보증선 위</b>, 당기 손익 <b>0</b>. <b>완충이 얇을수록</b> 곧 전이돼요.`}</div>`;
 }
 ["in_eqf","in_csm2","shock"].forEach(id=>{ const el=$(id); if(el) el.addEventListener("input",drawCasc); });
 if($("bufCsm")) $("bufCsm").addEventListener("input",drawBuffer);

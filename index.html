@@ -1201,8 +1201,8 @@
   </div>
   <div class="panel">
     <div class="cap">항목별 비교<span>현재 입력값 기준</span></div>
-    <div class="chartwrap"><table class="mtx" id="cmpTbl"><thead><tr><th>위험 요인</th><th>헷지 시 (PL)</th><th>CSM 흡수 시</th><th>일반적 분류</th></tr></thead><tbody></tbody></table></div>
-    <p class="foot">일반적으로 <b>민감도(방향)</b>는 저비용이므로 헷지하여 PL로 관리하고, <b>변동성·감마·가정 변화</b>는 비용이 크거나 이전이 어려워 완충(CSM)으로 두는 경우가 많아요. 실제 분류는 회사의 회계모형·완충 수준·전략에 따라 달라져요. 구체적 선택(체크)은 <b>⑥ 시뮬레이션</b>의 민감도 시트에서 수행해요. (분류는 일반적 경향의 예시이며 특정 회사와 무관해요.)</p>
+    <div class="chartwrap"><table class="mtx" id="cmpTbl"><thead><tr><th>위험 요인</th><th>변동성</th><th>헷지후 감쇄율</th><th>헷지비용</th></tr></thead><tbody></tbody></table></div>
+    <p class="foot"><b>방향(주가·금리)</b>은 변동성이 크지만 <b>싸게(저) 크게(90%+) 감쇄</b>돼요. <b>감마·변동성(옵션)</b>은 중간, <b>펀드·해지율(행동)</b>은 <b>감쇄율이 낮고 비싸요(고)</b>. <b>모형·제도</b>는 이전 시장이 없어 <b>헷지 불가</b>. 항목별 선택은 <b>⑥ 시뮬레이션</b>에서. (예시값)</p>
   </div>
 </section>
 
@@ -1743,15 +1743,22 @@ function drawHero(){
 if($("heroShock")) $("heroShock").addEventListener("input",drawHero);
 
 /* ④ 헷지 vs CSM 비교표 */
+const CMP_ATTR={ /* id → [변동성, 헷지후 감쇄율%, 헷지비용] */
+  delta:['고',95,'저'], rho:['고',92,'저'], gE:['중',70,'중'], gR:['중',65,'중'],
+  vega:['중',55,'고'], fund:['저',45,'고'], lapse:['저',30,'고'], model:['저',0,'—'],
+};
 function drawCompare(){
-  const AV=val("av"), body=$("cmpTbl")?.querySelector("tbody"); if(!body)return;
+  const body=$("cmpTbl")?.querySelector("tbody"); if(!body)return;
+  const vcol={'고':'var(--bad)','중':'var(--leak)','저':'var(--muted)'};
+  const ccol={'저':'var(--good)','중':'var(--pay)','고':'var(--leak)','—':'var(--muted)'};
   body.innerHTML=RISK.map(r=>{
-    let hedged, borne;
-    if(r.kind==="bp"){ hedged="−"+won((r.bp||0)*AV)+"억"; borne="흔들림 기여 "+(r.exp||0).toFixed(1); }
-    else if(r.kind.startsWith("calc")){ const {leak,prem}=leakPrem(r); hedged="−"+won(prem)+"억"; borne="누수 "+won(leak)+"억"; }
-    else { hedged="—"; borne="흔들림 기여 "+(r.exp||0).toFixed(1); }
-    const pill=r.cls==="PL"?`<span class="pill pl">PL</span>`:`<span class="pill csm">CSM</span>`;
-    return `<tr><td>${r.n}<small>${r.note}</small></td><td class="mono" style="color:var(--pay)">${hedged}</td><td class="mono" style="color:var(--leak)">${borne}</td><td>${pill}</td></tr>`;
+    const c=CMP_ATTR[r.id]||['—',0,'—'], vl=c[0], att=c[1], cl=c[2];
+    const barCol=att>=80?'var(--good)':att>=50?'var(--pay)':att>0?'var(--leak)':'transparent';
+    const attCell=`<div style="display:flex;align-items:center;gap:6px"><div style="flex:0 0 44px;height:7px;background:#EEF1F7;border-radius:4px;overflow:hidden"><div style="height:100%;width:${att}%;background:${barCol};border-radius:4px"></div></div><span class="mono" style="font-size:11px;color:${att>0?'var(--ink)':'var(--muted)'}">${att>0?att+'%':'—'}</span></div>`;
+    return `<tr><td>${r.n}<small>${r.note}</small></td>`
+      +`<td><span style="font-weight:800;color:${vcol[vl]||'var(--muted)'}">${vl}</span></td>`
+      +`<td>${attCell}</td>`
+      +`<td><span style="font-weight:800;color:${ccol[cl]||'var(--muted)'}">${cl}</span></td></tr>`;
   }).join("");
 }
 

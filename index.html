@@ -462,31 +462,31 @@
   </div>
 
   <div class="panel concept">
-    <div class="cap">헷지의 역할<span class="capb data">📊 실측</span><span>흔들림↓ · 큰 손실 막기</span></div>
+    <div class="cap">헷지의 역할<span class="capb data">📊 실측</span><span>큰 손실 막기 · 흔들림↓</span></div>
 
-    <div style="font-size:12.5px;font-weight:800;color:var(--pay);margin:2px 0 6px">① 흔들림을 줄여요 <span style="font-weight:600;color:var(--muted)">— 헷지↑ → 변동폭↓</span></div>
-    <div class="chartwrap"><svg id="conceptLines" viewBox="0 0 640 280" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"><text x="320" y="140" text-anchor="middle" class="eflabel">데이터 불러오는 중…</text></svg></div>
-    <div id="conceptLeg" style="display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;font-size:11.5px"></div>
-    <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-top:8px"><b style="color:var(--sym)">미헷지(보라)</b>는 매주 <b>크게 출렁</b>여요. <b style="color:var(--good)">헷지하면(초록)</b> 같은 시장에서도 <b>좁게</b> — 음영 띠(±1σ)가 그만큼 줄어요. 빨간 점 = <b>최악의 주</b>. 헷지는 <b>없애기가 아니라 크게 줄이기</b>예요.</p>
-
-    <div style="font-size:12.5px;font-weight:800;color:var(--leak);margin:16px 0 6px;padding-top:14px;border-top:1px solid var(--hair)">② 최대 손실을 <b>받는 수수료 수준으로</b> 묶어요 <span style="font-weight:600;color:var(--muted)">— 헷지 전엔 그 이상</span></div>
-    <p style="font-size:13px;color:var(--muted);line-height:1.7;margin:2px 0 0">헷지 <b>안 하면</b> 위기 손실이 <b>받는 수수료를 훨씬 넘어요</b>. <b>헷지하면</b> 그 손실을 <b>받는 수수료 수준으로 관리</b> — 최대 손실에 <b>뚜껑</b>을 씌우는 거예요.</p>
+    <div style="font-size:12.5px;font-weight:800;color:var(--leak);margin:2px 0 6px">① 앞의 그 손실에 <b>뚜껑</b>을 씌워요 <span style="font-weight:600;color:var(--muted)">— 받은 수수료 수준으로</span></div>
+    <p style="font-size:13px;color:var(--muted);line-height:1.7;margin:2px 0 8px">바로 앞 카드의 <b>보증리스크</b> = 위기 때 <b style="color:var(--bad)">치른 보증손실</b>이 <b style="color:#0a7c50">받은 보증수수료</b>를 훨씬 넘는 위험이었죠. <b>헷지</b>가 그 손실을 다시 <b style="color:#0a7c50">받은 수수료 수준으로</b> 되돌려 묶어요 — 최대 손실에 <b>뚜껑</b>을 씌우는 거예요.</p>
     <div class="chartwrap"><svg viewBox="0 0 560 168" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
       <line x1="40" y1="140" x2="520" y2="140" stroke="#CBD2DE" stroke-width="1.2"/>
-      <line x1="40" y1="98" x2="520" y2="98" stroke="var(--pay)" stroke-width="1.6" stroke-dasharray="6 4"/>
-      <text x="516" y="92" text-anchor="end" font-size="10.5" font-weight="800" fill="var(--pay)" font-family="sans-serif">받는 수수료 수준</text>
+      <line x1="40" y1="98" x2="520" y2="98" stroke="var(--good)" stroke-width="1.6" stroke-dasharray="6 4"/>
+      <text x="516" y="92" text-anchor="end" font-size="10.5" font-weight="800" fill="#0a7c50" font-family="sans-serif">받은 보증수수료 수준</text>
       <rect x="118" y="140" width="90" height="0" rx="5" fill="var(--bad)" opacity="0.9"><animate attributeName="height" from="0" to="118" dur="0.8s" begin="0.3s" fill="freeze"/><animate attributeName="y" from="140" to="22" dur="0.8s" begin="0.3s" fill="freeze"/></rect>
       <text x="163" y="16" text-anchor="middle" font-size="12" font-weight="800" fill="var(--bad)" font-family="sans-serif" opacity="0">수수료의 여러 배<animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="1.0s" fill="freeze"/></text>
-      <text x="163" y="158" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--muted)" font-family="sans-serif">헷지 전 위기 손실</text>
+      <text x="163" y="158" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--muted)" font-family="sans-serif">헷지 전 (앞 카드의 손실)</text>
       <rect x="352" y="140" width="90" height="0" rx="5" fill="var(--pay)" opacity="0.92"><animate attributeName="height" from="0" to="44" dur="0.8s" begin="0.7s" fill="freeze"/><animate attributeName="y" from="140" to="96" dur="0.8s" begin="0.7s" fill="freeze"/></rect>
       <text x="397" y="88" text-anchor="middle" font-size="12" font-weight="800" fill="var(--pay)" font-family="sans-serif" opacity="0">수수료 수준 ✓<animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="1.3s" fill="freeze"/></text>
       <text x="397" y="158" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--muted)" font-family="sans-serif">헷지 후 최대 손실</text>
     </svg></div>
     <div class="chartleg">
       <span class="lk"><i style="background:var(--bad)"></i>헷지 전 위기 손실 = <b>수수료의 여러 배</b></span>
-      <span class="lk"><i style="background:var(--pay)"></i>헷지 후 최대 손실 = <b>수수료 수준(관리)</b></span>
+      <span class="lk"><i style="background:var(--pay)"></i>헷지 후 최대 손실 = <b>받은 수수료 수준</b></span>
     </div>
-    <div class="callout warn"><span class="ci">⚠️</span><div><span class="clab">주의</span> <b>헷지 = 최대 손실에 뚜껑</b> — 안 하면 <b>받는 수수료 이상</b>으로 터지고, 하면 <b>받는 수수료 수준</b>으로 관리돼요.</div></div>
+    <div class="callout warn"><span class="ci">⚠️</span><div><span class="clab">주의</span> <b>헷지 = 최대 손실에 뚜껑</b> — 안 하면 <b>받은 수수료 이상</b>으로 터지고, 하면 <b>받은 수수료 수준</b>으로 관리돼요.</div></div>
+
+    <div style="font-size:12.5px;font-weight:800;color:var(--pay);margin:16px 0 6px;padding-top:14px;border-top:1px solid var(--hair)">② 실측으로도 이렇게 지켜줘요 <span style="font-weight:600;color:var(--muted)">— 헷지 전후, 같은 시장</span></div>
+    <div class="chartwrap"><svg id="conceptLines" viewBox="0 0 640 280" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"><text x="320" y="140" text-anchor="middle" class="eflabel">데이터 불러오는 중…</text></svg></div>
+    <div id="conceptLeg" style="display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;font-size:11.5px"></div>
+    <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-top:8px"><b style="color:var(--sym)">미헷지(보라)</b>는 매주 <b>크게 출렁</b>여요. <b style="color:var(--good)">헷지하면(초록)</b> 같은 시장에서도 <b>좁게</b> — 음영 띠(±1σ)가 그만큼 줄어요. 빨간 점 = <b>최악의 주</b>. 헷지는 <b>없애기가 아니라 크게 줄이기</b>예요.</p>
   </div>
 
   <div class="panel concept">
@@ -524,9 +524,9 @@
     </div>
     <div class="chartwrap"><svg id="cvSvg" viewBox="0 0 560 220" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"></svg></div>
     <div class="leg" style="margin-top:8px">
-      <span><i style="background:var(--sym)"></i>순포지션(자산−부채) = 회사 자본</span>
-      <span><i style="background:var(--bad);opacity:.45"></i>시장 나쁠수록 벌어지는 손실</span>
-      <span><i style="background:var(--leak)"></i>보증 바닥 — 부채가 덜 빠지는 지점</span>
+      <span><i style="background:var(--pay)"></i>변액펀드(자산) · 지금 값</span>
+      <span><i style="background:var(--leak)"></i>변액보증(부채) · 미래 최소지급</span>
+      <span><i style="background:var(--bad)"></i>자본이 메꿈 — 자산이 보증에 못 미치는 부족분</span>
     </div>
     <p class="foot" id="cvMsg" style="margin-top:9px"></p>
     <div class="callout key" style="margin-top:10px"><span class="ci">⭐</span><div><span class="clab">핵심</span> 자산은 <b>지금 값</b>이라 시장 따라 다 움직이는데, 부채는 <b>미래 최소지급(보증)</b>이라 <b>바닥에 걸려 덜 움직여요</b>. 그래서 <b>순포지션(자산−부채)이 흔들리고</b>, 그게 바로 <b>자본 변동성</b>이에요.</div></div>
@@ -1792,36 +1792,35 @@ const CASES2008={pru:[100.0,102.0,101.3,106.6,114.5,109.1,99.4,100.7,109.5,108.5
 function renderCapVol(){
   const el=$("cvMkt"); if(!el)return;
   const m=(+el.value)/100, base=100, floor=85;
-  const fund=base*(1+m), liab=Math.max(fund,floor), net=fund-liab;
-  const W=560,H=220,L=50,R=16,T=18,B=32,iw=W-L-R,ih=H-T-B,g=[];
-  const mMin=-0.40,mMax=0.20, yMax=6,yMin=-28;
-  const X=mm=>L+iw*(mm-mMin)/(mMax-mMin), Y=v=>T+ih*(yMax-v)/(yMax-yMin);
-  const netAt=mm=>Math.min(0, base*(1+mm)-floor);
-  g.push(`<text class="eflabel" x="${L}" y="${(T-6).toFixed(1)}" fill="var(--muted)" font-weight="700">순포지션(회사 자본)</text>`);
-  [0,-10,-20].forEach(v=>{ g.push(`<line x1="${L}" y1="${Y(v).toFixed(1)}" x2="${W-R}" y2="${Y(v).toFixed(1)}" stroke="${v===0?'#9aa2b1':'#EEF1F7'}" stroke-width="${v===0?1.3:1}"/>`); g.push(`<text class="eflabel" x="${(L-6).toFixed(1)}" y="${(Y(v)+3).toFixed(1)}" text-anchor="end">${v}</text>`); });
-  [-40,-20,0,20].forEach(p=>{ g.push(`<text class="eflabel" x="${X(p/100).toFixed(1)}" y="${(H-B+16).toFixed(1)}" text-anchor="middle">${p>0?'+':''}${p}%</text>`); });
-  const pts=[]; for(let p=mMin;p<=mMax+1e-9;p+=0.02) pts.push([X(p),Y(netAt(p))]);
-  const first=pts[0], last=pts[pts.length-1];
-  g.push(`<path d="M${first[0].toFixed(1)} ${Y(0).toFixed(1)} `+pts.map(pt=>`L${pt[0].toFixed(1)} ${pt[1].toFixed(1)}`).join(' ')+` L${last[0].toFixed(1)} ${Y(0).toFixed(1)} Z" fill="var(--bad)" opacity="0.12"/>`);
-  g.push(`<path d="${pts.map((pt,i)=>(i?'L':'M')+pt[0].toFixed(1)+' '+pt[1].toFixed(1)).join(' ')}" fill="none" stroke="var(--sym)" stroke-width="2.6"/>`);
-  const mk=(floor/base)-1;
-  g.push(`<line x1="${X(mk).toFixed(1)}" y1="${T}" x2="${X(mk).toFixed(1)}" y2="${(H-B).toFixed(1)}" stroke="var(--leak)" stroke-width="1.2" stroke-dasharray="4 3" opacity="0.75"/>`);
-  g.push(`<text x="${(X(mk)+4).toFixed(1)}" y="${(T+11).toFixed(1)}" font-size="9.5" font-weight="800" fill="var(--leak)" font-family="sans-serif">보증 바닥</text>`);
-  g.push(`<circle cx="${X(m).toFixed(1)}" cy="${Y(net).toFixed(1)}" r="6" fill="var(--sym)" stroke="#fff" stroke-width="2"><animate attributeName="r" values="6;8;6" dur="1.6s" repeatCount="indefinite"/></circle>`);
+  const fund=base*(1+m), liab=Math.max(fund,floor), gap=liab-fund;   /* 자본이 메꾸는 부족분 */
+  const W=560,H=250,L=40,R=20,T=26,B=46,iw=W-L-R,ih=H-T-B,g=[];
+  const vMax=130, Y=v=>T+ih*(1-v/vMax), base0=Y(0);
+  const bw=100, axC=165, lbC=375;
+  g.push(`<line x1="${L}" y1="${base0.toFixed(1)}" x2="${W-R}" y2="${base0.toFixed(1)}" stroke="#CBD2DE" stroke-width="1.2"/>`);
+  g.push(`<line x1="${L}" y1="${Y(floor).toFixed(1)}" x2="${W-R}" y2="${Y(floor).toFixed(1)}" stroke="var(--leak)" stroke-width="1.3" stroke-dasharray="5 4" opacity="0.85"/>`);
+  g.push(`<text x="${W-R}" y="${(Y(floor)-5).toFixed(1)}" text-anchor="end" font-size="10.5" font-weight="800" fill="var(--leak)" font-family="sans-serif">보증 바닥 ${floor}</text>`);
+  /* 변액펀드(자산) — 파랑, 시장 따라 */
+  g.push(`<rect x="${axC-bw/2}" y="${Y(fund).toFixed(1)}" width="${bw}" height="${(base0-Y(fund)).toFixed(1)}" rx="6" fill="var(--pay)" opacity="0.9"/>`);
+  g.push(`<text x="${axC}" y="${(Y(fund)-8).toFixed(1)}" text-anchor="middle" font-size="15" font-weight="800" fill="var(--pay)" font-family="sans-serif">${fund.toFixed(0)}</text>`);
+  g.push(`<text x="${axC}" y="${(base0+19).toFixed(1)}" text-anchor="middle" font-size="12" font-weight="800" fill="var(--pay)" font-family="sans-serif">변액펀드(자산)</text>`);
+  g.push(`<text x="${axC}" y="${(base0+34).toFixed(1)}" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="sans-serif">지금 값 · 시장 따라</text>`);
+  /* 변액보증(부채) — 주황(자산으로 커버) + 빨강(부족분=자본) */
+  const covered=Math.min(fund,liab);
+  g.push(`<rect x="${lbC-bw/2}" y="${Y(covered).toFixed(1)}" width="${bw}" height="${(base0-Y(covered)).toFixed(1)}" rx="6" fill="var(--leak)" opacity="0.9"/>`);
+  if(gap>0.5){
+    g.push(`<rect x="${lbC-bw/2}" y="${Y(liab).toFixed(1)}" width="${bw}" height="${(Y(covered)-Y(liab)).toFixed(1)}" rx="6" fill="var(--bad)" opacity="0.88"/>`);
+    g.push(`<text x="${lbC}" y="${((Y(liab)+Y(covered))/2+4).toFixed(1)}" text-anchor="middle" font-size="11.5" font-weight="800" fill="#fff" font-family="sans-serif">−${gap.toFixed(0)}</text>`);
+    g.push(`<line x1="${axC+bw/2}" y1="${Y(fund).toFixed(1)}" x2="${lbC-bw/2}" y2="${Y(fund).toFixed(1)}" stroke="var(--bad)" stroke-width="1" stroke-dasharray="3 3" opacity="0.7"/>`);
+  }
+  g.push(`<text x="${lbC}" y="${(Y(liab)-8).toFixed(1)}" text-anchor="middle" font-size="15" font-weight="800" fill="var(--leak)" font-family="sans-serif">${liab.toFixed(0)}</text>`);
+  g.push(`<text x="${lbC}" y="${(base0+19).toFixed(1)}" text-anchor="middle" font-size="12" font-weight="800" fill="var(--leak)" font-family="sans-serif">변액보증(부채)</text>`);
+  g.push(`<text x="${lbC}" y="${(base0+34).toFixed(1)}" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="sans-serif">미래 최소지급 · 바닥</text>`);
   $("cvSvg").innerHTML=g.join("");
   $("cvMktLab").textContent=(m>=0?'+':'')+Math.round(m*100)+'%';
-  $("cvMsg").innerHTML = net<-0.5
-    ? `시장 <b>${Math.round(m*100)}%</b> → 자산 <b style="color:var(--pay)">${fund.toFixed(0)}</b> − 부채 <b style="color:var(--leak)">${liab.toFixed(0)}</b> = <b style="color:var(--bad)">순포지션 ${net.toFixed(0)}</b> — 보증에 걸려 <b>자본이 깎여요</b>.`
-    : `시장 <b>+${Math.round(m*100)}%</b> → 자산 <b style="color:var(--pay)">${fund.toFixed(0)}</b> ≈ 부채 <b style="color:var(--leak)">${liab.toFixed(0)}</b> = <b>순포지션 0</b> — 아직 보증이 안 걸려 자본에 영향 없어요.`;
+  $("cvMsg").innerHTML = gap>0.5
+    ? `시장 <b>${Math.round(m*100)}%</b> → 자산 <b style="color:var(--pay)">${fund.toFixed(0)}</b>이 보증 <b style="color:var(--leak)">${floor}</b>에 못 미쳐 <b style="color:var(--bad)">${gap.toFixed(0)}</b>만큼 <b>회사 자본이 메꿔요</b> — 자본이 흔들려요.`
+    : `시장 <b>+${Math.round(m*100)}%</b> → 자산 <b style="color:var(--pay)">${fund.toFixed(0)}</b>이 보증 <b style="color:var(--leak)">${floor}</b> 위 → 자산=부채, <b>자본 부담 0</b>. 아직 안 흔들려요.`;
 }
-const MECH_ITEMS=[
-  {id:'eq',  n:'주가 방향', tool:'선물', vol:300, cost:60,  on:0},
-  {id:'rate',n:'금리 방향', tool:'스왑', vol:160, cost:40,  on:0},
-  {id:'gam', n:'감마',      tool:'옵션', vol:90,  cost:180, on:0},
-  {id:'veg', n:'베가',      tool:'옵션', vol:50,  cost:130, on:0},
-  {id:'beta',n:'펀드 베타', tool:'선물', vol:35,  cost:32,  on:0},
-];
-const MECH_BASE=40; /* 해지율 등 못 막는 잔여 */
 function renderMech(){
   const box=$("mechSvg"); if(!box)return;
   const ch=$("mechChips");

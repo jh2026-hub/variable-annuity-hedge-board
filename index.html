@@ -36,6 +36,9 @@
   .q6wrong s{color:var(--muted);text-decoration-color:var(--bad)}
   .q6arrow{text-align:center;font-size:15px;color:var(--muted);margin:3px 0;line-height:1}
   .q6right{background:#EAF7F1;border:1px solid #BFE6D3;border-radius:8px;padding:9px 11px;font-size:13px;color:var(--ink);font-weight:600;line-height:1.5}
+  .qgo{display:inline-flex;align-items:center;gap:5px;margin-top:13px;padding:7px 13px;border-radius:20px;background:var(--panel2);border:1px solid var(--hair);color:var(--pay);font-size:12px;font-weight:800;cursor:pointer;font-family:inherit}
+  .qgo:hover{background:#E7EFFD;border-color:#9DBBF3}
+  .qtag{display:inline-block;font-size:10.5px;font-weight:800;color:var(--muted);background:var(--panel2);border:1px solid var(--hair);border-radius:20px;padding:2px 9px;margin-left:8px;vertical-align:2px}
   @media(max-width:460px){.pair2{grid-template-columns:1fr}}
   body{font-family:"IBM Plex Sans KR",system-ui,sans-serif;-webkit-font-smoothing:antialiased;
        padding:20px 14px 60px;max-width:860px;margin:0 auto;line-height:1.6}
@@ -685,6 +688,7 @@
       <li><b>수수료 ≠ 비용</b> — 수수료는 <b>받은 돈</b>, 비용은 헷지에 <b>쓰는 돈</b>. 받은 돈으로 보험 드는 셈이에요.</li>
       <li><b>완충(CSM)</b> = 손실이 회사 살림에 닿기 전 <b>먼저 대신 맞아주는 여유쿠션</b>. 얇을수록 헷지가 더 필요해요.</li>
     </ul>
+    <p class="foot" style="margin-top:10px">아래 <b>6개 질문(Q1~Q6)</b>은 위 <b>①~⑥ 탭</b>을 쉽게 풀어놓은 거예요 — 각 카드 아래 <b style="color:var(--pay)">자세히 →</b> 로 해당 탭으로 넘어가요.</p>
   </div>
 
   <div class="panel">
@@ -697,7 +701,7 @@
       <li>회사는 <b>"최소한 이만큼 보장"</b>을 약속했고, <b>시장이 나쁠수록 부담이 커져요</b>.</li>
       <li>안 하면 그 출렁임이 그대로 손익 — <b>안 할 때 흔들림 &gt; 헷지 비용</b>이에요.</li>
     </ul>
-    <div class="qref">근거가 되는 문헌은 <b>⑦ 참고자료</b> 탭에 정리돼 있어요.</div>
+    <span class="qgo" onclick="document.querySelector('#tabs [data-p=pbg]').click()">자세히 → ① 배경 · 2008 사례</span>
   </div>
 
   <div class="panel">
@@ -729,7 +733,7 @@
     <ul class="qalist">
       <li><b>대부분의 해</b>엔 수수료가 비용보다 커서 <b>남아요</b>. 비용이 넘는 건 <b>드문 위기 해</b>뿐 — 그 해에도 안 했으면 <b>수수료의 여러 배</b>를 잃어요.</li>
     </ul>
-    <div class="qref">→ 헷지는 <b>수익을 까먹는 비용</b>이 아니라 <b>큰 손실을 막는 값싼 보험</b>이에요. (→ ① 배경 · ⑥ 시뮬레이션)</div>
+    <span class="qgo" onclick="document.querySelector('#tabs [data-p=p1]').click()">자세히 → ② 개념 (수수료·비용·변동성)</span>
   </div>
 
   <div class="panel">
@@ -753,59 +757,23 @@
       <li>우리 <b>펀드와 시장(지수)의 성과 차이</b>, <b>출렁임 자체가 커지는 것</b>, 고객 <b>해지</b> 등은 완전히 없앨 수 없어요.</li>
       <li>그래서 목표는 <b>0이 아니라 "예측 가능한 좁은 폭"</b>으로 잡아 두는 것이에요.</li>
     </ul>
+    <span class="qgo" onclick="document.querySelector('#tabs [data-p=p4]').click()">자세히 → ③ 항목별 설명 (요인 원리)</span>
   </div>
 
   <div class="panel">
-    <div class="qah"><div class="qan">Q4</div><div class="qat">어떻게 헷지하나요? 사람·전문성·난이도는? 🧗</div></div>
-    <div style="font-size:13px;line-height:1.7;color:var(--ink);margin:0 0 14px"><b>막는 순서</b>: 방향(선물·스왑, 쉬움) → 급변(옵션) → 큰 하락(옵션, 비쌈). <span style="color:var(--muted)">수단 자세히는 → ④ 헷지수단.</span></div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:700">필요한 사람 (전담 팀)</div>
-    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
-      <span class="qchip">💼 파생 트레이더 <span style="color:var(--muted)">· 헷지 실행</span></span>
-      <span class="qchip">📐 퀀트·모델러 <span style="color:var(--muted)">· 위험 계산</span></span>
-      <span class="qchip">🛡️ 리스크 관리 <span style="color:var(--muted)">· 한도·감시</span></span>
-      <span class="qchip">🧮 회계·계리 <span style="color:var(--muted)">· 결산 반영</span></span>
-      <span class="qchip">🖥️ 시스템·데이터 <span style="color:var(--muted)">· 실시간 계산</span></span>
+    <div class="qah"><div class="qan">Q4</div><div class="qat">어떻게 막나요? 무슨 수단으로? 🧰</div></div>
+    <div style="display:flex;flex-direction:column;gap:9px;margin:6px 0 12px">
+      <div class="qstep"><span class="qstepn" style="background:var(--good)">1</span><div><b>방향 막기</b> · 선물·스왑 <span style="color:var(--muted)">— 가장 저렴 · 필수</span></div></div>
+      <div class="qstep"><span class="qstepn" style="background:var(--pay)">2</span><div><b>급변 막기</b> · 옵션 <span style="color:var(--muted)">— 중간 비용</span></div></div>
+      <div class="qstep"><span class="qstepn" style="background:var(--leak)">3</span><div><b>큰 하락(꼬리) 막기</b> · 옵션 <span style="color:var(--muted)">— 비쌈 · 확실</span></div></div>
     </div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:700">필요한 것</div>
-    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
-      <span class="qchip">📊 옵션 계산 지식</span>
-      <span class="qchip">🎛️ 실시간 위험 관리 시스템</span>
-      <span class="qchip">📒 회계·자본규제 반영</span>
-      <span class="qchip">💧 증거금·현금 관리</span>
-    </div>
-    <div style="background:#FBEEF1;border:1px solid var(--bad-line);border-radius:9px;padding:10px 12px;font-size:12.5px;color:var(--ink);line-height:1.6"><b>난이도 요약</b> — 방향 막기는 비교적 쉽지만, 급변·출렁임까지 막으려면 <b>고도 전문 인력이 상시 붙어</b> 매일 계산·조정해야 해요. 그래서 <b>사람·시스템에 대한 지속 투자</b>가 전제예요.</div>
+    <ul class="qalist"><li>방향은 <b>싸고 필수</b>, 급변·꼬리는 <b>비싸서 완충 봐가며</b> 골라 조합해요.</li></ul>
+    <div style="background:#FBEEF1;border:1px solid var(--bad-line);border-radius:9px;padding:9px 12px;font-size:12px;color:var(--ink);line-height:1.6;margin-top:8px"><b>난이도</b> — 방향은 쉽지만, 급변·꼬리까지 막으려면 <b>전담 팀(트레이더·퀀트·리스크)·시스템</b>이 상시 붙어 매일 조정해야 해요.</div>
+    <span class="qgo" onclick="document.querySelector('#tabs [data-p=p7]').click()">자세히 → ④ 헷지수단 (비용·효과)</span>
   </div>
 
   <div class="panel">
-    <div class="qah"><div class="qan">Q5</div><div class="qat">어떻게 관리해야 하나요? 🧭</div></div>
-    <div class="pair2" style="margin:4px 0 12px">
-      <div style="border:1.5px solid var(--good);border-radius:10px;padding:11px;background:#EAF7F1">
-        <div style="font-weight:800;color:var(--good);font-size:13px">✅ 막을 수 있는 건 최대한 막기</div>
-        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px"><b>직접 관리 가능</b>. 손익이 좁은 폭 안에서 움직여요.</div>
-      </div>
-      <div style="border:1.5px solid var(--bad-line);border-radius:10px;padding:11px;background:#FBEEF1">
-        <div style="font-weight:800;color:var(--bad);font-size:13px">⚠️ 관리 없이 완충(CSM)에만 기대기</div>
-        <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px"><b>관리가 아니라</b> "평소 평균은 괜찮겠지"에 기대는 것. 나쁜 해엔 완충을 넘어 <b>손익으로 터져요</b>.</div>
-      </div>
-    </div>
-    <div class="chartwrap" style="margin:0 0 8px"><svg viewBox="0 0 320 104" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
-      <text x="80" y="16" text-anchor="middle" font-size="11" font-weight="800" fill="#0a7c50">✅ 막기 → 손익 좁게</text>
-      <rect x="20" y="47" width="120" height="22" fill="#D6F0E4" opacity="0.55" rx="3"/>
-      <line x1="20" y1="58" x2="140" y2="58" stroke="#AAB4C6" stroke-width="0.8"/>
-      <path d="M20 58 Q35 53 50 58 T80 57 T110 60 T140 58" fill="none" stroke="var(--good)" stroke-width="2.6" stroke-linecap="round"><animate attributeName="opacity" values="1;.55;1" dur="2s" repeatCount="indefinite"/></path>
-      <text x="80" y="92" text-anchor="middle" font-size="10" font-weight="700" fill="#0a7c50">통제됨 · 안전</text>
-      <line x1="160" y1="26" x2="160" y2="86" stroke="var(--hair)" stroke-dasharray="3 3"/>
-      <text x="240" y="16" text-anchor="middle" font-size="11" font-weight="800" fill="var(--bad)">⚠️ 무대응 → 가끔 터짐</text>
-      <line x1="180" y1="50" x2="300" y2="50" stroke="#AAB4C6" stroke-width="0.8"/>
-      <path d="M180 50 L214 50 L235 86 L250 50 L300 50" fill="none" stroke="var(--bad)" stroke-width="2.6" stroke-linejoin="round"/>
-      <circle cx="235" cy="86" r="4" fill="var(--bad)"><animate attributeName="r" values="4;6.5;4" dur="1.3s" repeatCount="indefinite"/></circle>
-      <text x="240" y="99" text-anchor="middle" font-size="10" font-weight="700" fill="var(--bad)">나쁜 해엔 손익 터짐</text>
-    </svg></div>
-    <ul class="qalist"><li><b>막을 수 있는 위험은 최대한 막기.</b> 완충이 얇을수록 헷지 압력↑ (→ ⑤ 손익 인식).</li></ul>
-  </div>
-
-  <div class="panel">
-    <div class="qah"><div class="qan">Q6</div><div class="qat">완충(CSM)이 별로 없으면 어떻게 되나요? 🪫</div></div>
+    <div class="qah"><div class="qan">Q5</div><div class="qat">완충(CSM)이 얇으면 어떻게 되나요? 🪫</div></div>
     <div class="pair2" style="margin:4px 0 12px">
       <div style="border:1.5px solid var(--good);border-radius:10px;padding:11px;background:#EAF7F1">
         <div style="font-weight:800;color:var(--good);font-size:13px">🛟 완충이 두꺼우면</div>
@@ -841,7 +809,21 @@
       <text x="322" y="114" font-size="16" text-anchor="middle" opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.4;0.48;0.64" dur="2.4s" repeatCount="indefinite"/>💥</text>
       <text x="322" y="158" text-anchor="middle" font-size="12.5" font-weight="800" fill="var(--bad)">터짐 → 더 헷지</text>
     </svg></div>
-    <ul class="qalist"><li><b>완충이 얇을수록 = 헷지를 더.</b> <b>⑤ 손익 인식</b> 슬라이더를 얇은 쪽으로 당겨 보세요.</li></ul>
+    <ul class="qalist"><li><b>완충이 손실을 먼저 흡수하다 소진되면 그대로 손익·자본으로 터져요.</b> 얇을수록 헷지가 답이에요.</li></ul>
+    <span class="qgo" onclick="document.querySelector('#tabs [data-p=p3]').click()">자세히 → ⑤ 손익 인식 (완충 CSM)</span>
+  </div>
+
+  <div class="panel">
+    <div class="qah"><div class="qan">Q6</div><div class="qat">그래서 얼마나 막아야 하나요? 🎯</div></div>
+    <div class="q6flip">
+      <div class="q6right" style="text-align:center">정답은 <b>예산(받은 수수료) 안에서</b> 항목을 골라 <b>가장 덜 흔들리게</b> — 방향부터 싸게, 급변·꼬리는 완충 봐가며.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:9px;margin:10px 0 4px">
+      <div class="qabar"><span class="qalab">항목 추가</span><div class="qatrack"><div style="width:34%;background:var(--sym)"></div></div><span class="qaval" style="color:var(--sym)">흔들림 ↓</span></div>
+      <div class="qabar"><span class="qalab">그 대가</span><div class="qatrack"><div style="width:64%;background:var(--pay)"></div></div><span class="qaval" style="color:var(--pay)">비용 ↑</span></div>
+    </div>
+    <ul class="qalist"><li>헷지 항목을 <b>하나씩 켜 보며</b> 흔들림과 비용의 균형을 직접 찾아요 — 실측 데이터로 결과가 바로 나와요.</li></ul>
+    <span class="qgo" onclick="document.querySelector('#tabs [data-p=p2]').click()">자세히 → ⑥ 시뮬레이션에서 직접 해보기</span>
   </div>
 
   <div class="panel">

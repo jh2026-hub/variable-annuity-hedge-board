@@ -906,14 +906,27 @@
 <!-- 게임 -->
 <section class="page" id="pgame">
   <div style="display:flex;flex-wrap:wrap;gap:6px;margin:0 0 4px">
-    <span class="qchip">🎯 <b>오래 버티기</b></span>
-    <span class="qchip">🔄 매일 <b>헷지 조정</b></span>
-    <span class="qchip">🌀 <b>감마</b> 체험</span>
+    <span class="qchip">1️⃣ <b>복제</b> — 본질</span>
+    <span class="qchip">2️⃣ <b>따라붙기</b> — 어려움</span>
+    <span class="qchip">3️⃣ <b>1년 생존</b> — 실전</span>
     <span class="qchip">📉 코스피 <b>실측</b></span>
-    <span class="qchip">❓ 정답 없음</span>
   </div>
   <div class="panel">
-    <div class="cap">게임 1 · 델타 헷지 🎮<span class="capb data">📊 실측</span><span>매일 따라붙기 · 감마 체험</span></div>
+    <div class="cap">1단계 · 부채를 복제하라 🧬<span class="capb live">🖐 조작</span><span>선물=기울기 · 옵션=곡률 · 목표=평평</span></div>
+    <p class="foot" style="margin:2px 0 8px"><b style="color:var(--sym)">보라 점선 = 보증부채 손익</b>(오르면 조금 이익, 내리면 크게 손실). 선물·옵션 수량으로 <b>순포지션(굵은 선)을 평평하게</b> 만들어 보세요 — 예산 안에서. 되면 <b>시장 테스트</b>.</p>
+    <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:6px">
+      <div style="display:flex;align-items:center;gap:10px"><span class="foot" style="margin:0;flex:0 0 92px">📉 선물 수량</span><input type="range" id="g0d" min="0" max="150" step="5" value="0" style="flex:1;min-width:80px"><b class="mono" id="g0dLab" style="flex:0 0 46px;text-align:right;color:var(--pay-ink)">0%</b></div>
+      <div style="display:flex;align-items:center;gap:10px"><span class="foot" style="margin:0;flex:0 0 92px">🌀 옵션 수량</span><input type="range" id="g0g" min="0" max="150" step="5" value="0" style="flex:1;min-width:80px"><b class="mono" id="g0gLab" style="flex:0 0 46px;text-align:right;color:var(--pay-ink)">0%</b></div>
+    </div>
+    <div class="foot" id="g0cost" style="margin:0 0 6px"></div>
+    <div class="chartwrap"><svg id="g0Svg" viewBox="0 0 560 240" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px"></svg></div>
+    <div class="foot" id="g0Read" style="margin-top:7px;min-height:2.4em"></div>
+    <button id="g0Test" class="gbtn" style="margin-top:8px">🌪️ 시장 테스트 ▶ (급락 포함 6이벤트)</button>
+    <div id="g0Res" style="margin-top:8px"></div>
+  </div>
+
+  <div class="panel">
+    <div class="cap">2단계 · 매일 따라붙어라 🎮<span class="capb data">📊 실측</span><span>델타 헷지 · 감마 체험</span></div>
     <details style="margin-bottom:10px"><summary style="cursor:pointer;font-size:12.5px;font-weight:700;color:var(--pay)">❓ 게임 방법 (처음이라면)</summary>
       <div style="font-size:12px;color:var(--muted);line-height:1.75;margin-top:8px;padding:10px 12px;background:var(--panel2);border-radius:8px">
         · 🎓 <b>배우는 것</b> — 되맞추기의 딜레마 · 움직임²로 새는 <b>감마</b> · 옵션=비싼 확정.<br>
@@ -951,26 +964,23 @@
   </div>
 
   <div class="panel">
-    <div class="cap">게임 2 · 노출 vs 헷지 🌊<span class="capb ex">🧮 예시값</span><span>완충(CSM)을 지켜라</span></div>
+    <div class="cap">3단계 · CRO 1년 챌린지 🏛️<span class="capb data">📊 실측</span><span>연초에 정하고 · 실제 1년 재생</span></div>
     <details style="margin-bottom:10px"><summary style="cursor:pointer;font-size:12.5px;font-weight:700;color:var(--pay)">❓ 방법 (30초)</summary>
-      <div style="font-size:12px;color:var(--muted);line-height:1.7;margin-top:6px;padding:8px 10px;background:var(--panel2);border-radius:8px">매 라운드 시장이 <b>오르내려요</b>(방향은 <b>선택 후 공개</b>). <b>🌊 노출</b> = 완충으로 받기 — <b>오르면 완충 채우고 이익</b>, <b>내리면</b> 완충 소진, <b>부족하면 손실</b>. <b>🛡️ 헷지</b> = 재원 내고 <b>오르내림 자체를 차단</b>(손익 0, <b>이익도 포기</b>).<br><b>재원 0 = 끝.</b> <b>하락 손실이 이익보다 커요</b>(보증의 비대칭) — 큰 잠재변동·얇은 완충이면 헷지가 안전.</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.7;margin-top:6px;padding:8px 10px;background:var(--panel2);border-radius:8px"><b>어느 해가 올지 모른 채</b> 연초에 헷지를 세팅해요 → 실제 코스피 1년(2020~26 중 무작위)이 재생되며 <b>CSM 완충</b>이 깎이고 회복돼요. 완충이 뚫리면 <b>자본</b>이 깎여요. <b>6년 생존</b>이 목표 — 연도는 연말에 공개돼요.</div>
     </details>
-    <div style="display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px">
-      <span class="qchip">🌊 노출 = <b>양방향(이익·손실)</b></span>
-      <span class="qchip">🛡️ 헷지 = <b>안전(비용)</b></span>
-      <span class="qchip">🪫 얇으면 <b>헷지</b></span>
+    <div style="display:flex;gap:12px 16px;flex-wrap:wrap;align-items:center;margin-bottom:8px">
+      <div style="display:flex;align-items:center;gap:7px"><span class="foot" style="margin:0">📉 방향 헷지</span><div class="pobtns" id="g3DirSeg" style="margin:0"><button data-v="1" class="on">켬</button><button data-v="0">끔</button></div></div>
+      <div style="display:flex;align-items:center;gap:7px"><span class="foot" style="margin:0">🌀 옵션(감마)</span><div class="pobtns" id="g3OptSeg" style="margin:0"><button data-v="0">0%</button><button data-v="50">50%</button><button data-v="100" class="on">100%</button></div></div>
+      <span class="foot" id="g3Cost" style="margin:0"></span>
+      <button id="g3Go" class="gbtn" style="width:auto;padding:8px 16px;margin:0;flex:0 0 auto">연도 시작 ▶</button>
     </div>
-    <div class="chartwrap"><svg id="g2Curve" viewBox="0 0 560 205" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px"></svg></div>
-    <div id="g2Result" style="min-height:22px;margin-top:8px;text-align:center;font-weight:800;font-size:14px"></div>
-    <div id="g2Control" style="margin-top:6px">
-      <div class="gchoices">
-        <button class="gchoice g2c" data-a="hedge"><span class="gci">🛡️</span><span class="gct">헷지</span><span class="gcd">프리미엄 −<b id="g2prem">3</b> · <b style="color:var(--good)">큰 하락 막기</b></span></button>
-        <button class="gchoice g2c" data-a="bear"><span class="gci">🌊</span><span class="gct">노출</span><span class="gcd">오르면 <b style="color:var(--good)">이익</b> · 내리면 <b style="color:var(--bad)">손실</b></span></button>
-      </div>
-    </div>
-    <div id="g2Log" style="margin-top:12px"></div>
-    <div id="g2Final"></div>
-    <p class="foot" style="margin-top:10px"><b>노출</b> = 큰 변동(오르면 이익·내리면 손실). <b>얇은 완충에 큰 하락</b>이면 손실이 크게 나요. <b>헷지</b>는 이익을 포기하는 대신 안전 — <b>큰 잠재변동·얇은 완충일수록 헷지</b>.</p>
+    <div id="g3Stat" class="gstat"></div>
+    <div style="font-size:11px;color:var(--muted);margin:9px 0 3px;font-weight:700">🛟 CSM 완충 <span style="font-weight:400">— 0이 되면 자본이 깎여요</span></div>
+    <div class="ggauge"><div id="g3CsmFill"></div><span></span></div>
+    <div class="chartwrap" style="margin-top:10px"><svg id="g3Svg" viewBox="0 0 560 190" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px"></svg></div>
+    <p class="foot" id="g3Msg" style="margin-top:8px;min-height:2.6em"></p>
+    <div id="g3Log" style="margin-top:6px"></div>
+    <div id="g3Final"></div>
   </div>
 </section>
 
@@ -2422,61 +2432,124 @@ if($("gCurve")){
   GAME.bud0=+($("gBud0")?.value||50); GAME.bud=GAME.bud0; GAME.seq=[]; GAME.hx=0; GAME.mkt=gDM(0); gNewDay();
 }
 
-/* 게임 2 — 노출(완충) vs 헷지(비용). 시장은 양방향(방향은 선택 후 공개): 노출 오르면 이익·내리면 손실, 헷지는 오르내림 차단(이익도 포기) */
-const G2_BUD0=40, G2_CSM0=18, G2_GU=0.4, G2_PDOWN=0.6, G2_DMUL=1.8;   /* 하락 잦고(0.6)·크게(×1.8), 헷지는 싼 보호 */
-const GAME2={r:0,bud:G2_BUD0,csm:G2_CSM0,shock:0,over:false,log:[],hcost:0,bloss:0,gwin:0,glose:0,hsaved:0};
-const g2HedgeCost=sh=>Math.max(2,Math.round(2+sh*0.06));
-function g2Shock(){ let s=Math.abs(gSamp())*8; if(Math.random()<0.24) s*=2.4; return Math.max(4,Math.round(s)); }
-function g2Tank(x,lab,emo,val,max,col,dz){ const tw=92,ty=36,th=128,by=ty+th, fh=Math.max(0,Math.min(1,val/max))*th, fy=by-fh;
-  let s=`<rect x="${x}" y="${ty}" width="${tw}" height="${th}" fill="#F4F7FB" stroke="var(--hair)" rx="7"/>`;
-  if(dz) s+=`<rect x="${x}" y="${by-13}" width="${tw}" height="13" fill="#F7C9D1"/><text x="${x+tw/2}" y="${by-4}" text-anchor="middle" font-size="8" fill="var(--bad)" font-weight="700">손익 위험</text>`;
-  s+=`<rect x="${x}" y="${fy.toFixed(1)}" width="${tw}" height="${fh.toFixed(1)}" fill="${col}" rx="6"/>`;
-  s+=`<text x="${x+tw/2}" y="${ty-9}" text-anchor="middle" font-size="12" font-weight="800" fill="var(--ink)">${emo} ${lab}</text>`;
-  s+=`<text x="${x+tw/2}" y="${by+19}" text-anchor="middle" font-size="15" font-weight="800" fill="${col}">${won(Math.max(0,val))}</text>`;
-  return s; }
-function g2Draw(){ const b=GAME2, g=[], thin=b.csm<=G2_CSM0*0.3;
-  const csmCol=b.csm>G2_CSM0*0.5?'var(--good)':b.csm>G2_CSM0*0.25?'var(--leak)':'var(--bad)';
-  g.push(g2Tank(46,'재원','💰',b.bud,G2_BUD0,'var(--pay)',false));
-  g.push(g2Tank(232,'CSM 완충','🛟',b.csm,G2_CSM0,csmCol,true));
-  if(thin&&!b.over) g.push(`<text x="278" y="30" text-anchor="middle" font-size="11" font-weight="800" fill="var(--bad)"><animate attributeName="opacity" values="1;.3;1" dur="1s" repeatCount="indefinite"/>⚠️ 완충 얇음 · 노출 위험</text>`);
-  const sh=b.shock, lvl=sh>=30?'큼':sh>=15?'보통':'작음', scol=sh>=30?'var(--bad)':sh>=15?'var(--leak)':'#4FAE8C';
-  g.push(`<text x="452" y="28" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">🌊 이번 잠재 변동</text>`);
-  const amp=6+sh/3; let p=''; for(let x=0;x<=140;x+=7){ const y=92-amp*Math.sin(x/13); p+=(x?'L':'M')+(382+x).toFixed(1)+' '+y.toFixed(1); }
-  g.push(`<path d="${p}" fill="none" stroke="${scol}" stroke-width="2.8" stroke-linecap="round"><animate attributeName="opacity" values="1;.45;1" dur="1.2s" repeatCount="indefinite"/></path>`);
-  g.push(`<text x="452" y="150" text-anchor="middle" font-size="25" font-weight="800" fill="${scol}">±${won(sh)}</text>`);
-  g.push(`<text x="452" y="169" text-anchor="middle" font-size="13" font-weight="800" fill="${scol}">${lvl}</text>`);
-  g.push(`<text x="452" y="184" text-anchor="middle" font-size="10.5" fill="var(--muted)">방향은 선택 후 공개</text>`);
-  $("g2Curve").innerHTML=g.join('');
+/* ===== 1단계 · 부채 복제 게임 ===== */
+const G0={a:1.2,g:0.08,fee:1.5,cd:0.35,cg:1.15,MOVES:[3,-6,1,-12,5,-2]};
+const g0P=(x,h1,h2)=>G0.a*(1-h1)*x - G0.g*(1-h2)*x*x;
+function g0Vals(){ return {h1:(+$("g0d").value)/100, h2:(+$("g0g").value)/100}; }
+function g0Draw(showTest){
+  const el=$("g0Svg"); if(!el)return;
+  const {h1,h2}=g0Vals(), cost=G0.cd*h1+G0.cg*h2, over=cost>G0.fee+0.001;
+  const W=560,H=240,L=46,R=16,T=22,B=30,iw=W-L-R,ih=H-T-B;
+  const xmin=-15,xmax=15,ymin=-27,ymax=9;
+  const X=x=>L+iw*(x-xmin)/(xmax-xmin), Y=v=>T+ih*(ymax-Math.max(ymin,Math.min(ymax,v)))/(ymax-ymin);
+  const path=(a1,a2)=>{let p='';for(let i=0;i<=60;i++){const x=xmin+30*i/60;p+=(i?'L':'M')+X(x).toFixed(1)+' '+Y(g0P(x,a1,a2)).toFixed(1);}return p;};
+  let worst=0; for(let i=0;i<=60;i++){const x=xmin+30*i/60; worst=Math.min(worst,g0P(x,h1,h2));}
+  const flat=worst>=-3, g=[];
+  g.push(`<line x1="${L}" y1="${Y(0).toFixed(1)}" x2="${W-R}" y2="${Y(0).toFixed(1)}" stroke="#CBD2DE" stroke-width="1.2"/>`);
+  [[-10,'−10%'],[0,'0'],[10,'+10%']].forEach(t=>g.push(`<text class="eflabel" x="${X(t[0]).toFixed(1)}" y="${H-10}" text-anchor="middle">${t[1]}</text>`));
+  g.push(`<path d="${path(0,0)}" fill="none" stroke="var(--sym)" stroke-width="2" stroke-dasharray="5 4" opacity="0.6"/>`);
+  g.push(`<text x="${L+4}" y="${T+12}" font-size="10.5" font-weight="800" fill="var(--sym)" font-family="sans-serif">보증부채(헷지 전)</text>`);
+  g.push(`<path d="${path(h1,h2)}" fill="none" stroke="${flat?'var(--good)':'var(--leak)'}" stroke-width="3"/>`);
+  g.push(`<text x="${W-R-4}" y="${T+12}" text-anchor="end" font-size="10.5" font-weight="800" fill="${flat?'#337A5F':'var(--leak)'}" font-family="sans-serif">순포지션${flat?' · 평평 ✓':''}</text>`);
+  if(showTest){ G0.MOVES.forEach((m,k)=>{ const px=X(m),py=Y(g0P(m,h1,h2)), v=g0P(m,h1,h2);
+    g.push(`<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="6" fill="${v<-3?'var(--bad)':'#337A5F'}" stroke="#fff" stroke-width="1.6" opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.25s" begin="${(k*0.35).toFixed(2)}s" fill="freeze"/></circle>`);
+    g.push(`<text x="${px.toFixed(1)}" y="${(py-11).toFixed(1)}" text-anchor="middle" font-size="10" font-weight="800" fill="${v<-3?'var(--bad)':'#337A5F'}" font-family="sans-serif" opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.25s" begin="${(k*0.35).toFixed(2)}s" fill="freeze"/>${m>0?'+':''}${m}%</text>`); }); }
+  el.innerHTML=g.join('');
+  $("g0dLab").textContent=Math.round(h1*100)+'%'; $("g0gLab").textContent=Math.round(h2*100)+'%';
+  $("g0cost").innerHTML=`연 비용 <b style="color:${over?'var(--bad)':'var(--pay-ink)'}">${cost.toFixed(2)}</b> / 예산(수수료) ${G0.fee.toFixed(1)}${over?' <b style="color:var(--bad)">⚠️ 초과</b>':''}`;
+  $("g0Read").innerHTML=`최악 구간 손실 <b style="color:${flat?'#337A5F':'var(--bad)'}">${worst.toFixed(1)}</b> · ${h1<0.6?'아직 <b>기울기(방향)</b>가 남아 있어요 — 선물부터(싸요)':h2<0.45?'<b>곡률(감마)</b>이 남아 급락에서 처져요 — 옵션 몫이에요':'거의 평평해요 — 부채가 복제됐어요'}`;
+  return {worst,cost,over,h1,h2};
 }
-function g2Play(a){ if(GAME2.over)return; const b=GAME2, m=b.shock, down=Math.random()<G2_PDOWN, real=down?Math.round(m*G2_DMUL):m, cost=g2HedgeCost(m); let msg,col,tag;
-  if(a==='hedge'){ b.bud-=cost; b.hcost+=cost;
-    if(down&&real>b.csm){ b.hsaved+=real; msg=`🛡️ 큰 하락 −${won(real)} <b>막음!</b> (프리미엄 −${cost})`; col='var(--good)'; tag='막음'; }
-    else { msg=`🛡️ 프리미엄 −${cost} · 이번엔 조용`; col='var(--pay)'; tag='보호'; } }
-  else if(!down){ const c2=b.csm+m; if(c2>G2_CSM0){ const gain=Math.round((c2-G2_CSM0)*G2_GU); b.bud+=gain; b.csm=G2_CSM0; b.gwin++; msg=`🌊 시장↑ · <b>이익 +${won(gain)}</b>`; col='var(--good)'; tag='이익'; }
-      else { b.csm=c2; msg=`🌊 시장↑ · 완충 회복`; col='var(--good)'; tag='회복'; } }
-  else { if(real<=b.csm){ b.csm-=real; const thin=b.csm<G2_CSM0*0.35; msg=`🌊 하락 −${won(real)} · 완충으로 버팀${thin?' ⚠️얇음':''}`; col=thin?'var(--leak)':'var(--good)'; tag='버팀'; }
-      else { b.bud-=real; b.bloss+=real; b.csm=0; b.glose++; msg=`🌊 하락 −${won(real)} <b>완충 초과!</b> · 헷지였다면 −${cost}`; col='var(--bad)'; tag='초과'; } }
-  b.r++;
-  b.log.unshift({r:b.r,a,m,col,tag});
-  $("g2Log").innerHTML=b.log.slice(0,10).map(x=>`<div class="glogrow"><span class="gy">${x.r}R</span><span class="gtag">${x.a==='hedge'?'🛡️ 헷지':'🌊 노출'}</span><span class="gnet" style="color:${x.col}">${x.tag}</span></div>`).join('');
-  if(b.bud<=0){ b.bud=0; g2Draw(); if($("g2Result"))$("g2Result").innerHTML=`<span style="color:${col}">${msg}</span>`; g2Finish(); return; }
-  b.shock=g2Shock(); if($("g2prem"))$("g2prem").textContent=g2HedgeCost(b.shock); g2Draw();
-  if($("g2Result"))$("g2Result").innerHTML=`<span style="color:${col}">${msg}</span>`;
+function g0RunTest(){
+  const r=g0Draw(true); if(!r)return;
+  let sum=0; G0.MOVES.forEach(m=>sum+=g0P(m,r.h1,r.h2));
+  const net=sum-r.cost+G0.fee;
+  const verdict = r.over ? '⚠️ <b>예산 초과</b> — 전부 막는 건 수수료보다 비싸요. 옵션을 조금 줄여 보세요.'
+    : r.h1<0.6 ? '📉 <b>방향이 그대로</b>라 −12% 이벤트에서 크게 잃었어요 — 선물부터 채우세요(싸요).'
+    : r.h2<0.45 ? '🌀 방향은 막았지만 <b>−12% 급락에서 곡률(감마) 손실</b>이 남았어요 — 이게 옵션이 필요한 이유예요.'
+    : '👏 <b>부채를 잘 복제했어요</b> — 급락이 와도 순포지션이 평평해요. 이게 매칭이에요.';
+  $("g0Res").innerHTML=`<div class="gres" style="background:${net>=-0.5?'#EAF7F1':'#FBEEF1'};padding:9px 12px">
+    <div style="font-size:12.5px"><b>테스트</b> 이벤트 손익 합 <b style="color:${sum>=0?'var(--good)':'var(--bad)'}">${sum>=0?'+':'−'}${Math.abs(sum).toFixed(1)}</b> − 비용 ${r.cost.toFixed(2)} + 수수료 ${G0.fee.toFixed(1)} = <b style="color:${net>=0?'#337A5F':'var(--bad)'}">${net>=0?'+':'−'}${Math.abs(net).toFixed(1)}</b></div>
+    <div style="font-size:12px;color:var(--ink);margin-top:5px;line-height:1.6">${verdict}</div></div>`;
 }
-function g2Finish(){ GAME2.over=true; const c=$("g2Control"); if(c){c.style.opacity='.45';c.style.pointerEvents='none';}
-  const b=GAME2, r=b.r, t=r>=20?['🏆','완충 마스터']:r>=12?['🥇','노련']:r>=6?['👍','무난']:['😅','연습'];
-  $("g2Final").innerHTML=`<div class="gres" style="background:linear-gradient(135deg,#EEF3FE,#F4F0FD);border:1px solid #D7E0F5;margin-top:14px">
-    <div style="display:flex;align-items:center;gap:12px"><div style="font-size:34px">${t[0]}</div><div style="font-weight:800;font-size:16px">${t[1]} · <b style="color:var(--pay)">${r}라운드</b> 버팀</div></div>
-    <div style="display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font-size:12.5px"><span>🌊 노출 초과손실 <b style="color:var(--bad)">${b.glose}</b>회 (−${won(b.bloss)})</span><span>🛡️ 헷지로 막은 손실 <b style="color:var(--good)">−${won(b.hsaved)}</b></span></div>
-    <div style="font-size:12px;color:var(--muted);margin-top:9px;line-height:1.6">노출은 이익도 나지만 <b style="color:var(--bad)">큰 하락에 손실이 크게 나요</b>. 헷지는 작은 프리미엄으로 그 <b>큰 손실을 미리 막아요</b> — 큰 불확실을 <b>작은 확정비용으로 바꾸는 것</b>, 이게 헷지의 본질이에요.</div>
-    <button id="g2Reset" class="gbtn" style="margin-top:12px;background:var(--ink)">다시 도전 ↻</button></div>`;
-  $("g2Reset").addEventListener("click",g2Restart);
+if($("g0Svg")){ ["g0d","g0g"].forEach(id=>$(id).addEventListener("input",()=>{ $("g0Res").innerHTML=''; g0Draw(false); }));
+  $("g0Test").addEventListener("click",g0RunTest); g0Draw(false); }
+
+/* ===== 3단계 · CRO 1년 챌린지 (실측 연도) ===== */
+const G3={r:0,N:6,csm0:4.0,cap0:10,csm:4.0,cap:10,over:false,busy:false,log:[],years:null,used:[],kG:0.0035,bDir:0.06,fee:1.5,cd:0.35,cg:1.15,dir:1,opt:100,timer:null};
+function g3Years(){ if(G3.years) return G3.years;
+  const out=[];
+  if(SIM.loaded){ const d=SIM.data, by={};
+    for(let i=1;i<d.dates.length;i++){ const y=d.dates[i].slice(0,4); (by[y]=by[y]||[]).push((d.eq[i]/d.eq[i-1]-1)*100); }
+    Object.keys(by).sort().forEach(y=>{ const dd=by[y]; if(dd.length<100)return; const wk=[]; for(let i=0;i<dd.length;i+=5){let t=0;for(let j=i;j<Math.min(i+5,dd.length);j++)t+=dd[j]; wk.push(t);} out.push({y,wk}); });
+  }
+  if(!out.length){ out.push({y:'조용한 해(예시)',wk:Array.from({length:48},(_,i)=>Math.sin(i*1.7)*1.1)},{y:'급락의 해(예시)',wk:Array.from({length:48},(_,i)=>i===18?-8:(i===19?-6:(i===20?-4:Math.sin(i*1.3)*1.3)))}); }
+  G3.years=out; return out;
 }
-function g2Restart(){ Object.assign(GAME2,{r:0,bud:G2_BUD0,csm:G2_CSM0,over:false,log:[],hcost:0,bloss:0,gwin:0,glose:0,hsaved:0}); const c=$("g2Control"); if(c){c.style.opacity='';c.style.pointerEvents='';}
-  $("g2Log").innerHTML=''; $("g2Final").innerHTML=''; GAME2.shock=g2Shock(); if($("g2prem"))$("g2prem").textContent=g2HedgeCost(GAME2.shock); g2Draw();
-  if($("g2Result"))$("g2Result").innerHTML=`<span style="color:var(--muted);font-weight:600">막을까요, 버틸까요?</span>`; }
-if($("g2Curve")){ document.querySelectorAll(".g2c").forEach(b=>b.addEventListener("click",()=>g2Play(b.dataset.a)));
-  g2Restart(); }
+const g3Cost=()=>G3.cd*G3.dir+G3.cg*(G3.opt/100);
+function g3Sync(){
+  if(!$("g3Stat"))return;
+  const cost=g3Cost();
+  $("g3Cost").innerHTML=`연 비용 <b style="color:${cost>G3.fee+0.001?'var(--bad)':'var(--pay-ink)'}">${cost.toFixed(2)}</b> / 수수료 ${G3.fee.toFixed(1)}`;
+  $("g3Stat").innerHTML=`<div>연차<b style="color:var(--pay)">${G3.r} / ${G3.N}</b></div><div>CSM 완충<b style="color:${G3.csm>1.5?'#337A5F':'var(--bad)'}">${G3.csm.toFixed(2)}</b></div><div>자본<b style="color:${G3.cap>6?'var(--ink)':'var(--bad)'}">${G3.cap.toFixed(2)}</b></div>`;
+  const f=$("g3CsmFill"); if(f){ const pct=Math.max(0,Math.min(100,G3.csm/G3.csm0*100)); f.style.width=pct+'%'; f.style.background=pct>45?'#4FAE8C':pct>18?'#D69A55':'#D6738A'; const lab=f.nextElementSibling; if(lab)lab.textContent='CSM '+G3.csm.toFixed(2)+' / '+G3.csm0.toFixed(1); }
+}
+function g3Play(){
+  if(G3.busy||G3.over||G3.r>=G3.N)return;
+  const ys=g3Years(); let pool=ys.filter(y=>!G3.used.includes(y.y)); if(!pool.length){G3.used=[];pool=ys;}
+  const pick=pool[Math.floor(Math.random()*pool.length)]; G3.used.push(pick.y);
+  G3.busy=true; $("g3Go").disabled=true; $("g3Msg").innerHTML='재생 중… (연도는 연말에 공개)';
+  const wk=pick.wk, W=wk.length, opt=G3.opt/100, dirOn=G3.dir, cost=g3Cost();
+  const cum=[0]; wk.forEach(w=>cum.push(cum[cum.length-1]+w));
+  const cmin=Math.min(...cum,-6)-2, cmax=Math.max(...cum,6)+2;
+  const svg=$("g3Svg"), SW=560,SH=190,L=44,R=14,T=20,B=24,iw=SW-L-R,ih=SH-T-B;
+  const Xf=i=>L+iw*i/W, Yf=v=>T+ih*(cmax-v)/(cmax-cmin);
+  let i=0,csmY=G3.csm,csmStart=G3.csm,capY=G3.cap,leak=0,dpl=0,spill=false;
+  const acc=(G3.fee-cost)/W;
+  G3.timer=setInterval(()=>{
+    i++; const w=wk[i-1];
+    const lk=G3.kG*w*w*(1-opt); leak+=lk;
+    const dp=dirOn?0:G3.bDir*w; dpl+=dp;
+    csmY+=acc-lk+dp;
+    if(csmY>G3.csm0) csmY=G3.csm0;
+    if(csmY<0){ capY+=csmY; csmY=0; spill=true; }
+    const g=[`<line x1="${L}" y1="${Yf(0).toFixed(1)}" x2="${SW-R}" y2="${Yf(0).toFixed(1)}" stroke="#CBD2DE" stroke-width="1.1"/>`];
+    let p=''; for(let k=0;k<=i;k++)p+=(k?'L':'M')+Xf(k).toFixed(1)+' '+Yf(cum[k]).toFixed(1);
+    g.push(`<path d="${p}" fill="none" stroke="var(--sym)" stroke-width="2.2"/>`);
+    g.push(`<text class="eflabel" x="${L}" y="${T-6}" fill="var(--muted)" font-weight="700">시장 누적 ${cum[i]>=0?'+':''}${cum[i].toFixed(1)}% · ${i}/${W}주${spill?' · 🪫 완충 소진!':''}</text>`);
+    if(Math.abs(w)>3.2) g.push(`<text x="${Xf(i).toFixed(1)}" y="${(Yf(cum[i])-10).toFixed(1)}" text-anchor="middle" font-size="12" font-weight="800">🌀</text>`);
+    svg.innerHTML=g.join('');
+    G3.csm=csmY; G3.cap=capY; g3Sync();
+    if(i>=W){ clearInterval(G3.timer); G3.timer=null; g3End(pick,{cum:cum[W],leak,dpl,spill,dCsm:csmY-csmStart}); }
+  },40);
+}
+function g3End(pick,o){
+  G3.busy=false; $("g3Go").disabled=false; G3.r++;
+  const crash=o.cum<-12, vol=o.leak>1.6||o.dCsm<-1;
+  const les= o.spill? `🪫 완충이 뚫려 <b>자본이 깎였어요</b>${G3.opt<100?' — 옵션이 더 있었다면 감마 누수가 줄었을 거예요':''}.`
+    : crash? (G3.opt>=100?'🛡️ 급락의 해 — 옵션이 감마를 막아 완충이 버텼어요. 프리미엄의 값어치죠.':'😮‍💨 급락의 해 — 버텼지만 감마 누수가 컸어요.')
+    : vol? (G3.opt>=100?'🌊 크게 움직인 해 — 옵션이 감마를 막았어요. 급등장이어도 감마는 새요.':`🌊 크게 움직인 해 — <b>올라도 감마는 움직임²로 새요</b>. 완충이 ${Math.abs(o.dCsm).toFixed(2)} 깎였어요.`)
+    : (G3.opt>=100?'🙂 조용한 해 — 프리미엄이 좀 아까웠죠. 이 아까움이 급락의 해의 생존과 한 세트예요.':'🙂 조용한 해 — 싸게 지나갔어요. 다음 해도 조용할까요?');
+  G3.log.unshift({r:G3.r,y:pick.y,cum:o.cum});
+  $("g3Msg").innerHTML=`<b>${pick.y}년이었어요</b> · 시장 ${o.cum>=0?'+':''}${o.cum.toFixed(1)}% · 감마 누수 −${o.leak.toFixed(2)}${G3.dir?'':` · 방향손익 ${o.dpl>=0?'+':''}${o.dpl.toFixed(2)}`} — ${les}`;
+  $("g3Log").innerHTML=G3.log.slice(0,6).map(x=>`<div class="glogrow"><span class="gy">${x.r}년차</span><span class="gtag">${x.y}</span><span class="gnet" style="color:${x.cum>=0?'var(--good)':'var(--bad)'}">${x.cum>=0?'+':''}${x.cum.toFixed(1)}%</span></div>`).join('');
+  g3Sync();
+  if(G3.cap<=0) g3Final(false); else if(G3.r>=G3.N) g3Final(true);
+}
+function g3Final(alive){
+  G3.over=true;
+  const score=G3.cap+G3.csm, t=alive?(score>=13?['🏆','완벽한 CRO']:score>=11?['🥇','노련한 CRO']:['👍','생존']):['💥','자본 소진'];
+  $("g3Final").innerHTML=`<div class="gres" style="background:linear-gradient(135deg,#EEF3FE,#F4F0FD);border:1px solid #D7E0F5;margin-top:14px">
+    <div style="display:flex;align-items:center;gap:12px"><div style="font-size:34px">${t[0]}</div><div style="font-weight:800;font-size:16px">${t[1]} · 최종 자본+완충 <b style="color:var(--pay)">${score.toFixed(2)}</b></div></div>
+    <div style="font-size:12px;color:var(--muted);margin-top:9px;line-height:1.6">어느 해가 올지 <b>모른 채 연초에 정하는 것</b> — 이게 실제 CRO의 헷지예요. 조용한 해의 '아까운 프리미엄'과 급락의 해의 '생존'은 <b>한 세트</b>예요.</div>
+    <button id="g3Reset" class="gbtn" style="margin-top:12px;background:var(--ink)">다시 도전 ↻</button></div>`;
+  $("g3Reset").addEventListener("click",()=>{ Object.assign(G3,{r:0,csm:G3.csm0,cap:G3.cap0,over:false,busy:false,log:[],used:[]}); $("g3Final").innerHTML=''; $("g3Msg").innerHTML=''; $("g3Log").innerHTML=''; $("g3Svg").innerHTML=''; g3Sync(); });
+}
+if($("g3Svg")){
+  $("g3DirSeg").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{ if(G3.busy)return; G3.dir=+b.dataset.v; $("g3DirSeg").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b)); g3Sync(); }));
+  $("g3OptSeg").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{ if(G3.busy)return; G3.opt=+b.dataset.v; $("g3OptSeg").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b)); g3Sync(); }));
+  $("g3Go").addEventListener("click",g3Play); g3Sync();
+}
 
 /* 초기 렌더 — 각 호출을 격리(하나가 throw해도 나머지·loadMarket은 진행). 간헐 미표시·conceptLines stuck 방지 */
 [renderFactorAnim,renderPayoff,render,syncCsm2,drawCasc,drawBuffer,drawHero,renderCases2008,renderMech,renderCapVol].forEach(fn=>{try{fn();}catch(e){console.error('[init]',fn&&fn.name,e);}});

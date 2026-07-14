@@ -2476,7 +2476,7 @@ if($("g0Svg")){ ["g0d","g0g"].forEach(id=>$(id).addEventListener("input",()=>{ $
   $("g0Test").addEventListener("click",g0RunTest); g0Draw(false); }
 
 /* ===== 3단계 · CRO 1년 챌린지 (실측 연도) ===== */
-const G3={r:0,N:6,csm0:4.0,cap0:10,csm:4.0,cap:10,over:false,busy:false,log:[],years:null,used:[],kG:0.0035,bDir:0.06,fee:1.5,cd:0.35,cg:1.15,dir:1,opt:100,timer:null};
+const G3={r:0,N:6,csm0:4.0,cap0:10,csm:4.0,cap:10,over:false,busy:false,log:[],years:null,used:[],kG:0.0035,bDir:0.14,fee:1.5,cd:0.35,cg:1.15,dir:1,opt:100,timer:null};
 function g3Years(){ if(G3.years) return G3.years;
   const out=[];
   if(SIM.loaded){ const d=SIM.data, by={};
@@ -2509,7 +2509,7 @@ function g3Play(){
   G3.timer=setInterval(()=>{
     i++; const w=wk[i-1];
     const lk=G3.kG*w*w*(1-opt); leak+=lk;
-    const dp=dirOn?0:G3.bDir*w; dpl+=dp;
+    const dp=dirOn?0:G3.bDir*w*(w<0?1.7:1);   /* 보증=short put: 하방이 더 아픔 */ dpl+=dp;
     csmY+=acc-lk+dp;
     if(csmY>G3.csm0) csmY=G3.csm0;
     if(csmY<0){ capY+=csmY; csmY=0; spill=true; }

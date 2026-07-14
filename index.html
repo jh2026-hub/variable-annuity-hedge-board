@@ -969,11 +969,11 @@
   <div class="panel">
     <div class="cap">3단계 · CRO 1년 챌린지 🏛️<span class="capb data">📊 실측</span><span>연초에 정하고 · 실제 1년 재생</span></div>
     <details style="margin-bottom:10px"><summary style="cursor:pointer;font-size:12.5px;font-weight:700;color:var(--pay)">❓ 방법 (30초)</summary>
-      <div style="font-size:12px;color:var(--muted);line-height:1.7;margin-top:6px;padding:8px 10px;background:var(--panel2);border-radius:8px"><b>어느 해가 올지 모른 채</b> 연초에 헷지를 세팅해요 → 실제 코스피 1년(2020~26 중 무작위)이 재생되며 <b>CSM 완충</b>이 깎이고 회복돼요. 완충이 뚫리면 <b>자본</b>이 깎여요. <b>6년 생존</b>이 목표 — 연도는 연말에 공개돼요.</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.7;margin-top:6px;padding:8px 10px;background:var(--panel2);border-radius:8px"><b>어느 해가 올지 모른 채</b> 연초에 헷지를 세팅해요 → 실제 코스피 1년(2020~26 중 무작위)이 재생되며 <b>CSM 완충</b>이 깎이고 회복돼요. 완충이 뚫리면 <b>자본이 1.5배로</b> 깎여요(증자·신뢰 비용). 조용한 해의 <b>초과 이익은 자본으로 쌓여요</b>. <b>6년 생존</b>이 목표 — 연도는 연말에 공개돼요.</div>
     </details>
     <div style="display:flex;gap:12px 16px;flex-wrap:wrap;align-items:center;margin-bottom:8px">
       <div style="display:flex;align-items:center;gap:7px"><span class="foot" style="margin:0">📉 방향 헷지</span><div class="pobtns" id="g3DirSeg" style="margin:0"><button data-v="1" class="on">켬</button><button data-v="0">끔</button></div></div>
-      <div style="display:flex;align-items:center;gap:7px"><span class="foot" style="margin:0">🌀 옵션(감마)</span><div class="pobtns" id="g3OptSeg" style="margin:0"><button data-v="0">0%</button><button data-v="50">50%</button><button data-v="100" class="on">100%</button></div></div>
+      <div style="display:flex;align-items:center;gap:7px"><span class="foot" style="margin:0">🌀 옵션(감마)</span><div class="pobtns" id="g3OptSeg" style="margin:0"><button data-v="0" class="on">0%</button><button data-v="50">50%</button><button data-v="100">100%</button></div></div>
       <span class="foot" id="g3Cost" style="margin:0"></span>
       <button id="g3Go" class="gbtn" style="width:auto;padding:8px 16px;margin:0;flex:0 0 auto">연도 시작 ▶</button>
     </div>
@@ -2506,7 +2506,7 @@ if($("g0Svg")){ ["g0d","g0g"].forEach(id=>$(id).addEventListener("input",()=>{ $
   $("g0Test").addEventListener("click",g0RunTest); $("g0New").addEventListener("click",g0New); g0New(); }
 
 /* ===== 3단계 · CRO 1년 챌린지 (실측 연도) ===== */
-const G3={r:0,N:6,csm0:4.0,cap0:10,csm:4.0,cap:10,over:false,busy:false,log:[],years:null,used:[],kG:0.0035,bDir:0.14,fee:1.5,cd:0.35,cg:1.15,dir:1,opt:100,timer:null};
+const G3={r:0,N:6,csm0:3.0,cap0:10,csm:3.0,cap:10,over:false,busy:false,log:[],years:null,used:[],kG:0.0029,bDir:0.14,fee:1.5,cd:0.35,cg:1.15,dir:1,opt:0,timer:null};
 function g3Years(){ if(G3.years) return G3.years;
   const out=[];
   if(SIM.loaded){ const d=SIM.data, by={};
@@ -2538,11 +2538,11 @@ function g3Play(){
   const acc=(G3.fee-cost)/W;
   G3.timer=setInterval(()=>{
     i++; const w=wk[i-1];
-    const lk=G3.kG*w*w*(1-opt); leak+=lk;
+    const lk=G3.kG*Math.max(0,w*w-9)*(1-opt); leak+=lk;   /* 임계감마: |주간|>3%만 누수 */
     const dp=dirOn?0:G3.bDir*w*(w<0?1.7:1);   /* 보증=short put: 하방이 더 아픔 */ dpl+=dp;
     csmY+=acc-lk+dp;
-    if(csmY>G3.csm0) csmY=G3.csm0;
-    if(csmY<0){ capY+=csmY; csmY=0; spill=true; }
+    if(csmY>G3.csm0){ capY+=csmY-G3.csm0; csmY=G3.csm0; }   /* 초과 이익은 자본으로 */
+    if(csmY<0){ capY+=csmY*1.5; csmY=0; spill=true; }   /* 관통 페널티: 증자·신뢰 비용 */
     const g=[`<line x1="${L}" y1="${Yf(0).toFixed(1)}" x2="${SW-R}" y2="${Yf(0).toFixed(1)}" stroke="#CBD2DE" stroke-width="1.1"/>`];
     let p=''; for(let k=0;k<=i;k++)p+=(k?'L':'M')+Xf(k).toFixed(1)+' '+Yf(cum[k]).toFixed(1);
     g.push(`<path d="${p}" fill="none" stroke="var(--sym)" stroke-width="2.2"/>`);
@@ -2556,7 +2556,7 @@ function g3Play(){
 function g3End(pick,o){
   G3.busy=false; $("g3Go").disabled=false; G3.r++;
   const crash=o.cum<-12, vol=o.leak>1.6||o.dCsm<-1;
-  const les= o.spill? `🪫 완충이 뚫려 <b>자본이 깎였어요</b>${G3.opt<100?' — 옵션이 더 있었다면 감마 누수가 줄었을 거예요':''}.`
+  const les= o.spill? `🪫 완충이 뚫려 <b>자본이 1.5배로 깎였어요</b>${G3.opt<100?' — 옵션이 더 있었다면 감마 누수가 줄었을 거예요':''}.`
     : crash? (G3.opt>=100?'🛡️ 급락의 해 — 옵션이 감마를 막아 완충이 버텼어요. 프리미엄의 값어치죠.':'😮‍💨 급락의 해 — 버텼지만 감마 누수가 컸어요.')
     : vol? (G3.opt>=100?'🌊 크게 움직인 해 — 옵션이 감마를 막았어요. 급등장이어도 감마는 새요.':`🌊 크게 움직인 해 — <b>올라도 감마는 움직임²로 새요</b>. 완충이 ${Math.abs(o.dCsm).toFixed(2)} 깎였어요.`)
     : (G3.opt>=100?'🙂 조용한 해 — 프리미엄이 좀 아까웠죠. 이 아까움이 급락의 해의 생존과 한 세트예요.':'🙂 조용한 해 — 싸게 지나갔어요. 다음 해도 조용할까요?');
@@ -2568,7 +2568,7 @@ function g3End(pick,o){
 }
 function g3Final(alive){
   G3.over=true;
-  const score=G3.cap+G3.csm, t=alive?(score>=13?['🏆','완벽한 CRO']:score>=11?['🥇','노련한 CRO']:['👍','생존']):['💥','자본 소진'];
+  const score=G3.cap+G3.csm, t=alive?(score>=13.4?['🏆','완벽한 CRO']:score>=12.6?['🥇','노련한 CRO']:['👍','생존']):['💥','자본 소진'];
   $("g3Final").innerHTML=`<div class="gres" style="background:linear-gradient(135deg,#EEF3FE,#F4F0FD);border:1px solid #D7E0F5;margin-top:14px">
     <div style="display:flex;align-items:center;gap:12px"><div style="font-size:34px">${t[0]}</div><div style="font-weight:800;font-size:16px">${t[1]} · 최종 자본+완충 <b style="color:var(--pay)">${score.toFixed(2)}</b></div></div>
     <div style="font-size:12px;color:var(--muted);margin-top:9px;line-height:1.6">어느 해가 올지 <b>모른 채 연초에 정하는 것</b> — 이게 실제 CRO의 헷지예요. 조용한 해의 '아까운 프리미엄'과 급락의 해의 '생존'은 <b>한 세트</b>예요.</div>

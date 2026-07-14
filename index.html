@@ -2445,7 +2445,7 @@ if($("gCurve")){
 /* ===== 1단계 · 부채 복제 게임 — 셔플 부채 + 추적오차 ===== */
 const G0={a:1.2,g:0.08,tau:0.15,seed:1,fee:1.5,cd:0.35,cg:1.15,REF_A:1.2,REF_G:0.08,MOVES:[5,-6,2,-12,7,-2,6]};
 function g0New(){
-  G0.a=+(0.9+Math.random()*0.75).toFixed(2); G0.g=+(0.05+Math.random()*0.065).toFixed(3);
+  G0.a=+(0.7+Math.random()*1.0).toFixed(2); G0.g=+(0.04+Math.random()*0.08).toFixed(3);
   G0.tau=+(0.08+Math.random()*0.14).toFixed(2); G0.seed=Math.floor(Math.random()*9999)+1;
   if($("g0d"))$("g0d").value=0; if($("g0g"))$("g0g").value=0; if($("g0Res"))$("g0Res").innerHTML='';
   g0Draw(false);
@@ -2458,11 +2458,11 @@ function g0Draw(showTest){
   const el=$("g0Svg"); if(!el)return;
   const {d,q}=g0Vals(), cost=g0Cost(), over=cost>G0.fee+0.001;
   const W=560,H=240,L=46,R=16,T=22,B=30,iw=W-L-R,ih=H-T-B;
-  const xmin=-15,xmax=15,ymin=-30,ymax=12;
+  const xmin=-15,xmax=15; let liaMax=Math.max(g0P(-15,0,0),g0P(15,0,0)); const xv=G0.a/(2*G0.g); if(Math.abs(xv)<15) liaMax=Math.max(liaMax,g0P(xv,0,0)); const ymin=Math.min(-18,Math.min(g0P(-15,0,0),g0P(15,0,0))-3), ymax=Math.max(10,liaMax+3);
   const X=x=>L+iw*(x-xmin)/(xmax-xmin), Y=v=>T+ih*(ymax-Math.max(ymin,Math.min(ymax,v)))/(ymax-ymin);
   const path=(dd,qq)=>{let p='';for(let i=0;i<=60;i++){const x=xmin+30*i/60;p+=(i?'L':'M')+X(x).toFixed(1)+' '+Y(g0P(x,dd,qq)).toFixed(1);}return p;};
   let worst=0; for(let i=0;i<=60;i++){const x=xmin+30*i/60; worst=Math.min(worst,g0P(x,d,q));}
-  const remA=G0.a-d, remG=G0.g-q, flat=worst>=-5 && remA>-0.25 && remG>-0.02, g=[];
+  const remA=G0.a-d, remG=G0.g-q, flat=(remA<=0.3&&remA>=-0.15&&remG<=0.03&&remG>=-0.015), g=[];
   g.push(`<line x1="${L}" y1="${Y(0).toFixed(1)}" x2="${W-R}" y2="${Y(0).toFixed(1)}" stroke="#CBD2DE" stroke-width="1.2"/>`);
   [[-10,'−10%'],[0,'0'],[10,'+10%']].forEach(t=>g.push(`<text class="eflabel" x="${X(t[0]).toFixed(1)}" y="${H-10}" text-anchor="middle">${t[1]}</text>`));
   g.push(`<path d="${path(0,0)}" fill="none" stroke="var(--sym)" stroke-width="2" stroke-dasharray="5 4" opacity="0.6"/>`);
@@ -2480,10 +2480,11 @@ function g0Draw(showTest){
   $("g0Read").innerHTML=`최악 구간 손실 <b style="color:${flat?'#337A5F':'var(--bad)'}">${worst.toFixed(1)}</b> · ${
     over?'<b style="color:var(--bad)">예산 초과</b> — 이번 부채는 다 못 막아요. 방향부터.':
     flat?'거의 평평해요 — 부채가 복제됐어요':
-    remA<-0.25?'<b>선물 과다</b> — 반대(상승) 쪽으로 기울었어요':
-    remG<-0.02?'<b>옵션 과다</b> — 위로 휘었어요(프리미엄 낭비)':
-    remA>0.5?'아직 <b>기울기(방향)</b>가 커요 — 선물부터(싸요)':
-    remG>0.035?'<b>곡률(감마)</b>이 남아 급락에서 처져요 — 옵션 몫':
+    remA<-0.15?'<b>선물 과다</b> — 반대(상승) 쪽으로 기울었어요':
+    remG<-0.015?'<b>옵션 과다</b> — 위로 휘었어요(프리미엄 낭비)':
+    remA>0.3?'아직 <b>기울기(방향)</b>가 커요 — 선물부터(싸요)':
+    (remG>0.03&&cost>=1.32)?'<b>예산 내 최선</b> — 남은 곡률은 완충 몫(급락은 감수)':
+    remG>0.03?'<b>곡률(감마)</b>이 남아 급락에서 처져요 — 옵션 몫':
     '조금만 더 — 모양을 보고 미세 조정해 보세요'}`;
   return {worst,cost,over,flat,d,q,remA,remG};
 }
@@ -2493,10 +2494,11 @@ function g0RunTest(){
   const pCrash=g0P(-12,r.d,r.q)+g0Err(-12,3);
   const net=sum-r.cost+G0.fee;
   const verdict = r.over ? '⚠️ <b>예산 초과</b> — 이번 부채는 수수료로 다 못 막아요. <b>방향 먼저, 곡률은 감당만큼</b>이 순서예요.'
-    : r.remA>0.5 ? '📉 <b>방향이 남아</b> 급락(−12%)에서 크게 잃었어요 — 선물부터 채우세요(싸요).'
-    : r.remA<-0.25 ? '↗️ <b>선물 과다</b> — 이제 상승 이벤트에서 잃었어요. 복제는 "반대로, 정확히"예요.'
-    : r.remG>0.035 ? '🌀 방향은 맞췄지만 <b>급락의 곡률(감마) 손실</b>이 남았어요 — 옵션 몫이에요.'
-    : r.remG<-0.02 ? '🎢 <b>옵션 과다</b> — 위로 휜 만큼 프리미엄이 낭비됐어요.'
+    : r.remA>0.3 ? '📉 <b>방향이 남아</b> 급락(−12%)에서 크게 잃었어요 — 선물부터 채우세요(싸요).'
+    : r.remA<-0.15 ? '↗️ <b>선물 과다</b> — 이제 상승 이벤트에서 잃었어요. 복제는 "반대로, 정확히"예요.'
+    : (r.remG>0.03&&r.cost>=1.32) ? '💪 <b>예산 내 최선</b>이에요 — 방향은 다 막고, 남은 곡률은 <b>완충(CSM) 몫</b>. ⑥의 선택과 같은 상황이죠.'
+    : r.remG>0.03 ? '🌀 방향은 맞췄지만 <b>급락의 곡률(감마) 손실</b>이 남았어요 — 옵션 몫이에요.'
+    : r.remG<-0.015 ? '🎢 <b>옵션 과다</b> — 위로 휜 만큼 프리미엄이 낭비됐어요.'
     : `👏 <b>복제 성공</b> — 그래도 <b>추적오차 ±${trk.toFixed(1)}</b>은 남았죠. 이건 못 없애는 <b>기타 위험</b>이에요(→ Q4·③).`;
   $("g0Res").innerHTML=`<div class="gres" style="background:${net>=-1?'#EAF7F1':'#FBEEF1'};padding:9px 12px">
     <div style="font-size:12.5px">급락(−12%) 손익 <b style="color:${pCrash>=-4?'#337A5F':'var(--bad)'}">${pCrash>=0?'+':'−'}${Math.abs(pCrash).toFixed(1)}</b> · 이벤트 합 <b style="color:${sum>=0?'var(--good)':'var(--bad)'}">${sum>=0?'+':'−'}${Math.abs(sum).toFixed(1)}</b> − 비용 ${r.cost.toFixed(2)} + 수수료 ${G0.fee.toFixed(1)} = <b style="color:${net>=0?'#337A5F':'var(--bad)'}">${net>=0?'+':'−'}${Math.abs(net).toFixed(1)}</b> <span style="color:var(--muted)">(추적오차 ±${trk.toFixed(1)} 포함)</span></div>

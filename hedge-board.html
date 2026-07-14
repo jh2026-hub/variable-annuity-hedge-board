@@ -913,15 +913,16 @@
   </div>
   <div class="panel">
     <div class="cap">1단계 · 부채를 복제하라 🧬<span class="capb live">🖐 조작</span><span>선물=기울기 · 옵션=곡률 · 목표=평평</span></div>
-    <p class="foot" style="margin:2px 0 8px"><b style="color:var(--sym)">보라 점선 = 보증부채 손익</b>(오르면 조금 이익, 내리면 크게 손실). 선물·옵션 수량으로 <b>순포지션(굵은 선)을 평평하게</b> 만들어 보세요 — 예산 안에서. 되면 <b>시장 테스트</b>.</p>
+    <p class="foot" style="margin:2px 0 8px"><b style="color:var(--sym)">보라 점선 = 보증부채 손익</b>. 선물·옵션 수량으로 <b>순포지션(굵은 선)을 평평하게</b> — 예산 안에서. <b>부채 모양은 매번 달라요(🔀)</b>, 펀드 <b>추적오차</b>는 못 없애요.</p>
     <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:6px">
       <div style="display:flex;align-items:center;gap:10px"><span class="foot" style="margin:0;flex:0 0 92px">📉 선물 수량</span><input type="range" id="g0d" min="0" max="150" step="5" value="0" style="flex:1;min-width:80px"><b class="mono" id="g0dLab" style="flex:0 0 46px;text-align:right;color:var(--pay-ink)">0%</b></div>
       <div style="display:flex;align-items:center;gap:10px"><span class="foot" style="margin:0;flex:0 0 92px">🌀 옵션 수량</span><input type="range" id="g0g" min="0" max="150" step="5" value="0" style="flex:1;min-width:80px"><b class="mono" id="g0gLab" style="flex:0 0 46px;text-align:right;color:var(--pay-ink)">0%</b></div>
     </div>
-    <div class="foot" id="g0cost" style="margin:0 0 6px"></div>
+    <div class="foot" id="g0cost" style="margin:0 0 4px"></div>
+    <div class="foot" id="g0Tau" style="margin:0 0 6px"></div>
     <div class="chartwrap"><svg id="g0Svg" viewBox="0 0 560 240" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px"></svg></div>
     <div class="foot" id="g0Read" style="margin-top:7px;min-height:2.4em"></div>
-    <button id="g0Test" class="gbtn" style="margin-top:8px">🌪️ 시장 테스트 ▶ (급락 포함 6이벤트)</button>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button id="g0Test" class="gbtn" style="margin:0;width:auto;padding:9px 14px;flex:1 1 auto">🌪️ 시장 테스트 ▶ (급락 포함 7이벤트)</button><button id="g0New" class="gbtn" style="margin:0;width:auto;padding:9px 14px;background:var(--ink);flex:0 0 auto">🔀 새 부채</button></div>
     <div id="g0Res" style="margin-top:8px"></div>
   </div>
 
@@ -2432,48 +2433,68 @@ if($("gCurve")){
   GAME.bud0=+($("gBud0")?.value||50); GAME.bud=GAME.bud0; GAME.seq=[]; GAME.hx=0; GAME.mkt=gDM(0); gNewDay();
 }
 
-/* ===== 1단계 · 부채 복제 게임 ===== */
-const G0={a:1.2,g:0.08,fee:1.5,cd:0.35,cg:1.15,MOVES:[3,-6,1,-12,5,-2]};
-const g0P=(x,h1,h2)=>G0.a*(1-h1)*x - G0.g*(1-h2)*x*x;
-function g0Vals(){ return {h1:(+$("g0d").value)/100, h2:(+$("g0g").value)/100}; }
+/* ===== 1단계 · 부채 복제 게임 — 셔플 부채 + 추적오차 ===== */
+const G0={a:1.2,g:0.08,tau:0.15,seed:1,fee:1.5,cd:0.35,cg:1.15,REF_A:1.2,REF_G:0.08,MOVES:[5,-6,2,-12,7,-2,6]};
+function g0New(){
+  G0.a=+(0.9+Math.random()*0.75).toFixed(2); G0.g=+(0.05+Math.random()*0.065).toFixed(3);
+  G0.tau=+(0.08+Math.random()*0.14).toFixed(2); G0.seed=Math.floor(Math.random()*9999)+1;
+  if($("g0d"))$("g0d").value=0; if($("g0g"))$("g0g").value=0; if($("g0Res"))$("g0Res").innerHTML='';
+  g0Draw(false);
+}
+function g0Vals(){ return {d:G0.REF_A*(+$("g0d").value)/100, q:G0.REF_G*(+$("g0g").value)/100}; }
+const g0P=(x,d,q)=>(G0.a-d)*x-(G0.g-q)*x*x;
+const g0Err=(x,k)=>G0.tau*x*(hsh(G0.seed+k*7.31)*2-1);   /* 펀드 추적오차 — 못 없애는 잔여 */
+function g0Cost(){ return G0.cd*(+$("g0d").value)/100 + G0.cg*(+$("g0g").value)/100; }
 function g0Draw(showTest){
   const el=$("g0Svg"); if(!el)return;
-  const {h1,h2}=g0Vals(), cost=G0.cd*h1+G0.cg*h2, over=cost>G0.fee+0.001;
+  const {d,q}=g0Vals(), cost=g0Cost(), over=cost>G0.fee+0.001;
   const W=560,H=240,L=46,R=16,T=22,B=30,iw=W-L-R,ih=H-T-B;
-  const xmin=-15,xmax=15,ymin=-27,ymax=9;
+  const xmin=-15,xmax=15,ymin=-30,ymax=12;
   const X=x=>L+iw*(x-xmin)/(xmax-xmin), Y=v=>T+ih*(ymax-Math.max(ymin,Math.min(ymax,v)))/(ymax-ymin);
-  const path=(a1,a2)=>{let p='';for(let i=0;i<=60;i++){const x=xmin+30*i/60;p+=(i?'L':'M')+X(x).toFixed(1)+' '+Y(g0P(x,a1,a2)).toFixed(1);}return p;};
-  let worst=0; for(let i=0;i<=60;i++){const x=xmin+30*i/60; worst=Math.min(worst,g0P(x,h1,h2));}
-  const flat=worst>=-3, g=[];
+  const path=(dd,qq)=>{let p='';for(let i=0;i<=60;i++){const x=xmin+30*i/60;p+=(i?'L':'M')+X(x).toFixed(1)+' '+Y(g0P(x,dd,qq)).toFixed(1);}return p;};
+  let worst=0; for(let i=0;i<=60;i++){const x=xmin+30*i/60; worst=Math.min(worst,g0P(x,d,q));}
+  const remA=G0.a-d, remG=G0.g-q, flat=worst>=-5 && remA>-0.25 && remG>-0.02, g=[];
   g.push(`<line x1="${L}" y1="${Y(0).toFixed(1)}" x2="${W-R}" y2="${Y(0).toFixed(1)}" stroke="#CBD2DE" stroke-width="1.2"/>`);
   [[-10,'−10%'],[0,'0'],[10,'+10%']].forEach(t=>g.push(`<text class="eflabel" x="${X(t[0]).toFixed(1)}" y="${H-10}" text-anchor="middle">${t[1]}</text>`));
   g.push(`<path d="${path(0,0)}" fill="none" stroke="var(--sym)" stroke-width="2" stroke-dasharray="5 4" opacity="0.6"/>`);
   g.push(`<text x="${L+4}" y="${T+12}" font-size="10.5" font-weight="800" fill="var(--sym)" font-family="sans-serif">보증부채(헷지 전)</text>`);
-  g.push(`<path d="${path(h1,h2)}" fill="none" stroke="${flat?'var(--good)':'var(--leak)'}" stroke-width="3"/>`);
+  g.push(`<path d="${path(d,q)}" fill="none" stroke="${flat?'var(--good)':'var(--leak)'}" stroke-width="3"/>`);
   g.push(`<text x="${W-R-4}" y="${T+12}" text-anchor="end" font-size="10.5" font-weight="800" fill="${flat?'#337A5F':'var(--leak)'}" font-family="sans-serif">순포지션${flat?' · 평평 ✓':''}</text>`);
-  if(showTest){ G0.MOVES.forEach((m,k)=>{ const px=X(m),py=Y(g0P(m,h1,h2)), v=g0P(m,h1,h2);
-    g.push(`<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="6" fill="${v<-3?'var(--bad)':'#337A5F'}" stroke="#fff" stroke-width="1.6" opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.25s" begin="${(k*0.35).toFixed(2)}s" fill="freeze"/></circle>`);
-    g.push(`<text x="${px.toFixed(1)}" y="${(py-11).toFixed(1)}" text-anchor="middle" font-size="10" font-weight="800" fill="${v<-3?'var(--bad)':'#337A5F'}" font-family="sans-serif" opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.25s" begin="${(k*0.35).toFixed(2)}s" fill="freeze"/>${m>0?'+':''}${m}%</text>`); }); }
+  if(showTest){ G0.MOVES.forEach((m,k)=>{ const base=g0P(m,d,q), real=base+g0Err(m,k), px=X(m), py=Y(base), ry=Y(real);
+    g.push(`<line x1="${px.toFixed(1)}" y1="${py.toFixed(1)}" x2="${px.toFixed(1)}" y2="${ry.toFixed(1)}" stroke="var(--leak)" stroke-width="1.5" stroke-dasharray="2 2" opacity="0"><animate attributeName="opacity" from="0" to="0.8" dur="0.2s" begin="${(k*0.32).toFixed(2)}s" fill="freeze"/></line>`);
+    g.push(`<circle cx="${px.toFixed(1)}" cy="${ry.toFixed(1)}" r="6" fill="${real<-4?'var(--bad)':'#337A5F'}" stroke="#fff" stroke-width="1.6" opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.22s" begin="${(k*0.32).toFixed(2)}s" fill="freeze"/></circle>`);
+    g.push(`<text x="${px.toFixed(1)}" y="${(Math.min(py,ry)-10).toFixed(1)}" text-anchor="middle" font-size="10" font-weight="800" fill="${real<-4?'var(--bad)':'#337A5F'}" font-family="sans-serif" opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.22s" begin="${(k*0.32).toFixed(2)}s" fill="freeze"/>${m>0?'+':''}${m}%</text>`); }); }
   el.innerHTML=g.join('');
-  $("g0dLab").textContent=Math.round(h1*100)+'%'; $("g0gLab").textContent=Math.round(h2*100)+'%';
+  $("g0dLab").textContent=$("g0d").value+'%'; $("g0gLab").textContent=$("g0g").value+'%';
   $("g0cost").innerHTML=`연 비용 <b style="color:${over?'var(--bad)':'var(--pay-ink)'}">${cost.toFixed(2)}</b> / 예산(수수료) ${G0.fee.toFixed(1)}${over?' <b style="color:var(--bad)">⚠️ 초과</b>':''}`;
-  $("g0Read").innerHTML=`최악 구간 손실 <b style="color:${flat?'#337A5F':'var(--bad)'}">${worst.toFixed(1)}</b> · ${h1<0.6?'아직 <b>기울기(방향)</b>가 남아 있어요 — 선물부터(싸요)':h2<0.45?'<b>곡률(감마)</b>이 남아 급락에서 처져요 — 옵션 몫이에요':'거의 평평해요 — 부채가 복제됐어요'}`;
-  return {worst,cost,over,h1,h2};
+  $("g0Tau").innerHTML=`이번 부채의 펀드 <b>추적오차 ±${Math.round(G0.tau*100)}%</b> — 헷지 불가(기타 위험)`;
+  $("g0Read").innerHTML=`최악 구간 손실 <b style="color:${flat?'#337A5F':'var(--bad)'}">${worst.toFixed(1)}</b> · ${
+    over?'<b style="color:var(--bad)">예산 초과</b> — 이번 부채는 다 못 막아요. 방향부터.':
+    flat?'거의 평평해요 — 부채가 복제됐어요':
+    remA<-0.25?'<b>선물 과다</b> — 반대(상승) 쪽으로 기울었어요':
+    remG<-0.02?'<b>옵션 과다</b> — 위로 휘었어요(프리미엄 낭비)':
+    remA>0.5?'아직 <b>기울기(방향)</b>가 커요 — 선물부터(싸요)':
+    remG>0.035?'<b>곡률(감마)</b>이 남아 급락에서 처져요 — 옵션 몫':
+    '조금만 더 — 모양을 보고 미세 조정해 보세요'}`;
+  return {worst,cost,over,flat,d,q,remA,remG};
 }
 function g0RunTest(){
   const r=g0Draw(true); if(!r)return;
-  let sum=0; G0.MOVES.forEach(m=>sum+=g0P(m,r.h1,r.h2));
+  let sum=0,trk=0; G0.MOVES.forEach((m,k)=>{ sum+=g0P(m,r.d,r.q)+g0Err(m,k); trk+=Math.abs(g0Err(m,k)); });
+  const pCrash=g0P(-12,r.d,r.q)+g0Err(-12,3);
   const net=sum-r.cost+G0.fee;
-  const verdict = r.over ? '⚠️ <b>예산 초과</b> — 전부 막는 건 수수료보다 비싸요. 옵션을 조금 줄여 보세요.'
-    : r.h1<0.6 ? '📉 <b>방향이 그대로</b>라 −12% 이벤트에서 크게 잃었어요 — 선물부터 채우세요(싸요).'
-    : r.h2<0.45 ? '🌀 방향은 막았지만 <b>−12% 급락에서 곡률(감마) 손실</b>이 남았어요 — 이게 옵션이 필요한 이유예요.'
-    : '👏 <b>부채를 잘 복제했어요</b> — 급락이 와도 순포지션이 평평해요. 이게 매칭이에요.';
-  $("g0Res").innerHTML=`<div class="gres" style="background:${net>=-0.5?'#EAF7F1':'#FBEEF1'};padding:9px 12px">
-    <div style="font-size:12.5px"><b>테스트</b> 이벤트 손익 합 <b style="color:${sum>=0?'var(--good)':'var(--bad)'}">${sum>=0?'+':'−'}${Math.abs(sum).toFixed(1)}</b> − 비용 ${r.cost.toFixed(2)} + 수수료 ${G0.fee.toFixed(1)} = <b style="color:${net>=0?'#337A5F':'var(--bad)'}">${net>=0?'+':'−'}${Math.abs(net).toFixed(1)}</b></div>
+  const verdict = r.over ? '⚠️ <b>예산 초과</b> — 이번 부채는 수수료로 다 못 막아요. <b>방향 먼저, 곡률은 감당만큼</b>이 순서예요.'
+    : r.remA>0.5 ? '📉 <b>방향이 남아</b> 급락(−12%)에서 크게 잃었어요 — 선물부터 채우세요(싸요).'
+    : r.remA<-0.25 ? '↗️ <b>선물 과다</b> — 이제 상승 이벤트에서 잃었어요. 복제는 "반대로, 정확히"예요.'
+    : r.remG>0.035 ? '🌀 방향은 맞췄지만 <b>급락의 곡률(감마) 손실</b>이 남았어요 — 옵션 몫이에요.'
+    : r.remG<-0.02 ? '🎢 <b>옵션 과다</b> — 위로 휜 만큼 프리미엄이 낭비됐어요.'
+    : `👏 <b>복제 성공</b> — 그래도 <b>추적오차 ±${trk.toFixed(1)}</b>은 남았죠. 이건 못 없애는 <b>기타 위험</b>이에요(→ Q4·③).`;
+  $("g0Res").innerHTML=`<div class="gres" style="background:${net>=-1?'#EAF7F1':'#FBEEF1'};padding:9px 12px">
+    <div style="font-size:12.5px">급락(−12%) 손익 <b style="color:${pCrash>=-4?'#337A5F':'var(--bad)'}">${pCrash>=0?'+':'−'}${Math.abs(pCrash).toFixed(1)}</b> · 이벤트 합 <b style="color:${sum>=0?'var(--good)':'var(--bad)'}">${sum>=0?'+':'−'}${Math.abs(sum).toFixed(1)}</b> − 비용 ${r.cost.toFixed(2)} + 수수료 ${G0.fee.toFixed(1)} = <b style="color:${net>=0?'#337A5F':'var(--bad)'}">${net>=0?'+':'−'}${Math.abs(net).toFixed(1)}</b> <span style="color:var(--muted)">(추적오차 ±${trk.toFixed(1)} 포함)</span></div>
     <div style="font-size:12px;color:var(--ink);margin-top:5px;line-height:1.6">${verdict}</div></div>`;
 }
 if($("g0Svg")){ ["g0d","g0g"].forEach(id=>$(id).addEventListener("input",()=>{ $("g0Res").innerHTML=''; g0Draw(false); }));
-  $("g0Test").addEventListener("click",g0RunTest); g0Draw(false); }
+  $("g0Test").addEventListener("click",g0RunTest); $("g0New").addEventListener("click",g0New); g0New(); }
 
 /* ===== 3단계 · CRO 1년 챌린지 (실측 연도) ===== */
 const G3={r:0,N:6,csm0:4.0,cap0:10,csm:4.0,cap:10,over:false,busy:false,log:[],years:null,used:[],kG:0.0035,bDir:0.14,fee:1.5,cd:0.35,cg:1.15,dir:1,opt:100,timer:null};

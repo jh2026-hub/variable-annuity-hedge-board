@@ -931,13 +931,15 @@
     <details style="margin-bottom:10px"><summary style="cursor:pointer;font-size:12.5px;font-weight:700;color:var(--pay)">❓ 게임 방법 (처음이라면)</summary>
       <div style="font-size:12px;color:var(--muted);line-height:1.75;margin-top:8px;padding:10px 12px;background:var(--panel2);border-radius:8px">
         · 🎓 <b>배우는 것</b> — 되맞추기의 딜레마 · 움직임²로 새는 <b>감마</b> · 옵션=비싼 확정.<br>
-        · <b>검은 점 = 오늘 시장 위치.</b> 곡선의 <b>꼭대기에서 멀어질수록 손실</b>이 커져요.<br>
-        · <b>회색 선 = 어제 걸어둔 내 헷지.</b> 시장이 움직여도 그대로 남아, 벌어진 만큼이 위험이에요.<br>
-        · 매일 <b>셋 중 하나</b>를 고르세요 → 내일 시장이 밝혀지고 <b>돈을 벌거나 잃어요</b>.<br>
-        · 아니다 싶으면 <b>↩ 되돌리기</b>로 다시. (같은 내일, 다른 선택을 비교해 보세요)
+        · <b>검은 점 = 시장</b>, <b>선 = 내 헷지(어제 자리 그대로)</b>. 둘 사이 <b>갭이 곧 위험</b> — 아래 게이지로 보여요.<br>
+        · <b>그대로 두면</b>: 시장이 이어지면 <b>갭만큼 크게 잃고</b>, 되돌면 벌어요 — 도박이에요. <b>맞추면</b> 작은 <b>확정비용</b>으로 갭 0.<br>
+        · 어느 쪽이든 <b>크게 움직인 날엔 감마 손실</b>(움직임²)이 새요 — 옵션 말곤 못 피해요.<br>
+        · <b>↩ 되돌리기</b>로 같은 내일, 다른 선택을 비교해 보세요.
       </div>
     </details>
     <div id="gStatus" class="gstat"></div>
+    <div style="font-size:11px;color:var(--muted);margin:8px 0 3px;font-weight:700">🎯 갭(시장−내 헷지) <span style="font-weight:400">— 클수록 하루 손익이 크게 흔들려요</span></div>
+    <div class="ggauge"><div id="gGapFill"></div><span></span></div>
     <div style="display:flex;align-items:center;gap:9px;margin-bottom:11px;flex-wrap:wrap">
       <span class="foot" style="margin:0;flex:0 0 auto">🎚️ 난이도(시작 예산)</span>
       <input type="range" id="gBud0" min="30" max="150" step="10" value="50" style="flex:1 1 110px;min-width:110px">
@@ -2319,10 +2321,10 @@ function gDrawState(hPrev){ const box=$("gCurve"); if(!box)return; const gap=gGa
   const t0=gTanLine(0,mx);   /* 내 헷지선 = 꼭대기 접선(수평). 기울기 = 보유수량 */
   g.push(`<line x1="${t0.x1.toFixed(1)}" y1="${t0.y1.toFixed(1)}" x2="${t0.x2.toFixed(1)}" y2="${t0.y2.toFixed(1)}" stroke="#0a5b3c" stroke-width="3.6" stroke-linecap="round"/>`);
   g.push(`<circle cx="${t0.cx.toFixed(1)}" cy="${t0.cy.toFixed(1)}" r="5.5" fill="#4FAE8C" stroke="#fff" stroke-width="1.6"/>`);
-  g.push(`<text x="30" y="20" font-size="11" font-weight="800" fill="var(--pay)">내 헷지선 ━━ 기울기 = 보유수량</text>`);
+  g.push(`<text x="30" y="20" font-size="11" font-weight="800" fill="var(--pay)">내 헷지 ━━ 어제 맞춘 자리</text>`);
   const mxp=gAxpx(gap,mx), myp=gAypx(gap,mx), hy=t0.cy+t0.ms*(mxp-t0.cx), far=Math.abs(gap)>0.4;
   if(far){ g.push(`<line x1="${mxp.toFixed(1)}" y1="${myp.toFixed(1)}" x2="${mxp.toFixed(1)}" y2="${hy.toFixed(1)}" stroke="var(--bad)" stroke-width="2" stroke-dasharray="3 2" opacity="0.75"/>`);
-    g.push(`<text x="${mxp.toFixed(1)}" y="${((myp+hy)/2).toFixed(1)}" dx="6" font-size="10" fill="var(--bad)" font-weight="700">헷지선에서 벌어짐</text>`); }
+    g.push(`<text x="${mxp.toFixed(1)}" y="${((myp+hy)/2).toFixed(1)}" dx="6" font-size="10" fill="var(--bad)" font-weight="700">갭 — 클수록 위험↑</text>`); }
   g.push(`<circle cx="${mxp.toFixed(1)}" cy="${myp.toFixed(1)}" r="8" fill="#16202F" stroke="#fff" stroke-width="2"><animate attributeName="r" values="8;10;8" dur="1.6s" repeatCount="indefinite"/></circle>`);
   g.push(`<text x="${mxp.toFixed(1)}" y="${(myp+22).toFixed(1)}" class="eflabel" text-anchor="middle" font-weight="800" font-size="11.5">오늘 시장${far?' · 벗어남':''}</text>`);
   box.innerHTML=g.join("");
@@ -2374,8 +2376,15 @@ function gShowResult(L){
 }
 function gCtrl(on){ const c=$("gControl"); if(c){ c.style.opacity=on?'':'0.45'; c.style.pointerEvents=on?'':'none'; } }
 function gHint(){ const gp=gGap(), m=Math.abs(gp);
-  const st = m<0.5? '헷지가 시장과 <b>거의 맞아</b> 있어요.' : `내 헷지가 시장과 <b style="color:var(--bad)">${gp>=0?'+':''}${gp.toFixed(1)}%p</b> 벌어졌어요 — 그대로 두면 위험이 커져요.`;
+  const st = m<0.5? '헷지가 시장과 <b>거의 맞아</b> 있어요.' : `갭이 <b style="color:var(--bad)">${gp>=0?'+':''}${gp.toFixed(1)}%p</b> 벌어졌어요 — 그대로 두면 내일 크게 흔들려요.`;
   $("gToday").innerHTML=`📍 ${st} <b>오늘 어떻게 할지</b> 아래에서 고르세요.`;
+  const gf=$("gGapFill"); if(gf){ const pct=Math.max(4,Math.min(100,m/6*100)); gf.style.width=pct.toFixed(0)+'%'; gf.style.background=m<1?'#4FAE8C':m<3?'#D69A55':'#D6738A'; const lb=gf.nextElementSibling; if(lb)lb.textContent='갭 '+(gp>=0?'+':'')+gp.toFixed(1)+'%p'; }
+  const q=v=>document.querySelector(`#gControl .gchoice[data-h="${v}"] .gcd`);
+  const swing=(GD*Math.max(m,0.3)*1.2).toFixed(1), c1=(GCOST*m).toFixed(1), c14=(GCOST*1.4*m).toFixed(1);
+  if(q("0")) q("0").innerHTML=`비용 0 · 되돌면 <b style="color:var(--good)">+${swing}</b>쯤 / 이어지면 <b style="color:var(--bad)">−${swing}</b>쯤 — 도박`;
+  if(q("1")) q("1").innerHTML=`<b>확정 비용 −${c1}</b> · 갭 0<br>내일이 어떻든 안전`;
+  if(q("1.4")) q("1.4").innerHTML=`비용 −${c14} · 추세에 베팅<br>이어지면 크게 벌고, 아니면 손해`;
+  if(q("opt")) q("opt").innerHTML=`방향·곡선 손실 <b>전부 차단</b><br><b style="color:var(--bad)">프리미엄 −${OPT_COST.toFixed(1)}</b> · 급변 때만 유리`;
   gStatus();
 }
 function gNewDay(){ gCtrl(true); gDrawState(null); gHint(); }

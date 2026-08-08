@@ -24,13 +24,16 @@
   .back{display:inline-flex;align-items:center;min-height:32px;padding:4px 11px;border-radius:16px;
         background:var(--panel);border:1px solid var(--hair);color:var(--muted);font-size:12px;font-weight:700;text-decoration:none}
   h1{font-size:19px;font-weight:700;letter-spacing:-.02em}
-  .ctx{position:sticky;top:0;z-index:20;background:var(--bg);padding:7px 0;margin-top:7px;
-       display:flex;align-items:center;gap:7px;flex-wrap:wrap;border-bottom:1px solid var(--hair)}
+  .ctx{position:sticky;top:0;z-index:20;background:var(--bg);padding:7px 0 8px;margin-top:7px;border-bottom:1px solid var(--hair)}
   .ctx .who{font-size:11.5px;font-weight:700;color:var(--muted);display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .lnk{display:flex;flex-wrap:wrap;align-items:center;gap:5px 12px;background:var(--panel);border:1px solid #9DBBF3;
+       border-radius:10px;padding:8px 11px;margin-top:12px;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .lnk b{color:var(--ink);font-size:12.5px}
   .ctx .who b{color:var(--ink)}
-  .ctx .seg{margin-left:auto;display:flex;background:var(--panel);border:1px solid var(--hair);border-radius:9px;overflow:hidden}
-  .ctx .seg button{border:0;background:none;font-family:inherit;font-size:12px;font-weight:700;color:var(--muted);
-        padding:8px 15px;min-height:36px;cursor:pointer}
+  .ctx .seg{display:flex;width:100%;margin-top:6px;background:var(--panel);border:1px solid var(--hair);border-radius:9px;overflow:hidden}
+  .ctx .seg button{flex:1 1 0;min-width:0;border:0;background:none;font-family:inherit;font-size:12px;font-weight:700;
+        color:var(--muted);padding:8px 4px;min-height:38px;cursor:pointer}
+  .ctx .seg button+button{border-left:1px solid var(--hair)}
   .ctx .seg button.on{background:#E7EFFD;color:var(--pay-ink)}
   .src{display:inline-block;font-size:9.5px;font-weight:800;padding:1px 6px;border-radius:5px;vertical-align:1px}
   .src.real{background:var(--good-bg);color:var(--good-ink)} .src.model{background:var(--pay-bg);color:var(--pay-ink)}
@@ -41,15 +44,18 @@
   .cap::before{content:"";position:absolute;left:0;top:2px;bottom:2px;width:4px;border-radius:2px;background:var(--pay)}
   .cap span{font-weight:400;color:var(--muted);font-size:11.5px;margin-left:5px}
   .foot{color:var(--muted);font-size:11px;line-height:1.5}
-  .hero{border-radius:12px;padding:14px 15px;margin-top:12px;border:1px solid}
-  .hero.ok{background:var(--good-bg);border-color:#BFE6D3} .hero.warn{background:var(--leak-bg);border-color:#EBD4AE}
-  .hero.bad{background:var(--bad-bg);border-color:#E7B9C2}
-  .hero .hl{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:800}
-  .hero .ic{flex:0 0 22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-        font-weight:800;font-size:12px;color:#fff}
-  .hero.ok .ic{background:var(--good)} .hero.warn .ic{background:var(--leak)} .hero.bad .ic{background:var(--bad)}
-  .hero .big{font-size:33px;font-weight:700;letter-spacing:-.03em;line-height:1.15;margin:5px 0 2px}
-  .hero .sub{font-size:12px;color:var(--muted);line-height:1.55}.hero .sub b{color:var(--ink)}
+  .hero{position:relative;border-radius:12px;padding:13px 15px 13px 18px;margin-top:12px;
+        background:var(--panel);border:1px solid var(--hair);overflow:hidden}
+  .hero::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--good)}
+  .hero.warn::before{background:var(--leak)} .hero.bad::before{background:var(--bad)}
+  .hero .hl{display:flex;align-items:center;gap:7px;flex-wrap:wrap;font-size:11px;font-weight:700;color:var(--muted)}
+  .hero .tag{font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:11px}
+  .hero.ok .tag{background:var(--good-bg);color:var(--good-ink)}
+  .hero.warn .tag{background:var(--leak-bg);color:var(--leak-ink)}
+  .hero.bad .tag{background:var(--bad-bg);color:var(--bad-ink)}
+  .hero .big{font-size:31px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin:3px 0 3px}
+  .hero .sub{font-size:11.5px;color:var(--muted);line-height:1.6}.hero .sub b{color:var(--ink)}
+  .hero .ex{margin-top:7px;padding-top:7px;border-top:1px solid var(--hair);font-size:10.5px;color:var(--muted)}
   .flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:center;gap:3px;margin-top:10px}
   .flow .cell{background:var(--panel);border:1px solid var(--hair);border-radius:10px;padding:8px 5px;text-align:center;min-width:0;overflow:hidden}
   .flow .k{font-size:10px;color:var(--muted);font-weight:700}
@@ -118,16 +124,20 @@
 
 <div class="ctx">
   <div class="who" id="ctxWho"></div>
-  <div class="seg"><button class="on" id="tb_v">판</button><button id="tb_a">가정</button></div>
+  <div class="seg">
+    <button class="on" id="tb_m">메인</button><button id="tb_b">벤치마크</button>
+    <button id="tb_r">실적</button><button id="tb_f">전망</button>
+  </div>
 </div>
 
-<!-- ══════ 판 ══════ -->
-<div class="page on" id="pg_v">
+<!-- ══════ 메인 ══════ -->
+<div class="page on" id="pg_m">
 
 <div class="hero" id="hero">
-  <div class="hl"><div class="ic" id="heroIc">✓</div><div id="heroT"></div></div>
+  <div class="hl"><span>장기평균선 대비</span><span class="tag" id="heroT"></span></div>
   <div class="big num" id="heroV"></div>
   <div class="sub" id="heroS"></div>
+  <div class="ex">🧪 컨셉 시안 — 시장 경로만 실측이고 그릭·비용·한도는 <b>일반 예시</b>예요.</div>
 </div>
 
 <div class="flow" id="flow"></div>
@@ -153,12 +163,6 @@
 </div>
 
 <div class="panel">
-  <div class="cap">구간별 전망<span id="hzLab"></span></div>
-  <div class="tblwrap"><table id="hzTbl"></table></div>
-  <div class="note" id="hzNote"></div>
-</div>
-
-<div class="panel">
   <div class="cap">한도<span>연 계획 대비</span></div>
   <div class="chartwrap"><svg id="limSvg" role="img" aria-label="한도 소진"></svg></div>
   <div class="note" id="limNote"></div>
@@ -172,9 +176,50 @@
 
 </div>
 
-<!-- ══════ 가정 ══════ -->
-<div class="page" id="pg_a">
+<!-- ══════ 벤치마크 ══════ -->
+<div class="page" id="pg_b">
+<div class="lnk" id="lnkB"></div>
+<div class="panel">
+  <div class="cap">장기평균선 구성<span>연 기준 · 값을 바꾸면 바로 반영돼요</span></div>
+  <div class="big num" id="benchBig" style="font-size:29px;font-weight:700;letter-spacing:-.03em;margin:6px 0 2px"></div>
+  <div class="lede" id="benchSub"></div>
+  <div class="wf" id="benchRows"></div>
+  <div class="note" id="benchNote"></div>
+</div>
+<div class="panel">
+  <div class="cap">파라미터<span>아는 값은 적어 넣어요</span></div>
+  <div id="numSel"></div>
+</div>
+</div>
 
+<!-- ══════ 실적 ══════ -->
+<div class="page" id="pg_r">
+<div class="lnk" id="lnkR"></div>
+<div class="panel">
+  <div class="cap">실제 노출<span>계획과 얼마나 다른가</span></div>
+  <div class="wf" id="expRows"></div>
+  <div class="note" id="expNote"></div>
+</div>
+<div class="panel">
+  <div class="cap">헷지 정책<span>움직여 보는 값</span></div>
+  <div id="slSel"></div>
+  <div class="note" id="polNote"></div>
+</div>
+<div class="panel">
+  <div class="cap">기준일<span>과거 시점으로 되감기</span></div>
+  <div id="curSel"></div>
+  <div class="note" id="ledNote"></div>
+</div>
+</div>
+
+<!-- ══════ 전망 ══════ -->
+<div class="page" id="pg_f">
+<div class="lnk" id="lnkF"></div>
+<div class="panel">
+  <div class="cap">구간별 전망<span id="hzLab"></span></div>
+  <div class="tblwrap"><table id="hzTbl"></table></div>
+  <div class="note" id="hzNote"></div>
+</div>
 <div class="panel">
   <div class="cap">국면<span>하루 얼마나 움직이나</span></div>
   <div class="chips" id="regSel"></div>
@@ -182,23 +227,6 @@
   <div class="tblwrap"><table id="regTbl"></table></div>
   <div class="note" id="regNote"></div>
 </div>
-
-<div class="panel">
-  <div class="cap">헷지 정책<span>움직여 보는 값</span></div>
-  <div id="slSel"></div>
-  <div class="note" id="polNote"></div>
-</div>
-
-<div class="panel">
-  <div class="cap">기준일<span>과거 시점으로 되감기</span></div>
-  <div id="curSel"></div>
-</div>
-
-<div class="panel">
-  <div class="cap">원장·모형 값<span>아는 값은 적어 넣어요</span></div>
-  <div id="numSel"></div>
-</div>
-
 </div>
 
 <p class="foot" style="text-align:center;margin-top:14px">시장 KOSPI(Yahoo)·국고 20년(ECOS) 실측 · 그릭·비용은 예시. 실적 원장(<code>data/pnl.json</code>) 연결 시 실적선이 실측으로 바뀌어요.</p>
@@ -226,7 +254,7 @@ const REGS=[
 ];
 const REG=id=>REGS.find(r=>r.id===id);
 const VIEWS=[{id:"ytd",n:"당해"},{id:"3y",n:"12개월"},{id:"cum",n:"23년~"}];
-let RSEL="recent", REDIT="base", VIEW="ytd", FUT=252, CURSOR=null, TAB="v";
+let RSEL="recent", REDIT="base", VIEW="ytd", FUT=252, CURSOR=null, TAB="m";
 
 /* ═══ 파라미터 ═══ */
 const PAR=[
@@ -502,7 +530,7 @@ function render(fast){
   FC=forecast(RZ.end, fast?NFAST:NPATH);
   HZ=horizons();
   drawMain(); drawWF(); fillMtx(); fillHz(); drawLimit(); fillHero(); fillCtx(); fillSel();
-  if(TAB==="a"){ fillRegTbl(); fillNotes(); }
+  fillBench(); fillExp(); fillLnk(); fillRegTbl(); fillNotes();
 }
 function measure(){
   const w=Math.round($("mainSvg").getBoundingClientRect().width)||360;
@@ -646,6 +674,73 @@ function drawWF(){
     (Math.abs(RZ.resid)>=0.5?` · <b style="color:var(--bad-ink)">미설명 ${sgn(RZ.resid)}억</b>`:``);
 }
 
+/* ── 공통 막대행 (워터폴과 같은 그리드) ── */
+function barRows(items,unit){
+  let mx=1; items.forEach(i=>{if(i[0]!=="h")mx=Math.max(mx,Math.abs(i[1]));});
+  return items.map(it=>{
+    if(it[0]==="h") return `<div class="wsec">${it[1]}</div>`;
+    const v=it[1], w=Math.abs(v)/mx*50, left=v>=0?50:50-w;
+    return `<div class="wfr${it[3]?" an":""}"><div class="wl">${it[0]}${it[2]?`<br><span style="font-size:9px;opacity:.8">${it[2]}</span>`:""}</div>`+
+      `<div class="wb"><u style="left:50%"></u>`+
+      `<i style="left:${left.toFixed(2)}%;width:${Math.max(0.6,w).toFixed(2)}%;background:${v>=0?"#4FAE8C":"#D69A55"}"></i></div>`+
+      `<div class="wv" style="color:${C(v)}">${sgn(v)}${unit||""}</div></div>`;
+  }).join("");
+}
+/* ── 벤치마크 구성 ── */
+function fillBench(){
+  const b=REG("base");
+  const it=[
+    ["h","받는 것"],
+    ["세타 (주가)",  wEp()*P.thE, `내재 일변동 ${diE().toFixed(2)}% 상당`],
+    ["세타 (금리)",  wRp()*P.thR, `내재 일변동 ${diR().toFixed(2)}bp 상당`],
+    ["h","나가는 것"],
+    ["주가 감마",    -gYE(wEp(),b.dE), `½ × ${P.gamE} × ${b.dE}%² × ${N()}일 × VR ${vr(VRE,P.rbal).toFixed(2)}`],
+    ["금리 감마",    -gYR(wRp(),b.dR), `½ × ${P.gamR} × ${b.dR}bp² × ${N()}일 × VR ${vr(VRR,P.rbal).toFixed(2)}`],
+    ["주가 델타 슬리피지", -tcE(wEp(),b.dE), `${P.rbal}일마다 · 명목 ${P.slipE}bp`],
+    ["금리 델타 슬리피지", -tcR(wRp(),b.dR), `${P.rbal}일마다 · DV01당 ${P.slipR}bp`],
+    ["캐리(자산미보유)",  -carry(), `${P.disc}% × ${(unmat()/1e4).toFixed(1)}조`],
+    ["추적오차 드리프트", teDriftY(), `${P.teDft}%/년 × ${P.teAmt}억`],
+  ];
+  $("benchBig").innerHTML=`<span style="color:${C(benchY())}">${sgn(benchY())}</span>`+
+    `<span style="font-size:14px;color:var(--muted);font-weight:600"> 억/년 · ${bpv(benchY())}bp</span>`;
+  $("benchSub").innerHTML=`적립금 ${P.av}조 · BEL ${P.bel}조 · 자산미보유 ${(unmat()/1e4).toFixed(1)}조 · 기준 국면 주가 ${b.dE}% · 금리 ${b.dR}bp`;
+  $("benchRows").innerHTML=barRows(it)+
+    `<div class="wfr an"><div class="wl">합계</div><div class="wb"></div>`+
+    `<div class="wv" style="color:${C(benchY())}">${sgn(benchY())}</div></div>`;
+  const prem=thP()-gYE(wEp(),b.dE)-gYR(wRp(),b.dR);
+  $("benchNote").innerHTML=`세타−감마 <b style="color:${C(prem)}">${sgn(prem)}</b> vs 슬리피지+캐리 `+
+    `<b style="color:var(--bad-ink)">−${won(tcE(wEp(),b.dE)+tcR(wRp(),b.dR)+carry())}</b> — 앞이 크면 장기평균선이 +예요. `+
+    `베가·본드스왑은 기대값 0이라 여기 없어요.`;
+}
+/* ── 실제 노출 ── */
+function fillExp(){
+  const b=REG("base");
+  $("expRows").innerHTML=barRows([
+    ["h","실제 가중으로 다시 잰 값 (연 기준)"],
+    ["세타",         thA(), `노출 주가 ×${P.mulE} · 금리 ×${P.mulR}`],
+    ["주가 감마",    -gYE(wEa(),b.dE), `미커버 ${(100-P.acovE).toFixed(0)}%`],
+    ["금리 감마",    -gYR(wRa(),b.dR), `미커버 ${(100-P.acovR).toFixed(0)}%`],
+    ["h","민감도 (단위당)"],
+    ["주가 베가",    vegE(), "내재 일변동 1%p당"],
+    ["금리 베가",    vegR(), "내재 일변동 1bp당"],
+    ["본드스왑",     bsExp(), "스프레드 1bp 확대당"],
+    ["펀드 베이시스", -P.teAmt, "지수 대비 1%p 언더퍼폼당"],
+  ]);
+  const dE=(wEa()/Math.max(1e-9,wEp())-1)*100, dR=(wRa()/Math.max(1e-9,wRp())-1)*100;
+  $("expNote").innerHTML=`계획 대비 노출 — 주가 <b>${dE>=0?"+":""}${dE.toFixed(0)}%</b> · 금리 <b>${dR>=0?"+":""}${dR.toFixed(0)}%</b>. `+
+    `커버율을 올리면 감마·슬리피지·베가는 줄고 <b>본드스왑</b>이 커져요 — 위험이 사라지는 게 아니라 모양이 바뀌어요.`;
+  $("ledNote").innerHTML=RZ.src==="model"
+    ? `실적선은 지금 <b>모형 재구성</b>이에요 — <code>data/pnl.json</code>에 원장을 넣으면 그날 총액이 실측으로 바뀌고 <b>미설명</b> 행이 생겨요.`
+    : `실적 원장 <b>${RZ.cov}일</b> 반영 중 · 미설명 <b>${sgn(RZ.resid)}억</b>`;
+}
+/* ── 탭 요약바 ── */
+function fillLnk(){
+  const bench=benchY()*RZ.n/N();
+  const h=`장기평균선 <b style="color:${C(bench)}">${won(bench)}</b> · 벤치마크 <b style="color:${C(RZ.bend)}">${won(RZ.bend)}</b> · `+
+    `실적 <b style="color:${C(RZ.end)}">${won(RZ.end)}</b> · ${VIEW==="ytd"?"연말":"1년"} <b>${won(FC.q(FUT-1,[0.5])[0])}</b> 억`;
+  ["lnkB","lnkR","lnkF"].forEach(id=>{const el=$(id); if(el) el.innerHTML=h;});
+}
+
 /* ── 항목 매트릭스 ── */
 function fillMtx(){
   const f=RZ.n/N(), b=REG("base"), a=FC.attr(FUT-1);
@@ -721,13 +816,13 @@ function fillHero(){
   const bench=benchY()*RZ.n/N(), gp=RZ.end-bench;
   const pBr=FC.breach(RZ.n)*100, pEnd=FC.endBreach(RZ.n)*100;
   const usedY=Math.max(0,-RZ.end)/Math.max(1,P.fee)*100;
-  let cls,ic,t;
-  if(pBr>=40||usedY>=100){cls="bad";ic="✕";t="한도를 넘길 가능성이 높아요";}
-  else if(pBr>=15){cls="warn";ic="!";t="한도에 닿을 수 있어요";}
-  else if(gp<0){cls="warn";ic="~";t="장기평균선보다 비싸게 가고 있어요";}
-  else{cls="ok";ic="✓";t="장기평균선 범위 안이에요";}
-  $("hero").className="hero "+cls; $("heroIc").textContent=ic; $("heroT").textContent=t;
-  $("heroV").innerHTML=`<span style="color:${C(gp)}">${sgn(gp)}</span><span style="font-size:15px;color:var(--muted);font-weight:600"> 억 · 장기평균선 대비</span>`;
+  let cls,tg;
+  if(pBr>=40||usedY>=100){cls="bad";tg="한도 초과 가능";}
+  else if(pBr>=15){cls="warn";tg="한도 근접";}
+  else if(gp<0){cls="warn";tg="평균선 하회";}
+  else{cls="ok";tg="평균선 이내";}
+  $("hero").className="hero "+cls; $("heroT").textContent=tg;
+  $("heroV").innerHTML=`<span style="color:${C(gp)}">${sgn(gp)}</span><span style="font-size:14px;color:var(--muted);font-weight:600"> 억</span>`;
   const mkt=RZ.bend-bench, ops=RZ.end-RZ.bend;
   $("heroS").innerHTML=`시장 몫 <b style="color:${C(mkt)}">${sgn(mkt)}</b> + 운용 몫 <b style="color:${C(ops)}">${sgn(ops)}</b> 억<br>`+
     `연중 한도 이탈 <b>${pBr<0.2?'~0':pBr.toFixed(0)}%</b> · 종점 <b>${pEnd<0.2?'~0':pEnd.toFixed(0)}%</b> · 연 한도의 <b>${usedY.toFixed(0)}%</b> 사용`;
@@ -825,8 +920,7 @@ function build(){
       const l=$("v_"+id); if(l)l.textContent=P[id]; render(true);}
   });
   document.addEventListener("change",e=>{ if(e.target.id&&e.target.id.indexOf("s_")===0) render(); });
-  $("tb_v").addEventListener("click",()=>tab("v"));
-  $("tb_a").addEventListener("click",()=>tab("a"));
+  ["m","b","r","f"].forEach(k=>$("tb_"+k).addEventListener("click",()=>tab(k)));
   const sv=$("mainSvg");
   sv.addEventListener("pointermove",onMove); sv.addEventListener("pointerleave",onLeave);
   sv.addEventListener("touchmove",onMove,{passive:true});
@@ -848,10 +942,10 @@ function syncReg(){
     if(el){el.value=+(+a[1]).toFixed(2); el.disabled=!!(r.auto&&(a[0]==="R_dE"||a[0]==="R_dR"));}
   });
 }
+const TABS=["m","b","r","f"];
 function tab(w){
   TAB=w;
-  $("tb_v").classList.toggle("on",w==="v"); $("tb_a").classList.toggle("on",w==="a");
-  $("pg_v").classList.toggle("on",w==="v"); $("pg_a").classList.toggle("on",w==="a");
+  TABS.forEach(k=>{$("tb_"+k).classList.toggle("on",k===w); $("pg_"+k).classList.toggle("on",k===w);});
   window.scrollTo({top:0,behavior:"smooth"});
   render();
 }

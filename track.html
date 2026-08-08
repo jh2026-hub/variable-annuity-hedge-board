@@ -29,6 +29,14 @@
   .exbanner{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:#E7EFFD;border:1px solid #9DBBF3;
     color:var(--pay-ink);border-radius:9px;padding:9px 12px;font-size:12px;font-weight:600;margin-bottom:6px}
   .exbanner span{color:var(--muted);font-weight:400}
+  .tabs{display:flex;gap:6px;position:sticky;top:0;background:var(--bg);padding:8px 0 10px;z-index:20;
+        border-bottom:1px solid var(--hair);margin-bottom:2px}
+  .tabs button{flex:1 1 0;background:var(--panel);border:1px solid var(--hair);color:var(--muted);font-family:inherit;
+        font-size:12.5px;font-weight:700;padding:10px 6px;border-radius:9px;cursor:pointer;line-height:1.3;min-height:46px}
+  .tabs button small{display:block;font-weight:400;font-size:9.5px;opacity:.75;margin-top:2px}
+  .tabs button.on{background:#E7EFFD;border-color:#9DBBF3;color:var(--pay-ink)}
+  .page{display:none}.page.on{display:block}
+  .subcap{font-size:12.5px;font-weight:800;margin:16px 0 2px;padding-top:12px;border-top:1px solid var(--hair);color:var(--muted)}
   .panel{background:var(--panel);border:1px solid var(--hair);border-radius:12px;padding:16px;margin-top:16px}
   .cap{font-size:15px;font-weight:800;margin-bottom:8px;padding-left:13px;position:relative;line-height:1.32;letter-spacing:-.01em}
   .cap::before{content:"";position:absolute;left:0;top:1px;bottom:1px;width:5px;border-radius:3px;background:var(--pay)}
@@ -92,6 +100,12 @@
 <p class="sub">이론상 이렇게 될 것 같다는 <b>예상선</b>, 실제로 이렇게 됐다는 <b>실적선</b>, 앞으로는 어디쯤일지 보여주는 <b>전망 밴드</b>를 한 장에 겹쳐 봐요.</p>
 <div class="exbanner">🧪 컨셉 시안 <span>시장 경로만 실측(KOSPI·국고 20년)이고 그릭·비용은 일반 예시예요.</span></div>
 
+<div class="tabs">
+  <button class="on" id="tb_main">📈 추적판<small>예상 · 실적 · 전망</small></button>
+  <button id="tb_par">⚙️ 가정<small>그릭 · 비용 · 커버율</small></button>
+</div>
+
+<div class="page on" id="pg_main">
 <!-- ① 메인 -->
 <div class="panel">
   <div class="cap">누적 헷지손익 — 예상 vs 실적 vs 전망<span id="asofLab"></span></div>
@@ -108,6 +122,9 @@
   </div>
   <div class="verdict" id="vd"><div class="ic" id="vdi">✓</div><div><b id="vdt"></b><div id="vdp" style="color:var(--muted);font-size:12.5px"></div></div></div>
   <div class="note" id="mainNote"></div>
+  <div class="subcap">보는 조건 — 앞으로의 국면과 기준일</div>
+  <div class="chips" id="preset"></div>
+  <div id="quickCtl"></div>
 </div>
 
 <!-- ② 구간별 전망 -->
@@ -120,16 +137,21 @@
   <div class="note">밴드는 <b>과거 실측 (코스피 수익률, 국고 20년 변동)을 5일 블록으로 함께 재추출</b>해 만들어요 — 변동성 군집·꼬리·주식금리 상관을 살린 채 가정 변동성에 맞춰 크기만 조정해요.</div>
 </div>
 
-<!-- ③ 가정 -->
+</div><!-- /pg_main 상단 -->
+
+<div class="page" id="pg_par">
+<!-- ③ 가정 (별도 탭) -->
 <div class="panel">
-  <div class="cap">가정 바꿔보기<span>슬라이더를 움직이면 세 선이 함께 변해요</span></div>
-  <div class="chips" id="preset"></div>
+  <div class="cap">가정 바꾸기<span>여기서 바꾸면 추적판의 세 선이 함께 변해요</span></div>
+  <p class="lede">그릭·변동성·비용·커버율을 정하는 값이에요. 바꾼 뒤 <b>📈 추적판</b> 탭으로 돌아가면 반영돼 있어요.</p>
   <div class="ctl" id="ctl"></div>
   <div class="cap" style="margin-top:18px;font-size:13.5px">예상선 구성 <span>연 기준 · 이익 하나와 비용 네 갈래</span></div>
   <div class="rows" id="planRows"></div>
   <div class="note" id="derived"></div>
 </div>
+</div><!-- /pg_par -->
 
+<div class="page on" id="pg_main2">
 <!-- ④ 갭 분해 -->
 <div class="panel">
   <div class="cap">예상과 실적이 벌어진 이유<span>지금까지 구간</span></div>
@@ -153,6 +175,8 @@
   <div class="note"><b>되돌아오는 갭과 안 오는 갭이 달라요.</b> 비선형(감마)·슬리피지·캐리는 <b>이미 나간 현금</b>이라 앞으로 조용해져도 회수되지 않아요 — 덜 새는 것뿐이에요. 반면 베가·본드스왑은 <b>평가</b>라서, 내재변동성이나 스프레드가 제자리로 오면 <b>환입</b>돼요. 그래서 변동성이 치솟은 직후에는 전망 밴드의 중앙값이 지금보다 <b>위로</b> 향하기도 해요 — 실적이 좋아진다기보다 부풀었던 평가가 풀리는 거예요.</div>
   <div class="note">한계 — 단일 숏풋 근사예요. 실제로는 보증 유형별 그릭 재산출, 펀드-지수 베이시스, 해지·사망 가정, 회계(VFA·위험경감선택권) 인식 시점이 따로 붙어요. 이 화면은 <b>개형과 순서</b>를 보여주는 용도예요.</div>
 </div>
+
+</div><!-- /pg_main2 -->
 
 <p class="foot" style="text-align:center;margin-top:16px">데이터 출처 · KOSPI: Yahoo Finance(^KS11) · 국고 20년: 한국은행 ECOS. 공개 시장데이터, 참고용.</p>
 
@@ -625,11 +649,12 @@ function buildControls(){
     html+=`<div class="cell"><label for="c_${p.id}"><span>${p.n}</span><b><span id="v_${p.id}">${p.v}</span> ${p.u}</b></label>`+
           `<small>${p.s}</small><input type="range" id="c_${p.id}" min="${p.min}" max="${p.max}" step="${p.step}" value="${p.v}"></div>`;
   });
-  html+=`<div class="grp">기준일</div><div class="cell" style="grid-column:1/-1">`+
-        `<label for="c_cursor"><span>오늘을 옮겨봐요</span><b><span id="v_cursor">${fmtd(S.data.dates[CURSOR])}</span></b></label>`+
-        `<small>과거 어느 시점에 서 있었는지 바꿔요 — 그때의 실적선과 그때 본 전망이 나와요</small>`+
-        `<input type="range" id="c_cursor" min="${PAST}" max="${S.data.eq.length-1}" step="1" value="${CURSOR}"></div>`;
   $("ctl").innerHTML=html;
+  /* 기준일은 차트를 보면서 만지는 값이라 추적판 카드 안에 둬요 */
+  $("quickCtl").innerHTML=`<div class="ctl"><div class="cell" style="grid-column:1/-1">`+
+        `<label for="c_cursor"><span>기준일 — 오늘을 옮겨봐요</span><b><span id="v_cursor">${fmtd(S.data.dates[CURSOR])}</span></b></label>`+
+        `<small>과거 어느 시점에 서 있었는지 바꿔요 — 그때의 실적선과 그때 본 전망이 나와요</small>`+
+        `<input type="range" id="c_cursor" min="${PAST}" max="${S.data.eq.length-1}" step="1" value="${CURSOR}"></div></div>`;
   PAR.forEach(p=>{
     $("c_"+p.id).addEventListener("input",e=>{
       P[p.id]=+e.target.value; $("v_"+p.id).textContent=P[p.id]; render();
@@ -648,6 +673,20 @@ function buildControls(){
   }));
   $("ps_now").addEventListener("click",()=>{CURSOR=S.data.eq.length-1;$("c_cursor").value=CURSOR;render();});
 }
+
+/* ───── 탭 ───── */
+function tab(which){
+  const isMain=which==="main";
+  $("tb_main").classList.toggle("on",isMain);
+  $("tb_par").classList.toggle("on",!isMain);
+  $("pg_main").classList.toggle("on",isMain);
+  $("pg_main2").classList.toggle("on",isMain);
+  $("pg_par").classList.toggle("on",!isMain);
+  window.scrollTo({top:0,behavior:"smooth"});
+  if(isMain) render();          /* 숨어 있던 SVG 는 다시 그려요 */
+}
+$("tb_main").addEventListener("click",()=>tab("main"));
+$("tb_par").addEventListener("click",()=>tab("par"));
 
 loadMarket();
 </script>

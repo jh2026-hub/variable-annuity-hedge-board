@@ -60,11 +60,11 @@
   .hero.ok .tag{background:var(--good-bg);color:var(--good-ink)}
   .hero.warn .tag{background:var(--leak-bg);color:var(--leak-ink)}
   .hero.bad .tag{background:var(--bad-bg);color:var(--bad-ink)}
-  .hero .big,.kpi{font-size:26px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin:3px 0;
+  .hero .big,.kpi{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin:3px 0;
         font-variant-numeric:tabular-nums}
   .kpi{margin:6px 0 1px}
-  .kpi small,.hero .big small{font-size:11.5px;color:var(--muted);font-weight:600;margin-left:2px;letter-spacing:0}
-  .hero .sub{font-size:11.5px;color:var(--muted);line-height:1.6}.hero .sub b{color:var(--ink)}
+  .kpi small,.hero .big small{font-size:10.5px;color:var(--muted);font-weight:600;margin-left:2px;letter-spacing:0}
+  .hero .sub{font-size:10.5px;color:var(--muted);line-height:1.6}.hero .sub b{color:var(--ink)}
   .hero .ex{margin-top:7px;padding-top:7px;border-top:1px solid var(--hair);font-size:10.5px;color:var(--muted)}
   .flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:center;gap:3px;margin-top:10px}
   .flow .cell{background:var(--panel);border:1px solid var(--hair);border-radius:10px;padding:8px 5px;text-align:center;min-width:0;overflow:hidden}
@@ -306,7 +306,8 @@ const P={}; PAR.forEach(p=>P[p.id]=p.v);
 
 const won=x=>{const a=Math.abs(x);return (x<0?"−":"")+Math.round(a).toLocaleString();};
 const sgn=x=>Math.abs(x)<0.5?"≈0":(x>=0?"+":"−")+Math.round(Math.abs(x)).toLocaleString();
-const bpv=x=>(x/(P.av*1e4)*1e4).toFixed(1);
+const bpv=x=>{const v=x/(P.av*1e4)*1e4;return (v<0?"−":"")+Math.abs(v).toFixed(1)+"bp";};
+const E=x=>won(x)+"억", SE=x=>sgn(x)+"억";     /* 금액은 항상 숫자+억, 부호는 U+2212 */
 const fmtd=s=>s.replace(/(\d{4})(\d\d)(\d\d)/,"$1-$2-$3");
 const N=()=>252;
 const C=v=>v>=0?"var(--good-ink)":"var(--bad-ink)";
@@ -613,9 +614,9 @@ function drawMain(){
   g.push(`<line x1="${X(nP-1).toFixed(1)}" y1="${T}" x2="${X(nP-1).toFixed(1)}" y2="${T+ih}" stroke="#AAB4C6" stroke-width="1"/>`);
   g.push(`<circle cx="${X(nP-1).toFixed(1)}" cy="${Y(RZ.end).toFixed(1)}" r="4" fill="#16202F" stroke="#fff" stroke-width="2"/>`);
   const yl=Y(RZ.end);
-  g.push(`<text x="${(X(nP-1)-7).toFixed(1)}" y="${(yl<T+18?yl+15:yl-9).toFixed(1)}" text-anchor="end" font-size="11" font-weight="700" fill="#16202F">실적 ${won(RZ.end)}</text>`);
+  g.push(`<text x="${(X(nP-1)-7).toFixed(1)}" y="${(yl<T+18?yl+15:yl-9).toFixed(1)}" text-anchor="end" font-size="11" font-weight="700" fill="#16202F">실적 ${E(RZ.end)}</text>`);
   g.push(`<text x="${(W-R-2).toFixed(1)}" y="${Math.max(T+11,Y(slope*(nT-1))-6).toFixed(1)}" text-anchor="end" font-size="10.5" font-weight="700" fill="#4A6FC4">장기평균선</text>`);
-  g.push(`<text x="${(X(nP-1)-7).toFixed(1)}" y="${(Y(RZ.bend)+(RZ.bend>RZ.end?-8:15)).toFixed(1)}" text-anchor="end" font-size="10.5" font-weight="700" fill="#5B4CA8">벤치마크 ${won(RZ.bend)}</text>`);
+  g.push(`<text x="${(X(nP-1)-7).toFixed(1)}" y="${(Y(RZ.bend)+(RZ.bend>RZ.end?-8:15)).toFixed(1)}" text-anchor="end" font-size="10.5" font-weight="700" fill="#5B4CA8">벤치마크 ${E(RZ.bend)}</text>`);
   [[0,VIEW==="ytd"?S.mkt.dates[CURSOR].slice(2,4)+".1월":dstr(-(nP-1))],[nP-1,"오늘"],[nT-1,dstr(FUT-1)]]
     .forEach(a=>g.push(`<text x="${Math.min(W-R-16,Math.max(L+16,X(a[0]))).toFixed(1)}" y="${H-6}" text-anchor="middle" font-size="10.5" fill="#98A2B3">${a[1]}</text>`));
   g.push(`<line id="chx" x1="0" y1="${T}" x2="0" y2="${T+ih}" stroke="#16202F" stroke-width="1" opacity="0"/>`);
@@ -624,8 +625,8 @@ function drawMain(){
 }
 function resetRd(){
   const mkt=RZ.bend-benchY()*RZ.n/N(), ops=RZ.end-RZ.bend;
-  $("rdOut").innerHTML=`<span style="color:var(--sym-ink)">■</span> 시장 몫 <b style="color:${C(mkt)}">${sgn(mkt)}</b> · `+
-    `<span style="color:var(--pay-ink)">■</span> 운용 몫 <b style="color:${C(ops)}">${sgn(ops)}</b> 억`;
+  $("rdOut").innerHTML=`<span style="color:var(--sym-ink)">■</span> 시장 몫 <b style="color:${C(mkt)}">${SE(mkt)}</b> · `+
+    `<span style="color:var(--pay-ink)">■</span> 운용 몫 <b style="color:${C(ops)}">${SE(ops)}</b>`;
 }
 function onMove(ev){
   if(!XS||!RZ)return;
@@ -635,9 +636,9 @@ function onMove(ev){
   let i=Math.round((cx-L)/iw*(nT-1)); i=Math.max(0,Math.min(nT-1,i));
   const ln=el.querySelector("#chx"); if(ln){ln.setAttribute("x1",X(i));ln.setAttribute("x2",X(i));ln.setAttribute("opacity","0.35");}
   if(i<nP){const d=RZ.day[i];
-    $("rdOut").innerHTML=`<b>${d.d.slice(4,6)}/${d.d.slice(6,8)}</b> · 실적 <b>${won(RZ.cum[i])}</b> · 벤치마크 <b>${won(RZ.bcum[i])}</b> · 그날 <b style="color:${C(d.pnl)}">${sgn(d.pnl)}억</b>`;
+    $("rdOut").innerHTML=`<b>${d.d.slice(4,6)}/${d.d.slice(6,8)}</b> · 실적 <b>${E(RZ.cum[i])}</b> · 벤치마크 <b>${E(RZ.bcum[i])}</b> · 그날 <b style="color:${C(d.pnl)}">${SE(d.pnl)}</b>`;
   }else{const t=Math.min(FUT-1,i-nP); const q=FC.q(t,[0.10,0.50,0.90]);
-    $("rdOut").innerHTML=`<b>${dstr(t)}</b> · 중앙 <b>${won(q[1])}억</b> · 80% ${won(q[0])}~${won(q[2])} · ES95 ${won(FC.es(t,0.05))}`;}
+    $("rdOut").innerHTML=`<b>${dstr(t)}</b> · 중앙 <b>${E(q[1])}</b> · 80% ${won(q[0])}~${E(q[2])} · ES95 ${E(FC.es(t,0.05))}`;}
 }
 function onLeave(){const ln=$("mainSvg").querySelector("#chx"); if(ln)ln.setAttribute("opacity","0"); resetRd();}
 
@@ -704,7 +705,7 @@ function barRows(items,unit){
   return items.map(it=>{
     if(it[0]==="h") return `<div class="wsec">${it[1]}</div>`;
     const v=it[1], w=Math.max(0.7,Math.abs(v)/mx*50), left=v>=0?50:50-w;
-    return `<div class="wfr${it[3]?" an":""}"><div class="wl">${it[0]}${it[2]?`<br><span style="font-size:9.5px;opacity:.8">${it[2]}</span>`:""}</div>`+
+    return `<div class="wfr${it[3]?" an":""}"><div class="wl">${it[0]}</div>`+
       `<div class="wb"><u style="left:50%"></u>`+
       `<i style="left:${left.toFixed(2)}%;width:${Math.max(0.6,w).toFixed(2)}%;background:${v>=0?"#4FAE8C":"#D69A55"}"></i></div>`+
       `<div class="wv" style="color:${C(v)}">${sgn(v)}${unit||""}</div></div>`;
@@ -726,7 +727,7 @@ function fillBench(){
     ["추적오차 드리프트", teDriftY(), `${P.teDft}%×${P.teAmt}억`],
   ];
   $("benchBig").innerHTML=`<span style="color:${C(benchY())}">${sgn(benchY())}</span>`+
-    `<small>억/년 · ${bpv(benchY())}bp</small> <span class="bdg ink">연 기준</span>`;
+    `<small>억/년 · ${bpv(benchY())}</small> <span class="bdg ink">연 기준</span>`;
   $("benchSub").innerHTML=`적립금 ${P.av}조 · 자산미보유 ${(unmat()/1e4).toFixed(1)}조 · 기준 ${b.dE}% / ${b.dR}bp`;
   $("benchRows").innerHTML=barRows(it)+
     `<div class="wfr an"><div class="wl">합계</div><div class="wb"></div>`+
@@ -746,24 +747,24 @@ function fillExp(){
     ["h",`<span class="bdg ink">단위당</span> 민감도`],
     ["주가 베가",    vegE(), "내재 일변동 1%p당"],
     ["금리 베가",    vegR(), "내재 일변동 1bp당"],
-    ["본드스왑",     bsExp(), `스프레드 1bp 확대당 <span class="bdg leak">가정</span>`],
-    ["펀드 베이시스", -P.teAmt, `지수 대비 1%p당 <span class="bdg leak">가정</span>`],
+    ["본드스왑 <span class=\"bdg leak\">가정</span>", bsExp()],
+    ["펀드 베이시스 <span class=\"bdg leak\">가정</span>", -P.teAmt],
   ]);
   const dE=(wEa()/Math.max(1e-9,wEp())-1)*100, dR=(wRa()/Math.max(1e-9,wRp())-1)*100;
   const opsv=RZ.end-RZ.bend;
   $("expBig").innerHTML=`<span style="color:${C(opsv)}">${sgn(opsv)}</span><small>억 · 운용 몫</small>`;
-  $("expSub").innerHTML=`벤치마크선 ${won(RZ.bend)} → 실적 ${won(RZ.end)}`;
+  $("expSub").innerHTML=`벤치마크선 ${E(RZ.bend)} → 실적 ${E(RZ.end)}`;
   $("expNote").innerHTML=`계획 대비 주가 <b>${dE>=0?"+":""}${dE.toFixed(0)}%</b> · 금리 <b>${dR>=0?"+":""}${dR.toFixed(0)}%</b>. `+
     `커버를 올리면 감마·베가는 줄고 <b>본드스왑</b>이 커져요.`;
   $("ledNote").innerHTML=RZ.src==="model"
     ? `실적선 = <b>모형 재구성</b> · <code>data/pnl.json</code> 넣으면 실측으로 바뀌어요`
-    : `원장 <b>${RZ.cov}일</b> 반영 · 미설명 <b>${sgn(RZ.resid)}억</b>`;
+    : `원장 <b>${RZ.cov}일</b> 반영 · 미설명 <b>${SE(RZ.resid)}</b>`;
 }
 /* ── 탭 요약바 ── */
 function fillLnk(){
   const bench=benchY()*RZ.n/N();
-  const h=`장기평균선 <b style="color:${C(bench)}">${won(bench)}</b> · 벤치마크 <b style="color:${C(RZ.bend)}">${won(RZ.bend)}</b> · `+
-    `실적 <b style="color:${C(RZ.end)}">${won(RZ.end)}</b> · ${VIEW==="ytd"?"연말":"1년"} <b>${won(FC.q(FUT-1,[0.5])[0])}</b> 억`;
+  const h=`장기평균선 <b style="color:${C(bench)}">${E(bench)}</b> · 벤치마크 <b style="color:${C(RZ.bend)}">${E(RZ.bend)}</b> · `+
+    `실적 <b style="color:${C(RZ.end)}">${E(RZ.end)}</b> · ${VIEW==="ytd"?"연말":"1년"} <b>${E(FC.q(FUT-1,[0.5])[0])}</b>`;
   ["lnkB","lnkR","lnkF"].forEach(id=>{const el=$(id); if(el) el.innerHTML=h;});
 }
 
@@ -812,7 +813,7 @@ function fillHz(){
       `<td style="color:${r.pv>=10?'var(--bad-ink)':'var(--muted)'};font-weight:${r.pv>=10?700:400}">${r.pv<0.2?'~0':r.pv.toFixed(0)}%</td></tr>`).join("");
   const y1=FC.q(FUT-1,[0.10,0.50,0.90]);
   $("fcBig").innerHTML=`<span style="color:${C(y1[1])}">${won(y1[1])}</span><small>억 · ${VIEW==="ytd"?"연말":"1년 뒤"} 중앙</small>`;
-  $("fcSub").innerHTML=`80% ${won(y1[0])} ~ ${won(y1[2])} · ES95 ${won(FC.es(FUT-1,0.05))} · ${REG(RSEL).n}`;
+  $("fcSub").innerHTML=`80% ${won(y1[0])} ~ ${E(y1[2])} · ES95 ${E(FC.es(FUT-1,0.05))} · ${REG(RSEL).n}`;
   $("hzLab").textContent=`경로 ${FC.np.toLocaleString()}개`;
   $("hzNote").innerHTML=`<b>ES95</b> = 나쁜 5% 경로의 평균. 꼬리는 중앙값이 아니라 여기서 봐요.`;
 }
@@ -829,13 +830,13 @@ function drawLimit(){
   g.push(`<rect x="${L}" y="16" width="${bx(used).toFixed(1)}" height="18" rx="5" fill="#D6738A" opacity="0.80"/>`);
   const px=L+bx(plan);
   g.push(`<line x1="${px.toFixed(1)}" y1="11" x2="${px.toFixed(1)}" y2="39" stroke="#B8455F" stroke-width="2"/>`);
-  g.push(`<text x="${Math.min(W-R,px+2).toFixed(1)}" y="9" text-anchor="end" font-size="10.5" font-weight="700" fill="#B8455F">연 한도 ${won(plan)}</text>`);
-  g.push(`<text x="${L}" y="52" font-size="10.5" fill="#566275">실적 <tspan font-weight="700" fill="#B8455F">${won(used)}억</tspan> · 장기평균선이 미리 먹는 몫 <tspan font-weight="700" fill="#4A6FC4">${won(take)}억</tspan></text>`);
+  g.push(`<text x="${Math.min(W-R,px+2).toFixed(1)}" y="9" text-anchor="end" font-size="10.5" font-weight="700" fill="#B8455F">연 한도 ${E(plan)}</text>`);
+  g.push(`<text x="${L}" y="52" font-size="10.5" fill="#566275">실적 <tspan font-weight="700" fill="#B8455F">${E(used)}</tspan> · 장기평균선이 미리 먹는 몫 <tspan font-weight="700" fill="#4A6FC4">${E(take)}</tspan></text>`);
   const k=stressK();
   g.push(`<text x="${L}" y="69" font-size="10.5" fill="#566275">한도 소진 임계 = 기준의 <tspan font-weight="700" fill="#16202F">${k.toFixed(2)}배</tspan> (주가 ${(REG("base").dE*k).toFixed(2)}% · 금리 ${(REG("base").dR*k).toFixed(1)}bp)</text>`);
   const el=$("limSvg"); el.setAttribute("viewBox",`0 0 ${W} ${H}`); el.setAttribute("height",H); el.innerHTML=g.join("");
   const rc=recentD(), ratio=Math.max(rc.dE/REG("base").dE, rc.dR/REG("base").dR);
-  $("limNote").innerHTML=`여력 <b>${won(Math.max(0,plan-used))}억</b>(${Math.max(0,(1-used/plan)*100).toFixed(0)}%) · `+
+  $("limNote").innerHTML=`여력 <b>${E(Math.max(0,plan-used))}</b>(${Math.max(0,(1-used/plan)*100).toFixed(0)}%) · `+
     `최근 60일은 기준의 <b style="color:${ratio>=k?'var(--bad-ink)':'var(--good-ink)'}">${ratio.toFixed(2)}배</b>`+
     (ratio>=k?` — <b>임계 초과</b>`:` (임계 ${k.toFixed(2)}배)`);
 }
@@ -853,12 +854,12 @@ function fillHero(){
   $("hero").className="hero "+cls; $("heroT").textContent=tg;
   $("heroV").innerHTML=`<span style="color:${C(gp)}">${sgn(gp)}</span><small>억</small>`;
   const mkt=RZ.bend-bench, ops=RZ.end-RZ.bend;
-  $("heroS").innerHTML=`시장 몫 <b style="color:${C(mkt)}">${sgn(mkt)}</b> + 운용 몫 <b style="color:${C(ops)}">${sgn(ops)}</b> 억<br>`+
+  $("heroS").innerHTML=`시장 몫 <b style="color:${C(mkt)}">${SE(mkt)}</b> + 운용 몫 <b style="color:${C(ops)}">${SE(ops)}</b><br>`+
     `연중 한도 이탈 <b>${pBr<0.2?'~0':pBr.toFixed(0)}%</b> · 종점 <b>${pEnd<0.2?'~0':pEnd.toFixed(0)}%</b> · 연 한도의 <b>${usedY.toFixed(0)}%</b> 사용`;
   const dE=Math.sqrt(RZ.day.reduce((a,x)=>a+x.re*x.re,0)/RZ.n);
   const y1=FC.q(FUT-1,[0.5])[0];
   $("flow").innerHTML=
-    `<div class="cell"><div class="k">장기평균선</div><div class="v num" style="color:${C(bench)}">${won(bench)}</div><div class="s">연 ${sgn(benchY())} · ${bpv(benchY())}bp</div></div>`+
+    `<div class="cell"><div class="k">장기평균선</div><div class="v num" style="color:${C(bench)}">${won(bench)}</div><div class="s">연 ${SE(benchY())} · ${bpv(benchY())}</div></div>`+
     `<div class="cell"><div class="k">벤치마크</div><div class="v num" style="color:${C(RZ.bend)}">${won(RZ.bend)}</div><div class="s">같은 시장·계획 운용</div></div>`+
     `<div class="cell"><div class="k">실적</div><div class="v num" style="color:${C(RZ.end)}">${won(RZ.end)}</div><div class="s">일변동 ${dE.toFixed(2)}%</div></div>`+
     `<div class="cell"><div class="k">${VIEW==="ytd"?"연말":"1년 뒤"}</div><div class="v num" style="color:${C(y1)}">${won(y1)}</div><div class="s">ES95 ${won(FC.es(FUT-1,0.05))}</div></div>`;

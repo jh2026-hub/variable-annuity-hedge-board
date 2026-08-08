@@ -253,14 +253,14 @@ const PAR=[
  /* ① 벤치마크 */
  {g:"규모", r:"plan", id:"av",   n:"펀드 적립금",     u:"조",     v:35,  min:5,  max:80,  step:1,    s:"bp 환산의 분모"},
  {g:"규모", r:"plan", id:"bel",  n:"부채 BEL",       u:"조",     v:30,  min:5,  max:80,  step:1,    s:"보험부채 전체"},
- {g:"규모", r:"plan", id:"gpct", n:"보증부채 비율",   u:"% of BEL",v:1.0, min:0.1,max:6,   step:0.1,  s:"BEL 중 보증(옵션) 가치 · 캐리는 여기에만"},
+ {g:"규모", r:"plan", id:"gpct", n:"언와인딩 대상 부채",u:"% of BEL",v:2.0,min:0.1,max:20,  step:0.1,  s:"보증부채 + 그 밖에 이자가 붙는 부채"},
  {g:"규모", r:"plan", id:"disc", n:"할인율",         u:"%",      v:4.4, min:0,  max:8,   step:0.1,  s:"보증부채에 붙는 이자 = 캐리"},
  {g:"주가", r:"plan", id:"gamE", n:"주가 감마 Γ",     u:"억/1%",  v:1.0, min:0.1,max:5,   step:0.05, s:"코스피 1% 움직임당 손익"},
- {g:"주가", r:"plan", id:"diE",  n:"내재 일변동",     u:"%",      v:1.2, min:0.3,max:5,   step:0.05, s:"세타를 만드는 내재변동성(하루치)"},
+ {g:"주가", r:"plan", id:"thE",  n:"옵션 세타",       u:"억/년",   v:126, min:0,  max:2000,step:2,    s:"보증(숏옵션)에서 받는 시간가치 · 감마와 같으면 중립"},
  {g:"주가", r:"plan", id:"covE", n:"감마 커버율(계획)",u:"%",     v:0,   min:0,  max:100, step:5,    s:"계획상 지수옵션으로 덮는 비율"},
  {g:"주가", r:"plan", id:"slipE",n:"델타 슬리피지",   u:"만원/1억",v:5,  min:0,  max:60,  step:1,    s:"델타 1억 이전당 비드오퍼+슬리피지"},
  {g:"금리", r:"plan", id:"gamR", n:"금리 감마 Γ",     u:"억/bp",  v:0.175,min:0.02,max:0.6,step:0.005,s:"1bp 움직임당 손익"},
- {g:"금리", r:"plan", id:"diR",  n:"내재 일변동",     u:"bp",     v:4.0, min:1,  max:12,  step:0.1,  s:"세타를 만드는 내재변동성(하루치)"},
+ {g:"금리", r:"plan", id:"thR",  n:"옵션 세타",       u:"억/년",   v:270, min:0,  max:3000,step:5,    s:"스왑션 등에서 받는 시간가치 · 감마와 같으면 중립"},
  {g:"금리", r:"plan", id:"covR", n:"감마 커버율(계획)",u:"%",     v:0,   min:0,  max:100, step:5,    s:"계획상 스왑션으로 덮는 비율"},
  {g:"금리", r:"plan", id:"slipR",n:"델타 슬리피지",   u:"억",     v:10,  min:0,  max:30,  step:1,    s:"거래 델타 1억(/bp)당 · 장외라 두꺼움"},
  {g:"실행", r:"plan", id:"ndays",n:"연간 영업일수",   u:"일",     v:252, min:200,max:260, step:1,    s:"연 환산 일수"},
@@ -298,15 +298,18 @@ const N=()=>P.ndays;
 /* 감마 = ½ · Γ · 일변동² · 영업일수 */
 const gYE=(w,d)=>w*0.5*P.gamE*d*d*N();
 const gYR=(w,d)=>w*0.5*P.gamR*d*d*N();
-const thetaP=()=>gYE(wEp(),P.diE)+gYR(wRp(),P.diR);                  /* 벤치마크 세타 */
-const thetaA=()=>gYE(wEa(),P.diE)+gYR(wRa(),P.diR);                  /* 실제 세타 */
-const unwY=()=>P.disc*guar()/100;                                    /* 캐리 = 할인율 × 보증부채 */
+const thetaP=()=>wEp()*P.thE+wRp()*P.thR;                            /* 벤치마크 세타 — 옵션 세타 직접 입력 */
+const thetaA=()=>wEa()*P.thE+wRa()*P.thR;                            /* 실제 세타 */
+/* 세타가 함의하는 내재 일변동 — ½Γσ²N = 세타 를 σ 에 대해 푼 값(베가·IV 프록시에 써요) */
+const diE=()=>Math.sqrt(Math.max(0,2*P.thE/(P.gamE*N())));
+const diR=()=>Math.sqrt(Math.max(0,2*P.thR/(P.gamR*N())));
+const unwY=()=>P.disc*guar()/100;                                    /* 캐리 = 할인율 × 언와인딩 대상 부채 */
 const mv=d=>d*Math.sqrt(P.rbal)*Math.sqrt(2/Math.PI);                /* 리밸런싱 1회당 평균 |순이동| */
 const tcE=(w,d)=>(N()/P.rbal)*w*P.gamE*mv(d)*P.slipE/10000;
 const tcR=(w,d)=>(N()/P.rbal)*w*P.gamR*mv(d)*P.slipR;
 /* 베가 = 세타의 내재변동성 민감도 × 유효만기 (숏베가라 음수) */
-const vegE=()=>-wEa()*P.gamE*P.diE*N()*TEFF;
-const vegR=()=>-wRa()*P.gamR*P.diR*N()*TEFF;
+const vegE=()=>-wEa()*P.gamE*diE()*N()*TEFF;
+const vegR=()=>-wRa()*P.gamR*diR()*N()*TEFF;
 const bsExp=()=>-(P.acovR/100)*P.mulR*P.bsdv;                        /* 본드스왑 — 덮은 만큼 생겨요 */
 const volBeta=()=>Math.sqrt((1/12)/TEFF);                            /* 단기 충격의 만기 감쇠(√T) */
 /* ⭐ 벤치마크 = 세타 − 감마 − 델타 슬리피지 − 캐리. 평가(베가·본드스왑·펀드베이시스)는 기대 0 이라 안 들어가요 */
@@ -395,7 +398,7 @@ function realized(){
   const day=[], cum=[], parts={theta:0,gE:0,gR:0,tE:0,tR:0,unw:0,vgE:0,vgR:0,bs:0,te:0};
   const thD=thetaA()/N(), uwD=unwY()/N();
   let vE=ewmaSeed(i0,"e"), vR=ewmaSeed(i0,"r");
-  let ivE=Math.sqrt(vE)*(P.diE/b.dE), ivR=Math.sqrt(vR)*(P.diR/b.dR);
+  let ivE=Math.sqrt(vE)*(diE()/b.dE), ivR=Math.sqrt(vR)*(diR()/b.dR);
   let sprd=0, mAbs=b.dR*Math.sqrt(2/Math.PI);
   let c=0, accE=0, accR=0, k=0;
   for(let i=i0;i<=i1;i++){
@@ -404,7 +407,7 @@ function realized(){
     vE=LAM*vE+(1-LAM)*re*re; vR=LAM*vR+(1-LAM)*rr*rr;
     const gE=wEa()*0.5*P.gamE*re*re, gR=wRa()*0.5*P.gamR*rr*rr;
     /* 모수(베가) — 내재변동성 변화 × 순 베가, 만기 감쇠 적용 */
-    const nivE=Math.sqrt(vE)*(P.diE/b.dE), nivR=Math.sqrt(vR)*(P.diR/b.dR);
+    const nivE=Math.sqrt(vE)*(diE()/b.dE), nivR=Math.sqrt(vR)*(diR()/b.dR);
     const vgE=vegE()*(nivE-ivE)*volBeta(), vgR=vegR()*(nivR-ivR)*volBeta();
     ivE=nivE; ivR=nivR;
     /* 본드스왑 — 실측이 없어 평균회귀+스트레스 확대로 가정한 경로예요 */
@@ -443,7 +446,7 @@ function forecast(start){
     const z=gauss(), me=Math.exp(VOV*(0.8*z+0.6*gauss())-0.5*VOV*VOV),
                      mr=Math.exp(VOV*(0.8*z+0.6*gauss())-0.5*VOV*VOV);
     let vE=v0E, vR=v0R, sprd=s0;
-    let ivE=Math.sqrt(vE)*(P.diE/b.dE), ivR=Math.sqrt(vR)*(P.diR/b.dR);
+    let ivE=Math.sqrt(vE)*(diE()/b.dE), ivR=Math.sqrt(vR)*(diR()/b.dR);
     let c=start, left=0, bi=0, accE=0, accR=0, k=0;
     let Cth=0,CgE=0,CgR=0,CtE=0,CtR=0,Cunw=0,CvgE=0,CvgR=0,Cbs=0,Cte=0;
     for(let t=0;t<FUT;t++){
@@ -452,7 +455,7 @@ function forecast(start){
       const re=S.poolE[j]*(tgE(t)/(S.sdE||1))*me, rr=S.poolR[j]*(tgR(t)/(S.sdR||3))*mr;
       vE=LAM*vE+(1-LAM)*re*re; vR=LAM*vR+(1-LAM)*rr*rr;
       const dgE=wEa()*0.5*P.gamE*re*re, dgR=wRa()*0.5*P.gamR*rr*rr;
-      const nivE=Math.sqrt(vE)*(P.diE/b.dE), nivR=Math.sqrt(vR)*(P.diR/b.dR);
+      const nivE=Math.sqrt(vE)*(diE()/b.dE), nivR=Math.sqrt(vR)*(diR()/b.dR);
       const vgE=vegE()*(nivE-ivE)*volBeta(), vgR=vegR()*(nivR-ivR)*volBeta();
       ivE=nivE; ivR=nivR;
       const ns=0.985*sprd+rg.bs/Math.sqrt(N())*gauss()+0.20*(Math.abs(rr)-mAbs);
@@ -635,7 +638,7 @@ function fillAttr(){
     ["금리 감마",      a.gR, "#7B84D4","½Γ×일변동²"],
     ["주가 델타 비용", a.tE, "#5C82CF","리밸런싱 슬리피지"],
     ["금리 델타 비용", a.tR, "#3E6BB8","리밸런싱 슬리피지"],
-    ["캐리(언와인딩)", a.unw,"#4E8B93","할인율 × 보증부채"],
+    ["캐리(언와인딩)", a.unw,"#4E8B93","할인율 × 대상부채"],
     ["h","평가 — 되돌아올 수 있는 손익"],
     ["주가 베가",      a.vgE,"#B39AE0","내재변동성 되돌림"],
     ["금리 베가",      a.vgR,"#9A8FD6","스왑션 내재 되돌림"],
@@ -695,7 +698,7 @@ function fillGap(){
     ["금리 감마",      -(RZ.parts.gR-gYR(wRp(),b.dR)*f),           "#7B84D4","실제 일변동 vs 예상"],
     ["주가 델타 비용", -(RZ.parts.tE-tcE(wEp(),b.dE)*f),           "#5C82CF","리밸런싱 슬리피지"],
     ["금리 델타 비용", -(RZ.parts.tR-tcR(wRp(),b.dR)*f),           "#3E6BB8","리밸런싱 슬리피지"],
-    ["캐리(언와인딩)", -(RZ.parts.unw-unwY()*f),                   "#4E8B93","할인율 × 보증부채"],
+    ["캐리(언와인딩)", -(RZ.parts.unw-unwY()*f),                   "#4E8B93","할인율 × 대상부채"],
     ["h","평가 — 아직 굳지 않은 손익 (벤치마크에는 없어요)"],
     ["주가 베가",      RZ.parts.vgE, "#B39AE0","내재변동성 변화 × 순 베가"],
     ["금리 베가",      RZ.parts.vgR, "#9A8FD6","스왑션 내재 변화 × 순 베가"],
@@ -717,19 +720,19 @@ function fillBench(){
   const b=REG("base");
   $("planBig").innerHTML=`<div class="t">벤치마크 기울기</div>`+
     `<div class="big" style="color:${benchY()>=0?'var(--good-ink)':'var(--bad-ink)'}">${sgn(benchY())}<small>억 / 년 · ${bp(benchY())}bp</small></div>`+
-    `<p>적립금 ${P.av}조 · BEL ${P.bel}조 · 보증부채 ${won(guar())}억(BEL의 ${P.gpct}%)</p>`;
+    `<p>적립금 ${P.av}조 · BEL ${P.bel}조 · 언와인딩 대상 ${won(guar())}억(BEL의 ${P.gpct}%)</p>`;
   $("planRows").innerHTML=rowsHTML([
-    ["세타 (주가)",     gYE(wEp(),P.diE), "#4FAE8C", `½ × ${P.gamE} × ${P.diE}%² × ${N()}일`],
-    ["세타 (금리)",     gYR(wRp(),P.diR), "#4FAE8C", `½ × ${P.gamR} × ${P.diR}bp² × ${N()}일`],
+    ["세타 (주가)",     wEp()*P.thE, "#4FAE8C", `옵션 세타 · 내재 일변동 ${diE().toFixed(2)}% 에 해당`],
+    ["세타 (금리)",     wRp()*P.thR, "#4FAE8C", `옵션 세타 · 내재 일변동 ${diR().toFixed(1)}bp 에 해당`],
     ["주가 감마",       -gYE(wEp(),b.dE), "#9282DC", `½ × ${P.gamE} × ${b.dE}%² × ${N()}일`],
     ["금리 감마",       -gYR(wRp(),b.dR), "#7B84D4", `½ × ${P.gamR} × ${b.dR}bp² × ${N()}일`],
     ["주가 델타 비용",  -tcE(wEp(),b.dE), "#5C82CF", `${P.rbal}일마다 · 지수선물이라 얇아요`],
     ["금리 델타 비용",  -tcR(wRp(),b.dR), "#3E6BB8", `${P.rbal}일마다 · 슬리피지가 두꺼워요`],
-    ["캐리(언와인딩)",  -unwY(),          "#4E8B93", `${P.disc}% × 보증부채 ${won(guar())}억`],
+    ["캐리(언와인딩)",  -unwY(),          "#4E8B93", `${P.disc}% × 대상부채 ${won(guar())}억`],
   ]);
   const prem=thetaP()-gYE(wEp(),b.dE)-gYR(wRp(),b.dR);
   $("derived").innerHTML=
-    `내재−실현 프리미엄 <b style="color:var(--good-ink)">${sgn(prem)}억</b> vs 슬리피지+캐리 <b style="color:var(--bad-ink)">−${won(tcE(wEp(),b.dE)+tcR(wRp(),b.dR)+unwY())}억</b> — 앞이 크면 벤치마크가 +예요. `+
+    `세타−감마 <b style="color:var(--good-ink)">${sgn(prem)}억</b> vs 슬리피지+캐리 <b style="color:var(--bad-ink)">−${won(tcE(wEp(),b.dE)+tcR(wRp(),b.dR)+unwY())}억</b> — 앞이 크면 벤치마크가 +예요. `+
     `베가·본드스왑·추적오차는 기대값 0이라 여기 없어요.`;
 }
 

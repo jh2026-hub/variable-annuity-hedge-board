@@ -22,16 +22,16 @@
   .num{font-variant-numeric:tabular-nums}
   .top{display:flex;align-items:center;gap:9px}
   .back{display:inline-flex;align-items:center;min-height:32px;padding:4px 11px;border-radius:16px;
-        background:var(--panel);border:1px solid var(--hair);color:var(--muted);font-size:12px;font-weight:700;text-decoration:none}
+        background:var(--panel);border:1px solid var(--hair);color:var(--muted);font-size:11.5px;font-weight:600;text-decoration:none}
   h1{font-size:19px;font-weight:700;letter-spacing:-.02em}
   .ctx{position:sticky;top:0;z-index:20;background:var(--bg);padding:7px 0 8px;margin-top:7px;border-bottom:1px solid var(--hair)}
-  .ctx .who{font-size:11.5px;font-weight:700;color:var(--muted);display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .ctx .who{font-size:11.5px;font-weight:600;color:var(--muted);display:flex;gap:6px;flex-wrap:wrap;align-items:center}
   .lnk{display:flex;flex-wrap:wrap;align-items:center;gap:5px 12px;background:var(--panel);border:1px solid #9DBBF3;
-       border-radius:10px;padding:8px 11px;margin-top:12px;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
-  .lnk b{color:var(--ink);font-size:12.5px}
+       border-radius:10px;padding:8px 11px;margin-top:12px;font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .lnk b{color:var(--ink);font-size:11.5px}
   .ctx .who b{color:var(--ink)}
   .ctx .seg{display:flex;width:100%;margin-top:6px;background:var(--panel);border:1px solid var(--hair);border-radius:9px;overflow:hidden}
-  .ctx .seg button{flex:1 1 0;min-width:0;border:0;background:none;font-family:inherit;font-size:12px;font-weight:700;
+  .ctx .seg button{flex:1 1 0;min-width:0;border:0;background:none;font-family:inherit;font-size:11.5px;font-weight:700;
         color:var(--muted);padding:8px 4px;min-height:38px;cursor:pointer}
   .ctx .seg button+button{border-left:1px solid var(--hair)}
   .ctx .seg button.on{background:#E7EFFD;color:var(--pay-ink)}
@@ -43,12 +43,12 @@
   .cap{font-size:14px;font-weight:800;margin-bottom:6px;padding-left:11px;position:relative;line-height:1.3}
   .cap::before{content:"";position:absolute;left:0;top:2px;bottom:2px;width:4px;border-radius:2px;background:var(--pay)}
   .cap span{font-weight:400;color:var(--muted);font-size:11.5px;margin-left:5px}
-  .foot{color:var(--muted);font-size:11px;line-height:1.5}
+  .foot{color:var(--muted);font-size:11.5px;line-height:1.5}
   .hero{position:relative;border-radius:12px;padding:13px 15px 13px 18px;margin-top:12px;
         background:var(--panel);border:1px solid var(--hair);overflow:hidden}
   .hero::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--good)}
   .hero.warn::before{background:var(--leak)} .hero.bad::before{background:var(--bad)}
-  .hero .hl{display:flex;align-items:center;gap:7px;flex-wrap:wrap;font-size:11px;font-weight:700;color:var(--muted)}
+  .hero .hl{display:flex;align-items:center;gap:7px;flex-wrap:wrap;font-size:11.5px;font-weight:600;color:var(--muted)}
   .hero .tag{font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:11px}
   .hero.ok .tag{background:var(--good-bg);color:var(--good-ink)}
   .hero.warn .tag{background:var(--leak-bg);color:var(--leak-ink)}
@@ -61,23 +61,23 @@
   .hero .ex{margin-top:7px;padding-top:7px;border-top:1px solid var(--hair);font-size:10.5px;color:var(--muted)}
   .flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:center;gap:3px;margin-top:10px}
   .flow .cell{background:var(--panel);border:1px solid var(--hair);border-radius:10px;padding:8px 5px;text-align:center;min-width:0;overflow:hidden}
-  .flow .k{font-size:10px;color:var(--muted);font-weight:700}
-  .flow .v{font-size:15px;font-weight:700;letter-spacing:-.03em;white-space:nowrap}
-  .flow .s{font-size:9px;color:var(--muted);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .flow .ar{text-align:center;color:#AAB4C6;font-size:12px}
+  .flow .k{font-size:10.5px;color:var(--muted);font-weight:600}
+  .flow .v{font-size:16px;font-weight:700;letter-spacing:-.03em;white-space:nowrap}
+  .flow .s{font-size:9.5px;color:var(--muted);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .flow .ar{text-align:center;color:#AAB4C6;font-size:11.5px}
   .chartwrap svg{width:100%;display:block;overflow:visible;touch-action:pan-y}
   .wf{margin-top:8px}
   .wfr{display:grid;grid-template-columns:84px minmax(0,1fr) 60px;align-items:center;gap:7px;padding:3px 0}
-  .wfr .wl{font-size:11px;line-height:1.25;color:var(--muted);text-align:right;word-break:keep-all}
+  .wfr .wl{font-size:11.5px;line-height:1.25;color:var(--muted);text-align:right;word-break:keep-all}
   .wfr .wb{position:relative;height:17px;background:#F1F4F9;border-radius:4px;overflow:hidden}
   .wfr .wb i{position:absolute;top:0;height:100%;border-radius:3px}
   .wfr .wb u{position:absolute;top:0;bottom:0;width:1.5px;background:#B6C0D0}
-  .wfr .wv{font-size:11px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+  .wfr .wv{font-size:11.5px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
   .wfr.an{padding:5px 0}
   .wfr.an .wl{font-size:11.5px;font-weight:800;color:var(--ink)}
   .wfr.an .wb{height:20px;background:#E7EBF2}
-  .wfr.an .wv{font-size:12.5px;color:var(--ink)}
-  .wsec{font-size:10px;font-weight:800;color:var(--muted);letter-spacing:.01em;
+  .wfr.an .wv{font-size:11.5px;color:var(--ink)}
+  .wsec{font-size:10.5px;font-weight:800;color:var(--muted);letter-spacing:.01em;
         margin:9px 0 2px;padding:4px 7px;background:var(--panel2);border-radius:5px}
   .wax{display:flex;justify-content:space-between;font-size:9.5px;color:#98A2B3;
        padding-left:91px;padding-right:67px;font-variant-numeric:tabular-nums}
@@ -85,8 +85,8 @@
     .wax{padding-left:133px;padding-right:81px}}
   .rd{font-size:11.5px;color:var(--muted);min-height:19px;padding:1px 2px 5px}
   .rd b{color:var(--ink);font-weight:700}
-  table{width:100%;border-collapse:collapse;font-size:12px;font-variant-numeric:tabular-nums}
-  th,td{padding:6px 4px;border-bottom:1px solid var(--hair);text-align:right;white-space:nowrap}
+  table{width:100%;border-collapse:collapse;font-size:11.5px;font-variant-numeric:tabular-nums}
+  th,td{padding:6px 4px;font-size:11.5px;border-bottom:1px solid var(--hair);text-align:right;white-space:nowrap}
   th{font-size:10.5px;color:var(--muted);font-weight:700}
   th:first-child,td:first-child{text-align:left;white-space:normal}
   .tblwrap{overflow-x:auto;margin-top:4px}
@@ -96,7 +96,7 @@
   .chips{display:flex;flex-wrap:wrap;gap:5px}
   .chips.pad{margin-top:10px}
   .chip{min-height:34px;padding:6px 11px;border-radius:17px;background:var(--panel);border:1px solid var(--hair);
-        color:var(--muted);font-size:11.5px;font-weight:700;cursor:pointer;font-family:inherit}
+        color:var(--muted);font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit}
   .chip.on{background:#E7EFFD;border-color:#9DBBF3;color:var(--pay-ink)}
   .grp2{font-size:10.5px;font-weight:800;color:var(--muted);margin:14px 0 4px;padding-top:9px;border-top:1px solid var(--hair)}
   .grp2.first{border-top:0;margin-top:4px;padding-top:0}
@@ -104,20 +104,20 @@
   .nf{background:var(--panel2);border:1px solid var(--hair);border-radius:9px;padding:7px 9px;min-width:0}
   .nf input::-webkit-outer-spin-button,.nf input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
   .nf input[type=number]{-moz-appearance:textfield;appearance:textfield}
-  .nf label{display:block;font-size:11px;font-weight:700;line-height:1.25}
+  .nf label{display:block;font-size:11.5px;font-weight:600;line-height:1.25}
   .nf small{display:block;color:var(--muted);font-size:9.5px;font-weight:400;margin-top:1px}
   .nf .row{display:flex;align-items:center;gap:4px;margin-top:5px}
   .nf button{width:28px;height:32px;border:1px solid var(--hair);background:var(--panel);border-radius:7px;
-        font-family:inherit;font-size:15px;font-weight:700;color:var(--pay-ink);cursor:pointer;flex:0 0 auto}
+        font-family:inherit;font-size:16px;font-weight:700;color:var(--pay-ink);cursor:pointer;flex:0 0 auto}
   .nf input{flex:1 1 auto;min-width:0;height:32px;border:1px solid var(--hair);border-radius:7px;background:var(--panel);
-        font-family:inherit;font-size:13px;font-weight:700;text-align:center;color:var(--ink);font-variant-numeric:tabular-nums}
+        font-family:inherit;font-size:11.5px;font-weight:700;text-align:center;color:var(--ink);font-variant-numeric:tabular-nums}
   .nf input:disabled{background:var(--panel2);color:var(--muted)}
   .nf .u{font-size:9.5px;color:var(--muted);flex:0 0 auto}
-  .sl{margin-top:9px}
-  .sl label{display:flex;justify-content:space-between;font-size:11.5px;font-weight:700}
+  .sl{margin-top:7px}
+  .sl label{display:flex;justify-content:space-between;font-size:11.5px;font-weight:600}
   .sl label b{color:var(--pay-ink);font-variant-numeric:tabular-nums}
   .sl small{display:block;color:var(--muted);font-size:9.5px;font-weight:400}
-  input[type=range]{width:100%;margin-top:3px;accent-color:#5C82CF;height:26px}
+  input[type=range]{width:100%;margin-top:1px;accent-color:#5C82CF;height:24px}
   @media(min-width:560px){.nums{grid-template-columns:repeat(3,minmax(0,1fr))}}
 </style>
 </head>
@@ -351,7 +351,7 @@ async function load(){
     S.mkt=await r.json();
   }catch(e){
     $("mainSvg").setAttribute("viewBox","0 0 360 60");
-    $("mainSvg").innerHTML='<text x="8" y="26" font-size="13" font-weight="700" fill="#D6738A">시장데이터를 불러오지 못했어요</text>';
+    $("mainSvg").innerHTML='<text x="8" y="26" font-size="11.5" font-weight="700" fill="#D6738A">시장데이터를 불러오지 못했어요</text>';
     return;
   }
   /* 실적 원장(선택) — 있으면 그날 총액이 실측으로 대체되고 차이는 미설명으로 잡혀요 */
@@ -574,7 +574,7 @@ function drawMain(){
   for(let v=Math.ceil(lo/stp)*stp; v<=hi; v+=stp){
     const y=Y(v);
     g.push(`<line x1="${L}" y1="${y.toFixed(1)}" x2="${W-R}" y2="${y.toFixed(1)}" stroke="${Math.abs(v)<1e-9?'#AAB4C6':'#EDF0F6'}" stroke-width="1"/>`);
-    g.push(MOB?`<text x="${L+2}" y="${(y-3).toFixed(1)}" font-size="10" fill="#98A2B3">${won(v)}</text>`
+    g.push(MOB?`<text x="${L+2}" y="${(y-3).toFixed(1)}" font-size="10.5" fill="#98A2B3">${won(v)}</text>`
               :`<text x="${L-6}" y="${(y+4).toFixed(1)}" text-anchor="end" font-size="11" fill="#8A94A6">${won(v)}</text>`);
   }
   /* 갭을 둘로 갈라요 — 장기평균선↔벤치마크선 = 시장 몫 · 벤치마크선↔실적 = 운용 몫 */
@@ -607,7 +607,7 @@ function drawMain(){
   g.push(`<text x="${(W-R-2).toFixed(1)}" y="${Math.max(T+11,Y(slope*(nT-1))-6).toFixed(1)}" text-anchor="end" font-size="10.5" font-weight="700" fill="#4A6FC4">장기평균선</text>`);
   g.push(`<text x="${(X(nP-1)-7).toFixed(1)}" y="${(Y(RZ.bend)+(RZ.bend>RZ.end?-8:15)).toFixed(1)}" text-anchor="end" font-size="10.5" font-weight="700" fill="#5B4CA8">벤치마크 ${won(RZ.bend)}</text>`);
   [[0,VIEW==="ytd"?S.mkt.dates[CURSOR].slice(2,4)+".1월":dstr(-(nP-1))],[nP-1,"오늘"],[nT-1,dstr(FUT-1)]]
-    .forEach(a=>g.push(`<text x="${Math.min(W-R-16,Math.max(L+16,X(a[0]))).toFixed(1)}" y="${H-6}" text-anchor="middle" font-size="10" fill="#98A2B3">${a[1]}</text>`));
+    .forEach(a=>g.push(`<text x="${Math.min(W-R-16,Math.max(L+16,X(a[0]))).toFixed(1)}" y="${H-6}" text-anchor="middle" font-size="10.5" fill="#98A2B3">${a[1]}</text>`));
   g.push(`<line id="chx" x1="0" y1="${T}" x2="0" y2="${T+ih}" stroke="#16202F" stroke-width="1" opacity="0"/>`);
   const el=$("mainSvg"); el.setAttribute("viewBox",`0 0 ${W} ${H}`); el.setAttribute("height",H); el.innerHTML=g.join("");
   resetRd();
@@ -696,7 +696,7 @@ function barRows(items,unit){
   return items.map(it=>{
     if(it[0]==="h") return `<div class="wsec">${it[1]}</div>`;
     const v=it[1], w=Math.abs(v)/mx*50, left=v>=0?50:50-w;
-    return `<div class="wfr${it[3]?" an":""}"><div class="wl">${it[0]}${it[2]?`<br><span style="font-size:9px;opacity:.8">${it[2]}</span>`:""}</div>`+
+    return `<div class="wfr${it[3]?" an":""}"><div class="wl">${it[0]}${it[2]?`<br><span style="font-size:9.5px;opacity:.8">${it[2]}</span>`:""}</div>`+
       `<div class="wb"><u style="left:50%"></u>`+
       `<i style="left:${left.toFixed(2)}%;width:${Math.max(0.6,w).toFixed(2)}%;background:${v>=0?"#4FAE8C":"#D69A55"}"></i></div>`+
       `<div class="wv" style="color:${C(v)}">${sgn(v)}${unit||""}</div></div>`;
@@ -718,7 +718,7 @@ function fillBench(){
     ["추적오차 드리프트", teDriftY(), `${P.teDft}%/년 × ${P.teAmt}억`],
   ];
   $("benchBig").innerHTML=`<span style="color:${C(benchY())}">${sgn(benchY())}</span>`+
-    `<span style="font-size:14px;color:var(--muted);font-weight:600"> 억/년 · ${bpv(benchY())}bp</span>`;
+    `<small>억/년 · ${bpv(benchY())}bp</small>`;
   $("benchSub").innerHTML=`적립금 ${P.av}조 · BEL ${P.bel}조 · 자산미보유 ${(unmat()/1e4).toFixed(1)}조 · 기준 국면 주가 ${b.dE}% · 금리 ${b.dR}bp`;
   $("benchRows").innerHTML=barRows(it)+
     `<div class="wfr an"><div class="wl">합계</div><div class="wb"></div>`+
@@ -802,7 +802,7 @@ function fillHz(){
   const spark=r=>{const w=42,X=v=>2+(w-4)*(v-lo)/Math.max(1e-9,hi-lo);
     return `<svg width="${w}" height="13" style="vertical-align:-2px"><line x1="${X(r.q[0]).toFixed(1)}" y1="6.5" x2="${X(r.q[2]).toFixed(1)}" y2="6.5" stroke="#9282DC" stroke-width="3" stroke-linecap="round"/><circle cx="${X(r.q[1]).toFixed(1)}" cy="6.5" r="2.6" fill="#5B4CA8"/></svg>`;};
   $("hzTbl").innerHTML=`<tr><th>구간</th><th></th><th>중앙</th><th>80% 범위</th><th>ES95</th><th>한도 하회</th></tr>`+
-    rows.map(r=>`<tr><td><b>${r.k}</b> <span style="color:var(--muted);font-size:10px">${dstr(r.t)}</span></td>`+
+    rows.map(r=>`<tr><td><b>${r.k}</b> <span style="color:var(--muted);font-size:10.5px">${dstr(r.t)}</span></td>`+
       `<td style="text-align:center">${spark(r)}</td><td><b>${won(r.q[1])}</b></td>`+
       `<td style="color:var(--muted)">${won(r.q[0])} ~ ${won(r.q[2])}</td>`+
       `<td style="color:var(--bad-ink)">${won(r.es)}</td>`+
@@ -826,7 +826,7 @@ function drawLimit(){
   g.push(`<rect x="${L}" y="16" width="${bx(used).toFixed(1)}" height="18" rx="5" fill="#D6738A" opacity="0.80"/>`);
   const px=L+bx(plan);
   g.push(`<line x1="${px.toFixed(1)}" y1="11" x2="${px.toFixed(1)}" y2="39" stroke="#B8455F" stroke-width="2"/>`);
-  g.push(`<text x="${Math.min(W-R,px+2).toFixed(1)}" y="9" text-anchor="end" font-size="10" font-weight="700" fill="#B8455F">연 한도 ${won(plan)}</text>`);
+  g.push(`<text x="${Math.min(W-R,px+2).toFixed(1)}" y="9" text-anchor="end" font-size="10.5" font-weight="700" fill="#B8455F">연 한도 ${won(plan)}</text>`);
   g.push(`<text x="${L}" y="52" font-size="10.5" fill="#566275">실적 <tspan font-weight="700" fill="#B8455F">${won(used)}억</tspan> · 장기평균선이 미리 먹는 몫 <tspan font-weight="700" fill="#4A6FC4">${won(take)}억</tspan></text>`);
   const k=stressK();
   g.push(`<text x="${L}" y="69" font-size="10.5" fill="#566275">한도 소진 임계 = 기준의 <tspan font-weight="700" fill="#16202F">${k.toFixed(2)}배</tspan> (주가 ${(REG("base").dE*k).toFixed(2)}% · 금리 ${(REG("base").dR*k).toFixed(1)}bp)</text>`);

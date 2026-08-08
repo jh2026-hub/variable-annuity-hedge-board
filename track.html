@@ -83,6 +83,11 @@
        padding-left:91px;padding-right:67px;font-variant-numeric:tabular-nums}
   @media(min-width:560px){.wfr{grid-template-columns:126px minmax(0,1fr) 74px}
     .wax{padding-left:133px;padding-right:81px}}
+  .asof{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;padding-top:9px;border-top:1px solid var(--hair)}
+  .asof .al{font-size:11.5px;font-weight:600;color:var(--muted)}
+  .asof .al b{color:var(--ink);font-variant-numeric:tabular-nums}
+  .asof .chips{margin-left:auto}
+  .asof .chip{min-height:30px;padding:4px 9px;font-size:10.5px}
   .rd{font-size:11.5px;color:var(--muted);min-height:19px;padding:1px 2px 5px}
   .rd b{color:var(--ink);font-weight:700}
   table{width:100%;border-collapse:collapse;font-size:11.5px;font-variant-numeric:tabular-nums}
@@ -150,6 +155,11 @@
   <div class="cap">누적 헷지손익<span id="chartLab"></span></div>
   <div class="rd" id="rdOut"></div>
   <div class="chartwrap"><svg id="mainSvg" role="img" aria-label="누적 헷지손익"></svg></div>
+  <div class="asof">
+    <div class="al">기준일 <b id="v_cursor"></b></div>
+    <div class="chips" id="curQuick"></div>
+  </div>
+  <div id="curSel"></div>
   <div class="note" id="chartNote"></div>
 </div>
 
@@ -224,20 +234,13 @@
   <div class="lede" id="expSub"></div>
   <div class="wf" id="expRows"></div>
   <div class="note" id="expNote"></div>
+  <div class="note" id="ledNote"></div>
 </div>
 <div class="panel">
   <div class="cap">실제 노출·민감도<span>포지션이 실제로 진 위험</span></div>
   <div id="numR"></div>
   <div id="slSel"></div>
   <div class="note" id="polNote"></div>
-</div>
-<div class="panel">
-  <div class="cap">기준일<span>"오늘"을 옮겨요</span></div>
-  <div class="lede">이 날짜를 <b>오늘</b>로 두고 다시 계산해요 — 실적선은 여기서 끊기고, 전망은 이 시점까지의 정보만 써요.</div>
-  <div class="chips" id="curQuick"></div>
-  <div id="curSel"></div>
-  <div class="note" id="curEff"></div>
-  <div class="note" id="ledNote"></div>
 </div>
 </div>
 
@@ -748,10 +751,6 @@ function fillExp(){
   $("expSub").innerHTML=`벤치마크선 ${won(RZ.bend)} → 실적 ${won(RZ.end)} · 같은 시장에서 계획과 다르게 운용한 몫이에요`;
   $("expNote").innerHTML=`계획 대비 노출 — 주가 <b>${dE>=0?"+":""}${dE.toFixed(0)}%</b> · 금리 <b>${dR>=0?"+":""}${dR.toFixed(0)}%</b>. `+
     `커버율을 올리면 감마·슬리피지·베가는 줄고 <b>본드스왑</b>이 커져요 — 위험이 사라지는 게 아니라 모양이 바뀌어요.`;
-  const last=S.mkt.dates.length-1;
-  $("curEff").innerHTML=`이 기준일에서 — 장기평균선 <b>${won(benchY()*RZ.n/N())}</b> · 벤치마크 <b>${won(RZ.bend)}</b> · `+
-    `실적 <b>${won(RZ.end)}</b> · ${VIEW==="ytd"?"연말":"1년 뒤"} <b>${won(FC.q(FUT-1,[0.5])[0])}</b> 억`+
-    (CURSOR<last?` <span class="src assume">과거 재생 · 최근보다 ${last-CURSOR}일 전</span>`:``);
   $("ledNote").innerHTML=RZ.src==="model"
     ? `실적선은 지금 <b>모형 재구성</b>이에요 — <code>data/pnl.json</code>에 원장을 넣으면 그날 총액이 실측으로 바뀌고 <b>미설명</b> 행이 생겨요.`
     : `실적 원장 <b>${RZ.cov}일</b> 반영 중 · 미설명 <b>${sgn(RZ.resid)}억</b>`;
@@ -927,9 +926,8 @@ function build(){
   $("numSel").innerHTML=nmHTML("b"); $("numR").innerHTML=nmHTML("r");
   $("curQuick").innerHTML=[["now","📍 최근"],["m3","3개월 전"],["m6","6개월 전"],["y1","1년 전"]]
     .map(a=>`<button class="chip" data-cq="${a[0]}">${a[1]}</button>`).join("");
-  $("curSel").innerHTML=`<div class="sl"><label for="s_cursor"><span>기준일</span><b id="v_cursor">${fmtd(S.mkt.dates[CURSOR])}</b></label>`+
-    `<small>그때의 실적선과 그때 본 전망이 나와요</small>`+
-    `<input type="range" id="s_cursor" min="${PAST}" max="${S.mkt.dates.length-1}" step="1" value="${CURSOR}"></div>`;
+  $("v_cursor").textContent=fmtd(S.mkt.dates[CURSOR]);
+  $("curSel").innerHTML=`<input type="range" id="s_cursor" min="${PAST}" max="${S.mkt.dates.length-1}" step="1" value="${CURSOR}" style="margin-top:4px">`;
 
   document.addEventListener("click",e=>{
     const re=e.target.closest("[data-re]");

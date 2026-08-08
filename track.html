@@ -106,8 +106,8 @@
 
 <a class="back" href="./index.html">← 설명 페이지로</a>
 <h1>헷지 <em>실적 추적판</em></h1>
-<p class="sub">이론상 이 정도라는 <b>벤치마크</b>, 실제로 이렇게 됐다는 <b>실적선</b>, 앞으로는 어디쯤일지 보여주는 <b>전망 밴드</b>를 한 장에 겹쳐 봐요.</p>
-<div class="exbanner">🧪 컨셉 시안 <span>시장 경로만 실측(KOSPI·국고 20년)이고 그릭·비용은 일반 예시예요.</span></div>
+<p class="sub"><b>벤치마크</b> · <b>실적선</b> · <b>전망 밴드</b>를 한 장에 겹쳐 봐요.</p>
+<div class="exbanner">🧪 컨셉 시안 <span>시장 경로만 실측 · 그릭·비용은 일반 예시</span></div>
 
 <div class="tabs">
   <button class="on" id="tb_main">📈 추적판<small>예상 · 실적 · 전망</small></button>
@@ -120,7 +120,7 @@
 <!-- ① 메인 -->
 <div class="panel">
   <div class="cap">누적 헷지손익 — 예상 vs 실적 vs 전망<span id="asofLab"></span></div>
-  <p class="lede">위로 갈수록 이익, 아래로 갈수록 손실이에요. <b>벤치마크는 지금 실적과 무관하게</b> 변동성·금리에서 계산한 <b>세타 − 감마 − 델타 슬리피지 − 캐리</b> 로만 그려요. 감마는 <code>½ · Γ · 일변동² · 영업일수</code> 예요.</p>
+  <p class="lede">위=이익, 아래=손실. 벤치마크 = <b>세타 − 감마 − 슬리피지 − 캐리</b> (감마 = ½·Γ·일변동²·영업일수).</p>
   <div class="chips" id="viewSel"></div>
   <div class="stats" id="stats"></div>
   <div class="chartwrap"><svg id="mainSvg" viewBox="0 0 560 330" role="img" aria-label="누적 헷지손익 예상선·실적선·전망밴드"></svg></div>
@@ -141,17 +141,17 @@
 <!-- ② 구간별 전망 -->
 <div class="panel">
   <div class="cap">구간별 전망 밴드<span>이달 말 · 분기 말 · 분기말+3M · 6 / 9 / 12개월</span></div>
-  <p class="lede">각 시점의 <b>누적 손익</b>이에요. 지금까지 쌓인 실적을 출발점으로 두고, 앞으로의 세타·감마·비용·잔여변동성을 얹었어요.</p>
+  <p class="lede">각 시점의 <b>누적 손익</b> — 지금 실적에서 출발해요.</p>
   <div class="chartwrap" style="margin-top:10px"><svg id="hzSvg" viewBox="0 0 560 180" role="img" aria-label="구간별 전망 밴드"></svg></div>
   <div class="tblwrap"><table id="hzTbl"></table></div>
-  <div class="note"><b>계획선 하회확률</b>은 「누적 손익이 그 시점까지 배분된 경영계획(연 한도 × 경과비율)을 밑돌 확률」이에요. 계획은 시간에 비례해 쌓이니 <b>가까운 시점일수록 여유가 적어</b> 확률이 높게 나올 수 있어요 — 앞이 안전해졌다는 뜻이 아니라 계획 배분의 효과예요.</div>
-  <div class="note">밴드는 <b>과거 실측 (코스피 수익률, 국고 20년 변동)을 5일 블록으로 함께 재추출</b>해 만들어요 — 변동성 군집·꼬리·주식금리 상관을 살린 채 가정 변동성에 맞춰 크기만 조정해요.</div>
+  <div class="note"><b>계획선 하회확률</b> = 그 시점까지 배분된 계획(연 한도 × 경과비율)을 밑돌 확률. 계획도 시간에 비례해 쌓여서 <b>가까운 시점일수록 여유가 적어요</b>.</div>
+  <div class="note">밴드 = 실측 수익률을 <b>5일 블록으로 재추출</b>(변동성 군집·꼬리·상관 유지, 크기만 국면에 맞춰 조정).</div>
 </div>
 
 <!-- ②-2 전망 항목별 기여 -->
 <div class="panel">
   <div class="cap">앞으로 어디서 돌아오고 어디서 더 새나<span id="attrLab"></span></div>
-  <p class="lede">지금부터 그 시점까지 <b>항목별로 얼마가 더해지는지</b>예요. 위(초록)면 회복, 아래면 악화예요 — 평가 항목은 되돌아올 수 있고 확정 항목은 안 돌아와요.</p>
+  <p class="lede">지금부터 그 시점까지 <b>항목별 증감</b>. 초록=회복, 빨강=악화.</p>
   <div class="chips" id="attrSel"></div>
   <div class="rows" id="attrRows"></div>
   <div class="note" id="attrNote"></div>
@@ -168,7 +168,7 @@
 </div>
 <div class="panel">
   <div class="cap">벤치마크 파라미터<span>움직이면 위 구성이 바로 바뀌어요</span></div>
-  <p class="lede">규모(적립금·BEL·보증부채)와 그릭·내재 일변동·슬리피지·커버율·할인율이에요. 실현 일변동은 <b>🌦 국면 탭의 「예상 수준」</b>을 가져다 써요.</p>
+  <p class="lede">실현 일변동은 <b>🌦 국면 탭의 「예상 수준」</b>을 써요.</p>
   <div class="ctl" id="ctlBud"></div>
 </div>
 </div><!-- /pg_bud -->
@@ -181,7 +181,7 @@
 </div>
 <div class="panel">
   <div class="cap">실적·전망 파라미터<span>실적선과 밴드에만 영향을 줘요</span></div>
-  <p class="lede">노출 민감도, 감마 실제 커버율(주가·금리), 본드스왑·펀드 베이시스 노출이에요. 모두 <b>실적선과 전망에만</b> 영향을 줘요.</p>
+  <p class="lede">모두 <b>실적선과 전망에만</b> 영향을 줘요.</p>
   <div class="ctl" id="ctlAct"></div>
 </div>
 </div><!-- /pg_act -->
@@ -189,7 +189,7 @@
 <div class="page" id="pg_reg">
 <div class="panel">
   <div class="cap">국면 설정<span>변동성 · 본드스왑 · 펀드 추적오차</span></div>
-  <p class="lede">국면마다 <b>하루 얼마나 움직이는가</b>를 정해요. 「예상 수준」은 벤치마크의 실현 일변동이 되고, 추적판에서 고른 국면은 전망 밴드의 출발점이 돼요.</p>
+  <p class="lede">국면마다 <b>하루 얼마나 움직이는가</b>를 정해요.</p>
   <div class="chips" id="regSel"></div>
   <div class="ctl" id="ctlReg"></div>
   <div class="note" id="regNote"></div>
@@ -197,7 +197,7 @@
 <div class="panel">
   <div class="cap">국면 비교<span>같은 노출에서 감마가 얼마나 달라지나</span></div>
   <div class="tblwrap"><table id="regTbl"></table></div>
-  <div class="note">감마는 일변동의 <b>제곱</b>이라, 하루 등락이 2배면 누수는 4배가 돼요. 「최근 국면」은 최근 60거래일 실측이라 변동성 값은 고정이고 본드스왑·추적오차만 조절돼요.</div>
+  <div class="note">감마는 일변동의 <b>제곱</b> — 등락 2배면 누수 4배.</div>
 </div>
 </div><!-- /pg_reg -->
 
@@ -205,7 +205,7 @@
 <!-- ④ 갭 분해 -->
 <div class="panel">
   <div class="cap">예상과 실적이 벌어진 이유<span>지금까지 구간</span></div>
-  <p class="lede">벤치마크에서 출발해 아래 항목을 더하면 실적선에 닿아요. <b>확정</b>은 시간·거래로 굳은 손익이고, <b>평가</b>는 아직 굳지 않아 되돌아올 수도 있는 손익이에요.</p>
+  <p class="lede">벤치마크 + 아래 항목 = 실적선.</p>
   <div class="rows" id="gapRows"></div>
   <div class="hd3" id="gapCards"></div>
 </div>
@@ -214,18 +214,13 @@
 <div class="panel">
   <div class="cap">읽는 법 · 한계</div>
   <div class="hd3">
-    <div class="b"><b>벤치마크는 왜 직선인가요</b>세타도 감마도 <b>시간에 비례</b>해 쌓이는 항이에요. 하루치 (세타 − 감마 − 슬리피지 − 캐리)에 날짜만 곱한 선이에요.</div>
-    <div class="b"><b>실적선은 왜 계단인가요</b>감마 누수는 움직임의 <b>제곱</b>이라 큰 날에 몰려요. 며칠이 한 해를 결정해요.</div>
-    <div class="b"><b>밴드는 왜 아래가 긴가요</b>제곱 항이라 <b>손실 쪽 꼬리가 더 길어요</b>. 조용하면 조금 아끼고, 한 번 흔들리면 크게 새요.</div>
+    <div class="b"><b>벤치마크는 왜 직선</b>세타도 감마도 시간에 비례해 쌓여요.</div>
+    <div class="b"><b>실적선은 왜 계단</b>감마는 움직임의 제곱이라 큰 날에 몰려요.</div>
+    <div class="b"><b>밴드는 왜 아래가 긴가</b>제곱 항이라 손실 쪽 꼬리가 길어요.</div>
   </div>
-  <div class="note"><b>벤치마크가 +가 될 수도 있어요.</b> 세타(내재변동성)와 감마손실(실현변동성)이 같은 ½Γσ² 꼴이라 서로 지워지고, 남는 건 <b>내재 − 실현 프리미엄</b>이에요. 그 프리미엄이 <b>캐리 + 델타 슬리피지</b>보다 크면 벤치마크는 올라가고, 작으면 내려가요. 실무 파라미터에선 대개 슬리피지가 커서 아래로 향해요 — 부호를 미리 정해두지 말고 가정에서 나오게 두는 게 맞아요.</div>
-  <div class="note"><b>세타와 캐리는 이중계산이 아니에요.</b> 옵션 세타는 원래 <b>변동성 성분(½Γσ²)</b> 과 <b>금리 성분(−r×부채)</b> 으로 나뉘어요. 이 화면은 그 둘을 「세타」와 「캐리(언와인딩)」로 갈라 놓은 것뿐이에요. 감마와 델타 슬리피지도 겹치지 않아요 — 감마손실은 리밸런싱 주기와 거의 무관한 <b>경로 적분</b>이고, 슬리피지만 주기에 좌우돼요(주기를 늘리면 √주기로 줄어요).</div>
-  <div class="note"><b>왜 본드스왑이 감마 항목에 들어가나요.</b> 금리 감마를 덮으려고 <b>스왑션</b>을 사면 확정 손실(비선형)은 줄어요. 그런데 스왑션은 <b>IRS 금리</b> 기준이고 부채는 <b>KTB 금리</b> 기준이라, 둘 사이 스프레드가 벌어지면 <b>평가손실</b>이 남아요 — 감마를 덮으려던 행위에서 나온 손익이니 감마 묶음 안에서 봐야 해요. 커버율을 올리면 비선형·리밸런싱·베가는 줄고 <b>본드스왑 노출은 커져요</b>. 위험이 사라진 게 아니라 <b>모양이 바뀐 것</b>이에요.</div>
-  <div class="note"><b>보수적으로 둔 곳</b> — ①격변장에서는 내재변동성도 같이 올라 세타 수취가 늘어나는데, 전망에서는 세타를 고정해서 <b>아래 꼬리를 다소 크게</b> 잡았어요. ②펀드 추적오차는 연 −0.3% 괴리를 기본으로 뒀어요 — 실측이 아니라 가정이에요. ③금리 슬리피지 단가는 🧮 리밸런싱 탭과 같은 「거래 델타 1억(/bp)당」 규약이고, 상품·유동성에 따라 크게 달라져요.</div>
-  <div class="note"><b>되돌아오는 갭과 안 오는 갭이 달라요.</b> 비선형(감마)·슬리피지·캐리는 <b>이미 나간 현금</b>이라 앞으로 조용해져도 회수되지 않아요 — 덜 새는 것뿐이에요. 반면 베가·본드스왑은 <b>평가</b>라서, 내재변동성이나 스프레드가 제자리로 오면 <b>환입</b>돼요. 그래서 변동성이 치솟은 직후에는 전망 밴드의 중앙값이 지금보다 <b>위로</b> 향하기도 해요 — 실적이 좋아진다기보다 부풀었던 평가가 풀리는 거예요.</div>
-  <div class="note">한계 — 단일 숏풋 근사예요. 실제로는 보증 유형별 그릭 재산출, 펀드-지수 베이시스, 해지·사망 가정, 회계(VFA·위험경감선택권) 인식 시점이 따로 붙어요. 이 화면은 <b>개형과 순서</b>를 보여주는 용도예요.</div>
+  <div class="note"><b>확정은 안 돌아오고, 평가는 돌아와요.</b> 감마·슬리피지·캐리는 이미 나간 현금이라 회수되지 않아요. 베가·본드스왑·추적오차는 제자리로 오면 환입돼요 — 변동성 급등 직후 전망 중앙값이 위로 향하는 건 그 때문이에요.</div>
+  <div class="note"><b>한계</b> — 단일 숏풋 근사. 본드스왑·추적오차는 실측이 아니라 가정 경로예요. 격변장에서 내재변동성이 함께 오르는 효과는 빼서 아래 꼬리를 보수적으로 잡았어요.</div>
 </div>
-
 </div><!-- /pg_main2 -->
 
 <p class="foot" style="text-align:center;margin-top:16px">데이터 출처 · KOSPI: Yahoo Finance(^KS11) · 국고 20년: 한국은행 ECOS. 공개 시장데이터, 참고용.</p>
@@ -256,33 +251,33 @@ let REDIT="base";      /* 국면 탭에서 편집 중인 국면 */
 /* ───── 파라미터 ───── */
 const PAR=[
  /* ① 벤치마크 */
- {g:"규모", r:"plan", id:"av",   n:"펀드 적립금",     u:"조",     v:35,  min:5,  max:80,  step:1,    s:"특별계정 규모 — 결과를 bp 로 환산할 때 분모예요"},
+ {g:"규모", r:"plan", id:"av",   n:"펀드 적립금",     u:"조",     v:35,  min:5,  max:80,  step:1,    s:"bp 환산의 분모"},
  {g:"규모", r:"plan", id:"bel",  n:"부채 BEL",       u:"조",     v:30,  min:5,  max:80,  step:1,    s:"보험부채 전체"},
- {g:"규모", r:"plan", id:"gpct", n:"보증부채 비율",   u:"% of BEL",v:1.0, min:0.1,max:6,   step:0.1,  s:"BEL 중 보증(옵션) 가치 — 언와인딩은 여기에만 붙어요"},
- {g:"규모", r:"plan", id:"disc", n:"할인율",         u:"%",      v:4.4, min:0,  max:8,   step:0.1,  s:"보증부채에 매기 붙는 이자 = 캐리"},
- {g:"주가", r:"plan", id:"gamE", n:"주가 감마 Γ",     u:"억/1%",  v:1.0, min:0.1,max:5,   step:0.05, s:"코스피 1% 움직임당 감마 손익"},
- {g:"주가", r:"plan", id:"diE",  n:"내재 일변동",     u:"%",      v:1.2, min:0.3,max:5,   step:0.05, s:"세타를 만드는 옵션 내재변동성 (하루치)"},
+ {g:"규모", r:"plan", id:"gpct", n:"보증부채 비율",   u:"% of BEL",v:1.0, min:0.1,max:6,   step:0.1,  s:"BEL 중 보증(옵션) 가치 · 캐리는 여기에만"},
+ {g:"규모", r:"plan", id:"disc", n:"할인율",         u:"%",      v:4.4, min:0,  max:8,   step:0.1,  s:"보증부채에 붙는 이자 = 캐리"},
+ {g:"주가", r:"plan", id:"gamE", n:"주가 감마 Γ",     u:"억/1%",  v:1.0, min:0.1,max:5,   step:0.05, s:"코스피 1% 움직임당 손익"},
+ {g:"주가", r:"plan", id:"diE",  n:"내재 일변동",     u:"%",      v:1.2, min:0.3,max:5,   step:0.05, s:"세타를 만드는 내재변동성(하루치)"},
  {g:"주가", r:"plan", id:"covE", n:"감마 커버율(계획)",u:"%",     v:0,   min:0,  max:100, step:5,    s:"계획상 지수옵션으로 덮는 비율"},
- {g:"주가", r:"plan", id:"slipE",n:"델타 슬리피지",   u:"만원/1억",v:5,  min:0,  max:60,  step:1,    s:"델타 1억을 넘길 때의 비드오퍼+슬리피지"},
- {g:"금리", r:"plan", id:"gamR", n:"금리 감마 Γ",     u:"억/bp",  v:0.175,min:0.02,max:0.6,step:0.005,s:"1bp 움직임당 컨벡시티 손익"},
- {g:"금리", r:"plan", id:"diR",  n:"내재 일변동",     u:"bp",     v:4.0, min:1,  max:12,  step:0.1,  s:"세타를 만드는 스왑션 내재변동성 (하루치)"},
+ {g:"주가", r:"plan", id:"slipE",n:"델타 슬리피지",   u:"만원/1억",v:5,  min:0,  max:60,  step:1,    s:"델타 1억 이전당 비드오퍼+슬리피지"},
+ {g:"금리", r:"plan", id:"gamR", n:"금리 감마 Γ",     u:"억/bp",  v:0.175,min:0.02,max:0.6,step:0.005,s:"1bp 움직임당 손익"},
+ {g:"금리", r:"plan", id:"diR",  n:"내재 일변동",     u:"bp",     v:4.0, min:1,  max:12,  step:0.1,  s:"세타를 만드는 내재변동성(하루치)"},
  {g:"금리", r:"plan", id:"covR", n:"감마 커버율(계획)",u:"%",     v:0,   min:0,  max:100, step:5,    s:"계획상 스왑션으로 덮는 비율"},
- {g:"금리", r:"plan", id:"slipR",n:"델타 슬리피지",   u:"억",     v:10,  min:0,  max:30,  step:1,    s:"거래 델타 1억(/bp)당 비용 — 장외라 두꺼워요"},
- {g:"실행", r:"plan", id:"ndays",n:"연간 영업일수",   u:"일",     v:252, min:200,max:260, step:1,    s:"감마·세타를 연으로 환산할 때의 일수"},
- {g:"실행", r:"plan", id:"rbal", n:"리밸런싱 주기",   u:"거래일",  v:5,   min:1,  max:21,  step:1,    s:"이 주기마다 쌓인 델타를 한 번에 넘겨요"},
- {g:"계획", r:"plan", id:"fee",  n:"경영계획 손익",   u:"억/년",  v:1500,min:0,  max:5000,step:100,  s:"감내하기로 한 연간 헷지손실 — 판정에만 써요"},
+ {g:"금리", r:"plan", id:"slipR",n:"델타 슬리피지",   u:"억",     v:10,  min:0,  max:30,  step:1,    s:"거래 델타 1억(/bp)당 · 장외라 두꺼움"},
+ {g:"실행", r:"plan", id:"ndays",n:"연간 영업일수",   u:"일",     v:252, min:200,max:260, step:1,    s:"연 환산 일수"},
+ {g:"실행", r:"plan", id:"rbal", n:"리밸런싱 주기",   u:"거래일",  v:5,   min:1,  max:21,  step:1,    s:"이 주기마다 델타를 한 번에 이전"},
+ {g:"계획", r:"plan", id:"fee",  n:"경영계획 손익",   u:"억/년",  v:1500,min:0,  max:5000,step:100,  s:"감내 한도 · 판정에만 사용"},
  /* ② 실적 */
- {g:"노출", r:"act", id:"mulE", n:"주가 노출 민감도", u:"×",     v:1.0, min:0.2,max:3,   step:0.05, s:"실제 그릭이 계획 대비 몇 배인가"},
- {g:"노출", r:"act", id:"mulR", n:"금리 노출 민감도", u:"×",     v:1.0, min:0.2,max:3,   step:0.05, s:"실제 컨벡시티가 계획 대비 몇 배인가"},
- {g:"커버", r:"act", id:"acovE",n:"주가 커버율(실제)",u:"%",     v:0,   min:0,  max:100, step:5,    s:"실제로 지수옵션을 매수한 비중"},
- {g:"커버", r:"act", id:"acovR",n:"금리 커버율(실제)",u:"%",     v:0,   min:0,  max:100, step:5,    s:"실제로 스왑션을 매수한 비중 — 덮으면 본드스왑이 생겨요"},
- {g:"베이시스", r:"act", id:"bsdv", n:"본드스왑 노출", u:"억/bp", v:3,  min:0,  max:20,  step:0.5,  s:"IRS−KTB 스프레드 1bp 확대당 평가손익"},
- {g:"베이시스", r:"act", id:"teAmt",n:"펀드 베이시스 노출",u:"억/1%p",v:80,min:0,max:400,step:10,   s:"펀드가 지수 대비 1%p 벌어질 때의 손익 — 벤치마크에는 0 이에요"},
+ {g:"노출", r:"act", id:"mulE", n:"주가 노출 민감도", u:"×",     v:1.0, min:0.2,max:3,   step:0.05, s:"계획 대비 실제 그릭 배수"},
+ {g:"노출", r:"act", id:"mulR", n:"금리 노출 민감도", u:"×",     v:1.0, min:0.2,max:3,   step:0.05, s:"계획 대비 실제 컨벡시티 배수"},
+ {g:"커버", r:"act", id:"acovE",n:"주가 커버율(실제)",u:"%",     v:0,   min:0,  max:100, step:5,    s:"실제 매수 비중"},
+ {g:"커버", r:"act", id:"acovR",n:"금리 커버율(실제)",u:"%",     v:0,   min:0,  max:100, step:5,    s:"실제 매수 비중 · 덮으면 본드스왑 발생"},
+ {g:"베이시스", r:"act", id:"bsdv", n:"본드스왑 노출", u:"억/bp", v:3,  min:0,  max:20,  step:0.5,  s:"IRS−KTB 1bp 확대당 평가손익"},
+ {g:"베이시스", r:"act", id:"teAmt",n:"펀드 베이시스 노출",u:"억/1%p",v:80,min:0,max:400,step:10,   s:"지수 대비 1%p 괴리당 손익"},
  /* ③ 국면 (편집 중인 프리셋의 값) */
- {g:"국면", r:"reg", id:"R_dE", n:"주가 일변동",       u:"%",     v:1.0, min:0.3,max:6,   step:0.05, s:"이 국면에서의 하루 등락폭"},
- {g:"국면", r:"reg", id:"R_dR", n:"금리 일변동",       u:"bp",    v:3.5, min:1,  max:15,  step:0.1,  s:"이 국면에서의 하루 금리 변동"},
- {g:"국면", r:"reg", id:"R_bs", n:"본드스왑 변동",     u:"bp/년",  v:15,  min:0,  max:80,  step:1,    s:"IRS−KTB 스프레드가 한 해 벌어졌다 좁아지는 폭"},
- {g:"국면", r:"reg", id:"R_te", n:"펀드 추적오차",     u:"%/년",   v:0.5, min:0,  max:3,   step:0.05, s:"펀드가 지수에서 벗어나는 정도(연 표준편차)"},
+ {g:"국면", r:"reg", id:"R_dE", n:"주가 일변동",       u:"%",     v:1.0, min:0.3,max:6,   step:0.05, s:"하루 등락폭"},
+ {g:"국면", r:"reg", id:"R_dR", n:"금리 일변동",       u:"bp",    v:3.5, min:1,  max:15,  step:0.1,  s:"하루 금리 변동"},
+ {g:"국면", r:"reg", id:"R_bs", n:"본드스왑 변동",     u:"bp/년",  v:15,  min:0,  max:80,  step:1,    s:"스프레드 연간 변동폭"},
+ {g:"국면", r:"reg", id:"R_te", n:"펀드 추적오차",     u:"%/년",   v:0.5, min:0,  max:3,   step:0.05, s:"지수 이탈 정도(연 σ)"},
 ];
 const P={}; PAR.forEach(p=>P[p.id]=p.v);
 
@@ -649,9 +644,8 @@ function fillAttr(){
   ]);
   const fix=a.th+a.gE+a.gR+a.tE+a.tR+a.unw, mtm=a.vgE+a.vgR+a.bs+a.te;
   $("attrLab").textContent=`${h.k} · ${dstr(h.t)} · 국면 ${REG(RSEL).n}`;
-  $("attrNote").innerHTML=`이 구간 합계 <b>${sgn(fix+mtm)}억</b> = 확정 <b style="color:${fix>=0?'var(--good-ink)':'var(--bad-ink)'}">${sgn(fix)}</b> + 평가 <b style="color:${mtm>=0?'var(--good-ink)':'var(--bad-ink)'}">${sgn(mtm)}</b>. `+
-    (mtm>0?`평가가 <b>플러스</b>면 지금 부풀어 있는 평가손이 풀린다는 뜻이지, 실적이 좋아진다는 뜻은 아니에요. `:``)+
-    `평균 기준이라 항목 합이 총계와 정확히 맞아요(표의 중앙값과는 조금 달라요).`;
+  $("attrNote").innerHTML=`합계 <b>${sgn(fix+mtm)}억</b> = 확정 <b style="color:${fix>=0?'var(--good-ink)':'var(--bad-ink)'}">${sgn(fix)}</b> + 평가 <b style="color:${mtm>=0?'var(--good-ink)':'var(--bad-ink)'}">${sgn(mtm)}</b>`+
+    (mtm>0?` — 평가 플러스는 실적 개선이 아니라 <b>평가손이 풀리는 것</b>이에요.`:`.`);
 }
 
 function fillStats(){
@@ -689,8 +683,7 @@ function fillStats(){
 
   const top=RZ.day.slice().sort((a,b)=>b.gm-a.gm).slice(0,5);
   const share=top.reduce((a,b)=>a+b.gm,0)/Math.max(1e-9,RZ.parts.gE+RZ.parts.gR)*100;
-  $("mainNote").innerHTML=`벤치마크 기울기 <b>연 ${sgn(benchY())}억</b> (적립금 ${P.av}조 대비 ${bp(benchY())}bp) = 세타 ${won(thetaP())} − 감마 ${won(gYE(wEp(),REG("base").dE)+gYR(wRp(),REG("base").dR))} − 델타 슬리피지 ${won(tcE(wEp(),REG("base").dE)+tcR(wRp(),REG("base").dR))} − 캐리 ${won(unwY())}. `+
-    `같은 기간 실적은 <b>${won(RZ.end)}억</b>이고, 감마 누수의 <b>${share.toFixed(0)}%</b>가 상위 5일에서 나왔어요.`;
+  $("mainNote").innerHTML=`벤치마크 <b>${sgn(benchY())}억/년</b>(${bp(benchY())}bp) · 실적 <b>${won(RZ.end)}억</b> · 감마 누수의 <b>${share.toFixed(0)}%</b>가 상위 5일.`;
 }
 
 function fillGap(){
@@ -736,10 +729,8 @@ function fillBench(){
   ]);
   const prem=thetaP()-gYE(wEp(),b.dE)-gYR(wRp(),b.dR);
   $("derived").innerHTML=
-    `<b>실현 일변동은 국면 탭의 「예상 수준」</b>(주가 ${b.dE}% · 금리 ${b.dR}bp)을 써요. 세타는 내재 일변동(${P.diE}% · ${P.diR}bp)으로 재고요.<br><br>`+
-    `<b>부호</b> — 내재−실현 프리미엄 <b style="color:var(--good-ink)">${sgn(prem)}억</b> 이 `+
-    `슬리피지+캐리 <b style="color:var(--bad-ink)">−${won(tcE(wEp(),b.dE)+tcR(wRp(),b.dR)+unwY())}억</b> 보다 크면 벤치마크가 +, 작으면 −예요. `+
-    `<b>펀드 추적오차·베가·본드스왑은 기대값이 0</b>이라 벤치마크에 넣지 않아요 — 실적과 전망에만 나타나요.`;
+    `내재−실현 프리미엄 <b style="color:var(--good-ink)">${sgn(prem)}억</b> vs 슬리피지+캐리 <b style="color:var(--bad-ink)">−${won(tcE(wEp(),b.dE)+tcR(wRp(),b.dR)+unwY())}억</b> — 앞이 크면 벤치마크가 +예요. `+
+    `베가·본드스왑·추적오차는 기대값 0이라 여기 없어요.`;
 }
 
 function fillExposure(){
@@ -754,9 +745,8 @@ function fillExposure(){
     ["펀드 베이시스",   -P.teAmt,                "#D69A55", `지수 대비 1%p 언더퍼폼당`],
   ]);
   const dE=(wEa()/Math.max(1e-9,wEp())-1)*100, dR=(wRa()/Math.max(1e-9,wRp())-1)*100;
-  $("expNote").innerHTML=`계획 대비 실제 노출 — 주가 <b>${dE>=0?'+':''}${dE.toFixed(0)}%</b> · 금리 <b>${dR>=0?'+':''}${dR.toFixed(0)}%</b>. `+
-    `차이가 나면 실적이 벤치마크에서 벌어지는 이유에 <b>변동성 말고 노출</b>도 섞여요. `+
-    `<b>덮으면 모양이 바뀌어요</b> — 커버율을 올리면 감마·슬리피지·베가는 줄지만 <b>본드스왑</b>(IRS 기준 스왑션 vs KTB 기준 부채)이 커져요.`;
+  $("expNote").innerHTML=`계획 대비 노출 — 주가 <b>${dE>=0?'+':''}${dE.toFixed(0)}%</b> · 금리 <b>${dR>=0?'+':''}${dR.toFixed(0)}%</b>. `+
+    `커버율을 올리면 감마·슬리피지·베가는 줄지만 <b>본드스왑</b>(IRS 스왑션 vs KTB 부채)이 커져요 — 위험이 사라지는 게 아니라 모양이 바뀌어요.`;
 }
 
 function fillRegime(){
@@ -773,9 +763,9 @@ function fillRegime(){
       `<td>${w.dE.toFixed(2)}%</td><td>${w.dR.toFixed(1)}bp</td><td>${w.bs}bp</td><td>${w.te}%</td>`+
       `<td style="color:var(--bad-ink);font-weight:700">−${won(gm)}억</td></tr>`;
   }).join("");
-  $("regNote").innerHTML=`<b>${REG(REDIT).n}</b> 을(를) 편집 중이에요.`+
-    (r.auto?` 최근 60거래일 실측이라 변동성은 못 바꿔요(본드스왑·추적오차만 조절돼요).`:``)+
-    ` 「예상 수준」은 <b>벤치마크의 실현 일변동</b>으로도 쓰이고, 추적판에서 고른 국면은 <b>전망 밴드의 출발점</b>이 돼요 — 3개월 반감기로 예상 수준까지 돌아온다고 봐요.`;
+  $("regNote").innerHTML=`<b>${REG(REDIT).n}</b> 편집 중`+
+    (r.auto?` · 최근 60거래일 실측이라 변동성은 고정이에요.`:``)+
+    ` 「예상 수준」=벤치마크 기준, 추적판에서 고른 국면=전망 출발점(3개월 반감기로 복귀).`;
 }
 
 /* ───── 컨트롤 ───── */

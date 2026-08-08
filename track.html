@@ -792,7 +792,7 @@ function fillMtx(){
   ];
   const cell=v=>v===null?`<td style="color:#C7CEDC">—</td>`:`<td style="color:${C(v)}">${sgn(v)}</td>`;
   let sumF=0; KEYS.forEach(k=>sumF+=a[k]);
-  $("mtxTbl").innerHTML=`<tr><th>항목</th><th>장기평균</th><th>벤치마크</th><th>지금까지</th><th>앞으로</th></tr>`+
+  $("mtxTbl").innerHTML=`<tr><th>항목 <span style="font-weight:400">억</span></th><th>장기평균선</th><th>벤치마크</th><th>지금까지</th><th>앞으로</th></tr>`+
     R.map(r=>r[0]==="g"?`<tr class="grp"><td colspan="5">${r[1]}</td></tr>`
       :`<tr><td>${r[0]}</td>${cell(r[1])}${cell(r[2])}${cell(r[3])}${cell(r[4])}</tr>`).join("")+
     `<tr><td><b>합계</b></td><td><b>${won(benchY()*f)}</b></td><td><b>${won(RZ.bend)}</b></td><td><b>${won(RZ.end)}</b></td><td><b>${won(sumF)}</b></td></tr>`;
@@ -809,7 +809,7 @@ function fillHz(){
   const lo=Math.min.apply(null,rows.map(r=>r.q[0])), hi=Math.max.apply(null,rows.map(r=>r.q[2]));
   const spark=r=>{const w=42,X=v=>2+(w-4)*(v-lo)/Math.max(1e-9,hi-lo);
     return `<svg width="${w}" height="13" style="vertical-align:-2px"><line x1="${X(r.q[0]).toFixed(1)}" y1="6.5" x2="${X(r.q[2]).toFixed(1)}" y2="6.5" stroke="#9282DC" stroke-width="3" stroke-linecap="round"/><circle cx="${X(r.q[1]).toFixed(1)}" cy="6.5" r="2.6" fill="#5B4CA8"/></svg>`;};
-  $("hzTbl").innerHTML=`<tr><th>구간</th><th></th><th>중앙</th><th>80% 범위</th><th>ES95</th><th>한도 하회</th></tr>`+
+  $("hzTbl").innerHTML=`<tr><th>구간 <span style="font-weight:400">억</span></th><th>분포</th><th>중앙</th><th>80% 범위</th><th>ES95</th><th>한도 하회</th></tr>`+
     rows.map(r=>`<tr><td><b>${r.k}</b> <span style="color:var(--muted);font-size:10px">${dstr(r.t)}</span></td>`+
       `<td style="text-align:center">${spark(r)}</td><td><b>${won(r.q[1])}</b></td>`+
       `<td style="color:var(--muted)">${won(r.q[0])} ~ ${won(r.q[2])}</td>`+
@@ -895,10 +895,10 @@ function fillNotes(){
     `본드스왑·추적오차는 가정 경로`;
 }
 function fillRegTbl(){
-  $("regTbl").innerHTML=`<tr><th>국면</th><th>주가</th><th>금리</th><th>본드스왑</th><th>추적오차</th><th>감마(연)</th></tr>`+
+  $("regTbl").innerHTML=`<tr><th>국면</th><th>주가</th><th>금리</th><th>본드스왑</th><th>추적오차</th><th>감마 <span style="font-weight:400">억/년</span></th></tr>`+
     REGS.map(x=>{const w=regV(x.id), gm=gYE(wEa(),w.dE)+gYR(wRa(),w.dR), on=x.id===RSEL;
       return `<tr style="${on?'background:var(--pay-bg)':''}"><td><b>${x.n}</b>${on?' <span class="bdg pay">전망</span>':''}</td>`+
-        `<td>${w.dE.toFixed(2)}%</td><td>${w.dR.toFixed(1)}bp</td><td>${w.bs}bp</td><td>${w.te}%</td>`+
+        `<td>${w.dE.toFixed(2)}%</td><td>${w.dR.toFixed(1)}bp</td><td>${(+w.bs).toFixed(0)}bp</td><td>${(+w.te).toFixed(1)}%</td>`+
         `<td style="color:var(--bad-ink);font-weight:700">−${won(gm)}</td></tr>`;}).join("");
 }
 

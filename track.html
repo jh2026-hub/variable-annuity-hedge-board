@@ -271,6 +271,8 @@ const PAR=[
  {g:"노출", r:"act", id:"mulR", n:"금리 노출 민감도", u:"×",     v:1.0, min:0.2,max:3,   step:0.05, s:"계획 대비 실제 컨벡시티 배수"},
  {g:"커버", r:"act", id:"acovE",n:"주가 커버율(실제)",u:"%",     v:0,   min:0,  max:100, step:5,    s:"실제 매수 비중"},
  {g:"커버", r:"act", id:"acovR",n:"금리 커버율(실제)",u:"%",     v:0,   min:0,  max:100, step:5,    s:"실제 매수 비중 · 덮으면 본드스왑 발생"},
+ {g:"베가", r:"act", id:"vgE",  n:"주가 베가",     u:"억/1%p", v:200, min:0, max:2000,step:10,   s:"내재 일변동 1%p 상승 시 손실(숏베가)"},
+ {g:"베가", r:"act", id:"vgR",  n:"금리 베가",     u:"억/1bp", v:100, min:0, max:1000,step:5,    s:"내재 일변동 1bp 상승 시 손실(숏베가)"},
  {g:"베이시스", r:"act", id:"bsdv", n:"본드스왑 노출", u:"억/bp", v:3,  min:0,  max:20,  step:0.5,  s:"IRS−KTB 1bp 확대당 평가손익"},
  {g:"베이시스", r:"act", id:"teAmt",n:"펀드 베이시스 노출",u:"억/1%p",v:80,min:0,max:400,step:10,   s:"지수 대비 1%p 괴리당 손익"},
  /* ③ 국면 (편집 중인 프리셋의 값) */
@@ -309,8 +311,9 @@ const mv=d=>d*Math.sqrt(P.rbal)*Math.sqrt(2/Math.PI);                /* 리밸�
 const tcE=(w,d)=>(N()/P.rbal)*w*P.gamE*mv(d)*P.slipE/10000;
 const tcR=(w,d)=>(N()/P.rbal)*w*P.gamR*mv(d)*P.slipR;
 /* 베가 = 세타의 내재변동성 민감도 × 유효만기 (숏베가라 음수) */
-const vegE=()=>-wEa()*P.gamE*diE()*N()*TEFF;
-const vegR=()=>-wRa()*P.gamR*diR()*N()*TEFF;
+/* 베가는 직접 입력 — Γ·내재변동성·유효만기에서 유도하면 주가·금리가 동시에 안 맞아요 */
+const vegE=()=>-wEa()*P.vgE;
+const vegR=()=>-wRa()*P.vgR;
 const bsExp=()=>-(P.acovR/100)*P.mulR*P.bsdv;                        /* 본드스왑 — 덮은 만큼 생겨요 */
 const volBeta=()=>Math.sqrt((1/12)/TEFF);                            /* 단기 충격의 만기 감쇠(√T) */
 /* ⭐ 벤치마크 = 세타 − 감마 − 델타 슬리피지 − 캐리. 평가(베가·본드스왑·펀드베이시스)는 기대 0 이라 안 들어가요 */
@@ -790,7 +793,7 @@ function applyReg(){                      /* 슬라이더 → 편집 중 국면 
 }
 function buildControls(){
   const GLAB={"규모":"규모·부채","주가":"주가 (코스피)","금리":"금리 (국고 20년)","실행":"실행","계획":"경영계획",
-              "노출":"노출 민감도","커버":"감마 실제 커버율","베이시스":"베이시스 노출","국면":"이 국면의 값"};
+              "노출":"노출 민감도","커버":"감마 실제 커버율","베가":"베가 (숏)","베이시스":"베이시스 노출","국면":"이 국면의 값"};
   let hB="",hA="",hR="",cur="";
   PAR.forEach(p=>{
     let html="";

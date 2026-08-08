@@ -186,14 +186,26 @@ const REG=[{id:"recent",n:"📈 최근 국면 이어감",k:null},{id:"calm",n:"�
            {id:"base",n:"🌥 예상 수준",k:1.0},{id:"storm",n:"⛈ 격변",k:1.9}];
 let RK=null, CURSOR=null;
 const MAXFUT=252, PAST=252, NPATH=600, BLK=5, VOV=0.35;  /* VOV = 변동성 자체의 불확실성(로그 표준편차) */
-let VIEW="ytd";        /* ytd = 당해 1~12월 · 3y = 1년 전 ~ 1년 후 */
+let VIEW="ytd";        /* ytd = 당해 1~12월 · 3y = 1년 전~1년 후 · cum = 2023년부터 누적 */
 let FUT=252;           /* 전망 거래일 수 — 뷰에 따라 render() 에서 정해요 */
-const VIEWS=[{id:"ytd",n:"📅 당해 (1~12월)"},{id:"3y",n:"↔ 3개년 (1년 전~1년 후)"}];
+const VIEWS=[{id:"ytd",n:"📅 당해 (1~12월)"},{id:"3y",n:"↔ 3개년 (1년 전~1년 후)"},{id:"cum",n:"📊 누적 (23년~)"}];
+const CUMY="2023";
 /* 기준일이 속한 해의 첫 거래일 */
 function yearStart(){const y=S.data.dates[CURSOR].slice(0,4);
   for(let i=1;i<=CURSOR;i++) if(S.data.dates[i].slice(0,4)===y) return i;
   return Math.max(1,CURSOR-PAST+1);}
-function periodStart(){return VIEW==="ytd"?yearStart():Math.max(1,CURSOR-PAST+1);}
+function idxOfYear(y){                     /* 그 해 첫 거래일 */
+  for(let i=1;i<S.data.dates.length;i++) if(S.data.dates[i].slice(0,4)>=y) return i;
+  return 1;
+}
+function periodStart(){
+  if(VIEW==="ytd") return yearStart();
+  if(VIEW==="cum"){                        /* 기준일이 그 해보다 이르면 12개월 창으로 물러나요 */
+    const s=idxOfYear(CUMY);
+    return s<CURSOR-20?s:Math.max(1,CURSOR-PAST+1);
+  }
+  return Math.max(1,CURSOR-PAST+1);
+}
 /* 남은 전망 기간 — 당해 뷰는 연말까지, 3개년 뷰는 12개월 */
 function futLen(){
   if(VIEW!=="ytd") return MAXFUT;
@@ -504,6 +516,8 @@ function fillStats(){
   const rvR=Math.sqrt(RZ.day.reduce((a,b)=>a+b.rr*b.rr,0)/RZ.n*252);
   $("asofLab").textContent=VIEW==="ytd"
     ? `${S.data.dates[CURSOR].slice(0,4)}년 · 기준일 ${fmtd(S.data.dates[CURSOR])} · 경과 ${RZ.n}거래일 / 잔여 ${FUT}거래일`
+    : VIEW==="cum"
+    ? (st=>`${st.slice(0,4)}.${+st.slice(4,6)}월~ 누적 · 기준일 ${fmtd(S.data.dates[CURSOR])} · 경과 ${RZ.n}거래일(${(RZ.n/252).toFixed(1)}년) + 전망 12개월`)(S.data.dates[Math.max(1,CURSOR-RZ.n+1)])
     : `기준일 ${fmtd(S.data.dates[CURSOR])} · 과거 ${RZ.n}거래일 + 전망 12개월`;
   const cards=[
     ["지금까지 실적", won(RZ.end)+"억", `실현 주가 ${rvE.toFixed(0)}% · 금리 ${rvR.toFixed(0)}bp`, RZ.end>=0?"var(--good-ink)":"var(--bad-ink)"],

@@ -685,7 +685,15 @@ function drawMain(){
   let pb="M";
   pts.forEach((i,k)=>{pb+=`${X(i).toFixed(1)},${Y(PQ[k][0]).toFixed(1)} `;});
   for(let k=pts.length-1;k>=0;k--) pb+=`${X(pts[k]).toFixed(1)},${Y(PQ[k][1]).toFixed(1)} `;
-  if(SHOW.band) g.push(`<path d="${pb}Z" fill="#8A94A6" opacity="0.13"/>`);
+  if(SHOW.band){
+    g.push(`<path d="${pb}Z" fill="#8A94A6" opacity="0.17"/>`);
+    /* 테두리를 그어야 눈에 걸려요 — 채움만으론 위에 깔리는 몫 밴드에 묻힙니다 */
+    [0,1].forEach(s=>{let e="M";
+      pts.forEach((i,k)=>{e+=`${X(i).toFixed(1)},${Y(PQ[k][s]).toFixed(1)} `;});
+      g.push(`<path d="${e}" fill="none" stroke="#6E7889" stroke-width="1" stroke-dasharray="3 3" opacity="0.75"/>`);});
+    const yb=Y(PQ[PQ.length-1][1]);
+    g.push(`<text x="${(X(pts[pts.length-1])-4).toFixed(1)}" y="${Math.max(T+10,yb-4).toFixed(1)}" text-anchor="end" font-size="9.5" font-weight="700" fill="#6E7889">기준 밴드 80%</text>`);
+  }
   /* 미헷지 밴드 — 같은 국면에서 델타를 방치했다면 손익이 흩어졌을 범위(80%) */
   if(UQ){ let ub="M";
     pts.forEach((i,k)=>{ub+=`${X(i).toFixed(1)},${Y(UQ[k][0]).toFixed(1)} `;});

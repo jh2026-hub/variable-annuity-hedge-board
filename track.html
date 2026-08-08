@@ -37,9 +37,14 @@
         color:var(--muted);padding:8px 4px;min-height:38px;cursor:pointer}
   .ctx .seg button+button{border-left:1px solid var(--hair)}
   .ctx .seg button.on{background:#E7EFFD;color:var(--pay-ink)}
-  .src{display:inline-block;font-size:9.5px;font-weight:800;padding:1px 6px;border-radius:5px;vertical-align:1px}
-  .src.real{background:var(--good-bg);color:var(--good-ink)} .src.model{background:var(--pay-bg);color:var(--pay-ink)}
-  .src.assume{background:var(--leak-bg);color:var(--leak-ink)}
+  .src,.bdg{display:inline-block;font-size:9.5px;font-weight:800;padding:1px 6px;border-radius:5px;vertical-align:1px;
+        white-space:nowrap;letter-spacing:.01em}
+  .src.real,.bdg.good{background:var(--good-bg);color:var(--good-ink)}
+  .src.model,.bdg.pay{background:var(--pay-bg);color:var(--pay-ink)}
+  .src.assume,.bdg.leak{background:var(--leak-bg);color:var(--leak-ink)}
+  .bdg.sym{background:#F1EEFB;color:var(--sym-ink)} .bdg.bad{background:var(--bad-bg);color:var(--bad-ink)}
+  .bdg.ink{background:var(--panel2);color:var(--muted)}
+  .wsec{display:flex;align-items:center;gap:6px}
   .page{display:none}.page.on{display:block}
   .panel{background:var(--panel);border:1px solid var(--hair);border-radius:12px;padding:14px;margin-top:12px}
   .cap{font-size:14px;font-weight:800;margin-bottom:6px;padding-left:11px;position:relative;line-height:1.3}
@@ -244,7 +249,10 @@
 <p class="foot" style="text-align:center;margin-top:14px">KOSPI · 국고 20년 실측 · 그릭·비용은 예시</p>
 
 <script>
-const $=id=>document.getElementById(id);
+const _stub={set innerHTML(v){},get innerHTML(){return""},set textContent(v){},get textContent(){return""},
+  className:"",value:0,style:{},classList:{toggle(){},add(){},remove(){}},
+  addEventListener(){},setAttribute(){},querySelector(){return null},querySelectorAll(){return[]}};
+const $=id=>{const el=document.getElementById(id); if(!el)console.warn("no #"+id); return el||_stub;};
 const S={mkt:null,pnl:null,loaded:false,poolE:null,poolR:null,sdE:0,sdR:0,kAbsR:0.712};
 
 /* ═══ 상수 ═══ */
@@ -546,8 +554,10 @@ function render(fast){
   RZ=realized();
   FC=forecast(RZ.end, fast?NFAST:NPATH);
   HZ=horizons();
-  drawMain(); drawWF(); fillMtx(); fillHz(); drawLimit(); fillHero(); fillCtx(); fillSel();
-  fillBench(); fillExp(); fillLnk(); fillRegTbl(); fillNotes();
+  [drawMain,drawWF,fillMtx,fillHz,drawLimit,fillHero,fillCtx,fillSel,
+   fillBench,fillExp,fillLnk,fillRegTbl,fillNotes].forEach(fn=>{
+    try{fn();}catch(e){console.error("render:"+fn.name,e);}
+  });
 }
 function measure(){
   const w=Math.round($("mainSvg").getBoundingClientRect().width)||360;
@@ -656,9 +666,9 @@ function drawWF(){
     return Math.abs(s)>=0.5? top.concat([[`그 외 ${rest.length}항목`,s]]) : top;};
   const rowsM=pack(mkt,5), rowsO=pack(ops,6);   /* 본드스왑까지 전부 보이게 */
   const seq=[["장기평균선",bench,1]]
-    .concat(rowsM.length?[["h","시장 몫 — 변동성·내재변동성이 기준과 달랐어요"]]:[]).concat(rowsM.map(r=>[r[0],r[1],0]))
+    .concat(rowsM.length?[["h",`<span class="bdg sym">시장 몫</span> 변동성·내재변동성이 기준과 달랐어요`]]:[]).concat(rowsM.map(r=>[r[0],r[1],0]))
     .concat([["벤치마크선",RZ.bend,1]])
-    .concat(rowsO.length?[["h","운용 몫 — 본드스왑 · 실제 거래비용 · 추적오차 · 노출차"]]:[]).concat(rowsO.map(r=>[r[0],r[1],0]));
+    .concat(rowsO.length?[["h",`<span class="bdg pay">운용 몫</span> 본드스왑 · 거래비용 · 추적오차 · 노출차`]]:[]).concat(rowsO.map(r=>[r[0],r[1],0]));
   if(Math.abs(RZ.resid)>=0.5) seq.push(["미설명",RZ.resid,0]);
   seq.push(["실적",RZ.end,1]);
   measure();
@@ -704,10 +714,10 @@ function barRows(items,unit){
 function fillBench(){
   const b=REG("base");
   const it=[
-    ["h","받는 것"],
+    ["h",`<span class="bdg good">받는 것</span>`],
     ["세타 (주가)",  wEp()*P.thE, `내재 ${diE().toFixed(2)}%`],
     ["세타 (금리)",  wRp()*P.thR, `내재 ${diR().toFixed(2)}bp`],
-    ["h","나가는 것"],
+    ["h",`<span class="bdg leak">나가는 것</span>`],
     ["주가 감마",    -gYE(wEp(),b.dE), `½Γ×${b.dE}%²×${N()}일×VR${vr(VRE,P.rbal).toFixed(2)}`],
     ["금리 감마",    -gYR(wRp(),b.dR), `½Γ×${b.dR}bp²×${N()}일×VR${vr(VRR,P.rbal).toFixed(2)}`],
     ["주가 델타 슬리피지", -tcE(wEp(),b.dE), `Γ×이동 ${(100*P.gamE*mv(b.dE)).toFixed(0)}억 × ${P.slipE} × 연${(N()/P.rbal).toFixed(0)}회`],
@@ -716,7 +726,7 @@ function fillBench(){
     ["추적오차 드리프트", teDriftY(), `${P.teDft}%×${P.teAmt}억`],
   ];
   $("benchBig").innerHTML=`<span style="color:${C(benchY())}">${sgn(benchY())}</span>`+
-    `<small>억/년 · ${bpv(benchY())}bp</small>`;
+    `<small>억/년 · ${bpv(benchY())}bp</small> <span class="bdg ink">연 기준</span>`;
   $("benchSub").innerHTML=`적립금 ${P.av}조 · 자산미보유 ${(unmat()/1e4).toFixed(1)}조 · 기준 ${b.dE}% / ${b.dR}bp`;
   $("benchRows").innerHTML=barRows(it)+
     `<div class="wfr an"><div class="wl">합계</div><div class="wb"></div>`+
@@ -729,15 +739,15 @@ function fillBench(){
 function fillExp(){
   const b=REG("base");
   $("expRows").innerHTML=barRows([
-    ["h","실제 가중으로 다시 잰 값 (연 기준)"],
+    ["h",`<span class="bdg pay">연 기준</span> 실제 가중`],
     ["세타",         thA(), `노출 주가 ×${P.mulE} · 금리 ×${P.mulR}`],
     ["주가 감마",    -gYE(wEa(),b.dE), `미커버 ${(100-P.acovE).toFixed(0)}%`],
     ["금리 감마",    -gYR(wRa(),b.dR), `미커버 ${(100-P.acovR).toFixed(0)}%`],
-    ["h","민감도 (단위당)"],
+    ["h",`<span class="bdg ink">단위당</span> 민감도`],
     ["주가 베가",    vegE(), "내재 일변동 1%p당"],
     ["금리 베가",    vegR(), "내재 일변동 1bp당"],
-    ["본드스왑",     bsExp(), "스프레드 1bp 확대당"],
-    ["펀드 베이시스", -P.teAmt, "지수 대비 1%p 언더퍼폼당"],
+    ["본드스왑",     bsExp(), `스프레드 1bp 확대당 <span class="bdg leak">가정</span>`],
+    ["펀드 베이시스", -P.teAmt, `지수 대비 1%p당 <span class="bdg leak">가정</span>`],
   ]);
   const dE=(wEa()/Math.max(1e-9,wEp())-1)*100, dR=(wRa()/Math.max(1e-9,wRp())-1)*100;
   const opsv=RZ.end-RZ.bend;
@@ -761,7 +771,7 @@ function fillLnk(){
 function fillMtx(){
   const f=RZ.n/N(), b=REG("base"), a=FC.attr(FUT-1);
   const R=[
-    ["g","확정 — 시간·거래로 굳는 손익"],
+    ["g",`<span class="bdg pay">확정</span> 시간·거래로 굳어요`],
     ["세타",          thP()*f,            RZ.bparts.th,   RZ.parts.th,    a.th],
     ["주가 감마",     -gYE(wEp(),b.dE)*f, RZ.bparts.gE,   RZ.parts.gE,    a.gE],
     ["금리 감마",     -gYR(wRp(),b.dR)*f, RZ.bparts.gR,   RZ.parts.gR,    a.gR],
@@ -769,7 +779,7 @@ function fillMtx(){
     ["금리 델타비용", -tcR(wRp(),b.dR)*f, RZ.bparts.tR,   RZ.parts.tR,    a.tR],
     ["캐리",          -carry()*f,         RZ.bparts.carry,RZ.parts.carry, a.carry],
     ["추적오차 드리프트", teDriftY()*f,    RZ.bparts.te,   null,           null],
-    ["g","평가 — 되돌아올 수 있는 손익"],
+    ["g",`<span class="bdg sym">평가</span> 되돌아올 수 있어요`],
     ["주가 베가",     null, RZ.bparts.vgE, RZ.parts.vgE, a.vgE],
     ["금리 베가",     null, RZ.bparts.vgR, RZ.parts.vgR, a.vgR],
     ["본드스왑",      null, RZ.bparts.bs,  RZ.parts.bs,  a.bs],
@@ -852,8 +862,6 @@ function fillHero(){
     `<div class="cell"><div class="k">벤치마크</div><div class="v num" style="color:${C(RZ.bend)}">${won(RZ.bend)}</div><div class="s">같은 시장·계획 운용</div></div>`+
     `<div class="cell"><div class="k">실적</div><div class="v num" style="color:${C(RZ.end)}">${won(RZ.end)}</div><div class="s">일변동 ${dE.toFixed(2)}%</div></div>`+
     `<div class="cell"><div class="k">${VIEW==="ytd"?"연말":"1년 뒤"}</div><div class="v num" style="color:${C(y1)}">${won(y1)}</div><div class="s">ES95 ${won(FC.es(FUT-1,0.05))}</div></div>`;
-  const spr=diE()-REG("base").dE;
-  $("chartNote").innerHTML=`세타가 함의하는 내재 일변동 <b>${diE().toFixed(2)}%</b> vs 기준 ${REG("base").dE}% → 스프레드 <b style="color:${C(spr)}">${spr>=0?'+':''}${spr.toFixed(2)}%p</b>. 이게 세타−감마의 부호를 정해요.`;
   $("chartLab").textContent=`${VIEW==="ytd"?S.mkt.dates[CURSOR].slice(0,4)+"년":VIEW==="cum"?CUMY+"년~":"12개월"} · ${RZ.n}일`;
 }
 function fillCtx(){

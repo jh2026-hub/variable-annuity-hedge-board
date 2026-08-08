@@ -89,6 +89,11 @@
   .fundbox .big{font-size:26px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
   .fundbox .big small{font-size:13px;color:var(--muted);font-weight:500;margin-left:4px}
   .fundbox p{font-size:11.5px;color:var(--muted);margin-top:5px;line-height:1.6}
+  .linkbar{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;background:var(--panel);border:1px solid #9DBBF3;
+        border-radius:11px;padding:10px 13px;margin-top:14px;font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .linkbar b{color:var(--ink);font-size:13px;font-weight:700}
+  .linkbar .go{margin-left:auto;min-height:32px;padding:5px 12px;border-radius:16px;background:var(--pay);color:#fff;
+        border:0;font-family:inherit;font-size:11.5px;font-weight:800;cursor:pointer}
   .rows{display:flex;flex-direction:column;gap:7px;margin-top:10px}
   .row{display:flex;align-items:center;gap:9px}
   .row .lb{flex:0 0 92px;font-size:11.5px;font-weight:700;line-height:1.2}
@@ -160,6 +165,7 @@
 </div><!-- /pg_main 상단 -->
 
 <div class="page" id="pg_bud">
+<div class="linkbar" id="linkBud"></div>
 <div class="panel">
   <div class="cap">벤치마크<span>여기서 정한 값이 곧 벤치마크 기울기예요</span></div>
   <div class="fundbox" id="planBig"></div>
@@ -174,6 +180,7 @@
 </div><!-- /pg_bud -->
 
 <div class="page" id="pg_act">
+<div class="linkbar" id="linkAct"></div>
 <div class="panel">
   <div class="cap">실제 노출<span>계획과 얼마나 다른가</span></div>
   <div class="rows" id="expRows"></div>
@@ -187,6 +194,7 @@
 </div><!-- /pg_act -->
 
 <div class="page" id="pg_reg">
+<div class="linkbar" id="linkReg"></div>
 <div class="panel">
   <div class="cap">국면 설정<span>변동성 · 본드스왑 · 펀드 추적오차</span></div>
   <p class="lede">국면마다 <b>하루 얼마나 움직이는가</b>를 정해요.</p>
@@ -526,7 +534,7 @@ function render(){
   if(!S.loaded)return;
   seed(); FUT=futLen();
   RZ=realized(); FC=forecast(RZ.end); HZ=horizons();
-  drawMain(); drawHz(); fillAttr(); fillStats(); fillGap(); fillBench(); fillExposure(); fillRegime();
+  drawMain(); drawHz(); fillAttr(); fillStats(); fillGap(); fillBench(); fillExposure(); fillRegime(); fillLink();
   if($("v_cursor")) $("v_cursor").textContent=fmtd(S.data.dates[CURSOR]);
 }
 
@@ -720,6 +728,19 @@ function fillGap(){
   ].map(c=>`<div class="b"><b>${c[0]}</b>${c[1]}</div>`).join("");
 }
 
+function fillLink(){
+  const gap=RZ.end-benchY()*RZ.n/N(), y1=FC.q(FUT-1,[0.5])[0];
+  const c=v=>v>=0?'var(--good-ink)':'var(--bad-ink)';
+  const h=`벤치마크 <b style="color:${c(benchY())}">${sgn(benchY())}</b>억/년 · `+
+    `실적 <b style="color:${c(RZ.end)}">${sgn(RZ.end)}</b>억 · `+
+    `갭 <b style="color:${c(gap)}">${sgn(gap)}</b>억 · `+
+    `${VIEW==="ytd"?"연말":"1년 뒤"} <b style="color:${c(y1)}">${sgn(y1)}</b>억`+
+    `<button class="go" data-go="main">📈 추적판</button>`;
+  ["linkBud","linkAct","linkReg"].forEach(id=>{
+    const el=$(id); if(!el)return; el.innerHTML=h;
+    ((el.querySelectorAll&&el.querySelectorAll("[data-go]"))||[]).forEach(b=>b.addEventListener("click",()=>tab("main")));
+  });
+}
 function fillBench(){
   const b=REG("base");
   $("planBig").innerHTML=`<div class="t">벤치마크 기울기</div>`+

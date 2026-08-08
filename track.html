@@ -53,7 +53,10 @@
   .hero.ok .tag{background:var(--good-bg);color:var(--good-ink)}
   .hero.warn .tag{background:var(--leak-bg);color:var(--leak-ink)}
   .hero.bad .tag{background:var(--bad-bg);color:var(--bad-ink)}
-  .hero .big{font-size:31px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin:3px 0 3px}
+  .hero .big,.kpi{font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin:3px 0;
+        font-variant-numeric:tabular-nums}
+  .kpi{margin:6px 0 1px}
+  .kpi small,.hero .big small{font-size:14px;color:var(--muted);font-weight:600;margin-left:2px;letter-spacing:0}
   .hero .sub{font-size:11.5px;color:var(--muted);line-height:1.6}.hero .sub b{color:var(--ink)}
   .hero .ex{margin-top:7px;padding-top:7px;border-top:1px solid var(--hair);font-size:10.5px;color:var(--muted)}
   .flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:center;gap:3px;margin-top:10px}
@@ -125,8 +128,8 @@
 <div class="ctx">
   <div class="who" id="ctxWho"></div>
   <div class="seg">
-    <button class="on" id="tb_m">메인</button><button id="tb_b">벤치마크</button>
-    <button id="tb_r">실적</button><button id="tb_f">전망</button>
+    <button class="on" id="tb_m">메인</button><button id="tb_f">전망</button>
+    <button id="tb_b">벤치마크</button><button id="tb_r">실적</button>
   </div>
 </div>
 
@@ -176,12 +179,31 @@
 
 </div>
 
+<!-- ══════ 전망 ══════ -->
+<div class="page" id="pg_f">
+<div class="lnk" id="lnkF"></div>
+<div class="panel">
+  <div class="cap">구간별 전망<span id="hzLab"></span></div>
+  <div class="kpi" id="fcBig"></div>
+  <div class="lede" id="fcSub"></div>
+  <div class="tblwrap"><table id="hzTbl"></table></div>
+  <div class="note" id="hzNote"></div>
+</div>
+<div class="panel">
+  <div class="cap">국면<span>하루 얼마나 움직이나</span></div>
+  <div class="chips" id="regSel"></div>
+  <div class="nums" id="regNums" style="margin-top:9px"></div>
+  <div class="tblwrap"><table id="regTbl"></table></div>
+  <div class="note" id="regNote"></div>
+</div>
+</div>
+
 <!-- ══════ 벤치마크 ══════ -->
 <div class="page" id="pg_b">
 <div class="lnk" id="lnkB"></div>
 <div class="panel">
   <div class="cap">장기평균선 구성<span>연 기준 · 값을 바꾸면 바로 반영돼요</span></div>
-  <div class="big num" id="benchBig" style="font-size:29px;font-weight:700;letter-spacing:-.03em;margin:6px 0 2px"></div>
+  <div class="kpi" id="benchBig"></div>
   <div class="lede" id="benchSub"></div>
   <div class="wf" id="benchRows"></div>
   <div class="note" id="benchNote"></div>
@@ -197,6 +219,8 @@
 <div class="lnk" id="lnkR"></div>
 <div class="panel">
   <div class="cap">실제 노출<span>계획과 얼마나 다른가</span></div>
+  <div class="kpi" id="expBig"></div>
+  <div class="lede" id="expSub"></div>
   <div class="wf" id="expRows"></div>
   <div class="note" id="expNote"></div>
 </div>
@@ -209,23 +233,6 @@
   <div class="cap">기준일<span>과거 시점으로 되감기</span></div>
   <div id="curSel"></div>
   <div class="note" id="ledNote"></div>
-</div>
-</div>
-
-<!-- ══════ 전망 ══════ -->
-<div class="page" id="pg_f">
-<div class="lnk" id="lnkF"></div>
-<div class="panel">
-  <div class="cap">구간별 전망<span id="hzLab"></span></div>
-  <div class="tblwrap"><table id="hzTbl"></table></div>
-  <div class="note" id="hzNote"></div>
-</div>
-<div class="panel">
-  <div class="cap">국면<span>하루 얼마나 움직이나</span></div>
-  <div class="chips" id="regSel"></div>
-  <div class="nums" id="regNums" style="margin-top:9px"></div>
-  <div class="tblwrap"><table id="regTbl"></table></div>
-  <div class="note" id="regNote"></div>
 </div>
 </div>
 
@@ -731,6 +738,9 @@ function fillExp(){
     ["펀드 베이시스", -P.teAmt, "지수 대비 1%p 언더퍼폼당"],
   ]);
   const dE=(wEa()/Math.max(1e-9,wEp())-1)*100, dR=(wRa()/Math.max(1e-9,wRp())-1)*100;
+  const opsv=RZ.end-RZ.bend;
+  $("expBig").innerHTML=`<span style="color:${C(opsv)}">${sgn(opsv)}</span><small>억 · 운용 몫</small>`;
+  $("expSub").innerHTML=`벤치마크선 ${won(RZ.bend)} → 실적 ${won(RZ.end)} · 같은 시장에서 계획과 다르게 운용한 몫이에요`;
   $("expNote").innerHTML=`계획 대비 노출 — 주가 <b>${dE>=0?"+":""}${dE.toFixed(0)}%</b> · 금리 <b>${dR>=0?"+":""}${dR.toFixed(0)}%</b>. `+
     `커버율을 올리면 감마·슬리피지·베가는 줄고 <b>본드스왑</b>이 커져요 — 위험이 사라지는 게 아니라 모양이 바뀌어요.`;
   $("ledNote").innerHTML=RZ.src==="model"
@@ -788,6 +798,9 @@ function fillHz(){
       `<td style="color:var(--muted)">${won(r.q[0])} ~ ${won(r.q[2])}</td>`+
       `<td style="color:var(--bad-ink)">${won(r.es)}</td>`+
       `<td style="color:${r.pv>=10?'var(--bad-ink)':'var(--muted)'};font-weight:${r.pv>=10?700:400}">${r.pv<0.2?'~0':r.pv.toFixed(0)}%</td></tr>`).join("");
+  const y1=FC.q(FUT-1,[0.10,0.50,0.90]);
+  $("fcBig").innerHTML=`<span style="color:${C(y1[1])}">${won(y1[1])}</span><small>억 · ${VIEW==="ytd"?"연말":"1년 뒤"} 중앙</small>`;
+  $("fcSub").innerHTML=`80% 범위 ${won(y1[0])} ~ ${won(y1[2])} · ES95 ${won(FC.es(FUT-1,0.05))} · 국면 ${REG(RSEL).n}`;
   $("hzLab").textContent=`경로 ${FC.np.toLocaleString()}개`;
   $("hzNote").innerHTML=`<b>ES95</b> = 나쁜 5% 경로의 평균 — 꼬리는 중앙값이 아니라 여기서 봐요. 분위수 표본오차가 있어 끝자리는 잡음이에요.`;
 }
@@ -924,7 +937,7 @@ function build(){
       const l=$("v_"+id); if(l)l.textContent=P[id]; render(true);}
   });
   document.addEventListener("change",e=>{ if(e.target.id&&e.target.id.indexOf("s_")===0) render(); });
-  ["m","b","r","f"].forEach(k=>$("tb_"+k).addEventListener("click",()=>tab(k)));
+  TABS.forEach(k=>$("tb_"+k).addEventListener("click",()=>tab(k)));
   const sv=$("mainSvg");
   sv.addEventListener("pointermove",onMove); sv.addEventListener("pointerleave",onLeave);
   sv.addEventListener("touchmove",onMove,{passive:true});
@@ -946,7 +959,7 @@ function syncReg(){
     if(el){el.value=+(+a[1]).toFixed(2); el.disabled=!!(r.auto&&(a[0]==="R_dE"||a[0]==="R_dR"));}
   });
 }
-const TABS=["m","b","r","f"];
+const TABS=["m","f","b","r"];
 function tab(w){
   TAB=w;
   TABS.forEach(k=>{$("tb_"+k).classList.toggle("on",k===w); $("pg_"+k).classList.toggle("on",k===w);});

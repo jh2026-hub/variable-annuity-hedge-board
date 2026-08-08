@@ -17,27 +17,27 @@
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{background:var(--bg);color:var(--ink)}
   body{font-family:"IBM Plex Sans KR",system-ui,sans-serif;-webkit-font-smoothing:antialiased;
-       padding:14px 12px 60px;max-width:880px;margin:0 auto;line-height:1.55;word-break:keep-all}
+       padding:12px 11px 56px;max-width:880px;margin:0 auto;line-height:1.55;word-break:keep-all}
   svg text{font-family:"IBM Plex Sans KR",system-ui,sans-serif}
   .num{font-variant-numeric:tabular-nums}
   code{font-family:inherit;font-size:inherit;background:var(--panel2);border:1px solid var(--hair);
        border-radius:4px;padding:0 4px;color:var(--ink)}
   .top{display:flex;align-items:center;gap:9px}
   .back{display:inline-flex;align-items:center;min-height:32px;padding:4px 11px;border-radius:16px;
-        background:var(--panel);border:1px solid var(--hair);color:var(--muted);font-size:11.5px;font-weight:600;text-decoration:none}
-  h1{font-size:17px;font-weight:700;letter-spacing:-.02em}
+        background:var(--panel);border:1px solid var(--hair);color:var(--muted);font-size:11px;font-weight:600;text-decoration:none}
+  h1{font-size:15px;font-weight:700;letter-spacing:-.02em}
   .ctx{position:sticky;top:0;z-index:20;background:var(--bg);padding:7px 0 8px;margin-top:7px;border-bottom:1px solid var(--hair)}
-  .ctx .who{font-size:11.5px;font-weight:600;color:var(--muted);display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .ctx .who{font-size:11px;font-weight:600;color:var(--muted);display:flex;gap:6px;flex-wrap:wrap;align-items:center}
   .lnk{display:flex;flex-wrap:wrap;align-items:center;gap:5px 12px;background:var(--panel);border:1px solid #9DBBF3;
-       border-radius:10px;padding:8px 11px;margin-top:12px;font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
-  .lnk b{color:var(--ink);font-size:11.5px}
+       border-radius:10px;padding:8px 11px;margin-top:12px;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .lnk b{color:var(--ink);font-size:11px}
   .ctx .who b{color:var(--ink)}
   .ctx .seg{display:flex;width:100%;margin-top:6px;background:var(--panel);border:1px solid var(--hair);border-radius:9px;overflow:hidden}
-  .ctx .seg button{flex:1 1 0;min-width:0;border:0;background:none;font-family:inherit;font-size:11.5px;font-weight:700;
+  .ctx .seg button{flex:1 1 0;min-width:0;border:0;background:none;font-family:inherit;font-size:11px;font-weight:700;
         color:var(--muted);padding:8px 4px;min-height:38px;cursor:pointer}
   .ctx .seg button+button{border-left:1px solid var(--hair)}
   .ctx .seg button.on{background:#E7EFFD;color:var(--pay-ink)}
-  .src,.bdg{display:inline-block;font-size:9.5px;font-weight:800;padding:1px 6px;border-radius:5px;vertical-align:1px;
+  .src,.bdg{display:inline-block;font-size:9px;font-weight:800;padding:1px 6px;border-radius:5px;vertical-align:1px;
         white-space:nowrap;letter-spacing:.01em}
   .src.real,.bdg.good{background:var(--good-bg);color:var(--good-ink)}
   .src.model,.bdg.pay{background:var(--pay-bg);color:var(--pay-ink)}
@@ -46,89 +46,90 @@
   .bdg.ink{background:var(--panel2);color:var(--muted)}
   .wsec{display:flex;align-items:center;gap:6px}
   .page{display:none}.page.on{display:block}
-  .panel{background:var(--panel);border:1px solid var(--hair);border-radius:12px;padding:14px;margin-top:12px}
-  .cap{font-size:14px;font-weight:800;margin-bottom:6px;padding-left:11px;position:relative;line-height:1.3}
+  .panel{background:var(--panel);border:1px solid var(--hair);border-radius:11px;padding:12px;margin-top:10px}
+  .cap{font-size:12.5px;font-weight:800;margin-bottom:6px;padding-left:11px;position:relative;line-height:1.35}
   .cap::before{content:"";position:absolute;left:0;top:2px;bottom:2px;width:4px;border-radius:2px;background:var(--pay)}
-  .cap span{font-weight:400;color:var(--muted);font-size:11.5px;margin-left:5px}
-  .foot{color:var(--muted);font-size:11.5px;line-height:1.5}
+  .cap span{font-weight:400;color:var(--muted);font-size:11px;margin-left:5px}
+  .foot{color:var(--muted);font-size:11px;line-height:1.5}
   .hero{position:relative;border-radius:12px;padding:13px 15px 13px 18px;margin-top:12px;
         background:var(--panel);border:1px solid var(--hair);overflow:hidden}
   .hero::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--good)}
   .hero.warn::before{background:var(--leak)} .hero.bad::before{background:var(--bad)}
-  .hero .hl{display:flex;align-items:center;gap:7px;flex-wrap:wrap;font-size:11.5px;font-weight:600;color:var(--muted)}
-  .hero .tag{font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:11px}
+  .hero .hl{display:flex;align-items:center;gap:7px;flex-wrap:wrap;font-size:11px;font-weight:600;color:var(--muted)}
+  .hero .tag{font-size:10px;font-weight:800;padding:2px 8px;border-radius:11px}
   .hero.ok .tag{background:var(--good-bg);color:var(--good-ink)}
   .hero.warn .tag{background:var(--leak-bg);color:var(--leak-ink)}
   .hero.bad .tag{background:var(--bad-bg);color:var(--bad-ink)}
-  .hero .big,.kpi{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin:3px 0;
+  .hero .big,.kpi{font-size:19px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin:3px 0;
         font-variant-numeric:tabular-nums}
   .kpi{margin:6px 0 1px}
-  .kpi small,.hero .big small{font-size:10.5px;color:var(--muted);font-weight:600;margin-left:2px;letter-spacing:0}
-  .hero .sub{font-size:10.5px;color:var(--muted);line-height:1.6}.hero .sub b{color:var(--ink)}
-  .hero .ex{margin-top:7px;padding-top:7px;border-top:1px solid var(--hair);font-size:10.5px;color:var(--muted)}
+  .kpi small,.hero .big small{font-size:10px;color:var(--muted);font-weight:600;margin-left:2px;letter-spacing:0}
+  .hero .sub{font-size:10px;color:var(--muted);line-height:1.6}.hero .sub b{color:var(--ink)}
+  .hero .ex{margin-top:7px;padding-top:7px;border-top:1px solid var(--hair);font-size:10px;color:var(--muted)}
   .flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:center;gap:3px;margin-top:10px}
   .flow .cell{background:var(--panel);border:1px solid var(--hair);border-radius:10px;padding:8px 5px;text-align:center;min-width:0;overflow:hidden}
-  .flow .k{font-size:10.5px;color:var(--muted);font-weight:600}
-  .flow .v{font-size:15px;font-weight:700;letter-spacing:-.03em;white-space:nowrap}
-  .flow .s{font-size:9.5px;color:var(--muted);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .flow .ar{text-align:center;color:#AAB4C6;font-size:11.5px}
+  .flow .k{font-size:10px;color:var(--muted);font-weight:600}
+  .flow .v{font-size:13.5px;font-weight:700;letter-spacing:-.03em;white-space:nowrap}
+  .flow .s{font-size:9px;color:var(--muted);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .flow .ar{text-align:center;color:#AAB4C6;font-size:11px}
   .chartwrap svg{width:100%;display:block;overflow:visible;touch-action:pan-y}
   .wf{margin-top:8px}
-  .wfr{display:grid;grid-template-columns:84px minmax(0,1fr) 60px;align-items:center;gap:7px;padding:3px 0}
-  .wfr .wl{font-size:11.5px;line-height:1.25;color:var(--muted);text-align:right;word-break:keep-all}
-  .wfr .wb{position:relative;height:17px;background:#F1F4F9;border-radius:4px;overflow:hidden}
+  .wfr{display:grid;grid-template-columns:80px minmax(0,1fr) 58px;align-items:center;gap:6px;padding:2px 0}
+  .wfr .wl{font-size:11px;line-height:1.25;color:var(--muted);text-align:right;word-break:keep-all}
+  .wfr .wb{position:relative;height:15px;background:#F1F4F9;border-radius:4px;overflow:hidden}
   .wfr .wb i{position:absolute;top:0;height:100%;border-radius:3px}
   .wfr .wb u{position:absolute;top:0;bottom:0;width:1.5px;background:#B6C0D0}
-  .wfr .wv{font-size:11.5px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+  .wfr .wv{font-size:11px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
   .wfr.an{padding:5px 0}
-  .wfr.an .wl{font-size:11.5px;font-weight:800;color:var(--ink)}
-  .wfr.an .wb{height:20px;background:#E7EBF2}
-  .wfr.an .wv{font-size:11.5px;color:var(--ink)}
-  .wsec{font-size:10.5px;font-weight:800;color:var(--muted);letter-spacing:.01em;
+  .wfr.an .wl{font-size:11px;font-weight:800;color:var(--ink)}
+  .wfr.an .wb{height:18px;background:#E7EBF2}
+  .wfr.an .wv{font-size:11px;color:var(--ink)}
+  .wsec{font-size:10px;font-weight:800;color:var(--muted);letter-spacing:.01em;
         margin:9px 0 2px;padding:4px 7px;background:var(--panel2);border-radius:5px}
-  .wax{display:flex;justify-content:space-between;align-items:center;font-size:9.5px;color:#98A2B3;
+  .wax{display:flex;justify-content:space-between;align-items:center;font-size:9px;color:#98A2B3;
        padding-left:91px;padding-right:67px;font-variant-numeric:tabular-nums}
   @media(min-width:560px){.wfr{grid-template-columns:126px minmax(0,1fr) 74px}
     .wax{padding-left:133px;padding-right:81px}}
   .asof{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;padding-top:9px;border-top:1px solid var(--hair)}
-  .asof .al{font-size:11.5px;font-weight:600;color:var(--muted)}
+  .asof .al{font-size:11px;font-weight:600;color:var(--muted)}
   .asof .al b{color:var(--ink);font-variant-numeric:tabular-nums}
   .asof .chips{margin-left:auto}
-  .asof .chip{min-height:30px;padding:4px 9px;font-size:10.5px}
-  .rd{font-size:11.5px;color:var(--muted);min-height:19px;padding:1px 2px 5px}
+  .asof .chip{min-height:30px;padding:4px 9px;font-size:10px}
+  .rd{font-size:11px;color:var(--muted);min-height:19px;padding:1px 2px 5px}
   .rd b{color:var(--ink);font-weight:700}
-  table{width:100%;border-collapse:collapse;font-size:11.5px;font-variant-numeric:tabular-nums}
-  th,td{padding:6px 4px;font-size:11.5px;border-bottom:1px solid var(--hair);text-align:right;white-space:nowrap}
-  th{font-size:10.5px;color:var(--muted);font-weight:700}
+  table{width:100%;border-collapse:collapse;font-size:11px;font-variant-numeric:tabular-nums}
+  th,td{padding:5px 4px;font-size:11px;border-bottom:1px solid var(--hair);text-align:right;white-space:nowrap}
+  th{font-size:10px;color:var(--muted);font-weight:700}
   th:first-child,td:first-child{text-align:left;white-space:normal}
   .tblwrap{overflow-x:auto;margin-top:4px}
-  tr.grp td{background:var(--panel2);font-size:10.5px;font-weight:800;color:var(--muted);padding:4px 5px}
-  .note{font-size:11.5px;color:var(--muted);background:var(--panel2);border:1px solid var(--hair);border-radius:9px;
-        padding:8px 10px;margin-top:9px;line-height:1.55}.note b{color:var(--ink)}
+  tr.grp td{background:var(--panel2);font-size:10px;font-weight:800;color:var(--muted);padding:4px 5px}
+  .note{font-size:11px;color:var(--muted);background:var(--panel2);border:1px solid var(--hair);border-radius:9px;
+        padding:8px 10px;margin-top:9px;line-height:1.5}.note b{color:var(--ink)}
   .chips{display:flex;flex-wrap:wrap;gap:5px}
   .chips.pad{margin-top:10px}
   .chip{min-height:34px;padding:6px 11px;border-radius:17px;background:var(--panel);border:1px solid var(--hair);
-        color:var(--muted);font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit}
+        color:var(--muted);font-size:11px;font-weight:600;cursor:pointer;font-family:inherit}
   .chip.on{background:#E7EFFD;border-color:#9DBBF3;color:var(--pay-ink)}
-  .grp2{font-size:10.5px;font-weight:800;color:var(--muted);margin:14px 0 4px;padding-top:9px;border-top:1px solid var(--hair)}
+  .grp2{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:800;color:var(--muted);
+        margin:13px 0 4px;padding-top:8px;border-top:1px solid var(--hair)}
   .grp2.first{border-top:0;margin-top:4px;padding-top:0}
   .nums{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
   .nf{background:var(--panel2);border:1px solid var(--hair);border-radius:9px;padding:7px 9px;min-width:0}
   .nf input::-webkit-outer-spin-button,.nf input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
   .nf input[type=number]{-moz-appearance:textfield;appearance:textfield}
-  .nf label{display:block;font-size:11.5px;font-weight:600;line-height:1.25}
-  .nf small{display:block;color:var(--muted);font-size:9.5px;font-weight:400;margin-top:1px}
+  .nf label{display:block;font-size:11px;font-weight:600;line-height:1.25}
+  .nf small{display:block;color:var(--muted);font-size:9px;font-weight:400;margin-top:1px}
   .nf .row{display:flex;align-items:center;gap:4px;margin-top:5px}
   .nf button{width:28px;height:32px;border:1px solid var(--hair);background:var(--panel);border-radius:7px;
-        font-family:inherit;font-size:16px;font-weight:700;color:var(--pay-ink);cursor:pointer;flex:0 0 auto}
+        font-family:inherit;font-size:13.5px;font-weight:700;color:var(--pay-ink);cursor:pointer;flex:0 0 auto}
   .nf input{flex:1 1 auto;min-width:0;height:32px;border:1px solid var(--hair);border-radius:7px;background:var(--panel);
-        font-family:inherit;font-size:11.5px;font-weight:700;text-align:center;color:var(--ink);font-variant-numeric:tabular-nums}
+        font-family:inherit;font-size:11px;font-weight:700;text-align:center;color:var(--ink);font-variant-numeric:tabular-nums}
   .nf input:disabled{background:var(--panel2);color:var(--muted)}
-  .nf .u{font-size:9.5px;color:var(--muted);flex:0 0 auto}
+  .nf .u{font-size:9px;color:var(--muted);flex:0 0 auto}
   .sl{margin-top:7px}
-  .sl label{display:flex;justify-content:space-between;font-size:11.5px;font-weight:600}
+  .sl label{display:flex;justify-content:space-between;font-size:11px;font-weight:600}
   .sl label b{color:var(--pay-ink);font-variant-numeric:tabular-nums}
-  .sl small{display:block;color:var(--muted);font-size:9.5px;font-weight:400}
+  .sl small{display:block;color:var(--muted);font-size:9px;font-weight:400}
   input[type=range]{width:100%;margin-top:1px;accent-color:#5C82CF;height:24px}
   @media(min-width:560px){.nums{grid-template-columns:repeat(3,minmax(0,1fr))}}
 </style>
@@ -158,7 +159,7 @@
 <div class="chips pad" id="selRow"></div>
 
 <div class="panel">
-  <div class="cap">누적 헷지손익<span id="chartLab"></span></div>
+  <div class="cap">누적 헷지손익 <span class="bdg good">실측 경로</span><span id="chartLab"></span></div>
   <div class="rd" id="rdOut"></div>
   <div class="chartwrap"><svg id="mainSvg" role="img" aria-label="누적 헷지손익"></svg></div>
   <div class="asof">
@@ -169,24 +170,24 @@
 </div>
 
 <div class="panel">
-  <div class="cap">왜 벌어졌나<span>장기평균선 → 실적</span></div>
+  <div class="cap">왜 벌어졌나 <span class="bdg ink">분해</span><span>장기평균선 → 실적</span></div>
   <div class="wf" id="wf"></div>
   <div class="note" id="wfNote"></div>
 </div>
 
 <div class="panel">
-  <div class="cap">항목별</div>
+  <div class="cap">항목별 <span class="bdg ink">분해</span></div>
   <div class="tblwrap"><table id="mtxTbl"></table></div>
 </div>
 
 <div class="panel">
-  <div class="cap">한도</div>
+  <div class="cap">한도 <span class="bdg" id="limBdg"></span></div>
   <div class="chartwrap"><svg id="limSvg" role="img" aria-label="한도 소진"></svg></div>
   <div class="note" id="limNote"></div>
 </div>
 
 <div class="panel">
-  <div class="cap">한계</div>
+  <div class="cap">한계 <span class="bdg leak">주의</span></div>
   <div class="note" id="limitNote"></div>
 </div>
 
@@ -196,14 +197,14 @@
 <div class="page" id="pg_f">
 <div class="lnk" id="lnkF"></div>
 <div class="panel">
-  <div class="cap">구간별 전망<span id="hzLab"></span></div>
+  <div class="cap">구간별 전망 <span class="bdg sym">시뮬</span><span id="hzLab"></span></div>
   <div class="kpi" id="fcBig"></div>
   <div class="lede" id="fcSub"></div>
   <div class="tblwrap"><table id="hzTbl"></table></div>
   <div class="note" id="hzNote"></div>
 </div>
 <div class="panel">
-  <div class="cap">국면<span>하루 등락폭</span></div>
+  <div class="cap">국면 <span class="bdg ink">설정</span><span>하루 등락폭</span></div>
   <div class="chips" id="regSel"></div>
   <div class="nums" id="regNums" style="margin-top:9px"></div>
   <div class="tblwrap"><table id="regTbl"></table></div>
@@ -215,14 +216,14 @@
 <div class="page" id="pg_b">
 <div class="lnk" id="lnkB"></div>
 <div class="panel">
-  <div class="cap">장기평균선 구성<span>연 기준</span></div>
+  <div class="cap">장기평균선 구성 <span class="bdg pay">이론</span></div>
   <div class="kpi" id="benchBig"></div>
   <div class="lede" id="benchSub"></div>
   <div class="wf" id="benchRows"></div>
   <div class="note" id="benchNote"></div>
 </div>
 <div class="panel">
-  <div class="cap">파라미터</div>
+  <div class="cap">파라미터 <span class="bdg ink">설정</span></div>
   <div id="numSel"></div>
   <div id="slB"></div>
 </div>
@@ -232,7 +233,7 @@
 <div class="page" id="pg_r">
 <div class="lnk" id="lnkR"></div>
 <div class="panel">
-  <div class="cap">실제 노출</div>
+  <div class="cap">실제 노출 <span class="bdg good">포지션</span></div>
   <div class="kpi" id="expBig"></div>
   <div class="lede" id="expSub"></div>
   <div class="wf" id="expRows"></div>
@@ -240,7 +241,7 @@
   <div class="note" id="ledNote"></div>
 </div>
 <div class="panel">
-  <div class="cap">노출·민감도</div>
+  <div class="cap">노출·민감도 <span class="bdg ink">설정</span></div>
   <div id="numR"></div>
   <div id="slSel"></div>
 </div>
@@ -360,7 +361,7 @@ async function load(){
     S.mkt=await r.json();
   }catch(e){
     $("mainSvg").setAttribute("viewBox","0 0 360 60");
-    $("mainSvg").innerHTML='<text x="8" y="26" font-size="11.5" font-weight="700" fill="#D6738A">시장데이터를 불러오지 못했어요</text>';
+    $("mainSvg").innerHTML='<text x="8" y="26" font-size="11" font-weight="700" fill="#D6738A">시장데이터를 불러오지 못했어요</text>';
     return;
   }
   /* 실적 원장(선택) — 있으면 그날 총액이 실측으로 대체되고 차이는 미설명으로 잡혀요 */
@@ -585,8 +586,8 @@ function drawMain(){
   for(let v=Math.ceil(lo/stp)*stp; v<=hi; v+=stp){
     const y=Y(v);
     g.push(`<line x1="${L}" y1="${y.toFixed(1)}" x2="${W-R}" y2="${y.toFixed(1)}" stroke="${Math.abs(v)<1e-9?'#AAB4C6':'#EDF0F6'}" stroke-width="1"/>`);
-    g.push(MOB?`<text x="${L+2}" y="${(y-3).toFixed(1)}" font-size="10.5" fill="#98A2B3">${won(v)}</text>`
-              :`<text x="${L-6}" y="${(y+4).toFixed(1)}" text-anchor="end" font-size="11" fill="#8A94A6">${won(v)}</text>`);
+    g.push(MOB?`<text x="${L+2}" y="${(y-3).toFixed(1)}" font-size="10" fill="#98A2B3">${won(v)}</text>`
+              :`<text x="${L-6}" y="${(y+4).toFixed(1)}" text-anchor="end" font-size="10" fill="#8A94A6">${won(v)}</text>`);
   }
   /* 갭을 둘로 갈라요 — 장기평균선↔벤치마크선 = 시장 몫 · 벤치마크선↔실적 = 운용 몫 */
   let a1=`M${X(0).toFixed(1)},${Y(0).toFixed(1)}`;
@@ -614,11 +615,11 @@ function drawMain(){
   g.push(`<line x1="${X(nP-1).toFixed(1)}" y1="${T}" x2="${X(nP-1).toFixed(1)}" y2="${T+ih}" stroke="#AAB4C6" stroke-width="1"/>`);
   g.push(`<circle cx="${X(nP-1).toFixed(1)}" cy="${Y(RZ.end).toFixed(1)}" r="4" fill="#16202F" stroke="#fff" stroke-width="2"/>`);
   const yl=Y(RZ.end);
-  g.push(`<text x="${(X(nP-1)-7).toFixed(1)}" y="${(yl<T+18?yl+15:yl-9).toFixed(1)}" text-anchor="end" font-size="11" font-weight="700" fill="#16202F">실적 ${E(RZ.end)}</text>`);
-  g.push(`<text x="${(W-R-2).toFixed(1)}" y="${Math.max(T+11,Y(slope*(nT-1))-6).toFixed(1)}" text-anchor="end" font-size="10.5" font-weight="700" fill="#4A6FC4">장기평균선</text>`);
-  g.push(`<text x="${(X(nP-1)-7).toFixed(1)}" y="${(Y(RZ.bend)+(RZ.bend>RZ.end?-8:15)).toFixed(1)}" text-anchor="end" font-size="10.5" font-weight="700" fill="#5B4CA8">벤치마크 ${E(RZ.bend)}</text>`);
+  g.push(`<text x="${(X(nP-1)-7).toFixed(1)}" y="${(yl<T+18?yl+15:yl-9).toFixed(1)}" text-anchor="end" font-size="10" font-weight="700" fill="#16202F">실적 ${E(RZ.end)}</text>`);
+  g.push(`<text x="${(W-R-2).toFixed(1)}" y="${Math.max(T+11,Y(slope*(nT-1))-6).toFixed(1)}" text-anchor="end" font-size="10" font-weight="700" fill="#4A6FC4">장기평균선</text>`);
+  g.push(`<text x="${(X(nP-1)-7).toFixed(1)}" y="${(Y(RZ.bend)+(RZ.bend>RZ.end?-8:15)).toFixed(1)}" text-anchor="end" font-size="10" font-weight="700" fill="#5B4CA8">벤치마크 ${E(RZ.bend)}</text>`);
   [[0,VIEW==="ytd"?S.mkt.dates[CURSOR].slice(2,4)+".1월":dstr(-(nP-1))],[nP-1,"오늘"],[nT-1,dstr(FUT-1)]]
-    .forEach(a=>g.push(`<text x="${Math.min(W-R-16,Math.max(L+16,X(a[0]))).toFixed(1)}" y="${H-6}" text-anchor="middle" font-size="10.5" fill="#98A2B3">${a[1]}</text>`));
+    .forEach(a=>g.push(`<text x="${Math.min(W-R-16,Math.max(L+16,X(a[0]))).toFixed(1)}" y="${H-6}" text-anchor="middle" font-size="10" fill="#98A2B3">${a[1]}</text>`));
   g.push(`<line id="chx" x1="0" y1="${T}" x2="0" y2="${T+ih}" stroke="#16202F" stroke-width="1" opacity="0"/>`);
   const el=$("mainSvg"); el.setAttribute("viewBox",`0 0 ${W} ${H}`); el.setAttribute("height",H); el.innerHTML=g.join("");
   resetRd();
@@ -662,6 +663,7 @@ function drawWF(){
     ["감마(노출차)",   (RZ.parts.gE+RZ.parts.gR)-(RZ.bparts.gE+RZ.bparts.gR)],
     ["베가(노출차)",   (RZ.parts.vgE+RZ.parts.vgR)-(RZ.bparts.vgE+RZ.bparts.vgR)],
   ].filter(x=>Math.abs(x[1])>=0.5).sort((a,c)=>Math.abs(c[1])-Math.abs(a[1]));
+  const worst=[...mkt,...ops].reduce((a,x)=>Math.abs(x[1])>Math.abs(a[1])?x:a,["",0]);
   const pack=(arr,n)=>{const top=arr.slice(0,n), rest=arr.slice(n);
     const s=rest.reduce((a,x)=>a+x[1],0);
     return Math.abs(s)>=0.5? top.concat([[`그 외 ${rest.length}항목`,s]]) : top;};
@@ -685,7 +687,8 @@ function drawWF(){
     if(s[0]==="h"){ html+=`<div class="wsec">${s[1]}</div>`; return; }
     const v=s[1], col=s[2]?"#16202F":(v>=0?"#4FAE8C":"#D69A55");
     const z=pc(0), w=Math.max(0.7,Math.abs(pc(v)-z)), left=v>=0?z:z-w;   /* 최소폭이 중앙선을 넘지 않게 */
-    html+=`<div class="wfr${s[2]?" an":""}"><div class="wl">${s[0]}</div>`+
+    const tag=(!s[2]&&s[0]===worst[0]&&Math.abs(s[1])>=1)?` <span class="bdg bad">주범</span>`:``;
+    html+=`<div class="wfr${s[2]?" an":""}"><div class="wl">${s[0]}${tag}</div>`+
       `<div class="wb"><u style="left:50%;background:#C7CEDC"></u>`+
       `<i style="left:${left.toFixed(2)}%;width:${w.toFixed(2)}%;background:${col};opacity:${s[2]?0.9:0.95}"></i></div>`+
       `<div class="wv" style="color:${s[2]?'var(--ink)':C(v)}">${s[2]?won(v):sgn(v)}</div></div>`;
@@ -806,11 +809,12 @@ function fillHz(){
   const spark=r=>{const w=42,X=v=>2+(w-4)*(v-lo)/Math.max(1e-9,hi-lo);
     return `<svg width="${w}" height="13" style="vertical-align:-2px"><line x1="${X(r.q[0]).toFixed(1)}" y1="6.5" x2="${X(r.q[2]).toFixed(1)}" y2="6.5" stroke="#9282DC" stroke-width="3" stroke-linecap="round"/><circle cx="${X(r.q[1]).toFixed(1)}" cy="6.5" r="2.6" fill="#5B4CA8"/></svg>`;};
   $("hzTbl").innerHTML=`<tr><th>구간</th><th></th><th>중앙</th><th>80% 범위</th><th>ES95</th><th>한도 하회</th></tr>`+
-    rows.map(r=>`<tr><td><b>${r.k}</b> <span style="color:var(--muted);font-size:10.5px">${dstr(r.t)}</span></td>`+
+    rows.map(r=>`<tr><td><b>${r.k}</b> <span style="color:var(--muted);font-size:10px">${dstr(r.t)}</span></td>`+
       `<td style="text-align:center">${spark(r)}</td><td><b>${won(r.q[1])}</b></td>`+
       `<td style="color:var(--muted)">${won(r.q[0])} ~ ${won(r.q[2])}</td>`+
       `<td style="color:var(--bad-ink)">${won(r.es)}</td>`+
-      `<td style="color:${r.pv>=10?'var(--bad-ink)':'var(--muted)'};font-weight:${r.pv>=10?700:400}">${r.pv<0.2?'~0':r.pv.toFixed(0)}%</td></tr>`).join("");
+      `<td style="color:${r.pv>=10?'var(--bad-ink)':'var(--muted)'};font-weight:${r.pv>=10?700:400}">${r.pv<0.2?'~0':r.pv.toFixed(0)}%`+
+      `${r.pv>=50?' <span class="bdg bad">초과</span>':r.pv>=15?' <span class="bdg leak">경계</span>':''}</td></tr>`).join("");
   const y1=FC.q(FUT-1,[0.10,0.50,0.90]);
   $("fcBig").innerHTML=`<span style="color:${C(y1[1])}">${won(y1[1])}</span><small>억 · ${VIEW==="ytd"?"연말":"1년 뒤"} 중앙</small>`;
   $("fcSub").innerHTML=`80% ${won(y1[0])} ~ ${E(y1[2])} · ES95 ${E(FC.es(FUT-1,0.05))} · ${REG(RSEL).n}`;
@@ -830,12 +834,16 @@ function drawLimit(){
   g.push(`<rect x="${L}" y="16" width="${bx(used).toFixed(1)}" height="18" rx="5" fill="#D6738A" opacity="0.80"/>`);
   const px=L+bx(plan);
   g.push(`<line x1="${px.toFixed(1)}" y1="11" x2="${px.toFixed(1)}" y2="39" stroke="#B8455F" stroke-width="2"/>`);
-  g.push(`<text x="${Math.min(W-R,px+2).toFixed(1)}" y="9" text-anchor="end" font-size="10.5" font-weight="700" fill="#B8455F">연 한도 ${E(plan)}</text>`);
-  g.push(`<text x="${L}" y="52" font-size="10.5" fill="#566275">실적 <tspan font-weight="700" fill="#B8455F">${E(used)}</tspan> · 장기평균선이 미리 먹는 몫 <tspan font-weight="700" fill="#4A6FC4">${E(take)}</tspan></text>`);
+  g.push(`<text x="${Math.min(W-R,px+2).toFixed(1)}" y="9" text-anchor="end" font-size="10" font-weight="700" fill="#B8455F">연 한도 ${E(plan)}</text>`);
+  g.push(`<text x="${L}" y="52" font-size="10" fill="#566275">실적 <tspan font-weight="700" fill="#B8455F">${E(used)}</tspan> · 장기평균선이 미리 먹는 몫 <tspan font-weight="700" fill="#4A6FC4">${E(take)}</tspan></text>`);
   const k=stressK();
-  g.push(`<text x="${L}" y="69" font-size="10.5" fill="#566275">한도 소진 임계 = 기준의 <tspan font-weight="700" fill="#16202F">${k.toFixed(2)}배</tspan> (주가 ${(REG("base").dE*k).toFixed(2)}% · 금리 ${(REG("base").dR*k).toFixed(1)}bp)</text>`);
+  g.push(`<text x="${L}" y="69" font-size="10" fill="#566275">한도 소진 임계 = 기준의 <tspan font-weight="700" fill="#16202F">${k.toFixed(2)}배</tspan> (주가 ${(REG("base").dE*k).toFixed(2)}% · 금리 ${(REG("base").dR*k).toFixed(1)}bp)</text>`);
   const el=$("limSvg"); el.setAttribute("viewBox",`0 0 ${W} ${H}`); el.setAttribute("height",H); el.innerHTML=g.join("");
   const rc=recentD(), ratio=Math.max(rc.dE/REG("base").dE, rc.dR/REG("base").dR);
+  const lb=$("limBdg");
+  if(lb){const over=used>=plan, near=used>=plan*0.8;
+    lb.className="bdg "+(over?"bad":near?"leak":"good");
+    lb.textContent=over?"한도 초과":near?"한도 임박":"여유";}
   $("limNote").innerHTML=`여력 <b>${E(Math.max(0,plan-used))}</b>(${Math.max(0,(1-used/plan)*100).toFixed(0)}%) · `+
     `최근 60일은 기준의 <b style="color:${ratio>=k?'var(--bad-ink)':'var(--good-ink)'}">${ratio.toFixed(2)}배</b>`+
     (ratio>=k?` — <b>임계 초과</b>`:` (임계 ${k.toFixed(2)}배)`);
@@ -888,7 +896,7 @@ function fillNotes(){
 function fillRegTbl(){
   $("regTbl").innerHTML=`<tr><th>국면</th><th>주가</th><th>금리</th><th>본드스왑</th><th>추적오차</th><th>감마(연)</th></tr>`+
     REGS.map(x=>{const w=regV(x.id), gm=gYE(wEa(),w.dE)+gYR(wRa(),w.dR), on=x.id===RSEL;
-      return `<tr style="${on?'background:var(--pay-bg)':''}"><td><b>${x.n}</b>${on?' <span style="color:var(--pay-ink);font-size:9.5px">전망</span>':''}</td>`+
+      return `<tr style="${on?'background:var(--pay-bg)':''}"><td><b>${x.n}</b>${on?' <span class="bdg pay">전망</span>':''}</td>`+
         `<td>${w.dE.toFixed(2)}%</td><td>${w.dR.toFixed(1)}bp</td><td>${w.bs}bp</td><td>${w.te}%</td>`+
         `<td style="color:var(--bad-ink);font-weight:700">−${won(gm)}</td></tr>`;}).join("");
 }
@@ -909,7 +917,7 @@ function build(){
     nf({id:"R_te",n:"펀드 추적오차",u:"%/년",st:0.1,s:"지수 이탈 연σ"});
   const slHTML=tb=>{let h="",cur="";
     PAR.filter(p=>p.k==="s"&&p.tb===tb).forEach(p=>{
-      if(p.g!==cur){cur=p.g;h+=`<div class="grp2${h?"":" first"}">${p.g}</div>`;}
+      if(p.g!==cur){cur=p.g;h+=`<div class="grp2${h?"":" first"}">${p.g} <span class="bdg ${tb==="b"?"pay":"good"}">${tb==="b"?"계획":"실제"}</span></div>`;}
       h+=`<div class="sl"><label for="s_${p.id}"><span>${p.n}</span><b><span id="v_${p.id}">${P[p.id]}</span> ${p.u}</b></label>`+
          (p.s?`<small>${p.s}</small>`:``)+
          `<input type="range" id="s_${p.id}" min="${p.mn}" max="${p.mx}" step="${p.st}" value="${P[p.id]}"></div>`;
@@ -917,7 +925,7 @@ function build(){
     return h;};
   const nmHTML=tb=>{let h="",cur="";
     PAR.filter(p=>p.k==="n"&&p.tb===tb).forEach(p=>{
-      if(p.g!==cur){ if(cur)h+=`</div>`; cur=p.g; h+=`<div class="grp2${h?"":" first"}">${p.g}</div><div class="nums">`; }
+      if(p.g!==cur){ if(cur)h+=`</div>`; cur=p.g; h+=`<div class="grp2${h?"":" first"}">${p.g} <span class="bdg ${tb==="b"?"pay":"good"}">${tb==="b"?"계획":"실제"}</span></div><div class="nums">`; }
       h+=nf(p);
     });
     return cur?h+`</div>`:h;};

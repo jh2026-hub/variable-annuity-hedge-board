@@ -673,10 +673,11 @@ function fillStats(){
     : VIEW==="cum"
     ? `${st.slice(0,4)}.${+st.slice(4,6)}월~ 누적 · 경과 ${RZ.n}일(${(RZ.n/N()).toFixed(1)}년) + 전망 12개월`
     : `기준일 ${fmtd(S.data.dates[CURSOR])} · 과거 ${RZ.n}일 + 전망 12개월`;
+  const C=v=>v>=0?"var(--good-ink)":"var(--bad-ink)";
   const cards=[
-    ["지금까지 실적", won(RZ.end)+"억", `일변동 주가 ${dE.toFixed(2)}% · 금리 ${dR.toFixed(1)}bp`, RZ.end>=0?"var(--good-ink)":"var(--bad-ink)"],
-    ["벤치마크 대비", sgn(gap)+"억", gap>=0?"벤치마크보다 덜 들었어요":"벤치마크보다 더 들었어요", gap>=0?"var(--good-ink)":"var(--bad-ink)"],
-    [VIEW==="ytd"?"연말 중앙값":"1년 뒤 중앙값", won(y1[1])+"억", `벤치마크 ${sgn(benchY())}억/년 (${bp(benchY())}bp)`, y1[1]>=0?"var(--good-ink)":"var(--bad-ink)"],
+    ["벤치마크", won(pl)+"억", `연 ${sgn(benchY())}억 · ${bp(benchY())}bp`, C(pl)],
+    ["실적", won(RZ.end)+"억", `일변동 주가 ${dE.toFixed(2)}% · 금리 ${dR.toFixed(1)}bp`, C(RZ.end)],
+    [VIEW==="ytd"?"연말 중앙값":"1년 뒤 중앙값", won(y1[1])+"억", `국면 ${REG(RSEL).n}`, C(y1[1])],
     [VIEW==="ytd"?"연말 80% 범위":"1년 뒤 80% 범위", won(y1[0])+" ~ "+won(y1[2]), "아래 꼬리가 더 길어요", "var(--ink)"],
   ];
   $("stats").innerHTML=cards.map(c=>`<div class="st"><div class="k">${c[0]}</div><div class="v" style="color:${c[3]}">${c[1]}</div><div class="s">${c[2]}</div></div>`).join("");
@@ -691,9 +692,9 @@ function fillStats(){
   else if(pv>=3){cls="warn";ic="~";t="평시는 계획 안, 격변하면 벗어나요";
     p=`${HL} 계획선 하회 확률 <b>${pv.toFixed(0)}%</b> — 중앙값은 계획 안이지만 <b>아래 꼬리</b>가 계획선에 닿아요. 지금까지 계획의 <b>${used.toFixed(0)}%</b> 소진.`;}
   else if(RZ.end<pl){cls="warn";ic="~";t="지금은 벤치마크보다 비싸게 가고 있어요";
-    p=`벤치마크 대비 <b>${sgn(gap)}억</b> — 계획의 <b>${used.toFixed(0)}%</b> 소진. ${HL} 계획선 하회 확률은 <b>${pv<0.2?'~0':pv.toFixed(0)}%</b>로 낮아요.`;}
+    p=`실적 <b>${won(RZ.end)}억</b> vs 벤치마크 <b>${won(pl)}억</b> · 계획의 <b>${used.toFixed(0)}%</b> 소진. ${HL} 계획선 하회 확률 <b>${pv<0.2?'~0':pv.toFixed(0)}%</b>.`;}
   else{cls="ok";ic="✓";t="벤치마크 범위 안에서 가고 있어요";
-    p=`벤치마크 대비 <b>${sgn(gap)}억</b>, ${HL} 계획선 하회 확률 <b>${pv<0.2?'~0':pv.toFixed(0)}%</b>.`;}
+    p=`실적 <b>${won(RZ.end)}억</b> vs 벤치마크 <b>${won(pl)}억</b> · ${HL} 계획선 하회 확률 <b>${pv<0.2?'~0':pv.toFixed(0)}%</b>.`;}
   $("vd").className="verdict "+cls; $("vdi").textContent=ic; $("vdt").textContent=t; $("vdp").innerHTML=p;
 
   const top=RZ.day.slice().sort((a,b)=>b.gm-a.gm).slice(0,5);
@@ -729,11 +730,12 @@ function fillGap(){
 }
 
 function fillLink(){
-  const gap=RZ.end-benchY()*RZ.n/N(), y1=FC.q(FUT-1,[0.5])[0];
+  const y1=FC.q(FUT-1,[0.5])[0];
   const c=v=>v>=0?'var(--good-ink)':'var(--bad-ink)';
-  const h=`벤치마크 <b style="color:${c(benchY())}">${sgn(benchY())}</b>억/년 · `+
+  const bm=benchY()*RZ.n/N();
+  const h=`벤치마크 <b style="color:${c(bm)}">${sgn(bm)}</b>억 · `+
     `실적 <b style="color:${c(RZ.end)}">${sgn(RZ.end)}</b>억 · `+
-    `갭 <b style="color:${c(gap)}">${sgn(gap)}</b>억 · `+
+
     `${VIEW==="ytd"?"연말":"1년 뒤"} <b style="color:${c(y1)}">${sgn(y1)}</b>억`+
     `<button class="go" data-go="main">📈 추적판</button>`;
   ["linkBud","linkAct","linkReg"].forEach(id=>{

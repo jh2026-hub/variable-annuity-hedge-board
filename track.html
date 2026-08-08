@@ -66,6 +66,10 @@
   th{font-size:11px;color:var(--muted);font-weight:700;text-align:right}
   th:first-child,td:first-child{text-align:left}
   .tblwrap{overflow-x:auto;margin-top:6px}
+  .sect{grid-column:1/-1;margin:20px 0 2px;padding:10px 12px;border-radius:10px;background:var(--pay-bg);
+        border:1px solid #C9D9F6;font-size:12px;font-weight:800;color:var(--pay-ink);line-height:1.5}
+  .sect small{display:block;font-weight:400;color:var(--muted);font-size:10.5px;margin-top:2px}
+  .sect:first-child{margin-top:4px}
   .grp{font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.02em;margin:14px 0 2px;grid-column:1/-1;
        border-top:1px solid var(--hair);padding-top:10px}
   .grp:first-child{border-top:0;margin-top:6px;padding-top:0}
@@ -143,7 +147,7 @@
 <!-- ③ 가정 (별도 탭) -->
 <div class="panel">
   <div class="cap">가정 바꾸기<span>여기서 바꾸면 추적판의 세 선이 함께 변해요</span></div>
-  <p class="lede">그릭·변동성·비용·커버율을 정하는 값이에요. 바꾼 뒤 <b>📈 추적판</b> 탭으로 돌아가면 반영돼 있어요.</p>
+  <p class="lede">역할로 나눠 뒀어요 — <b>①</b> 예상선(예산)을 정하는 값, <b>②</b> 실적·전망에만 나타나는 평가 항목, <b>③</b> 판정에만 쓰는 계획 기준. 바꾼 뒤 <b>📈 추적판</b> 탭으로 돌아가면 반영돼 있어요.</p>
   <div class="ctl" id="ctl"></div>
   <div class="cap" style="margin-top:18px;font-size:13.5px">예상선 구성 <span>연 기준 · 이익 하나와 비용 네 갈래</span></div>
   <div class="rows" id="planRows"></div>
@@ -187,28 +191,28 @@ const S={data:null,loaded:false,poolE:null,poolR:null,sdE:0,sdR:0};
 
 /* ───── 파라미터 ───── */
 const PAR=[
- {g:"주가", id:"lcE",  n:"평온시 비선형손실",u:"억/년",  v:200,  min:20, max:800, step:10,   s:"예상 실현변동성일 때 1년간 새는 감마 손실"},
- {g:"주가", id:"lsE",  n:"극심시 비선형손실",u:"억/년",  v:500,  min:50, max:3000,step:50,   s:"아래 '극심 기준 변동성'일 때의 1년 손실"},
- {g:"주가", id:"svE",  n:"극심 기준 변동성",u:"%",      v:58,   min:25, max:90,  step:1,    s:"극심 앵커를 재는 변동성 — 2026년 실현 수준"},
- {g:"주가", id:"ivE",  n:"내재변동성",     u:"%",       v:19,   min:8,  max:60,  step:1,    s:"주가 세타(시간가치 수취)를 만드는 옵션 변동성"},
- {g:"주가", id:"evE",  n:"예상 실현변동성",u:"%",       v:16,   min:8,  max:60,  step:1,    s:"예상 주가 감마손실 · 내재와 같게 두면 그 항은 중립이 돼요"},
- {g:"주가", id:"slipE",n:"주가 델타 슬리피지",u:"만원/1억",v:5, min:0,  max:60,  step:1,    s:"델타 1억을 넘길 때의 비드오퍼+슬리피지 — 지수선물이라 얇아요"},
- {g:"주가", id:"covE", n:"주가 감마 커버율", u:"%",       v:0,    min:0,  max:100, step:5,    s:"지수옵션 매수로 덮는 비율 — 덮은 만큼 세타·비선형·리밸런싱이 같이 줄어요"},
- {g:"금리", id:"lcR",  n:"평온시 비선형손실",u:"억/년",  v:300,  min:20, max:1200,step:10,   s:"예상 실현 bp일 때 1년간 새는 컨벡시티 손실"},
- {g:"금리", id:"lsR",  n:"극심시 비선형손실",u:"억/년",  v:1000, min:50, max:4000,step:50,   s:"아래 '극심 기준 변동성'일 때의 1년 손실"},
- {g:"금리", id:"svR",  n:"극심 기준 변동성",u:"bp",     v:100,  min:60, max:180, step:5,    s:"극심 앵커를 재는 변동성 — 2022년 실현 수준"},
- {g:"금리", id:"ivR",  n:"스왑션 내재",    u:"bp",      v:63,   min:20, max:150, step:1,    s:"금리 세타를 만드는 내재변동성(연)"},
- {g:"금리", id:"evR",  n:"예상 실현",      u:"bp",      v:55,   min:20, max:150, step:1,    s:"예상 금리 감마손실(연)"},
- {g:"금리", id:"slipR",n:"금리 델타 슬리피지",u:"억",   v:10,   min:0,  max:30,  step:1,    s:"거래 델타 1억(/bp)당 비용 — 장외·유동성 탓에 두꺼워요"},
- {g:"금리", id:"covR", n:"금리 감마 커버율", u:"%",       v:70,   min:0,  max:100, step:5,    s:"스왑션 매수로 덮는 비율 — 확정손실은 줄지만 베가·본드스왑 평가가 생겨요"},
- {g:"금리", id:"disc", n:"할인율",         u:"%",       v:4.4,  min:0,  max:8,   step:0.1,  s:"부채 평가 할인율 — 매 기간 언와인딩되며 이자비용이 붙어요"},
- {g:"금리", id:"bel",  n:"보증부채(BEL)",  u:"억",      v:2000, min:200,max:8000,step:100,  s:"언와인딩이 붙는 부채 잔액"},
- {g:"평가", id:"teff", n:"옵션 유효만기",  u:"년",      v:1.5,  min:0.25,max:5,  step:0.25, s:"베가 크기를 정해요 — Vega ≈ Γ × 내재변동성 × 유효만기"},
- {g:"평가", id:"bsdv",  n:"본드스왑 노출",  u:"억/bp",   v:3,    min:0,  max:15,  step:0.5,  s:"스왑션은 IRS 기준인데 부채는 KTB 기준 — 스프레드 1bp당 평가손익 (⚠️가정)"},
- {g:"평가", id:"bsvol", n:"본드스왑 변동성",u:"bp/년",   v:15,   min:0,  max:60,  step:1,    s:"스왑스프레드의 연간 변동폭 · 금리가 크게 흔들릴 때 같이 벌어져요 (⚠️가정)"},
- {g:"공통", id:"rbal", n:"리밸런싱 주기",  u:"거래일",  v:5,    min:1,  max:21,  step:1,    s:"이 주기마다 쌓인 델타 변화를 한 번에 넘겨요 — 비용은 √주기에 반비례해요"},
- {g:"공통", id:"res",  n:"잔여변동성 1σ",  u:"억/년",   v:80,   min:0,  max:500, step:10,   s:"베이시스·헷지오차 등 못 막는 흔들림"},
- {g:"공통", id:"fee",  n:"경영계획 손익",  u:"억/년",   v:1500, min:0,  max:4000,step:100,  s:"경영계획상 감내하기로 한 연간 헷지손실 — 이 선 아래면 계획 미달이에요"},
+ {g:"주가", r:"plan", id:"lcE",  n:"평온시 비선형손실",u:"억/년",  v:200,  min:20, max:800, step:10,   s:"예상 실현변동성일 때 1년간 새는 감마 손실"},
+ {g:"주가", r:"plan", id:"lsE",  n:"극심시 비선형손실",u:"억/년",  v:500,  min:50, max:3000,step:50,   s:"아래 '극심 기준 변동성'일 때의 1년 손실"},
+ {g:"주가", r:"plan", id:"svE",  n:"극심 기준 변동성",u:"%",      v:58,   min:25, max:90,  step:1,    s:"극심 앵커를 재는 변동성 — 2026년 실현 수준"},
+ {g:"주가", r:"plan", id:"ivE",  n:"내재변동성",     u:"%",       v:19,   min:8,  max:60,  step:1,    s:"주가 세타(시간가치 수취)를 만드는 옵션 변동성"},
+ {g:"주가", r:"plan", id:"evE",  n:"예상 실현변동성",u:"%",       v:16,   min:8,  max:60,  step:1,    s:"예상 주가 감마손실 · 내재와 같게 두면 그 항은 중립이 돼요"},
+ {g:"주가", r:"plan", id:"slipE",n:"주가 델타 슬리피지",u:"만원/1억",v:5, min:0,  max:60,  step:1,    s:"델타 1억을 넘길 때의 비드오퍼+슬리피지 — 지수선물이라 얇아요"},
+ {g:"주가", r:"plan", id:"covE", n:"주가 감마 커버율", u:"%",       v:0,    min:0,  max:100, step:5,    s:"지수옵션 매수로 덮는 비율 — 덮은 만큼 세타·비선형·리밸런싱이 같이 줄어요"},
+ {g:"금리", r:"plan", id:"lcR",  n:"평온시 비선형손실",u:"억/년",  v:300,  min:20, max:1200,step:10,   s:"예상 실현 bp일 때 1년간 새는 컨벡시티 손실"},
+ {g:"금리", r:"plan", id:"lsR",  n:"극심시 비선형손실",u:"억/년",  v:1000, min:50, max:4000,step:50,   s:"아래 '극심 기준 변동성'일 때의 1년 손실"},
+ {g:"금리", r:"plan", id:"svR",  n:"극심 기준 변동성",u:"bp",     v:100,  min:60, max:180, step:5,    s:"극심 앵커를 재는 변동성 — 2022년 실현 수준"},
+ {g:"금리", r:"plan", id:"ivR",  n:"스왑션 내재",    u:"bp",      v:63,   min:20, max:150, step:1,    s:"금리 세타를 만드는 내재변동성(연)"},
+ {g:"금리", r:"plan", id:"evR",  n:"예상 실현",      u:"bp",      v:55,   min:20, max:150, step:1,    s:"예상 금리 감마손실(연)"},
+ {g:"금리", r:"plan", id:"slipR",n:"금리 델타 슬리피지",u:"억",   v:10,   min:0,  max:30,  step:1,    s:"거래 델타 1억(/bp)당 비용 — 장외·유동성 탓에 두꺼워요"},
+ {g:"금리", r:"plan", id:"covR", n:"금리 감마 커버율", u:"%",       v:70,   min:0,  max:100, step:5,    s:"스왑션 매수로 덮는 비율 — 확정손실은 줄지만 베가·본드스왑 평가가 생겨요"},
+ {g:"금리", r:"plan", id:"disc", n:"할인율",         u:"%",       v:4.4,  min:0,  max:8,   step:0.1,  s:"부채 평가 할인율 — 매 기간 언와인딩되며 이자비용이 붙어요"},
+ {g:"금리", r:"plan", id:"bel",  n:"보증부채(BEL)",  u:"억",      v:2000, min:200,max:8000,step:100,  s:"언와인딩이 붙는 부채 잔액"},
+ {g:"실행", r:"plan", id:"rbal", n:"리밸런싱 주기",  u:"거래일",  v:5,    min:1,  max:21,  step:1,    s:"이 주기마다 쌓인 델타 변화를 한 번에 넘겨요 — 비용은 √주기에 반비례해요"},
+ {g:"평가", r:"act", id:"teff", n:"옵션 유효만기",  u:"년",      v:1.5,  min:0.25,max:5,  step:0.25, s:"베가 크기를 정해요 — Vega ≈ Γ × 내재변동성 × 유효만기"},
+ {g:"평가", r:"act", id:"bsdv",  n:"본드스왑 노출",  u:"억/bp",   v:3,    min:0,  max:15,  step:0.5,  s:"스왑션은 IRS 기준인데 부채는 KTB 기준 — 스프레드 1bp당 평가손익 (⚠️가정)"},
+ {g:"평가", r:"act", id:"bsvol", n:"본드스왑 변동성",u:"bp/년",   v:15,   min:0,  max:60,  step:1,    s:"스왑스프레드의 연간 변동폭 · 금리가 크게 흔들릴 때 같이 벌어져요 (⚠️가정)"},
+ {g:"잔여", r:"act", id:"res",  n:"잔여변동성 1σ",  u:"억/년",   v:80,   min:0,  max:500, step:10,   s:"베이시스·헷지오차 등 못 막는 흔들림"},
+ {g:"계획", r:"judge", id:"fee",  n:"경영계획 손익",  u:"억/년",   v:1500, min:0,  max:4000,step:100,  s:"경영계획상 감내하기로 한 연간 헷지손실 — 이 선 아래면 계획 미달이에요"},
 ];
 const P={}; PAR.forEach(p=>P[p.id]=p.v);
 const REG=[{id:"recent",n:"📈 최근 국면 이어감",k:null},{id:"calm",n:"🌤 평온",k:0.75},
@@ -662,9 +666,16 @@ function fillDerived(){
 
 /* ───── 컨트롤 ───── */
 function buildControls(){
-  let html="", cur="";
+  const SECT={
+    plan:["① 예상선(예산)을 정하는 값","여기서 정한 이론값이 예상선의 기울기가 돼요. 실적·전망에도 같은 값이 쓰여요."],
+    act :["② 실적·전망에만 쓰는 값","예상선에는 안 들어가요 — 기대값이 0인 <b>평가</b> 항목이라 실적선의 출렁임과 밴드 폭만 만들어요."],
+    judge:["③ 판정 기준","손익 계산에는 안 쓰이고, 계획선 위치와 하회확률 판정에만 쓰여요."],
+  };
+  const GLAB={"주가":"주가 (코스피)","금리":"금리 (국고 20년)","실행":"실행","평가":"평가 (베가·본드스왑)","잔여":"잔여","계획":"경영계획"};
+  let html="", cur="", curR="";
   PAR.forEach(p=>{
-    if(p.g!==cur){cur=p.g;html+=`<div class="grp">${p.g==="주가"?"주가 (코스피)":p.g==="금리"?"금리 (국고 20년)":p.g==="평가"?"평가 항목 (베가·본드스왑)":"공통"}</div>`;}
+    if(p.r!==curR){curR=p.r;cur="";const s=SECT[p.r];html+=`<div class="sect">${s[0]}<small>${s[1]}</small></div>`;}
+    if(p.g!==cur){cur=p.g;html+=`<div class="grp">${GLAB[p.g]||p.g}</div>`;}
     html+=`<div class="cell"><label for="c_${p.id}"><span>${p.n}</span><b><span id="v_${p.id}">${p.v}</span> ${p.u}</b></label>`+
           `<small>${p.s}</small><input type="range" id="c_${p.id}" min="${p.min}" max="${p.max}" step="${p.step}" value="${p.v}"></div>`;
   });

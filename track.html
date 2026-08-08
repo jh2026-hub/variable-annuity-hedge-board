@@ -127,6 +127,8 @@
   <div class="cap">누적 헷지손익 — 예상 vs 실적 vs 전망<span id="asofLab"></span></div>
   <p class="lede">위=이익, 아래=손실. 벤치마크 = <b>세타 − 감마 − 슬리피지 − 캐리</b> (감마 = ½·Γ·일변동²·영업일수).</p>
   <div class="chips" id="viewSel"></div>
+  <div class="chips" id="preset"></div>
+  <div id="quickCtl"></div>
   <div class="stats" id="stats"></div>
   <div class="chartwrap"><svg id="mainSvg" viewBox="0 0 560 330" role="img" aria-label="누적 헷지손익 예상선·실적선·전망밴드"></svg></div>
   <div class="chartleg">
@@ -138,9 +140,6 @@
   </div>
   <div class="verdict" id="vd"><div class="ic" id="vdi">✓</div><div><b id="vdt"></b><div id="vdp" style="color:var(--muted);font-size:12.5px"></div></div></div>
   <div class="note" id="mainNote"></div>
-  <div class="subcap">보는 조건 — 앞으로의 국면과 기준일</div>
-  <div class="chips" id="preset"></div>
-  <div id="quickCtl"></div>
 </div>
 
 <!-- ② 구간별 전망 -->
@@ -834,9 +833,8 @@ function buildControls(){
       render();
     });
   });
-  $("quickCtl").innerHTML=`<div class="ctl"><div class="cell" style="grid-column:1/-1">`+
-      `<label for="c_cursor"><span>기준일 — 오늘을 옮겨봐요</span><b><span id="v_cursor">${fmtd(S.data.dates[CURSOR])}</span></b></label>`+
-      `<small>과거 어느 시점에 서 있었는지 바꿔요 — 그때의 실적선과 그때 본 전망이 나와요</small>`+
+  $("quickCtl").innerHTML=`<div class="ctl" style="margin-top:0"><div class="cell" style="grid-column:1/-1">`+
+      `<label for="c_cursor"><span>기준일</span><b><span id="v_cursor">${fmtd(S.data.dates[CURSOR])}</span></b></label>`+
       `<input type="range" id="c_cursor" min="${PAST}" max="${S.data.eq.length-1}" step="1" value="${CURSOR}"></div></div>`;
   $("c_cursor").addEventListener("input",e=>{CURSOR=+e.target.value;render();});
 

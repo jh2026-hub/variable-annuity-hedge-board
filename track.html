@@ -280,11 +280,11 @@ const PAR=[
  {g:"주가",tb:"b", id:"gamE", n:"감마 Γ",        u:"억/1%",  v:1.0, st:0.05,k:"n", s:"1% 움직임당 손익"},
  {g:"주가",tb:"b", id:"thE",  n:"옵션 세타",      u:"억/년",  v:404, st:10,  k:"n", s:"발행 때 정해진 시간가치"},
  {g:"주가",tb:"r", id:"vgE",  n:"베가(숏)",      u:"억/1%p", v:200, st:10,  k:"n", s:"내재 일변동 1%p↑ 시 손실 (연율 1vol pt ≈ ×15.9)"},
- {g:"주가",tb:"b", id:"slipE",n:"델타 슬리피지",  u:"bp",     v:1.5, st:0.1, k:"n", s:"거래 명목 대비 호가"},
+ {g:"주가",tb:"b", id:"slipE",n:"델타 슬리피지",  u:"억/1억",  v:0,   st:0.01,k:"n", s:"델타 1억 조정당 비용 · 지수선물이라 얇아요"},
  {g:"금리",tb:"b", id:"gamR", n:"감마 Γ",        u:"억/bp",  v:0.175,st:0.005,k:"n",s:"1bp당 컨벡시티"},
  {g:"금리",tb:"b", id:"thR",  n:"옵션 세타",      u:"억/년",  v:240, st:10,  k:"n", s:"스왑션 등 시간가치"},
  {g:"금리",tb:"r", id:"vgR",  n:"베가(숏)",      u:"억/1bp", v:10,  st:1,   k:"n", s:"내재 일변동 1bp↑ 시 손실 (연율 1vol pt ≈ ×15.9)"},
- {g:"금리",tb:"b", id:"slipR",n:"델타 슬리피지",  u:"bp",     v:6,   st:0.25,k:"n", s:"거래 DV01당 호가 · 실무 감각은 0.5~1bp"},
+ {g:"금리",tb:"b", id:"slipR",n:"델타 슬리피지",  u:"억/1억",  v:10,  st:0.5, k:"n", s:"델타 1억(/bp) 조정당 비용"},
  {g:"베이시스",tb:"r", id:"bsdv", n:"본드스왑 노출",   u:"억/bp",  v:3,  st:0.5,k:"n", s:"IRS−KTB 1bp 확대당"},
  {g:"베이시스",tb:"r", id:"teAmt",n:"펀드 베이시스",   u:"억/1%p", v:80, st:10, k:"n", s:"지수 대비 1%p 괴리당"},
  {g:"베이시스",tb:"r", id:"teDft",n:"추적오차 드리프트",u:"%/년",  v:-0.3,st:0.1,k:"n",s:"평균 괴리 · 확정이라 장기평균선에도 들어가요"},
@@ -317,8 +317,8 @@ const diE=()=>Math.sqrt(Math.max(0,2*P.thE/(P.gamE*N()))), diR=()=>Math.sqrt(Mat
 const carry=()=>P.disc*unmat()/100;
 const mv=d=>d*Math.sqrt(P.rbal)*Math.sqrt(2/Math.PI);
 /* 슬리피지 — 주가: 캐시델타(100Γ)×명목bp · 금리: 거래DV01(Γ)×호가bp. 두 다리 차원을 맞췄어요 */
-const tcE=(w,d)=>(N()/P.rbal)*w*100*P.gamE*mv(d)*P.slipE/10000;
-const tcR=(w,d)=>(N()/P.rbal)*w*P.gamR*mv(d)*P.slipR;
+const tcE=(w,d)=>(N()/P.rbal)*w*100*P.gamE*mv(d)*P.slipE;   /* 조정 캐시델타(100Γ) × 1억당 단가 */
+const tcR=(w,d)=>(N()/P.rbal)*w*P.gamR*mv(d)*P.slipR;       /* 조정 DV01(Γ) × 1억당 단가 */
 const vegE=()=>-wEa()*P.vgE, vegR=()=>-wRa()*P.vgR;
 const vegEp=()=>-wEp()*P.vgE, vegRp=()=>-wRp()*P.vgR;   /* 벤치마크선 = 계획 가중 */
 const bsExp=()=>-(P.acovR/100)*P.mulR*P.bsdv;
@@ -447,9 +447,9 @@ function realized(){
     ob.bs=bsExpP()*(ns-sprd0);
     accE+=re; accR+=rr; k++; o.tE=0; o.tR=0; ob.tE=0; ob.tR=0;
     if(k>=P.rbal||i===i1){
-      o.tE=-wEa()*100*P.gamE*Math.abs(accE)*P.slipE/10000;
+      o.tE=-wEa()*100*P.gamE*Math.abs(accE)*P.slipE;
       o.tR=-wRa()*P.gamR*Math.abs(accR)*P.slipR;
-      ob.tE=-wEp()*100*P.gamE*Math.abs(accE)*P.slipE/10000;
+      ob.tE=-wEp()*100*P.gamE*Math.abs(accE)*P.slipE;
       ob.tR=-wRp()*P.gamR*Math.abs(accR)*P.slipR;
       accE=0; accR=0; k=0;
     }
@@ -502,7 +502,7 @@ function forecast(start,np){
       o.bs=bsExp()*(ns-sprd); sprd=ns;
       o.te=P.teAmt*(P.teDft/N()+rg.te/Math.sqrt(N())*gauss());
       accE+=re; accR+=rr; k++; o.tE=0; o.tR=0;
-      if(k>=P.rbal){ o.tE=-wEa()*100*P.gamE*Math.abs(accE)*P.slipE/10000;
+      if(k>=P.rbal){ o.tE=-wEa()*100*P.gamE*Math.abs(accE)*P.slipE;
                      o.tR=-wRa()*P.gamR*Math.abs(accR)*P.slipR; accE=0;accR=0;k=0; }
       for(let q=0;q<KEYS.length;q++){const x=KEYS[q]; Cc[x]+=o[x]; A[x][t]+=Cc[x]; c+=o[x];}
       paths[p*FUT+t]=c;
@@ -718,8 +718,8 @@ function fillBench(){
     ["h","나가는 것"],
     ["주가 감마",    -gYE(wEp(),b.dE), `½ × ${P.gamE} × ${b.dE}%² × ${N()}일 × VR ${vr(VRE,P.rbal).toFixed(2)}`],
     ["금리 감마",    -gYR(wRp(),b.dR), `½ × ${P.gamR} × ${b.dR}bp² × ${N()}일 × VR ${vr(VRR,P.rbal).toFixed(2)}`],
-    ["주가 델타 슬리피지", -tcE(wEp(),b.dE), `${P.rbal}일마다 · 명목 ${P.slipE}bp`],
-    ["금리 델타 슬리피지", -tcR(wRp(),b.dR), `${P.rbal}일마다 · DV01당 ${P.slipR}bp`],
+    ["주가 델타 슬리피지", -tcE(wEp(),b.dE), `${P.rbal}일마다 · 1억 조정당 ${P.slipE}억`],
+    ["금리 델타 슬리피지", -tcR(wRp(),b.dR), `${P.rbal}일마다 · 1억 조정당 ${P.slipR}억`],
     ["캐리(자산미보유)",  -carry(), `${P.disc}% × ${(unmat()/1e4).toFixed(1)}조`],
     ["추적오차 드리프트", teDriftY(), `${P.teDft}%/년 × ${P.teAmt}억`],
   ];

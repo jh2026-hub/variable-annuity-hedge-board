@@ -95,15 +95,16 @@
 <!-- ① 메인 -->
 <div class="panel">
   <div class="cap">누적 헷지손익 — 예상 vs 실적 vs 전망<span id="asofLab"></span></div>
-  <p class="lede">위로 갈수록 이익, 아래로 갈수록 손실이에요. <b>예상선은 지금 실적과 무관하게</b> 변동성·금리로 계산한 세타·감마만으로 그려요.</p>
+  <p class="lede">위로 갈수록 이익, 아래로 갈수록 손실이에요. <b>예상선은 지금 실적과 무관하게</b> 변동성·금리에서 계산한 <b>세타 − 감마손실 − 델타 슬리피지 − 캐리</b> 로만 그려요 — 델타만 헷지하고 감마는 옵션으로 덮지 않는다는 전제예요.</p>
+  <div class="chips" id="viewSel"></div>
   <div class="stats" id="stats"></div>
   <div class="chartwrap"><svg id="mainSvg" viewBox="0 0 560 330" role="img" aria-label="누적 헷지손익 예상선·실적선·전망밴드"></svg></div>
   <div class="chartleg">
-    <span class="lk" style="color:#5C82CF"><i class="dash"></i>예상선 (세타 − 감마 이론)</span>
+    <span class="lk" style="color:#5C82CF"><i class="dash"></i>예상선 (세타 − 감마 − 슬리피지 − 캐리)</span>
     <span class="lk" style="color:#16202F"><i class="ln"></i>실적선 (실제 손익)</span>
     <span class="lk" style="color:#9282DC"><i></i>전망 밴드 (80% · 50%)</span>
     <span class="lk" style="color:#6B7688"><i class="dash"></i>전망 중앙값</span>
-    <span class="lk" style="color:#D6738A"><i class="dash"></i>재원 소진선</span>
+    <span class="lk" style="color:#D6738A"><i class="dash"></i>경영계획선</span>
   </div>
   <div class="verdict" id="vd"><div class="ic" id="vdi">✓</div><div><b id="vdt"></b><div id="vdp" style="color:var(--muted);font-size:12.5px"></div></div></div>
   <div class="note" id="mainNote"></div>
@@ -115,6 +116,7 @@
   <p class="lede">각 시점의 <b>누적 손익</b>이에요. 지금까지 쌓인 실적을 출발점으로 두고, 앞으로의 세타·감마·비용·잔여변동성을 얹었어요.</p>
   <div class="chartwrap" style="margin-top:10px"><svg id="hzSvg" viewBox="0 0 560 180" role="img" aria-label="구간별 전망 밴드"></svg></div>
   <div class="tblwrap"><table id="hzTbl"></table></div>
+  <div class="note"><b>계획선 하회확률</b>은 「누적 손익이 그 시점까지 배분된 경영계획(연 한도 × 경과비율)을 밑돌 확률」이에요. 계획은 시간에 비례해 쌓이니 <b>가까운 시점일수록 여유가 적어</b> 확률이 높게 나올 수 있어요 — 앞이 안전해졌다는 뜻이 아니라 계획 배분의 효과예요.</div>
   <div class="note">밴드는 <b>과거 실측 (코스피 수익률, 국고 20년 변동)을 5일 블록으로 함께 재추출</b>해 만들어요 — 변동성 군집·꼬리·주식금리 상관을 살린 채 가정 변동성에 맞춰 크기만 조정해요.</div>
 </div>
 
@@ -123,13 +125,15 @@
   <div class="cap">가정 바꿔보기<span>슬라이더를 움직이면 세 선이 함께 변해요</span></div>
   <div class="chips" id="preset"></div>
   <div class="ctl" id="ctl"></div>
+  <div class="cap" style="margin-top:18px;font-size:13.5px">예상선 구성 <span>연 기준 · 이익 하나와 비용 네 갈래</span></div>
+  <div class="rows" id="planRows"></div>
   <div class="note" id="derived"></div>
 </div>
 
 <!-- ④ 갭 분해 -->
 <div class="panel">
   <div class="cap">예상과 실적이 벌어진 이유<span>지금까지 구간</span></div>
-  <p class="lede">예상선에서 출발해 <b>세타 · 주가감마 · 금리감마 · 리밸런싱 · 잔여</b> 차이를 더하면 실적선에 닿아요.</p>
+  <p class="lede">예상선에서 출발해 아래 항목을 더하면 실적선에 닿아요. <b>확정</b>은 시간·거래로 굳은 손익이고, <b>평가</b>는 아직 굳지 않아 되돌아올 수도 있는 손익이에요.</p>
   <div class="rows" id="gapRows"></div>
   <div class="hd3" id="gapCards"></div>
 </div>
@@ -142,7 +146,11 @@
     <div class="b"><b>실적선은 왜 계단인가요</b>감마 누수는 움직임의 <b>제곱</b>이라 큰 날에 몰려요. 며칠이 한 해를 결정해요.</div>
     <div class="b"><b>밴드는 왜 아래가 긴가요</b>제곱 항이라 <b>손실 쪽 꼬리가 더 길어요</b>. 조용하면 조금 아끼고, 한 번 흔들리면 크게 새요.</div>
   </div>
-  <div class="note">지금까지 벌어진 갭은 <b>평균적으로 되돌아오지 않아요.</b> 감마 누수는 이미 나간 현금이라, 앞으로 조용해도 그만큼 덜 새는 것이지 과거분을 회수하지는 않아요. 밴드가 예상선으로 수렴하지 않고 <b>실적선 끝에서 출발</b>하는 이유예요.</div>
+  <div class="note"><b>예상선이 +가 될 수도 있어요.</b> 세타(내재변동성)와 감마손실(실현변동성)이 같은 ½Γσ² 꼴이라 서로 지워지고, 남는 건 <b>내재 − 실현 프리미엄</b>이에요. 그 프리미엄이 <b>캐리 + 델타 슬리피지</b>보다 크면 예상선은 올라가고, 작으면 내려가요. 실무 파라미터에선 대개 슬리피지가 커서 아래로 향해요 — 부호를 미리 정해두지 말고 가정에서 나오게 두는 게 맞아요.</div>
+  <div class="note"><b>세타와 캐리는 이중계산이 아니에요.</b> 옵션 세타는 원래 <b>변동성 성분(½Γσ²)</b> 과 <b>금리 성분(−r×부채)</b> 으로 나뉘어요. 이 화면은 그 둘을 「세타」와 「캐리(언와인딩)」로 갈라 놓은 것뿐이에요. 감마손실과 델타 슬리피지도 겹치지 않아요 — 감마손실은 리밸런싱 주기와 거의 무관한 <b>경로 적분</b>이고, 슬리피지만 주기에 좌우돼요(주기를 늘리면 √주기로 줄어요).</div>
+  <div class="note"><b>왜 본드스왑이 감마 항목에 들어가나요.</b> 금리 감마를 덮으려고 <b>스왑션</b>을 사면 확정 손실(비선형)은 줄어요. 그런데 스왑션은 <b>IRS 금리</b> 기준이고 부채는 <b>KTB 금리</b> 기준이라, 둘 사이 스프레드가 벌어지면 <b>평가손실</b>이 남아요 — 감마를 덮으려던 행위에서 나온 손익이니 감마 묶음 안에서 봐야 해요. 커버율을 올리면 비선형·리밸런싱·베가는 줄고 <b>본드스왑 노출은 커져요</b>. 위험이 사라진 게 아니라 <b>모양이 바뀐 것</b>이에요.</div>
+  <div class="note"><b>보수적으로 둔 곳</b> — ①격변장에서는 내재변동성도 같이 올라 세타 수취가 늘어나는데, 전망에서는 세타를 고정해서 <b>아래 꼬리를 다소 크게</b> 잡았어요. ②잔여(베이시스)는 평균 0으로 뒀어요 — 실무에선 손실 쪽으로 치우칠 수 있어요. ③금리 슬리피지 단가는 🧮 리밸런싱 탭과 같은 「거래 델타 1억(/bp)당」 규약이고, 상품·유동성에 따라 크게 달라져요.</div>
+  <div class="note"><b>되돌아오는 갭과 안 오는 갭이 달라요.</b> 비선형(감마)·슬리피지·캐리는 <b>이미 나간 현금</b>이라 앞으로 조용해져도 회수되지 않아요 — 덜 새는 것뿐이에요. 반면 베가·본드스왑은 <b>평가</b>라서, 내재변동성이나 스프레드가 제자리로 오면 <b>환입</b>돼요. 그래서 변동성이 치솟은 직후에는 전망 밴드의 중앙값이 지금보다 <b>위로</b> 향하기도 해요 — 실적이 좋아진다기보다 부풀었던 평가가 풀리는 거예요.</div>
   <div class="note">한계 — 단일 숏풋 근사예요. 실제로는 보증 유형별 그릭 재산출, 펀드-지수 베이시스, 해지·사망 가정, 회계(VFA·위험경감선택권) 인식 시점이 따로 붙어요. 이 화면은 <b>개형과 순서</b>를 보여주는 용도예요.</div>
 </div>
 
@@ -154,32 +162,74 @@ const S={data:null,loaded:false,poolE:null,poolR:null,sdE:0,sdR:0};
 
 /* ───── 파라미터 ───── */
 const PAR=[
- {g:"주가", id:"gamE",n:"주가 감마 Γ",   u:"억/1%", v:1.0,  min:0.2,max:3,   step:0.05,s:"코스피 1% 움직임당 감마 손익"},
- {g:"주가", id:"ivE", n:"내재변동성",     u:"%",     v:19,   min:8,  max:60,  step:1,   s:"세타(시간가치 수취)를 만드는 옵션 변동성"},
- {g:"주가", id:"evE", n:"예상 실현변동성",u:"%",     v:16,   min:8,  max:60,  step:1,   s:"예상선의 감마 누수를 정하는 변동성"},
- {g:"금리", id:"gamR",n:"금리 감마 Γ",    u:"억/bp", v:0.175,min:0.05,max:0.5,step:0.005,s:"1bp 움직일 때의 컨벡시티 손익 (0.15~0.2 예시)"},
- {g:"금리", id:"ivR", n:"스왑션 내재",    u:"bp",    v:63,   min:20, max:150, step:1,   s:"금리 쪽 세타를 만드는 내재변동성(연)"},
- {g:"금리", id:"evR", n:"예상 실현",      u:"bp",    v:55,   min:20, max:150, step:1,   s:"예상선의 금리 감마 누수(연)"},
- {g:"공통", id:"tc",  n:"리밸런싱 단가",  u:"억",    v:0.25, min:0,  max:1.2, step:0.05,s:"주가 1% · 금리 10bp 를 따라갈 때마다 드는 비용"},
- {g:"공통", id:"res", n:"잔여변동성 1σ",  u:"억/년", v:80,   min:0,  max:500, step:10,  s:"베이시스·헷지오차 등 못 막는 흔들림"},
- {g:"공통", id:"fee", n:"보증수수료 재원",u:"억/년", v:1500, min:0,  max:4000,step:100, s:"손실을 메우는 재원 = bp × 적립금"},
+ {g:"주가", id:"gamE", n:"주가 감마 Γ",   u:"억/1%",   v:1.0,  min:0.2,max:3,   step:0.05, s:"코스피 1% 움직임당 감마 손익"},
+ {g:"주가", id:"ivE",  n:"내재변동성",     u:"%",       v:19,   min:8,  max:60,  step:1,    s:"주가 세타(시간가치 수취)를 만드는 옵션 변동성"},
+ {g:"주가", id:"evE",  n:"예상 실현변동성",u:"%",       v:16,   min:8,  max:60,  step:1,    s:"예상 주가 감마손실 · 내재와 같게 두면 그 항은 중립이 돼요"},
+ {g:"주가", id:"slipE",n:"주가 델타 슬리피지",u:"만원/1억",v:5, min:0,  max:60,  step:1,    s:"델타 1억을 넘길 때의 비드오퍼+슬리피지 — 지수선물이라 얇아요"},
+ {g:"주가", id:"covE", n:"주가 감마 커버율", u:"%",       v:0,    min:0,  max:100, step:5,    s:"지수옵션 매수로 덮는 비율 — 덮은 만큼 세타·비선형·리밸런싱이 같이 줄어요"},
+ {g:"금리", id:"gamR", n:"금리 감마 Γ",    u:"억/bp",   v:0.175,min:0.05,max:0.5,step:0.005,s:"1bp당 컨벡시티 손익 (0.15~0.2 예시)"},
+ {g:"금리", id:"ivR",  n:"스왑션 내재",    u:"bp",      v:63,   min:20, max:150, step:1,    s:"금리 세타를 만드는 내재변동성(연)"},
+ {g:"금리", id:"evR",  n:"예상 실현",      u:"bp",      v:55,   min:20, max:150, step:1,    s:"예상 금리 감마손실(연)"},
+ {g:"금리", id:"slipR",n:"금리 델타 슬리피지",u:"억",   v:10,   min:0,  max:30,  step:1,    s:"거래 델타 1억(/bp)당 비용 — 장외·유동성 탓에 두꺼워요"},
+ {g:"금리", id:"covR", n:"금리 감마 커버율", u:"%",       v:70,   min:0,  max:100, step:5,    s:"스왑션 매수로 덮는 비율 — 확정손실은 줄지만 베가·본드스왑 평가가 생겨요"},
+ {g:"금리", id:"disc", n:"할인율",         u:"%",       v:4.4,  min:0,  max:8,   step:0.1,  s:"부채 평가 할인율 — 매 기간 언와인딩되며 이자비용이 붙어요"},
+ {g:"금리", id:"bel",  n:"보증부채(BEL)",  u:"억",      v:2000, min:200,max:8000,step:100,  s:"언와인딩이 붙는 부채 잔액"},
+ {g:"평가", id:"teff", n:"옵션 유효만기",  u:"년",      v:1.5,  min:0.25,max:5,  step:0.25, s:"베가 크기를 정해요 — Vega ≈ Γ × 내재변동성 × 유효만기"},
+ {g:"평가", id:"bsdv",  n:"본드스왑 노출",  u:"억/bp",   v:3,    min:0,  max:15,  step:0.5,  s:"스왑션은 IRS 기준인데 부채는 KTB 기준 — 스프레드 1bp당 평가손익 (⚠️가정)"},
+ {g:"평가", id:"bsvol", n:"본드스왑 변동성",u:"bp/년",   v:15,   min:0,  max:60,  step:1,    s:"스왑스프레드의 연간 변동폭 · 금리가 크게 흔들릴 때 같이 벌어져요 (⚠️가정)"},
+ {g:"공통", id:"rbal", n:"리밸런싱 주기",  u:"거래일",  v:5,    min:1,  max:21,  step:1,    s:"이 주기마다 쌓인 델타 변화를 한 번에 넘겨요 — 비용은 √주기에 반비례해요"},
+ {g:"공통", id:"res",  n:"잔여변동성 1σ",  u:"억/년",   v:80,   min:0,  max:500, step:10,   s:"베이시스·헷지오차 등 못 막는 흔들림"},
+ {g:"공통", id:"fee",  n:"경영계획 손익",  u:"억/년",   v:1500, min:0,  max:4000,step:100,  s:"경영계획상 감내하기로 한 연간 헷지손실 — 이 선 아래면 계획 미달이에요"},
 ];
 const P={}; PAR.forEach(p=>P[p.id]=p.v);
 const REG=[{id:"recent",n:"📈 최근 국면 이어감",k:null},{id:"calm",n:"🌤 평온",k:0.75},
            {id:"base",n:"🌥 예상 수준",k:1.0},{id:"storm",n:"⛈ 격변",k:1.9}];
 let RK=null, CURSOR=null;
-const FUT=252, PAST=252, NPATH=600, BLK=5, VOV=0.35;   /* VOV = 변동성 자체의 불확실성(로그 표준편차) */
+const MAXFUT=252, PAST=252, NPATH=600, BLK=5, VOV=0.35;  /* VOV = 변동성 자체의 불확실성(로그 표준편차) */
+let VIEW="ytd";        /* ytd = 당해 1~12월 · 3y = 1년 전 ~ 1년 후 */
+let FUT=252;           /* 전망 거래일 수 — 뷰에 따라 render() 에서 정해요 */
+const VIEWS=[{id:"ytd",n:"📅 당해 (1~12월)"},{id:"3y",n:"↔ 3개년 (1년 전~1년 후)"}];
+/* 기준일이 속한 해의 첫 거래일 */
+function yearStart(){const y=S.data.dates[CURSOR].slice(0,4);
+  for(let i=1;i<=CURSOR;i++) if(S.data.dates[i].slice(0,4)===y) return i;
+  return Math.max(1,CURSOR-PAST+1);}
+function periodStart(){return VIEW==="ytd"?yearStart():Math.max(1,CURSOR-PAST+1);}
+/* 남은 전망 기간 — 당해 뷰는 연말까지, 3개년 뷰는 12개월 */
+function futLen(){
+  if(VIEW!=="ytd") return MAXFUT;
+  const ds=S.data.dates[CURSOR];
+  const cur=new Date(+ds.slice(0,4),+ds.slice(4,6)-1,+ds.slice(6,8));
+  const end=new Date(+ds.slice(0,4),11,31);
+  return Math.max(5,Math.min(MAXFUT,Math.round((end-cur)/86400000*252/365)));
+}
 
 const won=x=>{const a=Math.abs(x);return (x<0?"−":"")+Math.round(a).toLocaleString();};
-const sgn=x=>(x>=0?"+":"−")+Math.round(Math.abs(x)).toLocaleString();
+const sgn=x=>Math.abs(x)<0.5?"≈0":(x>=0?"+":"−")+Math.round(Math.abs(x)).toLocaleString();
 
 /* ───── 이론값 (변동성·금리 → 세타·감마) ───── */
 const gc=(G,v)=>0.5*G*v*v;                                  /* 연간 감마 항(억) = ½Γσ² */
-const thetaY=()=>gc(P.gamE,P.ivE)+gc(P.gamR,P.ivR);         /* 세타 = 주가·금리 내재변동성 수취 */
-const eAbs=v=>v/Math.sqrt(252)*Math.sqrt(2/Math.PI);        /* 일평균 |움직임| */
-const tcY=(ve,vr)=>P.tc*(eAbs(ve)+eAbs(vr)/10)*252;         /* 연간 리밸런싱 비용 */
-const gamY=(ve,vr)=>gc(P.gamE,ve)+gc(P.gamR,vr);
-const planY=()=>thetaY()-gamY(P.evE,P.evR)-tcY(P.evE,P.evR);/* 예상선 연간 기울기 */
+/* 감마를 옵션/스왑션으로 덮은 비율 — 덮은 몫은 세타도 비선형도 리밸런싱도 사라지고,
+   대신 베가(모수)와 본드스왑 베이시스가 '평가' 항목으로 남아요 */
+const keepE=()=>1-P.covE/100, keepR=()=>1-P.covR/100;
+const thEY=()=>keepE()*gc(P.gamE,P.ivE);                    /* 주가 세타(이익, 커버분 차감) */
+const thRY=()=>keepR()*gc(P.gamR,P.ivR);                    /* 금리 세타(이익, 커버분 차감) */
+const thetaY=()=>thEY()+thRY();
+const unwY=()=>P.disc*P.bel/100;                            /* 할인 언와인딩(손실) = 할인율 × 부채 */
+const gamY=(ve,vr)=>keepE()*gc(P.gamE,ve)+keepR()*gc(P.gamR,vr);   /* 비선형(확정) 손실 */
+/* 순 베가 = 부채(숏베가) + 매수옵션(롱베가) → 덮을수록 0에 가까워져요 */
+const vegaE=()=>-keepE()*P.gamE*P.ivE*P.teff;               /* 억 / 내재변동성 1%p */
+const vegaR=()=>-keepR()*P.gamR*P.ivR*P.teff;               /* 억 / 내재변동성 1bp */
+/* 만기 감쇠 — 변동성 충격은 만기가 길수록 덜 전달돼요(√T 규칙).
+   프록시가 1개월 변동성이라 T_eff 만기의 내재변동성은 그 √(1/12 ÷ T_eff) 만큼만 움직여요. */
+const volBeta=()=>Math.sqrt((1/12)/Math.max(0.1,P.teff));
+const bsExp=()=>-(P.covR/100)*P.bsdv;                       /* 본드스왑 노출 — 덮은 만큼 생겨요 */
+/* 리밸런싱 1회당 평균 |순이동| — 주기 n일이면 √n 배로 커지고, 횟수는 252/n 로 줄어요 */
+const mv=(v,n)=>v/Math.sqrt(252)*Math.sqrt(n)*Math.sqrt(2/Math.PI);
+const tcEY=ve=>(252/P.rbal)*keepE()*P.gamE*mv(ve,P.rbal)*P.slipE/10000;  /* 주가 델타 거래비용(연) */
+const tcRY=vr=>(252/P.rbal)*keepR()*P.gamR*mv(vr,P.rbal)*P.slipR;        /* 금리 델타 거래비용(연) */
+/* ⭐ 예상선 = 델타헷지만 한다는 전제 — 세타 이익 − 예상 감마손실 − 델타 슬리피지 − 캐리(언와인딩).
+   감마는 옵션으로 덮지 않으니 '예상 감마손실'로 예산에 잡고, 실제로 얼마나 터졌는지는 실적선·밴드가 보여줘요. */
+const planY=()=>thetaY()-gamY(P.evE,P.evR)-unwY()-tcEY(P.evE)-tcRY(P.evR);
 function recentVol(){                                       /* 최근 60거래일 실현 (기준일 기준) */
   const d=S.data, i1=CURSOR, i0=Math.max(1,i1-59);
   let se=0,sr=0,n=0;
@@ -224,21 +274,52 @@ async function loadMarket(attempt){
 }
 
 /* ───── 실적(과거) 경로 ───── */
+const LAM=0.94;                          /* 내재변동성 프록시용 EWMA 감쇠 */
+function ewmaSeed(i0,key){               /* 기간 시작 직전 60일로 EWMA 초기화 */
+  const d=S.data; let v=0,n=0;
+  for(let i=Math.max(1,i0-60);i<i0;i++){
+    const x=key==="e"?(d.eq[i]/d.eq[i-1]-1)*100:((d.y20[i]!=null&&d.y20[i-1]!=null)?(d.y20[i]-d.y20[i-1])*100:0);
+    v+=x*x; n++;
+  }
+  return n?v/n:1;
+}
 function realized(){
-  const d=S.data, i1=CURSOR, i0=Math.max(1,i1-PAST+1);
-  const day=[], cum=[], parts={theta:0,gE:0,gR:0,tc:0,res:0};
+  const d=S.data, i1=CURSOR, i0=periodStart();
+  const day=[], cum=[], parts={theta:0,gE:0,gR:0,vgE:0,vgR:0,bs:0,unw:0,tcE:0,tcR:0,res:0};
   const thD=thetaY()/252;
-  let c=0;
+  /* 내재변동성은 실측이 없어서 EWMA 실현변동성 × (설정 내재/설정 예상) 비율로 대신해요 */
+  let vE=ewmaSeed(i0,"e"), vR=ewmaSeed(i0,"r");
+  let ivE=Math.sqrt(vE*252)*(P.ivE/P.evE), ivR=Math.sqrt(vR*252)*(P.ivR/P.evR);
+  let sprd=0, mAbs=P.evR/Math.sqrt(252)*Math.sqrt(2/Math.PI);
+  let c=0, accE=0, accR=0, k=0;
   for(let i=i0;i<=i1;i++){
     const re=(d.eq[i]/d.eq[i-1]-1)*100;
     const rr=((d.y20[i]!=null&&d.y20[i-1]!=null)?(d.y20[i]-d.y20[i-1]):0)*100;
-    const gE=0.5*P.gamE*re*re, gR=0.5*P.gamR*rr*rr;
-    const tc=P.tc*(Math.abs(re)+Math.abs(rr)/10), rs=gauss()*P.res/Math.sqrt(252);
-    parts.theta+=thD; parts.gE+=gE; parts.gR+=gR; parts.tc+=tc; parts.res+=rs;
-    const pnl=thD-gE-gR-tc+rs; c+=pnl;
+    const gE=keepE()*0.5*P.gamE*re*re, gR=keepR()*0.5*P.gamR*rr*rr;
+    const uw=((d.y20[i]!=null)?d.y20[i]:P.disc)*P.bel/100/252;   /* 언와인딩은 실제 할인율 경로로 */
+    /* 모수(베가) 평가 — 내재변동성이 움직인 만큼 순 베가가 평가돼요 */
+    vE=LAM*vE+(1-LAM)*re*re; vR=LAM*vR+(1-LAM)*rr*rr;
+    const nivE=Math.sqrt(vE*252)*(P.ivE/P.evE), nivR=Math.sqrt(vR*252)*(P.ivR/P.evR);
+    const vgE=vegaE()*(nivE-ivE)*volBeta(), vgR=vegaR()*(nivR-ivR)*volBeta();
+    ivE=nivE; ivR=nivR;
+    /* 본드스왑(IRS−KTB) 평가 — 실측이 없어 평균회귀+스트레스 확대로 가정한 경로예요 */
+    const ns=0.985*sprd+P.bsvol/Math.sqrt(252)*gauss()+0.20*(Math.abs(rr)-mAbs);
+    const bs=bsExp()*(ns-sprd); sprd=ns;
+    /* 델타 리밸런싱 — 주기가 될 때까지 움직임을 모았다가 '순 델타 변화'만 한 번에 넘겨요 */
+    accE+=re; accR+=rr; k++;
+    let tcE=0, tcR=0;
+    if(k>=P.rbal||i===i1){
+      tcE=keepE()*P.gamE*Math.abs(accE)*P.slipE/10000;
+      tcR=keepR()*P.gamR*Math.abs(accR)*P.slipR;
+      accE=0; accR=0; k=0;
+    }
+    const rs=gauss()*P.res/Math.sqrt(252);
+    parts.theta+=thD; parts.gE+=gE; parts.gR+=gR; parts.vgE+=vgE; parts.vgR+=vgR; parts.bs+=bs;
+    parts.unw+=uw; parts.tcE+=tcE; parts.tcR+=tcR; parts.res+=rs;
+    const pnl=thD-gE-gR+vgE+vgR+bs-uw-tcE-tcR+rs; c+=pnl;
     day.push({d:d.dates[i],re,rr,pnl,gm:gE+gR}); cum.push(c);
   }
-  return {day,cum,parts,end:c,n:day.length};
+  return {day,cum,parts,end:c,n:day.length,sprd};
 }
 
 /* ───── 전망(밴드) ───── */
@@ -247,18 +328,30 @@ function forecast(start){
   const TAU=63, sE=fvE(), sR=fvR(), n=S.poolE.length;
   const tgE=t=>RK===null?P.evE+(sE-P.evE)*Math.exp(-t/TAU):sE;
   const tgR=t=>RK===null?P.evR+(sR-P.evR)*Math.exp(-t/TAU):sR;
-  const thD=thetaY()/252, resD=P.res/Math.sqrt(252);
+  const thD=thetaY()/252, resD=P.res/Math.sqrt(252), uwD=unwY()/252;
+  const mAbs=P.evR/Math.sqrt(252)*Math.sqrt(2/Math.PI);
+  const v0E=ewmaSeed(CURSOR+1,"e"), v0R=ewmaSeed(CURSOR+1,"r"), s0=RZ?RZ.sprd:0;
   const paths=new Float64Array(NPATH*FUT);
   for(let p=0;p<NPATH;p++){
     /* 변동성 자체가 불확실해요 — 경로마다 국면을 한 번 뽑아요(주가·금리 공통 충격 + 각자 잡음) */
     const z=gauss(), me=Math.exp(VOV*(0.8*z+0.6*gauss())-0.5*VOV*VOV),
                      mr=Math.exp(VOV*(0.8*z+0.6*gauss())-0.5*VOV*VOV);
-    let c=start, left=0, bi=0;
+    let vE=v0E, vR=v0R, sprd=s0;
+    let ivE=Math.sqrt(vE*252)*(P.ivE/P.evE), ivR=Math.sqrt(vR*252)*(P.ivR/P.evR);
+    let c=start, left=0, bi=0, accE=0, accR=0, k=0;
     for(let t=0;t<FUT;t++){
       if(left===0){bi=Math.floor(rnd()*(n-BLK));left=BLK;}
       const j=bi+(BLK-left); left--;
       const re=S.poolE[j]*(tgE(t)/(S.sdE||20))*me, rr=S.poolR[j]*(tgR(t)/(S.sdR||60))*mr;
-      c+=thD-0.5*P.gamE*re*re-0.5*P.gamR*rr*rr-P.tc*(Math.abs(re)+Math.abs(rr)/10)+gauss()*resD;
+      accE+=re; accR+=rr; k++;
+      let tc=0;
+      if(k>=P.rbal){ tc=keepE()*P.gamE*Math.abs(accE)*P.slipE/10000+keepR()*P.gamR*Math.abs(accR)*P.slipR; accE=0;accR=0;k=0; }
+      vE=LAM*vE+(1-LAM)*re*re; vR=LAM*vR+(1-LAM)*rr*rr;
+      const nivE=Math.sqrt(vE*252)*(P.ivE/P.evE), nivR=Math.sqrt(vR*252)*(P.ivR/P.evR);
+      const vg=(vegaE()*(nivE-ivE)+vegaR()*(nivR-ivR))*volBeta(); ivE=nivE; ivR=nivR;
+      const ns=0.985*sprd+P.bsvol/Math.sqrt(252)*gauss()+0.20*(Math.abs(rr)-mAbs);
+      const bs=bsExp()*(ns-sprd); sprd=ns;
+      c+=thD-keepE()*0.5*P.gamE*re*re-keepR()*0.5*P.gamR*rr*rr+vg+bs-uwD-tc+gauss()*resD;
       paths[p*FUT+t]=c;
     }
   }
@@ -274,8 +367,12 @@ function horizons(){
   const eom=Math.max(3,Math.round((dim-dd)*252/365));
   const qMon=(Math.ceil(m/3)*3-m)+(dim-dd)/dim;
   const qd=Math.max(eom+5,Math.round(qMon*21));
-  const H=[{k:"이달 말",t:eom},{k:"분기 말",t:qd},{k:"분기말+3M",t:qd+63},
-           {k:"+6개월",t:126},{k:"+9개월",t:189},{k:"+12개월",t:251}];
+  let H=[{k:"이달 말",t:eom},{k:"분기 말",t:qd},{k:"분기말+3M",t:qd+63},
+         {k:"+6개월",t:126},{k:"+9개월",t:189},{k:"+12개월",t:251}];
+  if(VIEW==="ytd"){                       /* 당해 뷰 — 연말 밖 구간은 빼고, 연말을 반드시 넣어요 */
+    H=H.filter(h=>h.t<FUT-6);
+    H.push({k:"연말",t:FUT-1});
+  }
   const seen=new Set();
   return H.map(h=>({k:h.k,t:Math.min(FUT-1,Math.max(1,h.t))}))
           .filter(h=>{if(seen.has(h.t))return false;seen.add(h.t);return true;})
@@ -310,7 +407,8 @@ let RZ=null,FC=null,HZ=null;
 function render(){
   if(!S.loaded)return;
   seed();
-  RZ=realized(); FC=forecast(RZ.end); HZ=horizons();
+  FUT=futLen();
+  RZ=realized(); FC=forecast(RZ.end); HZ=horizons();   /* forecast 는 RZ.sprd 를 이어받아요 */
   drawMain(); drawHz(); fillStats(); fillGap(); fillDerived();
   if($("v_cursor")) $("v_cursor").textContent=fmtd(S.data.dates[CURSOR]);
 }
@@ -331,12 +429,12 @@ function drawMain(){
     g.push(`<text x="${L-6}" y="${(Y(v)+4).toFixed(1)}" text-anchor="end" font-size="10" fill="#8A94A6">${won(v)}</text>`);
   });
   g.push(`<text x="${L-6}" y="${T-5}" text-anchor="end" font-size="9.5" fill="#8A94A6">억</text>`);
-  /* 재원 소진선 — 수수료도 시간에 비례해 쌓이니 기울기를 가진 직선이에요 */
+  /* 경영계획선 — 계획 손익도 시간에 비례해 배분되니 기울기를 가진 직선이에요 */
   if(P.fee>0){
     const iEnd=Math.min(nT-1, -lo*252/P.fee);
     if(iEnd>4){
       g.push(`<path d="M${X(0).toFixed(1)},${Y(0).toFixed(1)} L${X(iEnd).toFixed(1)},${Y(-P.fee*iEnd/252).toFixed(1)}" fill="none" stroke="#D6738A" stroke-width="1.3" stroke-dasharray="6 4"/>`);
-      g.push(`<text x="${(X(iEnd)-4).toFixed(1)}" y="${(Y(-P.fee*iEnd/252)-6).toFixed(1)}" text-anchor="end" font-size="10" font-weight="700" fill="#B8455F">재원 소진선 (연 ${won(P.fee)}억)</text>`);
+      g.push(`<text x="${(X(iEnd)-4).toFixed(1)}" y="${(Y(-P.fee*iEnd/252)-6).toFixed(1)}" text-anchor="end" font-size="10" font-weight="700" fill="#B8455F">경영계획선 (연 −${won(P.fee)}억)</text>`);
     }
   }
   const band=(a,b,op)=>{
@@ -359,8 +457,8 @@ function drawMain(){
     g.push(`<line x1="${x.toFixed(1)}" y1="${Y(q[0]).toFixed(1)}" x2="${x.toFixed(1)}" y2="${Y(q[2]).toFixed(1)}" stroke="#9282DC" stroke-width="1.5"/>`);
     g.push(`<circle cx="${x.toFixed(1)}" cy="${Y(q[1]).toFixed(1)}" r="2.8" fill="#5B4CA8"/>`);
   });
-  const lab=[[0,dstr(-(nP-1))],[nP-1,"오늘"]];
-  HZ.forEach((h,j)=>{ if(j%2===1||h.t>=240) lab.push([nP-1+h.t,dstr(h.t)]); });
+  const lab=[[0,VIEW==="ytd"?S.data.dates[CURSOR].slice(0,4)+".1월":dstr(-(nP-1))],[nP-1,"오늘"]];
+  HZ.forEach((h,j)=>{ if(j%2===1||h.t>=FUT-12) lab.push([nP-1+h.t,dstr(h.t)]); });
   lab.forEach(a=>g.push(`<text x="${X(a[0]).toFixed(1)}" y="${H-10}" text-anchor="middle" font-size="9.5" fill="#8A94A6">${a[1]}</text>`));
   $("mainSvg").innerHTML=g.join("");
 }
@@ -387,11 +485,11 @@ function drawHz(){
   });
   $("hzSvg").innerHTML=g.join("");
 
-  const head=`<tr><th>구간</th><th>중앙값</th><th>80% 범위</th><th>예상선 대비 갭</th><th>재원 초과확률</th></tr>`;
+  const head=`<tr><th>구간</th><th>누적 중앙값</th><th>80% 범위</th><th>그 구간 손익</th><th>계획선 하회확률</th></tr>`;
   const body=rows.map(r=>{
-    const pl=planY()*(RZ.n-1+r.t)/252, lim=-P.fee*(RZ.n-1+r.t)/252;
+    const lim=-P.fee*(RZ.n+r.t)/252;
     let over=0; for(let p=0;p<NPATH;p++) if(FC.paths[p*FUT+r.t]<lim) over++;
-    const pv=over/NPATH*100, dv=r.q[2]-pl;
+    const pv=over/NPATH*100, dv=r.q[2]-RZ.end;   /* 그 구간에서만 발생한 손익 */
     return `<tr><td><b>${r.k}</b> <span style="color:var(--muted);font-size:11px">${dstr(r.t)}</span></td>`+
       `<td><b>${won(r.q[2])}</b></td><td style="color:var(--muted)">${won(r.q[0])} ~ ${won(r.q[4])}</td>`+
       `<td style="color:${dv>=0?'var(--good-ink)':'var(--bad-ink)'}">${sgn(dv)}</td>`+
@@ -401,49 +499,60 @@ function drawHz(){
 }
 
 function fillStats(){
-  const pl=planY()*(RZ.n-1)/252, gap=RZ.end-pl, y1=FC.q(FUT-1,[0.10,0.50,0.90]);
+  const pl=planY()*RZ.n/252, gap=RZ.end-pl, y1=FC.q(FUT-1,[0.10,0.50,0.90]);
   const rvE=Math.sqrt(RZ.day.reduce((a,b)=>a+b.re*b.re,0)/RZ.n*252);
   const rvR=Math.sqrt(RZ.day.reduce((a,b)=>a+b.rr*b.rr,0)/RZ.n*252);
-  $("asofLab").textContent=`기준일 ${fmtd(S.data.dates[CURSOR])} · 과거 ${RZ.n}거래일`;
+  $("asofLab").textContent=VIEW==="ytd"
+    ? `${S.data.dates[CURSOR].slice(0,4)}년 · 기준일 ${fmtd(S.data.dates[CURSOR])} · 경과 ${RZ.n}거래일 / 잔여 ${FUT}거래일`
+    : `기준일 ${fmtd(S.data.dates[CURSOR])} · 과거 ${RZ.n}거래일 + 전망 12개월`;
   const cards=[
     ["지금까지 실적", won(RZ.end)+"억", `실현 주가 ${rvE.toFixed(0)}% · 금리 ${rvR.toFixed(0)}bp`, RZ.end>=0?"var(--good-ink)":"var(--bad-ink)"],
     ["예상선 대비", sgn(gap)+"억", gap>=0?"예상보다 덜 들었어요":"예상보다 더 들었어요", gap>=0?"var(--good-ink)":"var(--bad-ink)"],
-    ["1년 뒤 중앙값", won(y1[1])+"억", `예상선 기울기 ${sgn(planY())}억/년`, y1[1]>=0?"var(--good-ink)":"var(--bad-ink)"],
-    ["1년 뒤 80% 범위", won(y1[0])+" ~ "+won(y1[2]), "아래 꼬리가 더 길어요", "var(--ink)"],
+    [VIEW==="ytd"?"연말 중앙값":"1년 뒤 중앙값", won(y1[1])+"억", `예상선 기울기 ${sgn(planY())}억/년`, y1[1]>=0?"var(--good-ink)":"var(--bad-ink)"],
+    [VIEW==="ytd"?"연말 80% 범위":"1년 뒤 80% 범위", won(y1[0])+" ~ "+won(y1[2]), "아래 꼬리가 더 길어요", "var(--ink)"],
   ];
   $("stats").innerHTML=cards.map(c=>`<div class="st"><div class="k">${c[0]}</div><div class="v" style="color:${c[3]}">${c[1]}</div><div class="s">${c[2]}</div></div>`).join("");
 
-  const lim=-P.fee*(RZ.n-1+FUT-1)/252;
+  const lim=-P.fee*(RZ.n+FUT)/252;
   let over=0; for(let p=0;p<NPATH;p++) if(FC.paths[p*FUT+FUT-1]<lim) over++;
-  const pv=over/NPATH*100, used=RZ.end<0?(-RZ.end)/(P.fee*(RZ.n-1)/252)*100:0;
+  const pv=over/NPATH*100, used=RZ.end<0?(-RZ.end)/(P.fee*RZ.n/252)*100:0;
   let cls,ic,t,p;
-  if(pv>=15){cls="bad";ic="✕";t="재원을 넘길 가능성이 낮지 않아요";
-    p=`1년 뒤 누적 손실이 그때까지 쌓인 재원을 넘길 확률 <b>${pv.toFixed(0)}%</b>. 노출을 줄이거나 옵션으로 꼬리를 사두는 선택지를 봐야 해요.`;}
-  else if(pv>=3){cls="warn";ic="~";t="평시는 재원 안, 격변하면 넘겨요";
-    p=`재원 초과 확률 <b>${pv.toFixed(0)}%</b> — 중앙값은 재원 안이지만 <b>아래 꼬리</b>가 재원선에 닿아요.`;}
+  const HZLAB=VIEW==="ytd"?"연말":"1년 뒤";
+  if(pv>=15){cls="bad";ic="✕";t="경영계획을 벗어날 가능성이 낮지 않아요";
+    p=`${HZLAB} 누적 손익이 경영계획선을 하회할 확률 <b>${pv.toFixed(0)}%</b> — 지금까지 계획의 <b>${used.toFixed(0)}%</b>를 썼어요. 노출을 줄이거나 옵션으로 꼬리를 사두는 선택지를 봐야 해요.`;}
+  else if(pv>=3){cls="warn";ic="~";t="평시는 계획 안, 격변하면 벗어나요";
+    p=`${HZLAB} 계획선 하회 확률 <b>${pv.toFixed(0)}%</b> — 중앙값은 계획 안이지만 <b>아래 꼬리</b>가 계획선에 닿아요. 지금까지 계획의 <b>${used.toFixed(0)}%</b> 소진.`;}
   else if(RZ.end<pl){cls="warn";ic="~";t="지금은 예상보다 비싸게 가고 있어요";
-    p=`예상선 대비 <b>${sgn(gap)}억</b> — 같은 기간 재원의 <b>${used.toFixed(0)}%</b>를 썼어요. 다만 1년 뒤 재원 초과 확률은 <b>${pv<0.2?'~0':pv.toFixed(0)}%</b>로 낮아요.`;}
+    p=`예상선 대비 <b>${sgn(gap)}억</b> — 같은 기간 경영계획의 <b>${used.toFixed(0)}%</b>를 썼어요. 다만 ${HZLAB} 계획선 하회 확률은 <b>${pv<0.2?'~0':pv.toFixed(0)}%</b>로 낮아요.`;}
   else{cls="ok";ic="✓";t="예상 범위 안에서 가고 있어요";
-    p=`예상선 대비 <b>${sgn(gap)}억</b>, 재원 초과 확률 <b>${pv<0.2?'~0':pv.toFixed(0)}%</b>.`;}
+    p=`예상선 대비 <b>${sgn(gap)}억</b>, ${HZLAB} 계획선 하회 확률 <b>${pv<0.2?'~0':pv.toFixed(0)}%</b>.`;}
   $("vd").className="verdict "+cls; $("vdi").textContent=ic; $("vdt").textContent=t; $("vdp").innerHTML=p;
 
   const top=RZ.day.slice().sort((a,b)=>b.gm-a.gm).slice(0,5);
   const share=top.reduce((a,b)=>a+b.gm,0)/Math.max(1e-9,RZ.parts.gE+RZ.parts.gR)*100;
-  $("mainNote").innerHTML=`예상선 기울기 <b>연 ${sgn(planY())}억</b> = 세타 ${won(thetaY())} − 예상감마 ${won(gamY(P.evE,P.evR))} − 예상 리밸런싱 ${won(tcY(P.evE,P.evR))}. `+
+  $("mainNote").innerHTML=`예상선 기울기 <b>연 ${sgn(planY())}억</b> = 세타 ${won(thetaY())} − 예상 감마손실 ${won(gamY(P.evE,P.evR))} − 델타 슬리피지 ${won(tcEY(P.evE)+tcRY(P.evR))} − 캐리 ${won(unwY())}. `+
     `같은 기간 실적은 <b>${won(RZ.end)}억</b>이고, 감마 누수의 <b>${share.toFixed(0)}%</b>가 상위 5일에서 나왔어요.`;
 }
 
 function fillGap(){
-  const f=(RZ.n-1)/252;
+  const f=RZ.n/252;   /* 실적은 n일 누적 — 예상도 같은 일수로 맞춰야 분해가 정확히 닫혀요 */
   const items=[
-    ["세타 수취",    RZ.parts.theta-thetaY()*f,                 "#4FAE8C","시간가치 · 기간 차이"],
-    ["주가 감마",    -(RZ.parts.gE-gc(P.gamE,P.evE)*f),         "#9282DC","실현 vs 예상 변동성"],
-    ["금리 감마",    -(RZ.parts.gR-gc(P.gamR,P.evR)*f),         "#7B84D4","실현 vs 예상 bp"],
-    ["리밸런싱 비용",-(RZ.parts.tc-tcY(P.evE,P.evR)*f),         "#5C82CF","거래 횟수·폭"],
-    ["잔여",         RZ.parts.res,                              "#D69A55","베이시스·헷지오차"],
+    ["h","확정 — 시간·거래로 굳은 손익"],
+    ["세타 수취",       RZ.parts.theta-thetaY()*f,                        "#4FAE8C","시간가치 · 기간 차이"],
+    ["주가 비선형",     -(RZ.parts.gE-keepE()*gc(P.gamE,P.evE)*f),        "#9282DC","실현 vs 예상 변동성"],
+    ["금리 비선형",     -(RZ.parts.gR-keepR()*gc(P.gamR,P.evR)*f),        "#7B84D4","실현 vs 예상 bp"],
+    ["주가 델타 비용",  -(RZ.parts.tcE-tcEY(P.evE)*f),                    "#5C82CF","리밸런싱 슬리피지"],
+    ["금리 델타 비용",  -(RZ.parts.tcR-tcRY(P.evR)*f),                    "#3E6BB8","리밸런싱 슬리피지"],
+    ["캐리(언와인딩)",  -(RZ.parts.unw-unwY()*f),                         "#4E8B93","실제 할인율 경로 차이"],
+    ["h","평가 — 아직 굳지 않은 손익 (예상선에는 없어요)"],
+    ["주가 모수(베가)", RZ.parts.vgE,                                     "#B39AE0","내재변동성 변화 × 순 베가"],
+    ["금리 모수(베가)", RZ.parts.vgR,                                     "#9A8FD6","스왑션 내재 변화 × 순 베가"],
+    ["본드스왑",        RZ.parts.bs,                                      "#C98CA8","IRS−KTB 스프레드 · 커버한 몫에서 생겨요"],
+    ["잔여",            RZ.parts.res,                                     "#D69A55","펀드 베이시스·헷지오차"],
   ];
-  let mx=1; items.forEach(i=>{mx=Math.max(mx,Math.abs(i[1]));});
+  let mx=1; items.forEach(i=>{if(i[0]!=="h")mx=Math.max(mx,Math.abs(i[1]));});
   $("gapRows").innerHTML=items.map(it=>{
+    if(it[0]==="h") return `<div style="font-size:10.5px;font-weight:800;color:var(--muted);margin-top:6px;letter-spacing:.02em">${it[1]}</div>`;
     const v=it[1], w=Math.abs(v)/mx*50, left=v>=0?50:50-w;
     return `<div class="row"><div class="lb">${it[0]}<small>${it[3]}</small></div>`+
       `<div class="tr"><div style="position:absolute;left:50%;top:0;bottom:0;width:1px;background:#C7CEDC"></div>`+
@@ -462,20 +571,43 @@ function fillGap(){
 }
 
 function fillDerived(){
+  /* 예상선 구성 — 연 기준. 이익(+) 하나, 비용(−) 네 갈래를 따로 봐요 */
+  const items=[
+    ["세타",              thetaY(),          "#4FAE8C", `주가 ${won(thEY())} + 금리 ${won(thRY())} · 커버분 제외`],
+    ["주가 비선형(확정)", -keepE()*gc(P.gamE,P.evE), "#9282DC", `½Γ×${P.evE}%² × 미커버 ${(keepE()*100).toFixed(0)}%`],
+    ["금리 비선형(확정)", -keepR()*gc(P.gamR,P.evR), "#7B84D4", `½Γ×${P.evR}bp² × 미커버 ${(keepR()*100).toFixed(0)}%`],
+    ["주가 델타(확정)",   -tcEY(P.evE),      "#5C82CF", `${P.rbal}일마다 델타 이전 · 지수선물이라 얇아요`],
+    ["금리 델타(확정)",   -tcRY(P.evR),      "#3E6BB8", `${P.rbal}일마다 델타 이전 · 슬리피지가 두꺼워요`],
+    ["캐리(확정)",        -unwY(),           "#4E8B93", `할인율 ${P.disc}% × 부채 ${won(P.bel)}억`],
+  ];
+  let mx=1; items.forEach(i=>{mx=Math.max(mx,Math.abs(i[1]));});
+  $("planRows").innerHTML=items.map(it=>{
+    const v=it[1], w=Math.abs(v)/mx*50, left=v>=0?50:50-w;
+    return `<div class="row"><div class="lb">${it[0]}<small>${it[3]}</small></div>`+
+      `<div class="tr"><div style="position:absolute;left:50%;top:0;bottom:0;width:1px;background:#C7CEDC"></div>`+
+      `<div class="fl" style="left:${left.toFixed(1)}%;width:${w.toFixed(1)}%;background:${it[2]};opacity:.85"></div></div>`+
+      `<div class="vl" style="color:${v>=0?'var(--good-ink)':'var(--bad-ink)'}">${sgn(v)}억</div></div>`;
+  }).join("")+
+    `<div class="row" style="border-top:1px solid var(--hair);padding-top:7px;margin-top:2px">`+
+    `<div class="lb">예상선<small>= 위 여섯 항의 합</small></div><div class="tr" style="background:none"></div>`+
+    `<div class="vl" style="color:${planY()>=0?'var(--good-ink)':'var(--bad-ink)'};font-size:13px">${sgn(planY())}억/년</div></div>`;
+
+  const prem=gc(P.gamE,P.ivE)-gc(P.gamE,P.evE)+gc(P.gamR,P.ivR)-gc(P.gamR,P.evR);
+  const drag=unwY()+tcEY(P.evE)+tcRY(P.evR);
   $("derived").innerHTML=
-    `세타 <b>${won(thetaY())}억/년</b> (주가 ${won(gc(P.gamE,P.ivE))} + 금리 ${won(gc(P.gamR,P.ivR))}) − `+
-    `예상감마 <b>${won(gamY(P.evE,P.evR))}억</b> (주가 ${won(gc(P.gamE,P.evE))} + 금리 ${won(gc(P.gamR,P.evR))}) − `+
-    `리밸런싱 <b>${won(tcY(P.evE,P.evR))}억</b> → 예상선 <b style="color:${planY()>=0?'var(--good-ink)':'var(--bad-ink)'}">${sgn(planY())}억/년</b>. `+
+    `<b>예상선의 부호</b> — 내재−실현 프리미엄 <b style="color:var(--good-ink)">+${won(prem)}억</b> 이 `+
+    `캐리+슬리피지 <b style="color:var(--bad-ink)">−${won(drag)}억</b> 보다 크면 예상선이 +, 작으면 −예요. `+
+    `지금 가정에선 <b style="color:${planY()>=0?'var(--good-ink)':'var(--bad-ink)'}">${sgn(planY())}억/년</b>이에요. `+
     (RK===null
-      ? `앞으로는 최근 국면(주가 <b>${fvE().toFixed(0)}%</b> · 금리 <b>${fvR().toFixed(0)}bp</b>)에서 출발해 <b>3개월 반감기</b>로 예상 수준까지 내려온다고 봤어요.`
-      : `앞으로는 주가 <b>${fvE().toFixed(0)}%</b> · 금리 <b>${fvR().toFixed(0)}bp</b> 가정이라 감마가 <b>${won(gamY(fvE(),fvR()))}억/년</b>이에요.`);
+      ? `전망은 최근 국면(주가 <b>${fvE().toFixed(0)}%</b> · 금리 <b>${fvR().toFixed(0)}bp</b>)에서 출발해 <b>3개월 반감기</b>로 예상 수준까지 내려온다고 봤어요.`
+      : `전망은 주가 <b>${fvE().toFixed(0)}%</b> · 금리 <b>${fvR().toFixed(0)}bp</b> 고정 가정이에요.`);
 }
 
 /* ───── 컨트롤 ───── */
 function buildControls(){
   let html="", cur="";
   PAR.forEach(p=>{
-    if(p.g!==cur){cur=p.g;html+=`<div class="grp">${p.g==="주가"?"주가 (코스피)":p.g==="금리"?"금리 (국고 20년)":"공통"}</div>`;}
+    if(p.g!==cur){cur=p.g;html+=`<div class="grp">${p.g==="주가"?"주가 (코스피)":p.g==="금리"?"금리 (국고 20년)":p.g==="평가"?"평가 항목 (베가·본드스왑)":"공통"}</div>`;}
     html+=`<div class="cell"><label for="c_${p.id}"><span>${p.n}</span><b><span id="v_${p.id}">${p.v}</span> ${p.u}</b></label>`+
           `<small>${p.s}</small><input type="range" id="c_${p.id}" min="${p.min}" max="${p.max}" step="${p.step}" value="${p.v}"></div>`;
   });
@@ -490,6 +622,10 @@ function buildControls(){
     });
   });
   $("c_cursor").addEventListener("input",e=>{CURSOR=+e.target.value;render();});
+  $("viewSel").innerHTML=VIEWS.map(v=>`<button class="chip${v.id===VIEW?" on":""}" id="vw_${v.id}">${v.n}</button>`).join("");
+  VIEWS.forEach(v=>$("vw_"+v.id).addEventListener("click",()=>{
+    VIEW=v.id; VIEWS.forEach(q=>$("vw_"+q.id).classList.toggle("on",q.id===v.id)); render();
+  }));
   $("preset").innerHTML=REG.map(r=>`<button class="chip${r.k===RK?" on":""}" id="ps_${r.id}">${r.n}</button>`).join("")+
     `<button class="chip" id="ps_now">📍 최근 기준일로</button>`;
   REG.forEach(r=>$("ps_"+r.id).addEventListener("click",()=>{

@@ -170,6 +170,7 @@
   </div>
   <div class="note"><b>예상선이 +가 될 수도 있어요.</b> 세타(내재변동성)와 감마손실(실현변동성)이 같은 ½Γσ² 꼴이라 서로 지워지고, 남는 건 <b>내재 − 실현 프리미엄</b>이에요. 그 프리미엄이 <b>캐리 + 델타 슬리피지</b>보다 크면 예상선은 올라가고, 작으면 내려가요. 실무 파라미터에선 대개 슬리피지가 커서 아래로 향해요 — 부호를 미리 정해두지 말고 가정에서 나오게 두는 게 맞아요.</div>
   <div class="note"><b>세타와 캐리는 이중계산이 아니에요.</b> 옵션 세타는 원래 <b>변동성 성분(½Γσ²)</b> 과 <b>금리 성분(−r×부채)</b> 으로 나뉘어요. 이 화면은 그 둘을 「세타」와 「캐리(언와인딩)」로 갈라 놓은 것뿐이에요. 감마손실과 델타 슬리피지도 겹치지 않아요 — 감마손실은 리밸런싱 주기와 거의 무관한 <b>경로 적분</b>이고, 슬리피지만 주기에 좌우돼요(주기를 늘리면 √주기로 줄어요).</div>
+  <div class="note"><b>비선형 손실은 앵커 두 점으로 잡아요.</b> 「평온시 연간 얼마」와 「극심시 연간 얼마」를 주면 그 두 점을 지나는 곡선으로 중간을 채워요. ½Γσ² 처럼 <b>제곱을 고정하면 두 점을 동시에 못 맞춰요</b> — 실제로 변동성이 3.6배 뛴 해에 주가 손실은 2.5배만 늘었거든요. 감마가 상수가 아니라 <b>국면에 따라 변하는</b> 값이라 그래요.</div>
   <div class="note"><b>왜 본드스왑이 감마 항목에 들어가나요.</b> 금리 감마를 덮으려고 <b>스왑션</b>을 사면 확정 손실(비선형)은 줄어요. 그런데 스왑션은 <b>IRS 금리</b> 기준이고 부채는 <b>KTB 금리</b> 기준이라, 둘 사이 스프레드가 벌어지면 <b>평가손실</b>이 남아요 — 감마를 덮으려던 행위에서 나온 손익이니 감마 묶음 안에서 봐야 해요. 커버율을 올리면 비선형·리밸런싱·베가는 줄고 <b>본드스왑 노출은 커져요</b>. 위험이 사라진 게 아니라 <b>모양이 바뀐 것</b>이에요.</div>
   <div class="note"><b>보수적으로 둔 곳</b> — ①격변장에서는 내재변동성도 같이 올라 세타 수취가 늘어나는데, 전망에서는 세타를 고정해서 <b>아래 꼬리를 다소 크게</b> 잡았어요. ②잔여(베이시스)는 평균 0으로 뒀어요 — 실무에선 손실 쪽으로 치우칠 수 있어요. ③금리 슬리피지 단가는 🧮 리밸런싱 탭과 같은 「거래 델타 1억(/bp)당」 규약이고, 상품·유동성에 따라 크게 달라져요.</div>
   <div class="note"><b>되돌아오는 갭과 안 오는 갭이 달라요.</b> 비선형(감마)·슬리피지·캐리는 <b>이미 나간 현금</b>이라 앞으로 조용해져도 회수되지 않아요 — 덜 새는 것뿐이에요. 반면 베가·본드스왑은 <b>평가</b>라서, 내재변동성이나 스프레드가 제자리로 오면 <b>환입</b>돼요. 그래서 변동성이 치솟은 직후에는 전망 밴드의 중앙값이 지금보다 <b>위로</b> 향하기도 해요 — 실적이 좋아진다기보다 부풀었던 평가가 풀리는 거예요.</div>
@@ -186,12 +187,16 @@ const S={data:null,loaded:false,poolE:null,poolR:null,sdE:0,sdR:0};
 
 /* ───── 파라미터 ───── */
 const PAR=[
- {g:"주가", id:"gamE", n:"주가 감마 Γ",   u:"억/1%",   v:1.0,  min:0.2,max:3,   step:0.05, s:"코스피 1% 움직임당 감마 손익"},
+ {g:"주가", id:"lcE",  n:"평온시 비선형손실",u:"억/년",  v:200,  min:20, max:800, step:10,   s:"예상 실현변동성일 때 1년간 새는 감마 손실"},
+ {g:"주가", id:"lsE",  n:"극심시 비선형손실",u:"억/년",  v:500,  min:50, max:3000,step:50,   s:"아래 '극심 기준 변동성'일 때의 1년 손실"},
+ {g:"주가", id:"svE",  n:"극심 기준 변동성",u:"%",      v:58,   min:25, max:90,  step:1,    s:"극심 앵커를 재는 변동성 — 2026년 실현 수준"},
  {g:"주가", id:"ivE",  n:"내재변동성",     u:"%",       v:19,   min:8,  max:60,  step:1,    s:"주가 세타(시간가치 수취)를 만드는 옵션 변동성"},
  {g:"주가", id:"evE",  n:"예상 실현변동성",u:"%",       v:16,   min:8,  max:60,  step:1,    s:"예상 주가 감마손실 · 내재와 같게 두면 그 항은 중립이 돼요"},
  {g:"주가", id:"slipE",n:"주가 델타 슬리피지",u:"만원/1억",v:5, min:0,  max:60,  step:1,    s:"델타 1억을 넘길 때의 비드오퍼+슬리피지 — 지수선물이라 얇아요"},
  {g:"주가", id:"covE", n:"주가 감마 커버율", u:"%",       v:0,    min:0,  max:100, step:5,    s:"지수옵션 매수로 덮는 비율 — 덮은 만큼 세타·비선형·리밸런싱이 같이 줄어요"},
- {g:"금리", id:"gamR", n:"금리 감마 Γ",    u:"억/bp",   v:0.175,min:0.05,max:0.5,step:0.005,s:"1bp당 컨벡시티 손익 (0.15~0.2 예시)"},
+ {g:"금리", id:"lcR",  n:"평온시 비선형손실",u:"억/년",  v:300,  min:20, max:1200,step:10,   s:"예상 실현 bp일 때 1년간 새는 컨벡시티 손실"},
+ {g:"금리", id:"lsR",  n:"극심시 비선형손실",u:"억/년",  v:1000, min:50, max:4000,step:50,   s:"아래 '극심 기준 변동성'일 때의 1년 손실"},
+ {g:"금리", id:"svR",  n:"극심 기준 변동성",u:"bp",     v:100,  min:60, max:180, step:5,    s:"극심 앵커를 재는 변동성 — 2022년 실현 수준"},
  {g:"금리", id:"ivR",  n:"스왑션 내재",    u:"bp",      v:63,   min:20, max:150, step:1,    s:"금리 세타를 만드는 내재변동성(연)"},
  {g:"금리", id:"evR",  n:"예상 실현",      u:"bp",      v:55,   min:20, max:150, step:1,    s:"예상 금리 감마손실(연)"},
  {g:"금리", id:"slipR",n:"금리 델타 슬리피지",u:"억",   v:10,   min:0,  max:30,  step:1,    s:"거래 델타 1억(/bp)당 비용 — 장외·유동성 탓에 두꺼워요"},
@@ -243,26 +248,34 @@ const won=x=>{const a=Math.abs(x);return (x<0?"−":"")+Math.round(a).toLocaleSt
 const sgn=x=>Math.abs(x)<0.5?"≈0":(x>=0?"+":"−")+Math.round(Math.abs(x)).toLocaleString();
 
 /* ───── 이론값 (변동성·금리 → 세타·감마) ───── */
-const gc=(G,v)=>0.5*G*v*v;                                  /* 연간 감마 항(억) = ½Γσ² */
+/* ⭐ 비선형(감마) 손실은 두 앵커(평온·극심)를 지나는 멱함수로 잡아요.
+   제곱(½Γσ²)을 고정하면 두 점을 동시에 못 맞춰요 — 실제로 금리는 지수 ≈2.0(제곱 그대로)인데
+   주가는 ≈0.7 로 훨씬 완만해요. 지수가 오르며 보증이 깊은 OTM 이 돼 감마 자체가 눌리기 때문이에요. */
+const pw=(lc,ls,sc,ss)=>Math.log(Math.max(1e-6,ls/lc))/Math.log(Math.max(1.02,ss/sc));
+const pE=()=>pw(P.lcE,P.lsE,P.evE,P.svE), pR=()=>pw(P.lcR,P.lsR,P.evR,P.svR);
+const LE=s=>P.lcE*Math.pow(Math.max(1,s)/P.evE,pE());      /* 주가 연간 비선형손실(억) */
+const LR=s=>P.lcR*Math.pow(Math.max(1,s)/P.evR,pR());      /* 금리 연간 비선형손실(억) */
+const gEff=s=>2*LE(Math.max(1,s))/(s*s);                   /* 유효 Γ — 억 / 1% (델타 거래량 산출용) */
+const gRff=s=>2*LR(Math.max(1,s))/(s*s);                   /* 유효 Γ — 억 / bp */
 /* 감마를 옵션/스왑션으로 덮은 비율 — 덮은 몫은 세타도 비선형도 리밸런싱도 사라지고,
    대신 베가(모수)와 본드스왑 베이시스가 '평가' 항목으로 남아요 */
 const keepE=()=>1-P.covE/100, keepR=()=>1-P.covR/100;
-const thEY=()=>keepE()*gc(P.gamE,P.ivE);                    /* 주가 세타(이익, 커버분 차감) */
-const thRY=()=>keepR()*gc(P.gamR,P.ivR);                    /* 금리 세타(이익, 커버분 차감) */
+const thEY=()=>keepE()*LE(P.ivE);                           /* 주가 세타 = 내재변동성에서 잰 같은 함수 */
+const thRY=()=>keepR()*LR(P.ivR);                           /* 금리 세타 */
 const thetaY=()=>thEY()+thRY();
 const unwY=()=>P.disc*P.bel/100;                            /* 할인 언와인딩(손실) = 할인율 × 부채 */
-const gamY=(ve,vr)=>keepE()*gc(P.gamE,ve)+keepR()*gc(P.gamR,vr);   /* 비선형(확정) 손실 */
+const gamY=(ve,vr)=>keepE()*LE(ve)+keepR()*LR(vr);          /* 비선형(확정) 손실 */
 /* 순 베가 = 부채(숏베가) + 매수옵션(롱베가) → 덮을수록 0에 가까워져요 */
-const vegaE=()=>-keepE()*P.gamE*P.ivE*P.teff;               /* 억 / 내재변동성 1%p */
-const vegaR=()=>-keepR()*P.gamR*P.ivR*P.teff;               /* 억 / 내재변동성 1bp */
+const vegaE=()=>-keepE()*pE()*LE(P.ivE)/P.ivE*P.teff;      /* dL/dσ × 유효만기 — 억 / 1%p */
+const vegaR=()=>-keepR()*pR()*LR(P.ivR)/P.ivR*P.teff;      /* 억 / 1bp */
 /* 만기 감쇠 — 변동성 충격은 만기가 길수록 덜 전달돼요(√T 규칙).
    프록시가 1개월 변동성이라 T_eff 만기의 내재변동성은 그 √(1/12 ÷ T_eff) 만큼만 움직여요. */
 const volBeta=()=>Math.sqrt((1/12)/Math.max(0.1,P.teff));
 const bsExp=()=>-(P.covR/100)*P.bsdv;                       /* 본드스왑 노출 — 덮은 만큼 생겨요 */
 /* 리밸런싱 1회당 평균 |순이동| — 주기 n일이면 √n 배로 커지고, 횟수는 252/n 로 줄어요 */
 const mv=(v,n)=>v/Math.sqrt(252)*Math.sqrt(n)*Math.sqrt(2/Math.PI);
-const tcEY=ve=>(252/P.rbal)*keepE()*P.gamE*mv(ve,P.rbal)*P.slipE/10000;  /* 주가 델타 거래비용(연) */
-const tcRY=vr=>(252/P.rbal)*keepR()*P.gamR*mv(vr,P.rbal)*P.slipR;        /* 금리 델타 거래비용(연) */
+const tcEY=ve=>(252/P.rbal)*keepE()*gEff(ve)*mv(ve,P.rbal)*P.slipE/10000;  /* 주가 델타 거래비용(연) */
+const tcRY=vr=>(252/P.rbal)*keepR()*gRff(vr)*mv(vr,P.rbal)*P.slipR;        /* 금리 델타 거래비용(연) */
 /* ⭐ 예상선 = 델타헷지만 한다는 전제 — 세타 이익 − 예상 감마손실 − 델타 슬리피지 − 캐리(언와인딩).
    감마는 옵션으로 덮지 않으니 '예상 감마손실'로 예산에 잡고, 실제로 얼마나 터졌는지는 실적선·밴드가 보여줘요. */
 const planY=()=>thetaY()-gamY(P.evE,P.evR)-unwY()-tcEY(P.evE)-tcRY(P.evR);
@@ -331,11 +344,12 @@ function realized(){
   for(let i=i0;i<=i1;i++){
     const re=(d.eq[i]/d.eq[i-1]-1)*100;
     const rr=((d.y20[i]!=null&&d.y20[i-1]!=null)?(d.y20[i]-d.y20[i-1]):0)*100;
-    const gE=keepE()*0.5*P.gamE*re*re, gR=keepR()*0.5*P.gamR*rr*rr;
+    vE=LAM*vE+(1-LAM)*re*re; vR=LAM*vR+(1-LAM)*rr*rr;            /* 국면 갱신 */
+    const rvE=Math.sqrt(vE*252), rvR=Math.sqrt(vR*252);          /* 그날의 국면 — 유효 Γ 를 정해요 */
+    const gE=keepE()*0.5*gEff(rvE)*re*re, gR=keepR()*0.5*gRff(rvR)*rr*rr;
     const uw=((d.y20[i]!=null)?d.y20[i]:P.disc)*P.bel/100/252;   /* 언와인딩은 실제 할인율 경로로 */
     /* 모수(베가) 평가 — 내재변동성이 움직인 만큼 순 베가가 평가돼요 */
-    vE=LAM*vE+(1-LAM)*re*re; vR=LAM*vR+(1-LAM)*rr*rr;
-    const nivE=Math.sqrt(vE*252)*(P.ivE/P.evE), nivR=Math.sqrt(vR*252)*(P.ivR/P.evR);
+    const nivE=rvE*(P.ivE/P.evE), nivR=rvR*(P.ivR/P.evR);
     const vgE=vegaE()*(nivE-ivE)*volBeta(), vgR=vegaR()*(nivR-ivR)*volBeta();
     ivE=nivE; ivR=nivR;
     /* 본드스왑(IRS−KTB) 평가 — 실측이 없어 평균회귀+스트레스 확대로 가정한 경로예요 */
@@ -345,8 +359,8 @@ function realized(){
     accE+=re; accR+=rr; k++;
     let tcE=0, tcR=0;
     if(k>=P.rbal||i===i1){
-      tcE=keepE()*P.gamE*Math.abs(accE)*P.slipE/10000;
-      tcR=keepR()*P.gamR*Math.abs(accR)*P.slipR;
+      tcE=keepE()*gEff(rvE)*Math.abs(accE)*P.slipE/10000;
+      tcR=keepR()*gRff(rvR)*Math.abs(accR)*P.slipR;
       accE=0; accR=0; k=0;
     }
     const rs=gauss()*P.res/Math.sqrt(252);
@@ -379,15 +393,16 @@ function forecast(start){
       if(left===0){bi=Math.floor(rnd()*(n-BLK));left=BLK;}
       const j=bi+(BLK-left); left--;
       const re=S.poolE[j]*(tgE(t)/(S.sdE||20))*me, rr=S.poolR[j]*(tgR(t)/(S.sdR||60))*mr;
+      vE=LAM*vE+(1-LAM)*re*re; vR=LAM*vR+(1-LAM)*rr*rr;
+      const rvE=Math.sqrt(vE*252), rvR=Math.sqrt(vR*252);
       accE+=re; accR+=rr; k++;
       let tc=0;
-      if(k>=P.rbal){ tc=keepE()*P.gamE*Math.abs(accE)*P.slipE/10000+keepR()*P.gamR*Math.abs(accR)*P.slipR; accE=0;accR=0;k=0; }
-      vE=LAM*vE+(1-LAM)*re*re; vR=LAM*vR+(1-LAM)*rr*rr;
-      const nivE=Math.sqrt(vE*252)*(P.ivE/P.evE), nivR=Math.sqrt(vR*252)*(P.ivR/P.evR);
+      if(k>=P.rbal){ tc=keepE()*gEff(rvE)*Math.abs(accE)*P.slipE/10000+keepR()*gRff(rvR)*Math.abs(accR)*P.slipR; accE=0;accR=0;k=0; }
+      const nivE=rvE*(P.ivE/P.evE), nivR=rvR*(P.ivR/P.evR);
       const vg=(vegaE()*(nivE-ivE)+vegaR()*(nivR-ivR))*volBeta(); ivE=nivE; ivR=nivR;
       const ns=0.985*sprd+P.bsvol/Math.sqrt(252)*gauss()+0.20*(Math.abs(rr)-mAbs);
       const bs=bsExp()*(ns-sprd); sprd=ns;
-      c+=thD-keepE()*0.5*P.gamE*re*re-keepR()*0.5*P.gamR*rr*rr+vg+bs-uwD-tc+gauss()*resD;
+      c+=thD-keepE()*0.5*gEff(rvE)*re*re-keepR()*0.5*gRff(rvR)*rr*rr+vg+bs-uwD-tc+gauss()*resD;
       paths[p*FUT+t]=c;
     }
   }
@@ -577,8 +592,8 @@ function fillGap(){
   const items=[
     ["h","확정 — 시간·거래로 굳은 손익"],
     ["세타 수취",       RZ.parts.theta-thetaY()*f,                        "#4FAE8C","시간가치 · 기간 차이"],
-    ["주가 비선형",     -(RZ.parts.gE-keepE()*gc(P.gamE,P.evE)*f),        "#9282DC","실현 vs 예상 변동성"],
-    ["금리 비선형",     -(RZ.parts.gR-keepR()*gc(P.gamR,P.evR)*f),        "#7B84D4","실현 vs 예상 bp"],
+    ["주가 비선형",     -(RZ.parts.gE-keepE()*LE(P.evE)*f),               "#9282DC","실현 vs 예상 변동성"],
+    ["금리 비선형",     -(RZ.parts.gR-keepR()*LR(P.evR)*f),               "#7B84D4","실현 vs 예상 bp"],
     ["주가 델타 비용",  -(RZ.parts.tcE-tcEY(P.evE)*f),                    "#5C82CF","리밸런싱 슬리피지"],
     ["금리 델타 비용",  -(RZ.parts.tcR-tcRY(P.evR)*f),                    "#3E6BB8","리밸런싱 슬리피지"],
     ["캐리(언와인딩)",  -(RZ.parts.unw-unwY()*f),                         "#4E8B93","실제 할인율 경로 차이"],
@@ -612,8 +627,8 @@ function fillDerived(){
   /* 예상선 구성 — 연 기준. 이익(+) 하나, 비용(−) 네 갈래를 따로 봐요 */
   const items=[
     ["세타",              thetaY(),          "#4FAE8C", `주가 ${won(thEY())} + 금리 ${won(thRY())} · 커버분 제외`],
-    ["주가 비선형(확정)", -keepE()*gc(P.gamE,P.evE), "#9282DC", `½Γ×${P.evE}%² × 미커버 ${(keepE()*100).toFixed(0)}%`],
-    ["금리 비선형(확정)", -keepR()*gc(P.gamR,P.evR), "#7B84D4", `½Γ×${P.evR}bp² × 미커버 ${(keepR()*100).toFixed(0)}%`],
+    ["주가 비선형(확정)", -keepE()*LE(P.evE), "#9282DC", `${P.evE}% 국면 · 지수 ${pE().toFixed(2)} · 미커버 ${(keepE()*100).toFixed(0)}%`],
+    ["금리 비선형(확정)", -keepR()*LR(P.evR), "#7B84D4", `${P.evR}bp 국면 · 지수 ${pR().toFixed(2)} · 미커버 ${(keepR()*100).toFixed(0)}%`],
     ["주가 델타(확정)",   -tcEY(P.evE),      "#5C82CF", `${P.rbal}일마다 델타 이전 · 지수선물이라 얇아요`],
     ["금리 델타(확정)",   -tcRY(P.evR),      "#3E6BB8", `${P.rbal}일마다 델타 이전 · 슬리피지가 두꺼워요`],
     ["캐리(확정)",        -unwY(),           "#4E8B93", `할인율 ${P.disc}% × 부채 ${won(P.bel)}억`],
@@ -630,9 +645,13 @@ function fillDerived(){
     `<div class="lb">예상선<small>= 위 여섯 항의 합</small></div><div class="tr" style="background:none"></div>`+
     `<div class="vl" style="color:${planY()>=0?'var(--good-ink)':'var(--bad-ink)'};font-size:13px">${sgn(planY())}억/년</div></div>`;
 
-  const prem=gc(P.gamE,P.ivE)-gc(P.gamE,P.evE)+gc(P.gamR,P.ivR)-gc(P.gamR,P.evR);
+  const prem=LE(P.ivE)-LE(P.evE)+LR(P.ivR)-LR(P.evR);
   const drag=unwY()+tcEY(P.evE)+tcRY(P.evR);
   $("derived").innerHTML=
+    `<b>변동성이 커져도 손실은 제곱만큼 안 늘어요.</b> 주가는 지수 <b>${pE().toFixed(2)}</b>, 금리는 <b>${pR().toFixed(2)}</b> 예요 — `+
+    `금리는 사실상 제곱(2.0) 그대로인데, 주가는 훨씬 완만해요. 지수가 오르며 보증이 <b>깊은 OTM</b> 이 돼 감마 자체가 눌리기 때문이에요. `+
+    `유효 Γ 로 보면 주가는 ${gEff(P.evE).toFixed(2)}억/1%(${P.evE}%) → <b>${gEff(P.svE).toFixed(2)}</b>(${P.svE}%) 로 줄고, `+
+    `금리는 ${gRff(P.evR).toFixed(3)} → ${gRff(P.svR).toFixed(3)}억/bp 로 거의 그대로예요.<br><br>`+
     `<b>예상선의 부호</b> — 내재−실현 프리미엄 <b style="color:var(--good-ink)">+${won(prem)}억</b> 이 `+
     `캐리+슬리피지 <b style="color:var(--bad-ink)">−${won(drag)}억</b> 보다 크면 예상선이 +, 작으면 −예요. `+
     `지금 가정에선 <b style="color:${planY()>=0?'var(--good-ink)':'var(--bad-ink)'}">${sgn(planY())}억/년</b>이에요. `+

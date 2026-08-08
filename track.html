@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+<meta name="robots" content="noindex"/>
+<title>헷지 실적 추적판 — 예상선 · 실적선 · 전망 밴드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#E9ECF3;--panel:#FFFFFF;--panel2:#EEF1F7;--hair:#DEE3EE;--ink:#16202F;--muted:#566275;
+        /* 색=의미 규약(본 사이트 공통): pay=헷지 행위·계획·비용 · leak=누수 · sym=흔들림의 크기(σ·밴드) · good=안전 · bad=위험 */
+        --pay:#5C82CF;--leak:#D69A55;--sym:#9282DC;--bad:#D6738A;--good:#4FAE8C;
+        --good-ink:#337A5F;--pay-ink:#4A6FC4;--bad-ink:#B8455F;--leak-ink:#A96A1C;--sym-ink:#5B4CA8;
+        --good-bg:#EAF7F1;--bad-bg:#FBEEF1;--leak-bg:#FBF4E8;--pay-bg:#EEF3FE}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--ink)}
+  body{font-family:"IBM Plex Sans KR",system-ui,sans-serif;-webkit-font-smoothing:antialiased;
+       padding:18px 14px 60px;max-width:880px;margin:0 auto;line-height:1.6;word-break:keep-all}
+  svg text{font-family:"IBM Plex Sans KR",system-ui,sans-serif}
+  a{color:var(--pay-ink)}
+  .back{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:6px 13px;border-radius:20px;
+        background:var(--panel);border:1px solid var(--hair);color:var(--muted);font-size:12px;font-weight:700;text-decoration:none}
+  h1{font-size:24px;font-weight:700;letter-spacing:-.02em;line-height:1.3;margin:12px 0 4px}
+  h1 em{font-style:normal;color:var(--pay)}
+  .sub{color:var(--muted);font-size:13.5px;margin-bottom:14px}
+  .exbanner{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:#E7EFFD;border:1px solid #9DBBF3;
+    color:var(--pay-ink);border-radius:9px;padding:9px 12px;font-size:12px;font-weight:600;margin-bottom:6px}
+  .exbanner span{color:var(--muted);font-weight:400}
+  .panel{background:var(--panel);border:1px solid var(--hair);border-radius:12px;padding:16px;margin-top:16px}
+  .cap{font-size:15px;font-weight:800;margin-bottom:8px;padding-left:13px;position:relative;line-height:1.32;letter-spacing:-.01em}
+  .cap::before{content:"";position:absolute;left:0;top:1px;bottom:1px;width:5px;border-radius:3px;background:var(--pay)}
+  .cap span{font-weight:400;color:var(--muted);font-size:12px;margin-left:6px}
+  .lede{color:var(--muted);font-size:13.5px}.lede b{color:var(--ink);font-weight:600}
+  .foot{color:var(--muted);font-size:11.5px;line-height:1.55}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0 4px}
+  .st{background:var(--panel2);border:1px solid var(--hair);border-radius:10px;padding:9px 10px}
+  .st .k{font-size:10.5px;color:var(--muted);font-weight:700;letter-spacing:-.01em}
+  .st .v{font-size:17px;font-weight:700;letter-spacing:-.02em;line-height:1.3;font-variant-numeric:tabular-nums}
+  .st .s{font-size:10px;color:var(--muted);line-height:1.35;margin-top:1px}
+  .chartwrap{margin-top:6px}
+  .chartwrap svg{width:100%;height:auto;display:block;overflow:visible}
+  .chartleg{display:flex;flex-wrap:wrap;gap:5px 13px;margin-top:9px;font-size:11.5px;color:var(--muted)}
+  .chartleg .lk{display:inline-flex;align-items:center;gap:5px}
+  .chartleg .lk i{width:13px;height:13px;border-radius:3px;flex:0 0 auto;background:currentColor}
+  .chartleg .lk i.ln{height:0;width:19px;border-radius:0;background:none;border-top:3px solid currentColor}
+  .chartleg .lk i.dash{height:0;width:19px;border-radius:0;background:none;border-top:3px dashed currentColor}
+  .verdict{display:flex;gap:10px;align-items:flex-start;border-radius:11px;padding:11px 13px;margin-top:12px;font-size:13px;line-height:1.55}
+  .verdict .ic{flex:0 0 22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#fff}
+  .verdict.ok{background:var(--good-bg);border:1px solid #BFE6D3}.verdict.ok .ic{background:var(--good)}
+  .verdict.warn{background:var(--leak-bg);border:1px solid #EBD4AE}.verdict.warn .ic{background:var(--leak)}
+  .verdict.bad{background:var(--bad-bg);border:1px solid #E7B9C2}.verdict.bad .ic{background:var(--bad)}
+  .verdict b{font-weight:700}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums}
+  th,td{padding:7px 6px;border-bottom:1px solid var(--hair);text-align:right;white-space:nowrap}
+  th{font-size:11px;color:var(--muted);font-weight:700;text-align:right}
+  th:first-child,td:first-child{text-align:left}
+  .tblwrap{overflow-x:auto;margin-top:6px}
+  .grp{font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.02em;margin:14px 0 2px;grid-column:1/-1;
+       border-top:1px solid var(--hair);padding-top:10px}
+  .grp:first-child{border-top:0;margin-top:6px;padding-top:0}
+  .ctl{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;margin-top:4px}
+  .cell label{display:flex;justify-content:space-between;align-items:baseline;font-size:11.5px;font-weight:700;gap:6px}
+  .cell label b{color:var(--pay-ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .cell small{display:block;color:var(--muted);font-size:10px;font-weight:400;line-height:1.3;margin-top:1px}
+  input[type=range]{width:100%;margin-top:5px;accent-color:#5C82CF;height:26px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .chip{min-height:34px;padding:6px 12px;border-radius:18px;background:var(--panel2);border:1px solid var(--hair);
+        color:var(--muted);font-size:11.5px;font-weight:700;cursor:pointer;font-family:inherit}
+  .chip.on{background:#E7EFFD;border-color:#9DBBF3;color:var(--pay-ink)}
+  .note{font-size:12px;color:var(--muted);background:var(--panel2);border:1px solid var(--hair);border-radius:9px;padding:9px 11px;margin-top:10px;line-height:1.55}
+  .note b{color:var(--ink)}
+  .rows{display:flex;flex-direction:column;gap:7px;margin-top:10px}
+  .row{display:flex;align-items:center;gap:9px}
+  .row .lb{flex:0 0 92px;font-size:11.5px;font-weight:700;line-height:1.2}
+  .row .lb small{display:block;font-weight:400;color:var(--muted);font-size:9.5px}
+  .row .tr{flex:1 1 auto;height:20px;border-radius:5px;background:#EEF1F7;position:relative;overflow:hidden}
+  .row .fl{position:absolute;top:0;height:100%;border-radius:5px}
+  .row .vl{flex:0 0 78px;text-align:right;font-size:11.5px;font-weight:800;font-variant-numeric:tabular-nums}
+  .hd3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+  .hd3 .b{background:var(--panel2);border:1px solid var(--hair);border-radius:10px;padding:9px 10px;font-size:11.5px;color:var(--muted);line-height:1.5}
+  .hd3 .b b{display:block;color:var(--ink);font-size:12.5px;margin-bottom:2px}
+  @media(max-width:520px){.stats{grid-template-columns:1fr 1fr}.ctl{grid-template-columns:1fr}.hd3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<a class="back" href="./index.html">← 설명 페이지로</a>
+<h1>헷지 <em>실적 추적판</em></h1>
+<p class="sub">이론상 이렇게 될 것 같다는 <b>예상선</b>, 실제로 이렇게 됐다는 <b>실적선</b>, 앞으로는 어디쯤일지 보여주는 <b>전망 밴드</b>를 한 장에 겹쳐 봐요.</p>
+<div class="exbanner">🧪 컨셉 시안 <span>시장 경로만 실측(KOSPI·국고 20년)이고 그릭·비용은 일반 예시예요.</span></div>
+
+<!-- ① 메인 -->
+<div class="panel">
+  <div class="cap">누적 헷지손익 — 예상 vs 실적 vs 전망<span id="asofLab"></span></div>
+  <p class="lede">위로 갈수록 이익, 아래로 갈수록 손실이에요. <b>예상선은 지금 실적과 무관하게</b> 변동성·금리로 계산한 세타·감마만으로 그려요.</p>
+  <div class="stats" id="stats"></div>
+  <div class="chartwrap"><svg id="mainSvg" viewBox="0 0 560 330" role="img" aria-label="누적 헷지손익 예상선·실적선·전망밴드"></svg></div>
+  <div class="chartleg">
+    <span class="lk" style="color:#5C82CF"><i class="dash"></i>예상선 (세타 − 감마 이론)</span>
+    <span class="lk" style="color:#16202F"><i class="ln"></i>실적선 (실제 손익)</span>
+    <span class="lk" style="color:#9282DC"><i></i>전망 밴드 (80% · 50%)</span>
+    <span class="lk" style="color:#6B7688"><i class="dash"></i>전망 중앙값</span>
+    <span class="lk" style="color:#D6738A"><i class="dash"></i>재원 소진선</span>
+  </div>
+  <div class="verdict" id="vd"><div class="ic" id="vdi">✓</div><div><b id="vdt"></b><div id="vdp" style="color:var(--muted);font-size:12.5px"></div></div></div>
+  <div class="note" id="mainNote"></div>
+</div>
+
+<!-- ② 구간별 전망 -->
+<div class="panel">
+  <div class="cap">구간별 전망 밴드<span>이달 말 · 분기 말 · 분기말+3M · 6 / 9 / 12개월</span></div>
+  <p class="lede">각 시점의 <b>누적 손익</b>이에요. 지금까지 쌓인 실적을 출발점으로 두고, 앞으로의 세타·감마·비용·잔여변동성을 얹었어요.</p>
+  <div class="chartwrap" style="margin-top:10px"><svg id="hzSvg" viewBox="0 0 560 180" role="img" aria-label="구간별 전망 밴드"></svg></div>
+  <div class="tblwrap"><table id="hzTbl"></table></div>
+  <div class="note">밴드는 <b>과거 실측 (코스피 수익률, 국고 20년 변동)을 5일 블록으로 함께 재추출</b>해 만들어요 — 변동성 군집·꼬리·주식금리 상관을 살린 채 가정 변동성에 맞춰 크기만 조정해요.</div>
+</div>
+
+<!-- ③ 가정 -->
+<div class="panel">
+  <div class="cap">가정 바꿔보기<span>슬라이더를 움직이면 세 선이 함께 변해요</span></div>
+  <div class="chips" id="preset"></div>
+  <div class="ctl" id="ctl"></div>
+  <div class="note" id="derived"></div>
+</div>
+
+<!-- ④ 갭 분해 -->
+<div class="panel">
+  <div class="cap">예상과 실적이 벌어진 이유<span>지금까지 구간</span></div>
+  <p class="lede">예상선에서 출발해 <b>세타 · 주가감마 · 금리감마 · 리밸런싱 · 잔여</b> 차이를 더하면 실적선에 닿아요.</p>
+  <div class="rows" id="gapRows"></div>
+  <div class="hd3" id="gapCards"></div>
+</div>
+
+<!-- ⑤ 읽는 법 -->
+<div class="panel">
+  <div class="cap">읽는 법 · 한계</div>
+  <div class="hd3">
+    <div class="b"><b>예상선은 왜 직선인가요</b>세타도 예상감마도 <b>시간에 비례</b>해 쌓이는 항이에요. 하루치 (세타 − 예상감마 − 예상비용)에 날짜만 곱한 선이에요.</div>
+    <div class="b"><b>실적선은 왜 계단인가요</b>감마 누수는 움직임의 <b>제곱</b>이라 큰 날에 몰려요. 며칠이 한 해를 결정해요.</div>
+    <div class="b"><b>밴드는 왜 아래가 긴가요</b>제곱 항이라 <b>손실 쪽 꼬리가 더 길어요</b>. 조용하면 조금 아끼고, 한 번 흔들리면 크게 새요.</div>
+  </div>
+  <div class="note">지금까지 벌어진 갭은 <b>평균적으로 되돌아오지 않아요.</b> 감마 누수는 이미 나간 현금이라, 앞으로 조용해도 그만큼 덜 새는 것이지 과거분을 회수하지는 않아요. 밴드가 예상선으로 수렴하지 않고 <b>실적선 끝에서 출발</b>하는 이유예요.</div>
+  <div class="note">한계 — 단일 숏풋 근사예요. 실제로는 보증 유형별 그릭 재산출, 펀드-지수 베이시스, 해지·사망 가정, 회계(VFA·위험경감선택권) 인식 시점이 따로 붙어요. 이 화면은 <b>개형과 순서</b>를 보여주는 용도예요.</div>
+</div>
+
+<p class="foot" style="text-align:center;margin-top:16px">데이터 출처 · KOSPI: Yahoo Finance(^KS11) · 국고 20년: 한국은행 ECOS. 공개 시장데이터, 참고용.</p>
+
+<script>
+const $=id=>document.getElementById(id);
+const S={data:null,loaded:false,poolE:null,poolR:null,sdE:0,sdR:0};
+
+/* ───── 파라미터 ───── */
+const PAR=[
+ {g:"주가", id:"gamE",n:"주가 감마 Γ",   u:"억/1%", v:1.0,  min:0.2,max:3,   step:0.05,s:"코스피 1% 움직임당 감마 손익"},
+ {g:"주가", id:"ivE", n:"내재변동성",     u:"%",     v:19,   min:8,  max:60,  step:1,   s:"세타(시간가치 수취)를 만드는 옵션 변동성"},
+ {g:"주가", id:"evE", n:"예상 실현변동성",u:"%",     v:16,   min:8,  max:60,  step:1,   s:"예상선의 감마 누수를 정하는 변동성"},
+ {g:"금리", id:"gamR",n:"금리 감마 Γ",    u:"억/bp", v:0.175,min:0.05,max:0.5,step:0.005,s:"1bp 움직일 때의 컨벡시티 손익 (0.15~0.2 예시)"},
+ {g:"금리", id:"ivR", n:"스왑션 내재",    u:"bp",    v:63,   min:20, max:150, step:1,   s:"금리 쪽 세타를 만드는 내재변동성(연)"},
+ {g:"금리", id:"evR", n:"예상 실현",      u:"bp",    v:55,   min:20, max:150, step:1,   s:"예상선의 금리 감마 누수(연)"},
+ {g:"공통", id:"tc",  n:"리밸런싱 단가",  u:"억",    v:0.25, min:0,  max:1.2, step:0.05,s:"주가 1% · 금리 10bp 를 따라갈 때마다 드는 비용"},
+ {g:"공통", id:"res", n:"잔여변동성 1σ",  u:"억/년", v:80,   min:0,  max:500, step:10,  s:"베이시스·헷지오차 등 못 막는 흔들림"},
+ {g:"공통", id:"fee", n:"보증수수료 재원",u:"억/년", v:1500, min:0,  max:4000,step:100, s:"손실을 메우는 재원 = bp × 적립금"},
+];
+const P={}; PAR.forEach(p=>P[p.id]=p.v);
+const REG=[{id:"recent",n:"📈 최근 국면 이어감",k:null},{id:"calm",n:"🌤 평온",k:0.75},
+           {id:"base",n:"🌥 예상 수준",k:1.0},{id:"storm",n:"⛈ 격변",k:1.9}];
+let RK=null, CURSOR=null;
+const FUT=252, PAST=252, NPATH=600, BLK=5, VOV=0.35;   /* VOV = 변동성 자체의 불확실성(로그 표준편차) */
+
+const won=x=>{const a=Math.abs(x);return (x<0?"−":"")+Math.round(a).toLocaleString();};
+const sgn=x=>(x>=0?"+":"−")+Math.round(Math.abs(x)).toLocaleString();
+
+/* ───── 이론값 (변동성·금리 → 세타·감마) ───── */
+const gc=(G,v)=>0.5*G*v*v;                                  /* 연간 감마 항(억) = ½Γσ² */
+const thetaY=()=>gc(P.gamE,P.ivE)+gc(P.gamR,P.ivR);         /* 세타 = 주가·금리 내재변동성 수취 */
+const eAbs=v=>v/Math.sqrt(252)*Math.sqrt(2/Math.PI);        /* 일평균 |움직임| */
+const tcY=(ve,vr)=>P.tc*(eAbs(ve)+eAbs(vr)/10)*252;         /* 연간 리밸런싱 비용 */
+const gamY=(ve,vr)=>gc(P.gamE,ve)+gc(P.gamR,vr);
+const planY=()=>thetaY()-gamY(P.evE,P.evR)-tcY(P.evE,P.evR);/* 예상선 연간 기울기 */
+function recentVol(){                                       /* 최근 60거래일 실현 (기준일 기준) */
+  const d=S.data, i1=CURSOR, i0=Math.max(1,i1-59);
+  let se=0,sr=0,n=0;
+  for(let i=i0;i<=i1;i++){
+    const re=(d.eq[i]/d.eq[i-1]-1)*100;
+    const rr=((d.y20[i]!=null&&d.y20[i-1]!=null)?(d.y20[i]-d.y20[i-1]):0)*100;
+    se+=re*re; sr+=rr*rr; n++;
+  }
+  return {e:Math.sqrt(se/n*252), r:Math.sqrt(sr/n*252)};
+}
+const fvE=()=>RK===null?recentVol().e:P.evE*RK;
+const fvR=()=>RK===null?recentVol().r:P.evR*RK;
+
+/* ───── 난수(재현 가능) ───── */
+let _s=20260716;
+const seed=()=>{_s=20260716;};
+const rnd=()=>{_s=(_s*1103515245+12345)&0x7fffffff;return _s/0x7fffffff;};
+const gauss=()=>{let u=0,v=0;while(u===0)u=rnd();while(v===0)v=rnd();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);};
+
+/* ───── 데이터 ───── */
+async function loadMarket(attempt){
+  attempt=attempt||1;
+  try{
+    const r=await fetch("./data/market.json?v="+attempt,{cache:"no-store"});
+    if(!r.ok) throw new Error("HTTP "+r.status);
+    S.data=await r.json(); S.loaded=true;
+    const d=S.data, pe=[], pr=[];
+    for(let i=1;i<d.eq.length;i++){
+      pe.push((d.eq[i]/d.eq[i-1]-1)*100);
+      pr.push(((d.y20[i]!=null&&d.y20[i-1]!=null)?(d.y20[i]-d.y20[i-1]):0)*100);
+    }
+    S.poolE=pe; S.poolR=pr;
+    S.sdE=Math.sqrt(pe.reduce((a,b)=>a+b*b,0)/pe.length*252);
+    S.sdR=Math.sqrt(pr.reduce((a,b)=>a+b*b,0)/pr.length*252);
+    CURSOR=d.eq.length-1;
+    buildControls(); render();
+  }catch(e){
+    if(attempt<3){setTimeout(()=>loadMarket(attempt+1),800*attempt);return;}
+    $("mainSvg").innerHTML='<text x="280" y="150" text-anchor="middle" font-size="13" font-weight="700" fill="#D6738A">시장데이터를 불러오지 못했어요</text>'+
+      '<text x="280" y="172" text-anchor="middle" font-size="11.5" fill="#566275">잠시 후 새로고침 해주세요 ('+e.message+')</text>';
+  }
+}
+
+/* ───── 실적(과거) 경로 ───── */
+function realized(){
+  const d=S.data, i1=CURSOR, i0=Math.max(1,i1-PAST+1);
+  const day=[], cum=[], parts={theta:0,gE:0,gR:0,tc:0,res:0};
+  const thD=thetaY()/252;
+  let c=0;
+  for(let i=i0;i<=i1;i++){
+    const re=(d.eq[i]/d.eq[i-1]-1)*100;
+    const rr=((d.y20[i]!=null&&d.y20[i-1]!=null)?(d.y20[i]-d.y20[i-1]):0)*100;
+    const gE=0.5*P.gamE*re*re, gR=0.5*P.gamR*rr*rr;
+    const tc=P.tc*(Math.abs(re)+Math.abs(rr)/10), rs=gauss()*P.res/Math.sqrt(252);
+    parts.theta+=thD; parts.gE+=gE; parts.gR+=gR; parts.tc+=tc; parts.res+=rs;
+    const pnl=thD-gE-gR-tc+rs; c+=pnl;
+    day.push({d:d.dates[i],re,rr,pnl,gm:gE+gR}); cum.push(c);
+  }
+  return {day,cum,parts,end:c,n:day.length};
+}
+
+/* ───── 전망(밴드) ───── */
+function forecast(start){
+  /* 변동성은 평균으로 돌아와요 — 최근 국면에서 출발해 예상 수준으로 τ≈3개월에 수렴시켜요 */
+  const TAU=63, sE=fvE(), sR=fvR(), n=S.poolE.length;
+  const tgE=t=>RK===null?P.evE+(sE-P.evE)*Math.exp(-t/TAU):sE;
+  const tgR=t=>RK===null?P.evR+(sR-P.evR)*Math.exp(-t/TAU):sR;
+  const thD=thetaY()/252, resD=P.res/Math.sqrt(252);
+  const paths=new Float64Array(NPATH*FUT);
+  for(let p=0;p<NPATH;p++){
+    /* 변동성 자체가 불확실해요 — 경로마다 국면을 한 번 뽑아요(주가·금리 공통 충격 + 각자 잡음) */
+    const z=gauss(), me=Math.exp(VOV*(0.8*z+0.6*gauss())-0.5*VOV*VOV),
+                     mr=Math.exp(VOV*(0.8*z+0.6*gauss())-0.5*VOV*VOV);
+    let c=start, left=0, bi=0;
+    for(let t=0;t<FUT;t++){
+      if(left===0){bi=Math.floor(rnd()*(n-BLK));left=BLK;}
+      const j=bi+(BLK-left); left--;
+      const re=S.poolE[j]*(tgE(t)/(S.sdE||20))*me, rr=S.poolR[j]*(tgR(t)/(S.sdR||60))*mr;
+      c+=thD-0.5*P.gamE*re*re-0.5*P.gamR*rr*rr-P.tc*(Math.abs(re)+Math.abs(rr)/10)+gauss()*resD;
+      paths[p*FUT+t]=c;
+    }
+  }
+  const q=(t,qs)=>{const a=new Float64Array(NPATH);for(let p=0;p<NPATH;p++)a[p]=paths[p*FUT+t];
+    a.sort();return qs.map(x=>a[Math.min(NPATH-1,Math.floor(x*NPATH))]);};
+  return {q,paths};
+}
+
+/* ───── 구간(호라이즌) ───── */
+function horizons(){
+  const ds=S.data.dates[CURSOR], y=+ds.slice(0,4), m=+ds.slice(4,6), dd=+ds.slice(6,8);
+  const dim=new Date(y,m,0).getDate();
+  const eom=Math.max(3,Math.round((dim-dd)*252/365));
+  const qMon=(Math.ceil(m/3)*3-m)+(dim-dd)/dim;
+  const qd=Math.max(eom+5,Math.round(qMon*21));
+  const H=[{k:"이달 말",t:eom},{k:"분기 말",t:qd},{k:"분기말+3M",t:qd+63},
+           {k:"+6개월",t:126},{k:"+9개월",t:189},{k:"+12개월",t:251}];
+  const seen=new Set();
+  return H.map(h=>({k:h.k,t:Math.min(FUT-1,Math.max(1,h.t))}))
+          .filter(h=>{if(seen.has(h.t))return false;seen.add(h.t);return true;})
+          .sort((a,b)=>a.t-b.t);
+}
+function dstr(off){
+  const ds=S.data.dates[CURSOR];
+  const dt=new Date(+ds.slice(0,4),+ds.slice(4,6)-1,+ds.slice(6,8));
+  dt.setDate(dt.getDate()+Math.round(off*365/252));
+  return String(dt.getFullYear()).slice(2)+"."+(dt.getMonth()+1)+"월";
+}
+const fmtd=s=>s.replace(/(\d{4})(\d\d)(\d\d)/,"$1-$2-$3");
+
+/* ───── 스케일 ───── */
+function scale(vals){
+  let lo=Math.min.apply(null,vals), hi=Math.max.apply(null,vals);
+  if(hi-lo<50){const m=(hi+lo)/2;lo=m-25;hi=m+25;}
+  const pad=(hi-lo)*0.12; lo-=pad; hi+=pad;
+  if(lo>0)lo=-(hi-lo)*0.06;
+  if(hi<0)hi=(hi-lo)*0.06;
+  return {lo,hi};
+}
+function niceTicks(lo,hi){
+  const raw=(hi-lo)/4, mag=Math.pow(10,Math.floor(Math.log10(Math.abs(raw)||1)));
+  const step=[1,2,2.5,5,10].map(x=>x*mag).find(x=>x>=raw)||mag*10;
+  const out=[]; for(let v=Math.ceil(lo/step)*step;v<=hi;v+=step) out.push(v);
+  return out;
+}
+
+/* ───── 렌더 ───── */
+let RZ=null,FC=null,HZ=null;
+function render(){
+  if(!S.loaded)return;
+  seed();
+  RZ=realized(); FC=forecast(RZ.end); HZ=horizons();
+  drawMain(); drawHz(); fillStats(); fillGap(); fillDerived();
+  if($("v_cursor")) $("v_cursor").textContent=fmtd(S.data.dates[CURSOR]);
+}
+
+function drawMain(){
+  const W=560,H=330,L=50,R=10,T=18,B=30, iw=W-L-R, ih=H-T-B;
+  const nP=RZ.cum.length, nT=nP+FUT, X=i=>L+iw*i/(nT-1);
+  const qs=[0.10,0.25,0.50,0.75,0.90], ts=[];
+  for(let t=0;t<FUT;t+=4) ts.push(t);
+  if(ts[ts.length-1]!==FUT-1) ts.push(FUT-1);
+  const Q=ts.map(t=>FC.q(t,qs));
+  const slope=planY()/252, plan=i=>slope*i;
+  const all=RZ.cum.concat([plan(0),plan(nT-1)]).concat(Q.map(q=>q[0])).concat(Q.map(q=>q[4]));
+  const {lo,hi}=scale(all), Y=v=>T+ih*(hi-v)/(hi-lo);
+  const g=[];
+  niceTicks(lo,hi).forEach(v=>{
+    g.push(`<line x1="${L}" y1="${Y(v).toFixed(1)}" x2="${W-R}" y2="${Y(v).toFixed(1)}" stroke="${Math.abs(v)<1e-9?'#AAB4C6':'#EDF0F6'}" stroke-width="1"/>`);
+    g.push(`<text x="${L-6}" y="${(Y(v)+4).toFixed(1)}" text-anchor="end" font-size="10" fill="#8A94A6">${won(v)}</text>`);
+  });
+  g.push(`<text x="${L-6}" y="${T-5}" text-anchor="end" font-size="9.5" fill="#8A94A6">억</text>`);
+  /* 재원 소진선 — 수수료도 시간에 비례해 쌓이니 기울기를 가진 직선이에요 */
+  if(P.fee>0){
+    const iEnd=Math.min(nT-1, -lo*252/P.fee);
+    if(iEnd>4){
+      g.push(`<path d="M${X(0).toFixed(1)},${Y(0).toFixed(1)} L${X(iEnd).toFixed(1)},${Y(-P.fee*iEnd/252).toFixed(1)}" fill="none" stroke="#D6738A" stroke-width="1.3" stroke-dasharray="6 4"/>`);
+      g.push(`<text x="${(X(iEnd)-4).toFixed(1)}" y="${(Y(-P.fee*iEnd/252)-6).toFixed(1)}" text-anchor="end" font-size="10" font-weight="700" fill="#B8455F">재원 소진선 (연 ${won(P.fee)}억)</text>`);
+    }
+  }
+  const band=(a,b,op)=>{
+    let p="M";
+    ts.forEach((t,j)=>{p+=`${X(nP-1+t).toFixed(1)},${Y(Q[j][a]).toFixed(1)} `;});
+    for(let j=ts.length-1;j>=0;j--) p+=`${X(nP-1+ts[j]).toFixed(1)},${Y(Q[j][b]).toFixed(1)} `;
+    return `<path d="${p}Z" fill="#9282DC" opacity="${op}"/>`;
+  };
+  g.push(band(0,4,0.16)); g.push(band(1,3,0.22));
+  let mp="M"; ts.forEach((t,j)=>{mp+=`${X(nP-1+t).toFixed(1)},${Y(Q[j][2]).toFixed(1)} `;});
+  g.push(`<path d="${mp}" fill="none" stroke="#6B7688" stroke-width="1.5" stroke-dasharray="5 4"/>`);
+  g.push(`<path d="M${X(0).toFixed(1)},${Y(plan(0)).toFixed(1)} L${X(nT-1).toFixed(1)},${Y(plan(nT-1)).toFixed(1)}" fill="none" stroke="#5C82CF" stroke-width="2" stroke-dasharray="7 4"/>`);
+  let rp="M"; RZ.cum.forEach((v,i)=>{rp+=`${X(i).toFixed(1)},${Y(v).toFixed(1)} `;});
+  g.push(`<path d="${rp}" fill="none" stroke="#16202F" stroke-width="2.1" stroke-linejoin="round"/>`);
+  g.push(`<circle cx="${X(nP-1).toFixed(1)}" cy="${Y(RZ.end).toFixed(1)}" r="3.6" fill="#16202F"/>`);
+  g.push(`<line x1="${X(nP-1).toFixed(1)}" y1="${T}" x2="${X(nP-1).toFixed(1)}" y2="${T+ih}" stroke="#AAB4C6" stroke-width="1"/>`);
+  g.push(`<text x="${X(nP-1).toFixed(1)}" y="${T-5}" text-anchor="middle" font-size="10" font-weight="800" fill="#566275">오늘</text>`);
+  HZ.forEach(h=>{
+    const q=FC.q(h.t,[0.10,0.50,0.90]), x=X(nP-1+h.t);
+    g.push(`<line x1="${x.toFixed(1)}" y1="${Y(q[0]).toFixed(1)}" x2="${x.toFixed(1)}" y2="${Y(q[2]).toFixed(1)}" stroke="#9282DC" stroke-width="1.5"/>`);
+    g.push(`<circle cx="${x.toFixed(1)}" cy="${Y(q[1]).toFixed(1)}" r="2.8" fill="#5B4CA8"/>`);
+  });
+  const lab=[[0,dstr(-(nP-1))],[nP-1,"오늘"]];
+  HZ.forEach((h,j)=>{ if(j%2===1||h.t>=240) lab.push([nP-1+h.t,dstr(h.t)]); });
+  lab.forEach(a=>g.push(`<text x="${X(a[0]).toFixed(1)}" y="${H-10}" text-anchor="middle" font-size="9.5" fill="#8A94A6">${a[1]}</text>`));
+  $("mainSvg").innerHTML=g.join("");
+}
+
+function drawHz(){
+  const W=560,H=180,L=50,R=12,T=18,B=38, iw=W-L-R, ih=H-T-B;
+  const rows=HZ.map(h=>({k:h.k,t:h.t,q:FC.q(h.t,[0.10,0.25,0.50,0.75,0.90])}));
+  const all=[]; rows.forEach(r=>{all.push(r.q[0]);all.push(r.q[4]);}); all.push(RZ.end); all.push(0);
+  const {lo,hi}=scale(all), Y=v=>T+ih*(hi-v)/(hi-lo);
+  const g=[], bw=iw/rows.length;
+  niceTicks(lo,hi).forEach(v=>{
+    g.push(`<line x1="${L}" y1="${Y(v).toFixed(1)}" x2="${W-R}" y2="${Y(v).toFixed(1)}" stroke="${Math.abs(v)<1e-9?'#AAB4C6':'#EDF0F6'}" stroke-width="1"/>`);
+    g.push(`<text x="${L-6}" y="${(Y(v)+4).toFixed(1)}" text-anchor="end" font-size="10" fill="#8A94A6">${won(v)}</text>`);
+  });
+  g.push(`<line x1="${L}" y1="${Y(RZ.end).toFixed(1)}" x2="${W-R}" y2="${Y(RZ.end).toFixed(1)}" stroke="#16202F" stroke-width="1.2" stroke-dasharray="4 4"/>`);
+  g.push(`<text x="${W-R}" y="${(Y(RZ.end)-5).toFixed(1)}" text-anchor="end" font-size="9.5" font-weight="700" fill="#16202F">지금 ${won(RZ.end)}억</text>`);
+  rows.forEach((r,i)=>{
+    const cx=L+bw*(i+0.5), w=Math.min(30,bw*0.42);
+    g.push(`<line x1="${cx.toFixed(1)}" y1="${Y(r.q[0]).toFixed(1)}" x2="${cx.toFixed(1)}" y2="${Y(r.q[4]).toFixed(1)}" stroke="#9282DC" stroke-width="1.4"/>`);
+    g.push(`<rect x="${(cx-w/2).toFixed(1)}" y="${Y(r.q[3]).toFixed(1)}" width="${w.toFixed(1)}" height="${Math.max(2,Y(r.q[1])-Y(r.q[3])).toFixed(1)}" rx="3" fill="#9282DC" opacity="0.45"/>`);
+    g.push(`<line x1="${(cx-w/2).toFixed(1)}" y1="${Y(r.q[2]).toFixed(1)}" x2="${(cx+w/2).toFixed(1)}" y2="${Y(r.q[2]).toFixed(1)}" stroke="#5B4CA8" stroke-width="2"/>`);
+    g.push(`<text x="${cx.toFixed(1)}" y="${H-20}" text-anchor="middle" font-size="10" font-weight="700" fill="#566275">${r.k}</text>`);
+    g.push(`<text x="${cx.toFixed(1)}" y="${H-7}" text-anchor="middle" font-size="9" fill="#8A94A6">${dstr(r.t)}</text>`);
+  });
+  $("hzSvg").innerHTML=g.join("");
+
+  const head=`<tr><th>구간</th><th>중앙값</th><th>80% 범위</th><th>예상선 대비 갭</th><th>재원 초과확률</th></tr>`;
+  const body=rows.map(r=>{
+    const pl=planY()*(RZ.n-1+r.t)/252, lim=-P.fee*(RZ.n-1+r.t)/252;
+    let over=0; for(let p=0;p<NPATH;p++) if(FC.paths[p*FUT+r.t]<lim) over++;
+    const pv=over/NPATH*100, dv=r.q[2]-pl;
+    return `<tr><td><b>${r.k}</b> <span style="color:var(--muted);font-size:11px">${dstr(r.t)}</span></td>`+
+      `<td><b>${won(r.q[2])}</b></td><td style="color:var(--muted)">${won(r.q[0])} ~ ${won(r.q[4])}</td>`+
+      `<td style="color:${dv>=0?'var(--good-ink)':'var(--bad-ink)'}">${sgn(dv)}</td>`+
+      `<td style="color:${pv>=10?'var(--bad-ink)':'var(--muted)'};font-weight:${pv>=10?700:400}">${pv<0.2?'~0':pv.toFixed(0)}%</td></tr>`;
+  }).join("");
+  $("hzTbl").innerHTML=head+body;
+}
+
+function fillStats(){
+  const pl=planY()*(RZ.n-1)/252, gap=RZ.end-pl, y1=FC.q(FUT-1,[0.10,0.50,0.90]);
+  const rvE=Math.sqrt(RZ.day.reduce((a,b)=>a+b.re*b.re,0)/RZ.n*252);
+  const rvR=Math.sqrt(RZ.day.reduce((a,b)=>a+b.rr*b.rr,0)/RZ.n*252);
+  $("asofLab").textContent=`기준일 ${fmtd(S.data.dates[CURSOR])} · 과거 ${RZ.n}거래일`;
+  const cards=[
+    ["지금까지 실적", won(RZ.end)+"억", `실현 주가 ${rvE.toFixed(0)}% · 금리 ${rvR.toFixed(0)}bp`, RZ.end>=0?"var(--good-ink)":"var(--bad-ink)"],
+    ["예상선 대비", sgn(gap)+"억", gap>=0?"예상보다 덜 들었어요":"예상보다 더 들었어요", gap>=0?"var(--good-ink)":"var(--bad-ink)"],
+    ["1년 뒤 중앙값", won(y1[1])+"억", `예상선 기울기 ${sgn(planY())}억/년`, y1[1]>=0?"var(--good-ink)":"var(--bad-ink)"],
+    ["1년 뒤 80% 범위", won(y1[0])+" ~ "+won(y1[2]), "아래 꼬리가 더 길어요", "var(--ink)"],
+  ];
+  $("stats").innerHTML=cards.map(c=>`<div class="st"><div class="k">${c[0]}</div><div class="v" style="color:${c[3]}">${c[1]}</div><div class="s">${c[2]}</div></div>`).join("");
+
+  const lim=-P.fee*(RZ.n-1+FUT-1)/252;
+  let over=0; for(let p=0;p<NPATH;p++) if(FC.paths[p*FUT+FUT-1]<lim) over++;
+  const pv=over/NPATH*100, used=RZ.end<0?(-RZ.end)/(P.fee*(RZ.n-1)/252)*100:0;
+  let cls,ic,t,p;
+  if(pv>=15){cls="bad";ic="✕";t="재원을 넘길 가능성이 낮지 않아요";
+    p=`1년 뒤 누적 손실이 그때까지 쌓인 재원을 넘길 확률 <b>${pv.toFixed(0)}%</b>. 노출을 줄이거나 옵션으로 꼬리를 사두는 선택지를 봐야 해요.`;}
+  else if(pv>=3){cls="warn";ic="~";t="평시는 재원 안, 격변하면 넘겨요";
+    p=`재원 초과 확률 <b>${pv.toFixed(0)}%</b> — 중앙값은 재원 안이지만 <b>아래 꼬리</b>가 재원선에 닿아요.`;}
+  else if(RZ.end<pl){cls="warn";ic="~";t="지금은 예상보다 비싸게 가고 있어요";
+    p=`예상선 대비 <b>${sgn(gap)}억</b> — 같은 기간 재원의 <b>${used.toFixed(0)}%</b>를 썼어요. 다만 1년 뒤 재원 초과 확률은 <b>${pv<0.2?'~0':pv.toFixed(0)}%</b>로 낮아요.`;}
+  else{cls="ok";ic="✓";t="예상 범위 안에서 가고 있어요";
+    p=`예상선 대비 <b>${sgn(gap)}억</b>, 재원 초과 확률 <b>${pv<0.2?'~0':pv.toFixed(0)}%</b>.`;}
+  $("vd").className="verdict "+cls; $("vdi").textContent=ic; $("vdt").textContent=t; $("vdp").innerHTML=p;
+
+  const top=RZ.day.slice().sort((a,b)=>b.gm-a.gm).slice(0,5);
+  const share=top.reduce((a,b)=>a+b.gm,0)/Math.max(1e-9,RZ.parts.gE+RZ.parts.gR)*100;
+  $("mainNote").innerHTML=`예상선 기울기 <b>연 ${sgn(planY())}억</b> = 세타 ${won(thetaY())} − 예상감마 ${won(gamY(P.evE,P.evR))} − 예상 리밸런싱 ${won(tcY(P.evE,P.evR))}. `+
+    `같은 기간 실적은 <b>${won(RZ.end)}억</b>이고, 감마 누수의 <b>${share.toFixed(0)}%</b>가 상위 5일에서 나왔어요.`;
+}
+
+function fillGap(){
+  const f=(RZ.n-1)/252;
+  const items=[
+    ["세타 수취",    RZ.parts.theta-thetaY()*f,                 "#4FAE8C","시간가치 · 기간 차이"],
+    ["주가 감마",    -(RZ.parts.gE-gc(P.gamE,P.evE)*f),         "#9282DC","실현 vs 예상 변동성"],
+    ["금리 감마",    -(RZ.parts.gR-gc(P.gamR,P.evR)*f),         "#7B84D4","실현 vs 예상 bp"],
+    ["리밸런싱 비용",-(RZ.parts.tc-tcY(P.evE,P.evR)*f),         "#5C82CF","거래 횟수·폭"],
+    ["잔여",         RZ.parts.res,                              "#D69A55","베이시스·헷지오차"],
+  ];
+  let mx=1; items.forEach(i=>{mx=Math.max(mx,Math.abs(i[1]));});
+  $("gapRows").innerHTML=items.map(it=>{
+    const v=it[1], w=Math.abs(v)/mx*50, left=v>=0?50:50-w;
+    return `<div class="row"><div class="lb">${it[0]}<small>${it[3]}</small></div>`+
+      `<div class="tr"><div style="position:absolute;left:50%;top:0;bottom:0;width:1px;background:#C7CEDC"></div>`+
+      `<div class="fl" style="left:${left.toFixed(1)}%;width:${w.toFixed(1)}%;background:${it[2]};opacity:.85"></div></div>`+
+      `<div class="vl" style="color:${v>=0?'var(--good-ink)':'var(--bad-ink)'}">${sgn(v)}억</div></div>`;
+  }).join("");
+  const top=RZ.day.slice().sort((a,b)=>b.gm-a.gm).slice(0,5);
+  const worst=RZ.day.slice().sort((a,b)=>a.pnl-b.pnl)[0];
+  const rvE=Math.sqrt(RZ.day.reduce((a,b)=>a+b.re*b.re,0)/RZ.n*252);
+  const rvR=Math.sqrt(RZ.day.reduce((a,b)=>a+b.rr*b.rr,0)/RZ.n*252);
+  $("gapCards").innerHTML=[
+    ["며칠이 만들어요", `상위 5일 감마 누수 <b>${won(top.reduce((a,b)=>a+b.gm,0))}억</b> · 최악의 날 ${worst.d.slice(4,6)}/${worst.d.slice(6,8)} <b>${won(worst.pnl)}억</b>`],
+    ["제곱으로 붙어요", `주가 실현 <b>${rvE.toFixed(0)}%</b> vs 예상 ${P.evE}% → 누수 <b>${Math.pow(rvE/P.evE,2).toFixed(1)}배</b> · 금리 <b>${rvR.toFixed(0)}bp</b> vs ${P.evR}bp → <b>${Math.pow(rvR/P.evR,2).toFixed(1)}배</b>`],
+    ["세타는 꾸준해요", `같은 기간 세타 <b>${won(RZ.parts.theta)}억</b> 수취 — 시간은 매일 같은 속도로 흘러요`],
+  ].map(c=>`<div class="b"><b>${c[0]}</b>${c[1]}</div>`).join("");
+}
+
+function fillDerived(){
+  $("derived").innerHTML=
+    `세타 <b>${won(thetaY())}억/년</b> (주가 ${won(gc(P.gamE,P.ivE))} + 금리 ${won(gc(P.gamR,P.ivR))}) − `+
+    `예상감마 <b>${won(gamY(P.evE,P.evR))}억</b> (주가 ${won(gc(P.gamE,P.evE))} + 금리 ${won(gc(P.gamR,P.evR))}) − `+
+    `리밸런싱 <b>${won(tcY(P.evE,P.evR))}억</b> → 예상선 <b style="color:${planY()>=0?'var(--good-ink)':'var(--bad-ink)'}">${sgn(planY())}억/년</b>. `+
+    (RK===null
+      ? `앞으로는 최근 국면(주가 <b>${fvE().toFixed(0)}%</b> · 금리 <b>${fvR().toFixed(0)}bp</b>)에서 출발해 <b>3개월 반감기</b>로 예상 수준까지 내려온다고 봤어요.`
+      : `앞으로는 주가 <b>${fvE().toFixed(0)}%</b> · 금리 <b>${fvR().toFixed(0)}bp</b> 가정이라 감마가 <b>${won(gamY(fvE(),fvR()))}억/년</b>이에요.`);
+}
+
+/* ───── 컨트롤 ───── */
+function buildControls(){
+  let html="", cur="";
+  PAR.forEach(p=>{
+    if(p.g!==cur){cur=p.g;html+=`<div class="grp">${p.g==="주가"?"주가 (코스피)":p.g==="금리"?"금리 (국고 20년)":"공통"}</div>`;}
+    html+=`<div class="cell"><label for="c_${p.id}"><span>${p.n}</span><b><span id="v_${p.id}">${p.v}</span> ${p.u}</b></label>`+
+          `<small>${p.s}</small><input type="range" id="c_${p.id}" min="${p.min}" max="${p.max}" step="${p.step}" value="${p.v}"></div>`;
+  });
+  html+=`<div class="grp">기준일</div><div class="cell" style="grid-column:1/-1">`+
+        `<label for="c_cursor"><span>오늘을 옮겨봐요</span><b><span id="v_cursor">${fmtd(S.data.dates[CURSOR])}</span></b></label>`+
+        `<small>과거 어느 시점에 서 있었는지 바꿔요 — 그때의 실적선과 그때 본 전망이 나와요</small>`+
+        `<input type="range" id="c_cursor" min="${PAST}" max="${S.data.eq.length-1}" step="1" value="${CURSOR}"></div>`;
+  $("ctl").innerHTML=html;
+  PAR.forEach(p=>{
+    $("c_"+p.id).addEventListener("input",e=>{
+      P[p.id]=+e.target.value; $("v_"+p.id).textContent=P[p.id]; render();
+    });
+  });
+  $("c_cursor").addEventListener("input",e=>{CURSOR=+e.target.value;render();});
+  $("preset").innerHTML=REG.map(r=>`<button class="chip${r.k===RK?" on":""}" id="ps_${r.id}">${r.n}</button>`).join("")+
+    `<button class="chip" id="ps_now">📍 최근 기준일로</button>`;
+  REG.forEach(r=>$("ps_"+r.id).addEventListener("click",()=>{
+    REG.forEach(q=>$("ps_"+q.id).classList.toggle("on",q.id===r.id));
+    RK=r.k; render();
+  }));
+  $("ps_now").addEventListener("click",()=>{CURSOR=S.data.eq.length-1;$("c_cursor").value=CURSOR;render();});
+}
+
+loadMarket();
+</script>
+</body>
+</html>

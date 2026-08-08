@@ -508,10 +508,8 @@ function walkCum(o){
 }
 const SCEN=[
   {id:"unh", n:"미헷지",     col:"#D6738A", o:()=>({mE:P.mulE,mR:P.mulR,cE:0,cR:0,unh:true})},
-  {id:"c50", n:"커버 50%",   col:"#4FAE8C", o:()=>({mE:P.mulE,mR:P.mulR,cE:.5,cR:.5})},
-  {id:"c100",n:"커버 100%",  col:"#A96A1C", o:()=>({mE:P.mulE,mR:P.mulR,cE:1,cR:1})},
 ];
-let SHOW={band:1,bench:1,unh:0,c50:0,c100:0};
+let SHOW={band:1,bench:1,unh:0};
 
 /* ═══ 장기평균선 밴드 — 기준 국면·계획 운용으로 과거를 되돌린 분포 ═══ */
 const NB=500;

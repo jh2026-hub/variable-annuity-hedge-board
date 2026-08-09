@@ -702,7 +702,7 @@ function drawMain(){
     g.push(`<path d="${ub}Z" fill="${s.col}" opacity="0.10"/>`);
     let ml="M"; pts.forEach(i=>{ml+=`${X(i).toFixed(1)},${Y(s.lo[i]).toFixed(1)} `;});
     g.push(`<path d="${ml}" fill="none" stroke="${s.col}" stroke-width="1.2" stroke-dasharray="2 4" opacity="0.7"/>`);
-    g.push(`<text x="${(X(nP-1)-6).toFixed(1)}" y="${(Y(s.lo[nP-1])+13).toFixed(1)}" text-anchor="end" font-size="10" font-weight="700" fill="${s.col}" opacity="0.85">반대였다면 ${SE(s.lo[nP-1])}</text>`);});
+    g.push(`<text x="${(X(nP-1)-6).toFixed(1)}" y="${(Y(s.lo[nP-1])+13).toFixed(1)}" text-anchor="end" font-size="10" font-weight="700" fill="${s.col}" opacity="0.85">${SE(s.lo[nP-1])}</text>`);});
   /* 갭을 둘로 갈라요 — 장기평균선↔벤치마크선 = 시장 몫 · 벤치마크선↔실적 = 운용 몫 */
   let a1=`M${X(0).toFixed(1)},${Y(0).toFixed(1)}`;
   RZ.bcum.forEach((v,i)=>{a1+=` L${X(i).toFixed(1)},${Y(v).toFixed(1)}`;});
@@ -747,7 +747,7 @@ function resetRd(){
     `<span style="color:var(--sym-ink)">■</span> 시장 몫 <b style="color:${C(mkt)}">${SE(mkt)}</b> · `+
     `<span style="color:var(--pay-ink)">■</span> 운용 몫 <b style="color:${C(ops)}">${SE(ops)}</b>`+
     SCEND.map(s=>` · <span style="color:${s.col}">■</span> ${s.n} <b style="color:${s.col}">${SE(s.v)}</b>`+
-      (s.mir!=null?` <span class="bdg">반대였다면 ${SE(s.mir)}</span>`:"")).join("");
+      (s.mir!=null?` <span class="bdg">${SE(s.mir)}</span>`:"")).join("");
 }
 function onMove(ev){
   if(!XS||!RZ)return;

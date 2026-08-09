@@ -673,8 +673,9 @@ function drawMain(){
   const X=i=>L+iw*i/(nT-1), Y=v=>T+ih*(hi-v)/(hi-lo);
   XS={X,L,iw,nP,nT};
   const g=[];
-  const raw=(hi-lo)/4, mag=Math.pow(10,Math.floor(Math.log10(Math.abs(raw)||1)));
-  const stp=[1,2,2.5,5,10].map(x=>x*mag).find(x=>x>=raw)||mag*10;
+  /* 5구간·촘촘한 사다리 — 4구간+[1,2,2.5,5,10]은 스텝이 튀어 눈금이 둘만 남았어요 */
+  const raw=(hi-lo)/5, mag=Math.pow(10,Math.floor(Math.log10(Math.abs(raw)||1)));
+  const stp=[1,1.5,2,2.5,3,4,5,7.5,10].map(x=>x*mag).find(x=>x>=raw)||mag*10;
   for(let v=Math.ceil(lo/stp)*stp; v<=hi; v+=stp){
     const y=Y(v);
     g.push(`<line x1="${L}" y1="${y.toFixed(1)}" x2="${W-R}" y2="${y.toFixed(1)}" stroke="${Math.abs(v)<1e-9?'#AAB4C6':'#EDF0F6'}" stroke-width="1"/>`);

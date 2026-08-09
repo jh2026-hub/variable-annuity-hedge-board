@@ -805,7 +805,7 @@ function drawWF(){
     if(s[0]==="h"){ html+=`<div class="wsec">${s[1]}</div>`; return; }
     const v=s[1], col=s[2]?"#16202F":(v>=0?"#4FAE8C":"#D69A55");
     const z=pc(0), w=Math.max(0.7,Math.abs(pc(v)-z)), left=v>=0?z:z-w;   /* 최소폭이 중앙선을 넘지 않게 */
-    const tag=(!s[2]&&s[0]===worst[0]&&Math.abs(s[1])>=1)?` <span class="bdg bad">주범</span>`:``;
+    const tag=(!s[2]&&s[0]===worst[0]&&Math.abs(s[1])>=1)?` <span class="bdg bad">주요인</span>`:``;
     html+=`<div class="wfr${s[2]?" an":""}"><div class="wl">${s[0]}${tag}</div>`+
       `<div class="wb"><u style="left:50%;background:#C7CEDC"></u>`+
       `<i style="left:${left.toFixed(2)}%;width:${w.toFixed(2)}%;background:${col};opacity:${s[2]?0.9:0.95}"></i></div>`+

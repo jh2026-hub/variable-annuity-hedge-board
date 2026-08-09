@@ -50,7 +50,11 @@ PAGE = """<!doctype html><html lang="ko"><head>
   button{width:100%;margin-top:9px;min-height:44px;border:0;border-radius:10px;
     background:#4A6FC4;color:#fff;font-size:13.5px;font-weight:800;cursor:pointer}
   #e{font-size:11.5px;color:#B8455F;min-height:17px;margin-top:9px}
-  a{display:inline-block;margin-top:6px;font-size:11px;color:#8A94A6}
+  .backbtn{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:8px 16px;margin-top:12px;
+    background:#fff;border:1px solid #DEE3EE;border-radius:99px;
+    font-size:12.5px;font-weight:800;color:#4A6FC4;text-decoration:none;
+    transition:transform .12s ease}
+  .backbtn:hover{transform:translateY(-1px)}
 </style></head><body>
 <div class="g">
   <div class="lk">🔒</div>
@@ -59,7 +63,7 @@ PAGE = """<!doctype html><html lang="ko"><head>
   <input id="p" type="password" inputmode="numeric" maxlength="12" autocomplete="off" autofocus>
   <button id="b">열기</button>
   <div id="e"></div>
-  <a href="./index.html">← 교육판으로</a>
+  <a class="backbtn" href="./index.html">← 설명 페이지로</a>
 </div>
 <script>
 const B=__BLOB__, K="ck:__KEYNS__";

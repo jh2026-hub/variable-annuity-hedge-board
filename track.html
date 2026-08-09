@@ -163,10 +163,10 @@
 <div class="chips pad" id="selRow"></div>
 
 <div class="panel">
-  <div class="cap">누적 헤지손익 <span class="bdg good">실측 경로</span><span id="chartLab"></span></div>
+  <div class="cap">누적 헷지손익 <span class="bdg good">실측 경로</span><span id="chartLab"></span></div>
   <div class="chips" id="lineSel" style="margin-bottom:6px"></div>
   <div class="rd" id="rdOut"></div>
-  <div class="chartwrap"><svg id="mainSvg" role="img" aria-label="누적 헤지손익"></svg></div>
+  <div class="chartwrap"><svg id="mainSvg" role="img" aria-label="누적 헷지손익"></svg></div>
   <div class="rd" id="volCtx"></div>
   <div class="chartwrap"><svg id="volSvg" role="img" aria-label="실현 변동성"></svg></div>
   <div class="rd" id="rateCtx"></div>
@@ -298,14 +298,14 @@ const PAR=[
  {g:"주가",tb:"b", id:"thE",  n:"옵션 세타",      u:"억/년",  v:404, st:10,  k:"n", s:"발행 시점 확정"},
  {g:"주가",tb:"r", id:"vgE",  n:"베가(숏)",      u:"억/1%p", v:325, st:5,   k:"n", s:"26상반기 평가손실 −190억 기준"},
  {g:"주가",tb:"r", id:"dltE", n:"주가 델타",     u:"억원/1%", v:180,st:10,k:"n", s:"지수 1% 움직일 때 · 7월말"},
- {g:"주가",tb:"r", id:"dhdE", n:"델타 헤지",     u:"%",      v:100,st:0.5,k:"n",s:"맞춘 비율 · 100=완전헤지"},
+ {g:"주가",tb:"r", id:"dhdE", n:"델타 헷지",     u:"%",      v:100,st:0.5,k:"n",s:"맞춘 비율 · 100=완전헷지"},
  {g:"주가",tb:"b", id:"slipE",n:"슬리피지",  u:"억/1억",  v:0,   st:0.01,k:"n", s:"주식은 리밸런싱 비용이 작아요"},
  {g:"금리",tb:"b", id:"gamR", n:"감마 Γ (계획)", u:"억/bp",  v:0.175,st:0.005,k:"n",s:"장기평균선 기준"},
  {g:"금리",tb:"b", id:"thR",  n:"옵션 세타",      u:"억/년",  v:240, st:10,  k:"n", s:"발행 시점 확정"},
  {g:"금리",tb:"r", id:"agamR",n:"감마 Γ (실제)", u:"억/bp",  v:0.016,st:0.002,k:"n",s:"실적·벤치마크선"},
  {g:"금리",tb:"r", id:"vgR",  n:"베가(숏)",      u:"억/1bp", v:10,  st:1,   k:"n", s:"역사적 변동성 1bp↑ 시 손실"},
  {g:"금리",tb:"r", id:"dltR", n:"금리 델타",     u:"억원/1bp",v:60, st:5, k:"n", s:"DV01 · 7월말"},
- {g:"금리",tb:"r", id:"dhdR", n:"델타 헤지",     u:"%",      v:100,st:0.5,k:"n",s:"맞춘 비율 · 100=완전헤지"},
+ {g:"금리",tb:"r", id:"dhdR", n:"델타 헷지",     u:"%",      v:100,st:0.5,k:"n",s:"맞춘 비율 · 100=완전헷지"},
  {g:"금리",tb:"b", id:"slipR",n:"슬리피지",  u:"억/1억",  v:10,  st:0.5, k:"n", s:"DV01 1억 조정당 · 이론 연 −598억"},
  {g:"베이시스",tb:"r", id:"bsdv", n:"본드스왑 노출",   u:"억/bp",  v:15,  st:0.5,k:"n", s:"IRS20−국고10 · 26상 −591억 기준"},
  {g:"베이시스",tb:"r", id:"teAmt",n:"펀드 베이시스",   u:"억/1%p", v:80, st:10, k:"n", s:"지수 대비 1%p당"},
@@ -438,7 +438,7 @@ function ewma0(i0,key){
 
 /* ═══ 실적 — 원장이 있으면 실측, 없으면 모형 재구성 ═══ */
 const KEYS=["th","gE","gR","tE","tR","carry","vgE","vgR","bs","te","dmE","dmR"];
-/* 못 맞춘 델타는 방향에 그대로 노출돼요 — 헤지 100% 면 0 */
+/* 못 맞춘 델타는 방향에 그대로 노출돼요 — 헷지 100% 면 0 */
 const resE=()=>P.dltE*(1-P.dhdE/100), resR=()=>P.dltR*(1-P.dhdR/100);
 function realized(){
   const d=S.mkt, i1=CURSOR, i0=periodStart(), b=REG("base"), rg=regV(RSEL);
@@ -525,7 +525,7 @@ function pastBand(){
       const vg=vegEp()*(nivE-ivE)*volB()+vegRp()*(nivR-ivR)*volB(); ivE=nivE; ivR=nivR;
       const ns=0.988*sprd+b.bs/Math.sqrt(N())*gauss();   /* |Δ금리| 연동 제거 — 실측 상관 0.02 */
       const bs=bsExpP()*(ns-sprd); sprd=ns;
-      /* 장기평균선은 지수 방향을 가정하지 않으니 베타 갭 드리프트 없이 잡음만 · 델타는 100% 헤지 */
+      /* 장기평균선은 지수 방향을 가정하지 않으니 베타 갭 드리프트 없이 잡음만 · 델타는 100% 헷지 */
       const te=P.teAmt*(b.te/Math.sqrt(N())*gauss()), dl=0;
       accE+=re; accR+=rr; k++;
       let tE=0, tR=0;

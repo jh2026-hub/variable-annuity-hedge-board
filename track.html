@@ -1076,7 +1076,11 @@ function drawVol(){
   let hi=1.2; for(let i=0;i<nP;i++) hi=Math.max(hi,kV(i));
   hi=Math.ceil(hi*2)/2;
   const Y=v=>T+ih*(1-v/hi);
-  [1,2,3,5,8,12,20].filter(v=>v<=hi).forEach(v=>{
+  const rawS=hi/4, magS=Math.pow(10,Math.floor(Math.log10(Math.abs(rawS)||1)));
+  const stpS=[1,1.5,2,2.5,3,4,5,10].map(x=>x*magS).find(x=>x>=rawS)||magS*10;
+  const ticks=[]; for(let v=stpS;v<=hi;v+=stpS) ticks.push(v);
+  if(!ticks.includes(1)&&hi>=1) ticks.push(1);
+  ticks.sort((x,y)=>x-y).forEach(v=>{
     g.push(`<line x1="${L}" y1="${Y(v).toFixed(1)}" x2="${W-R}" y2="${Y(v).toFixed(1)}" stroke="${v===1?"#AAB4C6":"#EDF0F6"}" stroke-width="1" ${v===1?'stroke-dasharray="4 3"':""}/>`);
     g.push(MOB?`<text x="${L+2}" y="${(Y(v)-2).toFixed(1)}" font-size="9" fill="#98A2B3">×${v}</text>`
               :`<text x="${L-6}" y="${(Y(v)+3.5).toFixed(1)}" text-anchor="end" font-size="9.5" fill="#8A94A6">×${v}</text>`);
@@ -1089,12 +1093,16 @@ function drawVol(){
   {let d2="M"; for(let i=0;i<nP;i++) d2+=`${X(i).toFixed(1)},${YB(bl(i)).toFixed(1)} `;
    g.push(`<path d="${d2}" fill="none" stroke="#B8455F" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.9"/>`);
    [blo+pad,bhi-pad].forEach(v=>g.push(`<text x="${W-R+2}" y="${(YB(v)+3.5).toFixed(1)}" font-size="9" fill="#B8455F">${v.toFixed(0)}</text>`));
-   g.push(`<text x="${(X(nP-1)-4).toFixed(1)}" y="${(YB(bl(nP-1))-5).toFixed(1)}" text-anchor="end" font-size="9.5" font-weight="700" fill="#B8455F">본드스왑 ${bl(nP-1).toFixed(0)}bp</text>`);}
+  }
   {let d="M"; for(let i=0;i<nP;i++) d+=`${X(i).toFixed(1)},${Y(Math.min(hi,kV(i))).toFixed(1)} `;
    g.push(`<path d="${d}" fill="none" stroke="#4A6FC4" stroke-width="1.8" stroke-linejoin="round"/>`);
-   g.push(`<text x="${(X(nP-1)-4).toFixed(1)}" y="${Math.max(T+10,Y(Math.min(hi,kV(nP-1)))-6).toFixed(1)}" text-anchor="end" font-size="9.5" font-weight="700" fill="#4A6FC4">감마비용 ×${kV(nP-1).toFixed(1)}</text>`);}
+  }
   g.push(`<line x1="${X(nP-1).toFixed(1)}" y1="${T}" x2="${X(nP-1).toFixed(1)}" y2="${T+ih}" stroke="#AAB4C6" stroke-width="1"/>`);
-  g.push(`<text x="${L}" y="${H-4}" font-size="9.5" font-weight="700" fill="#8A94A6">감마비용 지수 — 좌축 기준 국면=1.0 (주가·금리 합산) · 우축 본드스왑 bp</text>`);
+  g.push(`<text x="${L}" y="${H-4}" font-size="9.5" font-weight="700">`+
+    `<tspan fill="#4A6FC4">■ 감마비용 ×${kV(nP-1).toFixed(1)}</tspan>`+
+    `<tspan fill="#8A94A6"> (좌·기준=1.0) · </tspan>`+
+    `<tspan fill="#B8455F">■ 본드스왑 ${bl(nP-1).toFixed(0)}bp</tspan>`+
+    `<tspan fill="#8A94A6"> (우)</tspan></text>`);
   const el=$("volSvg"); el.setAttribute("viewBox",`0 0 ${W} ${H}`); el.setAttribute("height",H); el.innerHTML=g.join("");
 }
 function fillSel(){

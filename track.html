@@ -721,7 +721,7 @@ function drawMain(){
     g.push(`<path d="${bp2}" fill="none" stroke="#5B4CA8" stroke-width="1.7" stroke-linejoin="round"/>`);}
   SC.forEach(s=>{let sp="M"; s.cum.forEach((v,i)=>{sp+=`${X(i).toFixed(1)},${Y(v).toFixed(1)} `;});
     g.push(`<path d="${sp}" fill="none" stroke="${s.col}" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.9"/>`);
-    g.push(`<text x="${(X(nP-1)-6).toFixed(1)}" y="${(Y(s.cum[nP-1])+4).toFixed(1)}" text-anchor="end" font-size="10" font-weight="700" fill="${s.col}">${s.n}${s.lo?` (${sgn(s.cum[nP-1])}, ${SE(s.lo[nP-1])})`:""}</text>`);});
+    g.push(`<text x="${(X(nP-1)-6).toFixed(1)}" y="${(Y(s.cum[nP-1])+4).toFixed(1)}" text-anchor="end" font-size="10" font-weight="700" fill="${s.col}">${s.n}</text>`);});
   if(P.fee>0&&VIEW==="ytd"){
     const iEnd=Math.min(nT-1, (-P.fee*(nT-1)/N())<lo ? -lo*N()/P.fee : nT-1);
     if(iEnd>4) g.push(`<path d="M${X(0).toFixed(1)},${Y(0).toFixed(1)} L${X(iEnd).toFixed(1)},${Y(-P.fee*iEnd/N()).toFixed(1)}" fill="none" stroke="#D6738A" stroke-width="1.5" stroke-dasharray="5 4"/>`);

@@ -288,12 +288,10 @@ const PAR=[
  {g:"주가",tb:"b", id:"gamE", n:"감마 Γ",        u:"억/1%",  v:1.0, st:0.05,k:"n", s:"1% 움직임당"},
  {g:"주가",tb:"b", id:"thE",  n:"옵션 세타",      u:"억/년",  v:404, st:10,  k:"n", s:"발행 시점 확정"},
  {g:"주가",tb:"r", id:"vgE",  n:"베가(숏)",      u:"억/1%p", v:200, st:10,  k:"n", s:"내재 1%p↑ 시 손실"},
- {g:"주가",tb:"b", id:"dltE", n:"델타 노출",      u:"억/1%",  v:180, st:10,  k:"n", s:"미헷지면 1%당 손익"},
  {g:"주가",tb:"b", id:"slipE",n:"델타 슬리피지",  u:"억/1억",  v:0,   st:0.01,k:"n", s:"델타 1억 조정당"},
  {g:"금리",tb:"b", id:"gamR", n:"감마 Γ",        u:"억/bp",  v:0.175,st:0.005,k:"n",s:"1bp당 컨벡시티"},
  {g:"금리",tb:"b", id:"thR",  n:"옵션 세타",      u:"억/년",  v:240, st:10,  k:"n", s:"발행 시점 확정"},
  {g:"금리",tb:"r", id:"vgR",  n:"베가(숏)",      u:"억/1bp", v:10,  st:1,   k:"n", s:"내재 1bp↑ 시 손실"},
- {g:"금리",tb:"b", id:"dltR", n:"델타 노출",      u:"억/bp",  v:60,  st:5,   k:"n", s:"미헷지면 1bp당 손익"},
  {g:"금리",tb:"b", id:"slipR",n:"델타 슬리피지",  u:"억/1억",  v:10,  st:0.5, k:"n", s:"DV01 1억 조정당"},
  {g:"베이시스",tb:"r", id:"bsdv", n:"본드스왑 노출",   u:"억/bp",  v:3,  st:0.5,k:"n", s:"IRS−KTB 1bp당"},
  {g:"베이시스",tb:"r", id:"teAmt",n:"펀드 베이시스",   u:"억/1%p", v:80, st:10, k:"n", s:"지수 대비 1%p당"},
@@ -478,41 +476,6 @@ function realized(){
           src:led?(cov===day.length?"real":(cov>0?"mix":"model")):"model"};
 }
 
-/* ═══ 시나리오 경로 — 커버율·미헷지만 바꿔 같은 시장을 다시 걷기 ═══ */
-function walkCum(o){
-  const d=S.mkt, i1=CURSOR, i0=periodStart(), b=REG("base"), rg=regV(RSEL);
-  const wE=o.mE*(1-o.cE), wR=o.mR*(1-o.cR), cum=[], lo=[], hi=[];
-  /* 방향에 걸린 건 델타뿐 — 세타·감마·캐리는 어느 쪽으로 가든 같아요(숏감마는 양방향 손실) */
-  let nd=0, dc=0;
-  const thD=(wE*P.thE+wR*P.thR)/N(), cyD=carry()/N(), mAbs=rg.dR*S.kAbsR;
-  let vE=ewma0(i0,"e"), vR=ewma0(i0,"r");
-  let ivE=Math.sqrt(vE)*(diE()/b.dE), ivR=Math.sqrt(vR)*(diR()/b.dR);
-  let sprd=0, c=0, accE=0, accR=0, k=0, dE=P.dltE, dR=P.dltR;
-  for(let i=i0;i<=i1;i++){
-    const re=(d.eq[i]/d.eq[i-1]-1)*100, rr=((d.y20[i]!=null&&d.y20[i-1]!=null)?(d.y20[i]-d.y20[i-1]):0)*100;
-    vE=LAM*vE+(1-LAM)*re*re; vR=LAM*vR+(1-LAM)*rr*rr;
-    const nivE=Math.sqrt(vE)*(diE()/b.dE), nivR=Math.sqrt(vR)*(diR()/b.dR);
-    const vg=(-wE*P.vgE*(nivE-ivE)-wR*P.vgR*(nivR-ivR))*volB(); ivE=nivE; ivR=nivR;
-    const ns=0.985*sprd+0.20*(Math.abs(rr)-mAbs);
-    const bs=(-(o.cR)*o.mR*P.bsdv)*(ns-sprd); sprd=ns;
-    let slip=0;
-    if(!o.unh){ accE+=re; accR+=rr; k++;
-      if(k>=P.rbal||i===i1){ slip=-wE*100*P.gamE*Math.abs(accE)*P.slipE-wR*P.gamR*Math.abs(accR)*P.slipR; accE=0;accR=0;k=0; } }
-    /* 미헷지면 델타가 살아 있어요 — 헷지하면 이 항이 사라지는 대신 슬리피지를 냅니다.
-       숏감마라 움직일수록 델타가 반대로 흘러갑니다(Δ←Δ−Γ·이동) */
-    let dlt=0;
-    if(o.unh){ dlt=o.mE*dE*re+o.mR*dR*rr; dE-=P.gamE*re; dR-=P.gamR*rr; }
-    nd+=thD-cyD-wE*0.5*P.gamE*re*re*vr(VRE,P.rbal)-wR*0.5*P.gamR*rr*rr*vr(VRR,P.rbal)
-      +vg+bs+slip+P.teAmt*P.teDft/N();
-    dc+=dlt; c=nd+dc; cum.push(c);
-    if(o.unh){ const a=Math.abs(dc); lo.push(nd-a); hi.push(nd+a); }
-  }
-  return {cum, lo:o.unh?lo:null, hi:o.unh?hi:null};
-}
-const SCEN=[
-  {id:"unh", n:"미헷지",     col:"#D6738A", o:()=>({mE:P.mulE,mR:P.mulR,cE:0,cR:0,unh:true})},
-];
-let SHOW={band:1,bench:1,unh:0};
 
 /* ═══ 장기평균선 밴드 — 기준 국면·계획 운용으로 과거를 되돌린 분포 ═══ */
 const NB=500;
@@ -631,7 +594,8 @@ function dstr(off){
 }
 
 /* ═══ 렌더 ═══ */
-let SCEND=[],RZ=null,PB=null,FC=null,HZ=null,W=360,MOB=true,XS=null;
+let SHOW={band:1,bench:1};
+let RZ=null,PB=null,FC=null,HZ=null,W=360,MOB=true,XS=null;
 function render(fast){
   if(!S.loaded)return;
   FUT=futLen();
@@ -660,13 +624,8 @@ function drawMain(){
   const pstep=Math.max(1,Math.round(nP/40)), pts=[]; for(let i=0;i<nP;i+=pstep) pts.push(i);
   if(pts[pts.length-1]!==nP-1) pts.push(nP-1);
   const PQ=pts.map(i=>PB.q(i,[0.10,0.90]));
-  const SC=SCEN.filter(s=>SHOW[s.id]).map(s=>({...s,...walkCum(s.o())}));
-  SCEND=SC.map(s=>({n:s.n,col:s.col,v:s.cum[s.cum.length-1],
-    mir:s.lo?s.lo[s.lo.length-1]:null}));
   const all=RZ.cum.concat(RZ.bcum).concat([0,slope*(nT-1)]).concat(Q.map(q=>q[0])).concat(Q.map(q=>q[3]))
-    .concat(SHOW.band?PQ.map(q=>q[0]).concat(PQ.map(q=>q[1])):[])
-    .concat(SC.flatMap(s=>[Math.min.apply(null,s.cum),Math.max.apply(null,s.cum)]))
-    .concat(SC.flatMap(s=>s.lo?[Math.min.apply(null,s.lo),Math.max.apply(null,s.hi)]:[]));
+    .concat(SHOW.band?PQ.map(q=>q[0]).concat(PQ.map(q=>q[1])):[]);
   let lo=Math.min.apply(null,all), hi=Math.max.apply(null,all);
   if(hi-lo<60){const m=(hi+lo)/2;lo=m-30;hi=m+30;}
   const pad=(hi-lo)*0.10; lo-=pad; hi+=pad; if(hi<0)hi=(hi-lo)*0.05;
@@ -695,13 +654,6 @@ function drawMain(){
     const yb=Y(PQ[PQ.length-1][1]);
     g.push(`<text x="${(X(pts[pts.length-1])-4).toFixed(1)}" y="${Math.max(T+10,yb-4).toFixed(1)}" text-anchor="end" font-size="9.5" font-weight="700" fill="#6E7889">기준 밴드 80%</text>`);
   }
-  /* 미헷지 거울 — 방향이 반대였다면 같은 크기로 반대편이었어요 */
-  SC.filter(s=>s.lo).forEach(s=>{ let ub="M";
-    pts.forEach(i=>{ub+=`${X(i).toFixed(1)},${Y(s.lo[i]).toFixed(1)} `;});
-    for(let k=pts.length-1;k>=0;k--) ub+=`${X(pts[k]).toFixed(1)},${Y(s.hi[pts[k]]).toFixed(1)} `;
-    g.push(`<path d="${ub}Z" fill="${s.col}" opacity="0.10"/>`);
-    let ml="M"; pts.forEach(i=>{ml+=`${X(i).toFixed(1)},${Y(s.lo[i]).toFixed(1)} `;});
-    g.push(`<path d="${ml}" fill="none" stroke="${s.col}" stroke-width="1.2" stroke-dasharray="2 4" opacity="0.7"/>`);});
   /* 갭을 둘로 갈라요 — 장기평균선↔벤치마크선 = 시장 몫 · 벤치마크선↔실적 = 운용 몫 */
   let a1=`M${X(0).toFixed(1)},${Y(0).toFixed(1)}`;
   RZ.bcum.forEach((v,i)=>{a1+=` L${X(i).toFixed(1)},${Y(v).toFixed(1)}`;});
@@ -719,9 +671,6 @@ function drawMain(){
   g.push(`<path d="M${X(0).toFixed(1)},${Y(0).toFixed(1)} L${X(nT-1).toFixed(1)},${Y(slope*(nT-1)).toFixed(1)}" fill="none" stroke="#5C82CF" stroke-width="1.5" stroke-dasharray="6 4"/>`);
   if(SHOW.bench){let bp2="M"; RZ.bcum.forEach((v,i)=>{bp2+=`${X(i).toFixed(1)},${Y(v).toFixed(1)} `;});
     g.push(`<path d="${bp2}" fill="none" stroke="#5B4CA8" stroke-width="1.7" stroke-linejoin="round"/>`);}
-  SC.forEach(s=>{let sp="M"; s.cum.forEach((v,i)=>{sp+=`${X(i).toFixed(1)},${Y(v).toFixed(1)} `;});
-    g.push(`<path d="${sp}" fill="none" stroke="${s.col}" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.9"/>`);
-    g.push(`<text x="${(X(nP-1)-6).toFixed(1)}" y="${(Y(s.cum[nP-1])+4).toFixed(1)}" text-anchor="end" font-size="10" font-weight="700" fill="${s.col}">${s.n}</text>`);});
   if(P.fee>0&&VIEW==="ytd"){
     const iEnd=Math.min(nT-1, (-P.fee*(nT-1)/N())<lo ? -lo*N()/P.fee : nT-1);
     if(iEnd>4) g.push(`<path d="M${X(0).toFixed(1)},${Y(0).toFixed(1)} L${X(iEnd).toFixed(1)},${Y(-P.fee*iEnd/N()).toFixed(1)}" fill="none" stroke="#D6738A" stroke-width="1.5" stroke-dasharray="5 4"/>`);
@@ -744,8 +693,7 @@ function resetRd(){
   const mkt=RZ.bend-benchY()*RZ.n/N(), ops=RZ.end-RZ.bend;
   $("rdOut").innerHTML=`<span style="color:#8A94A6">■</span> 기준 밴드 80% · `+
     `<span style="color:var(--sym-ink)">■</span> 시장 몫 <b style="color:${C(mkt)}">${SE(mkt)}</b> · `+
-    `<span style="color:var(--pay-ink)">■</span> 운용 몫 <b style="color:${C(ops)}">${SE(ops)}</b>`+
-    SCEND.map(s=>` · <span style="color:${s.col}">■</span> ${s.n} <b style="color:${s.col}">${s.mir!=null?`(${sgn(s.v)}, ${SE(s.mir)})`:SE(s.v)}</b>`).join("");
+    `<span style="color:var(--pay-ink)">■</span> 운용 몫 <b style="color:${C(ops)}">${SE(ops)}</b>`;
 }
 function onMove(ev){
   if(!XS||!RZ)return;
@@ -1002,7 +950,7 @@ function fillCtx(){
 }
 function fillSel(){
   $("lineSel").innerHTML=[["band","기준 밴드","#8A94A6"],["bench","벤치마크선","#5B4CA8"]]
-    .concat(SCEN.map(s=>[s.id,s.n,s.col]))
+    .concat(VIEW==="ytd"?[["plan","경영계획선","#D6738A"]]:[])   /* 계획선은 당해 뷰에만 있어요 */
     .map(a=>`<button class="chip${SHOW[a[0]]?" on":""}" data-ln="${a[0]}">`+
       `<span style="display:inline-block;width:7px;height:7px;border-radius:2px;background:${a[2]};margin-right:5px"></span>${a[1]}</button>`).join("");
   $("selRow").innerHTML=

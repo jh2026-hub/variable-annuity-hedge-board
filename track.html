@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
 <meta name="robots" content="noindex"/>
-<title>헷지 실적 추적판</title>
+<title>변액보증 헤지 손익 관리</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -140,7 +140,7 @@
 </head>
 <body>
 
-<div class="top"><a class="back" href="./index.html">←</a><h1>헷지 실적 추적판</h1></div>
+<div class="top"><a class="back" href="./index.html">←</a><h1>변액보증 헤지 손익 관리</h1></div>
 
 <div class="ctx">
   <div class="who" id="ctxWho"></div>
@@ -163,10 +163,10 @@
 <div class="chips pad" id="selRow"></div>
 
 <div class="panel">
-  <div class="cap">누적 헷지손익 <span class="bdg good">실측 경로</span><span id="chartLab"></span></div>
+  <div class="cap">누적 헤지손익 <span class="bdg good">실측 경로</span><span id="chartLab"></span></div>
   <div class="chips" id="lineSel" style="margin-bottom:6px"></div>
   <div class="rd" id="rdOut"></div>
-  <div class="chartwrap"><svg id="mainSvg" role="img" aria-label="누적 헷지손익"></svg></div>
+  <div class="chartwrap"><svg id="mainSvg" role="img" aria-label="누적 헤지손익"></svg></div>
   <div class="rd" id="volCtx"></div>
   <div class="chartwrap"><svg id="volSvg" role="img" aria-label="실현 변동성"></svg></div>
   <div class="rd" id="rateCtx"></div>
@@ -696,7 +696,8 @@ function drawMain(){
   g.push(`<path d="M${X(0).toFixed(1)},${Y(0).toFixed(1)} L${X(nT-1).toFixed(1)},${Y(slope*(nT-1)).toFixed(1)}" fill="none" stroke="#5C82CF" stroke-width="1.5" stroke-dasharray="6 4"/>`);
   if(SHOW.bench){let bp2="M"; RZ.bcum.forEach((v,i)=>{bp2+=`${X(i).toFixed(1)},${Y(v).toFixed(1)} `;});
     g.push(`<path d="${bp2}" fill="none" stroke="#5B4CA8" stroke-width="1.7" stroke-linejoin="round"/>`);}
-  if(VIEW==="ytd") [["plan",P.fee,"#D6738A","계획"],["gfee",gfeeY(),"#337A5F","수수료"]].forEach(([id,amt,col,nm])=>{
+  /* 연 단위 선이라 어느 뷰에서도 구간 길이만큼 그으면 돼요 */
+  [["plan",P.fee,"#D6738A","계획"],["gfee",gfeeY(),"#337A5F","수수료"]].forEach(([id,amt,col,nm])=>{
     if(!SHOW[id]||!(amt>0)) return;
     const iEnd=Math.min(nT-1, (-amt*(nT-1)/N())<lo ? -lo*N()/amt : nT-1);
     if(iEnd<=4) return;
@@ -1103,7 +1104,7 @@ function drawVol(){
 }
 function fillSel(){
   $("lineSel").innerHTML=[["band","기준 밴드","#8A94A6"],["bench","벤치마크선","#5B4CA8"]]
-    .concat(VIEW==="ytd"?[["plan","경영계획선","#D6738A"],["gfee","보증수수료선","#337A5F"]]:[])   /* 계획선은 당해 뷰에만 있어요 */
+    .concat([["plan","경영계획선","#D6738A"],["gfee","보증수수료선","#337A5F"]])
     .map(a=>`<button class="chip${SHOW[a[0]]?" on":""}" data-ln="${a[0]}">`+
       `<span style="display:inline-block;width:7px;height:7px;border-radius:2px;background:${a[2]};margin-right:5px"></span>${a[1]}</button>`).join("");
   $("selRow").innerHTML=

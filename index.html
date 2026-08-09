@@ -1409,11 +1409,11 @@ const won=n=>Math.round(n).toLocaleString('ko-KR');
 const val=id=>{const o=[...FIN,...VOL].find(x=>x.id===id); return o?o.v:0;};
 
 {const b0=document.querySelector("#tabs button.on");
- if(b0) $("tabnow").innerHTML=`${b0.textContent} ${b0.dataset.n}<em>${b0.dataset.s}</em>`;}
+ if(b0) $("tabnow").innerHTML=`${b0.textContent}<em>${b0.dataset.s}</em>`;}
 $("tabs").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
   document.querySelectorAll(".tabs button").forEach(x=>x.classList.toggle("on",x===b));
   document.querySelectorAll(".page").forEach(p=>p.classList.toggle("on",p.id===b.dataset.p));
-  $("tabnow").innerHTML=`${b.textContent} ${b.dataset.n}<em>${b.dataset.s}</em>`;
+  $("tabnow").innerHTML=`${b.textContent}<em>${b.dataset.s}</em>`;
   window.scrollTo({top:0,behavior:"smooth"});
   /* 탭 재진입 시 차트 애니메이션 재생 */
   const p=b.dataset.p;

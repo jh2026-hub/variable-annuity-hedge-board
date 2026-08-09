@@ -303,7 +303,7 @@ const PAR=[
  {g:"금리",tb:"b", id:"slipR",n:"델타 슬리피지",  u:"억/1억",  v:10,  st:0.5, k:"n", s:"DV01 1억 조정당"},
  {g:"베이시스",tb:"r", id:"bsdv", n:"본드스왑 노출",   u:"억/bp",  v:18.8, st:0.5,k:"n", s:"커버 100% 기준 · IRS20−국고10"},
  {g:"베이시스",tb:"r", id:"teAmt",n:"펀드 베이시스",   u:"억/1%p", v:80, st:10, k:"n", s:"지수 대비 1%p당"},
- {g:"베이시스",tb:"r", id:"teDft",n:"추적오차 드리프트",u:"%/년",  v:-0.5,st:0.1,k:"n",s:"삼성 국내주식형 AUM가중 실측"},
+ {g:"베이시스",tb:"r", id:"tbeta",n:"펀드 베타",        u:"배",     v:0.93,st:0.01,k:"n",s:"KOSPI200 대비 · 삼성 실측 0.95"},
  {g:"한도",tb:"b", id:"fee",  n:"연 계획 한도",   u:"억",     v:1500,st:100, k:"n", s:"연간 감내 한도"},
  {g:"한도",tb:"b", id:"gfee", n:"보증수수료",     u:"bp",     v:70,  st:5,   k:"n", s:"적립금 대비 · 연 재원"},
  {g:"커버",tb:"b", id:"covE", n:"주가 커버(계획)", u:"%", v:0,  mn:0,mx:100,st:5,k:"s"},
@@ -341,7 +341,7 @@ const vegEp=()=>-wEp()*P.vgE, vegRp=()=>-wRp()*P.vgR;   /* 벤치마크선 = 계
 const bsExp=()=>-(P.acovR/100)*P.mulR*P.bsdv;
 const bsExpP=()=>-(P.covR/100)*P.bsdv;                    /* 계획 커버율로 생겼을 본드스왑 */
 const volB=()=>Math.sqrt((1/12)/TEFF);
-const teDriftY=()=>P.teAmt*P.teDft;
+const teDriftY=()=>0;   /* 베타 갭은 지수 수익률에 비례 — 장기평균선은 방향 가정 없음 */
 /* 보증수수료(억/년) = 적립금 × bp. 받는 돈이지만 비용과 같은 축에서 읽으려고 아래로 그어요 */
 const gfeeY=()=>P.av*P.gfee;
 
@@ -437,7 +437,7 @@ function realized(){
   const day=[], cum=[], bcum=[], parts={}, bparts={};
   KEYS.forEach(k=>{parts[k]=0;bparts[k]=0;});
   const thD=thA()/N(), cyD=carry()/N();
-  const thDb=thP()/N(), teDb=teDriftY()/N();
+  const thDb=thP()/N();
   let vE=ewma0(i0,"e"), vR=ewma0(i0,"r");
   let ivE=Math.sqrt(vE), ivR=Math.sqrt(vR);
   let sprd=(d.y30[i0-1]-d.y10[i0-1])*100;   /* 구간 시작 실측 스프레드에서 출발 */
@@ -458,10 +458,10 @@ function realized(){
        Δ = Δ(30−10) 이라 관측 커브로 바로 계산돼요. 실적 구간은 난수 없음 */
     const sprd0=sprd, ns=(d.y30[i]-d.y10[i])*100;
     o.bs=bsExp()*(ns-sprd); sprd=ns;
-    o.te=P.teAmt*P.teDft/N();
+    o.te=P.teAmt*(P.tbeta-1)*re;   /* 펀드가 지수를 베타만큼만 따라가서 생기는 갭 */
     /* 벤치마크선 — 같은 시장에서 '계획대로 운용했다면' (평가 항목 없음) */
     const ob={};
-    ob.th=thDb; ob.carry=-cyD; ob.te=teDb;
+    ob.th=thDb; ob.carry=-cyD; ob.te=o.te;   /* 베타 갭은 운용이 못 고르는 시장 요인 */
     ob.gE=-wEp()*0.5*P.gamE*re*re*vr(VRE,P.rbal);
     ob.gR=-wRp()*0.5*P.gamR*rr*rr*vr(VRR,P.rbal);
     ob.vgE=vegEp()*(nivE-ivE0)*volB(); ob.vgR=vegRp()*(nivR-ivR0)*volB();
@@ -515,7 +515,7 @@ function pastBand(){
       const vg=vegEp()*(nivE-ivE)*volB()+vegRp()*(nivR-ivR)*volB(); ivE=nivE; ivR=nivR;
       const ns=0.988*sprd+b.bs/Math.sqrt(N())*gauss();   /* |Δ금리| 연동 제거 — 실측 상관 0.02 */
       const bs=bsExpP()*(ns-sprd); sprd=ns;
-      const te=P.teAmt*(P.teDft/N()+b.te/Math.sqrt(N())*gauss());
+      const te=P.teAmt*((P.tbeta-1)*re+b.te/Math.sqrt(N())*gauss());
       accE+=re; accR+=rr; k++;
       let tE=0, tR=0;
       if(k>=P.rbal){ tE=-uE*100*P.gamE*Math.abs(accE)*P.slipE;
@@ -565,7 +565,7 @@ function forecast(start,np){
       o.vgE=vegE()*(nivE-ivE)*volB(); o.vgR=vegR()*(nivR-ivR)*volB(); ivE=nivE; ivR=nivR;
       const ns=0.988*sprd+rg.bs/Math.sqrt(N())*gauss();
       o.bs=bsExp()*(ns-sprd); sprd=ns;
-      o.te=P.teAmt*(P.teDft/N()+rg.te/Math.sqrt(N())*gauss());
+      o.te=P.teAmt*((P.tbeta-1)*re+rg.te/Math.sqrt(N())*gauss());
       accE+=re; accR+=rr; k++; o.tE=0; o.tR=0;
       if(k>=P.rbal){ o.tE=-wEa()*100*P.gamE*Math.abs(accE)*P.slipE;
                      o.tR=-wRa()*P.gamR*Math.abs(accR)*P.slipR; accE=0;accR=0;k=0; }
@@ -825,7 +825,6 @@ function fillBench(){
     ["주가 델타 슬리피지", -tcE(wEp(),b.dE), `Γ×이동 ${(100*P.gamE*mv(b.dE)).toFixed(0)}억 × ${P.slipE} × 연${(N()/P.rbal).toFixed(0)}회`],
     ["금리 델타 슬리피지", -tcR(wRp(),b.dR), `Γ×이동 ${(P.gamR*mv(b.dR)).toFixed(2)}억/bp × ${P.slipR} × 연${(N()/P.rbal).toFixed(0)}회`],
     ["캐리(자산미보유)",  -carry(), `${P.disc}%×${(unmat()/1e4).toFixed(1)}조`],
-    ["추적오차 드리프트", teDriftY(), `${P.teDft}%×${P.teAmt}억`],
   ];
   $("benchBig").innerHTML=`<span style="color:${C(benchY())}">${sgn(benchY())}</span>`+
     `<small>억/년 · ${bpv(benchY())}</small> <span class="bdg ink">연 기준</span>`;
@@ -880,12 +879,11 @@ function fillMtx(){
     ["주가 델타비용", -tcE(wEp(),b.dE)*f, RZ.bparts.tE,   RZ.parts.tE,    a.tE],
     ["금리 델타비용", -tcR(wRp(),b.dR)*f, RZ.bparts.tR,   RZ.parts.tR,    a.tR],
     ["캐리",          -carry()*f,         RZ.bparts.carry,RZ.parts.carry, a.carry],
-    ["추적오차 드리프트", teDriftY()*f,    RZ.bparts.te,   null,           null],
     ["g",`<span class="bdg sym">평가</span> 되돌아올 수 있어요`],
     ["주가 베가",     null, RZ.bparts.vgE, RZ.parts.vgE, a.vgE],
     ["금리 베가",     null, RZ.bparts.vgR, RZ.parts.vgR, a.vgR],
     ["본드스왑",      null, RZ.bparts.bs,  RZ.parts.bs,  a.bs],
-    ["펀드 추적오차", null, null,          RZ.parts.te,  a.te],
+    ["펀드 베타 갭",  null, RZ.bparts.te,  RZ.parts.te,  a.te],
   ];
   const cell=v=>v===null?`<td style="color:#C7CEDC">—</td>`:`<td style="color:${C(v)}">${sgn(v)}</td>`;
   let sumF=0; KEYS.forEach(k=>sumF+=a[k]);

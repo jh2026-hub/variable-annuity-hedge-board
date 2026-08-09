@@ -233,7 +233,7 @@
   <div class="note" id="benchNote"></div>
 </div>
 <div class="panel">
-  <div class="cap">파라미터 <span class="bdg ink">설정</span> <span class="bdg">6월말 기준</span></div>
+  <div class="cap">파라미터 <span class="bdg ink">설정</span> <span class="bdg">7월말 기준</span></div>
   <div id="numSel"></div>
   <div id="slB"></div>
 </div>
@@ -289,7 +289,7 @@ let RSEL="recent", REDIT="base", VIEW="ytd", FUT=252, CURSOR=null, TAB="m";
 
 /* ═══ 파라미터 ═══ */
 const PAR=[
- {g:"규모",tb:"b", id:"av",   n:"펀드 적립금",    u:"조",     v:35,  st:1,   k:"n", s:"bp 분모"},
+ {g:"규모",tb:"b", id:"av",   n:"펀드 적립금",    u:"조",     v:35,  st:1,   k:"n", s:"7월말 기준 · 변동함"},
  {g:"규모",tb:"b", id:"bel",  n:"부채 BEL",      u:"조",     v:30,  st:1,   k:"n", s:"부채 전체"},
  {g:"규모",tb:"b", id:"unm",  n:"자산미보유 부채", u:"% BEL",  v:3.8, st:0.1, k:"n", s:"2보기·특약 등"},
  {g:"규모",tb:"b", id:"disc", n:"할인율",        u:"%",      v:3.9, st:0.1, k:"n", s:"자산이자 미상쇄분"},
@@ -830,7 +830,7 @@ function fillBench(){
   ];
   $("benchBig").innerHTML=`<span style="color:${C(benchY())}">${sgn(benchY())}</span>`+
     `<small>억/년 · ${bpv(benchY())}</small> <span class="bdg ink">연 기준</span>`;
-  $("benchSub").innerHTML=`적립금 ${P.av}조 · 자산미보유 ${(unmat()/1e4).toFixed(1)}조 · 기준 ${b.dE}% / ${b.dR}bp`;
+  $("benchSub").innerHTML=`적립금 ${P.av}조<span class="bdg ink">7월말</span> · 자산미보유 ${(unmat()/1e4).toFixed(1)}조 · 기준 ${b.dE}% / ${b.dR}bp`;
   $("benchRows").innerHTML=barRows(it)+
     `<div class="wfr an"><div class="wl">합계</div><div class="wb"></div>`+
     `<div class="wv" style="color:${C(benchY())}">${sgn(benchY())}</div></div>`;
@@ -1002,7 +1002,12 @@ function fillVol(){
   const b=REG("base"), kE=RZ.sdE/b.dE, kR=RZ.sdR/b.dR, f=x=>x.toFixed(2);
   $("volCtx").innerHTML=
     `구간 평균 일변동 <b>주가 ${RZ.sdE.toFixed(2)}%</b> <span class="bdg${kE>1?" pay":""}">기준 ×${f(kE)}</span>`+
-    ` · <b>금리 ${RZ.sdR.toFixed(1)}bp</b> <span class="bdg${kR>1?" pay":""}">기준 ×${f(kR)}</span>`;
+    ` · <b>금리 ${RZ.sdR.toFixed(1)}bp</b> <span class="bdg${kR>1?" pay":""}">기준 ×${f(kR)}</span>`+
+    (()=>{const cE=wEa()*P.gamE*vr(VRE,P.rbal), cR=wRa()*P.gamR*vr(VRR,P.rbal),
+            bs0=cE*b.dE*b.dE+cR*b.dR*b.dR;
+          if(bs0<=0) return "";
+          const kk=(cE*RZ.sdE*RZ.sdE+cR*RZ.sdR*RZ.sdR)/bs0;
+          return ` → 감마비용 <span class="bdg${kk>1?" pay":""}">기준 ×${kk.toFixed(1)}</span>`;})();
   /* 금리는 레벨·커브도 같이 봐야 해요 — 방향은 델타가 먹으니 손익엔 안 나오지만
      장단기 스프레드가 벌어지면 20년 하나로 잰 노출과 실제가 어긋납니다 */
   {const d=S.mkt, i1=CURSOR, i0=periodStart(), bp=(a,b)=>Math.round((a-b)*100);
@@ -1037,11 +1042,15 @@ function fillVol(){
 function drawVol(){
   if(!RZ||!XS) return;
   const {X,L,iw,nP}=XS, H=MOB?100:110, T=6, B=16, ih=H-T-B, R=MOB?18:26, b=REG("base"), g=[];
-  const kE=i=>RZ.day[i].sE/b.dE, kR=i=>RZ.day[i].sR/b.dR;
-  let hi=1.2; for(let i=0;i<nP;i++) hi=Math.max(hi,kE(i),kR(i));
+  /* 주가·금리를 따로 그리면 어지러워서 감마비용 기여로 합쳐요.
+     지수 = (실현변동성으로 계산한 감마비용) ÷ (기준 국면 감마비용). 1.0 이 기준 국면 */
+  const cE=wEa()*P.gamE*vr(VRE,P.rbal), cR=wRa()*P.gamR*vr(VRR,P.rbal);
+  const base=cE*b.dE*b.dE+cR*b.dR*b.dR;
+  const kV=i=>base>0?(cE*RZ.day[i].sE**2+cR*RZ.day[i].sR**2)/base:1;
+  let hi=1.2; for(let i=0;i<nP;i++) hi=Math.max(hi,kV(i));
   hi=Math.ceil(hi*2)/2;
   const Y=v=>T+ih*(1-v/hi);
-  [1,2,3,4,5].filter(v=>v<=hi).forEach(v=>{
+  [1,2,3,5,8,12,20].filter(v=>v<=hi).forEach(v=>{
     g.push(`<line x1="${L}" y1="${Y(v).toFixed(1)}" x2="${W-R}" y2="${Y(v).toFixed(1)}" stroke="${v===1?"#AAB4C6":"#EDF0F6"}" stroke-width="1" ${v===1?'stroke-dasharray="4 3"':""}/>`);
     g.push(MOB?`<text x="${L+2}" y="${(Y(v)-2).toFixed(1)}" font-size="9" fill="#98A2B3">×${v}</text>`
               :`<text x="${L-6}" y="${(Y(v)+3.5).toFixed(1)}" text-anchor="end" font-size="9.5" fill="#8A94A6">×${v}</text>`);
@@ -1055,13 +1064,11 @@ function drawVol(){
    g.push(`<path d="${d2}" fill="none" stroke="#B8455F" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.9"/>`);
    [blo+pad,bhi-pad].forEach(v=>g.push(`<text x="${W-R+2}" y="${(YB(v)+3.5).toFixed(1)}" font-size="9" fill="#B8455F">${v.toFixed(0)}</text>`));
    g.push(`<text x="${(X(nP-1)-4).toFixed(1)}" y="${(YB(bl(nP-1))-5).toFixed(1)}" text-anchor="end" font-size="9.5" font-weight="700" fill="#B8455F">본드스왑 ${bl(nP-1).toFixed(0)}bp</text>`);}
-  [[kE,"#4A6FC4","주가"],[kR,"#A96A1C","금리"]].forEach(([f,col,nm])=>{
-    let d="M"; for(let i=0;i<nP;i++) d+=`${X(i).toFixed(1)},${Y(Math.min(hi,f(i))).toFixed(1)} `;
-    g.push(`<path d="${d}" fill="none" stroke="${col}" stroke-width="1.5" stroke-linejoin="round"/>`);
-    g.push(`<text x="${(X(nP-1)+3).toFixed(1)}" y="${(Y(Math.min(hi,f(nP-1)))+3.5).toFixed(1)}" font-size="9.5" font-weight="700" fill="${col}">${nm} 현재 ×${f(nP-1).toFixed(1)}</text>`);
-  });
+  {let d="M"; for(let i=0;i<nP;i++) d+=`${X(i).toFixed(1)},${Y(Math.min(hi,kV(i))).toFixed(1)} `;
+   g.push(`<path d="${d}" fill="none" stroke="#4A6FC4" stroke-width="1.8" stroke-linejoin="round"/>`);
+   g.push(`<text x="${(X(nP-1)-4).toFixed(1)}" y="${Math.max(T+10,Y(Math.min(hi,kV(nP-1)))-6).toFixed(1)}" text-anchor="end" font-size="9.5" font-weight="700" fill="#4A6FC4">감마비용 ×${kV(nP-1).toFixed(1)}</text>`);}
   g.push(`<line x1="${X(nP-1).toFixed(1)}" y1="${T}" x2="${X(nP-1).toFixed(1)}" y2="${T+ih}" stroke="#AAB4C6" stroke-width="1"/>`);
-  g.push(`<text x="${L}" y="${H-4}" font-size="9.5" font-weight="700" fill="#8A94A6">일별 변동성 EWMA — 좌축 기준 대비 배수 · 우축 본드스왑 bp</text>`);
+  g.push(`<text x="${L}" y="${H-4}" font-size="9.5" font-weight="700" fill="#8A94A6">감마비용 지수 — 좌축 기준 국면=1.0 (주가·금리 합산) · 우축 본드스왑 bp</text>`);
   const el=$("volSvg"); el.setAttribute("viewBox",`0 0 ${W} ${H}`); el.setAttribute("height",H); el.innerHTML=g.join("");
 }
 function fillSel(){

@@ -481,7 +481,9 @@ function realized(){
 /* ═══ 시나리오 경로 — 커버율·미헷지만 바꿔 같은 시장을 다시 걷기 ═══ */
 function walkCum(o){
   const d=S.mkt, i1=CURSOR, i0=periodStart(), b=REG("base"), rg=regV(RSEL);
-  const wE=o.mE*(1-o.cE), wR=o.mR*(1-o.cR), cum=[];
+  const wE=o.mE*(1-o.cE), wR=o.mR*(1-o.cR), cum=[], lo=[], hi=[];
+  /* 방향에 걸린 건 델타뿐 — 세타·감마·캐리는 어느 쪽으로 가든 같아요(숏감마는 양방향 손실) */
+  let nd=0, dc=0;
   const thD=(wE*P.thE+wR*P.thR)/N(), cyD=carry()/N(), mAbs=rg.dR*S.kAbsR;
   let vE=ewma0(i0,"e"), vR=ewma0(i0,"r");
   let ivE=Math.sqrt(vE)*(diE()/b.dE), ivR=Math.sqrt(vR)*(diR()/b.dR);
@@ -500,11 +502,12 @@ function walkCum(o){
        숏감마라 움직일수록 델타가 반대로 흘러갑니다(Δ←Δ−Γ·이동) */
     let dlt=0;
     if(o.unh){ dlt=o.mE*dE*re+o.mR*dR*rr; dE-=P.gamE*re; dR-=P.gamR*rr; }
-    c+=thD-cyD-wE*0.5*P.gamE*re*re*vr(VRE,P.rbal)-wR*0.5*P.gamR*rr*rr*vr(VRR,P.rbal)
-      +vg+bs+slip+dlt+P.teAmt*P.teDft/N();
-    cum.push(c);
+    nd+=thD-cyD-wE*0.5*P.gamE*re*re*vr(VRE,P.rbal)-wR*0.5*P.gamR*rr*rr*vr(VRR,P.rbal)
+      +vg+bs+slip+P.teAmt*P.teDft/N();
+    dc+=dlt; c=nd+dc; cum.push(c);
+    if(o.unh){ const a=Math.abs(dc); lo.push(nd-a); hi.push(nd+a); }
   }
-  return cum;
+  return {cum, lo:o.unh?lo:null, hi:o.unh?hi:null};
 }
 const SCEN=[
   {id:"unh", n:"미헷지",     col:"#D6738A", o:()=>({mE:P.mulE,mR:P.mulR,cE:0,cR:0,unh:true})},
@@ -513,18 +516,17 @@ let SHOW={band:1,bench:1,unh:0};
 
 /* ═══ 장기평균선 밴드 — 기준 국면·계획 운용으로 과거를 되돌린 분포 ═══ */
 const NB=500;
-function pastBand(unh){
+function pastBand(){
   const b=REG("base"), n=S.poolE.length, nP=RZ.n, i0=periodStart();
-  /* 미헷지 모드 — 커버 0이라 베가·본드스왑이 없고, 슬리피지 대신 델타가 살아 있어요 */
-  const uE=unh?P.mulE:wEp(), uR=unh?P.mulR:wRp();
-  const thD=(uE*P.thE+uR*P.thR)/N(), cyD=carry()/N(), mAbs=b.dR*S.kAbsR;
+  const uE=wEp(), uR=wRp();
+  const thD=thP()/N(), cyD=carry()/N(), mAbs=b.dR*S.kAbsR;
   const v0E=ewma0(i0,"e"), v0R=ewma0(i0,"r");
   const paths=new Float64Array(NB*nP);
   seed(31337);
   for(let p=0;p<NB;p++){
     const z=gauss();
     const me=Math.exp(VOV*(0.4*z+0.92*gauss())-VOV*VOV), mr=Math.exp(VOV*(0.4*z+0.92*gauss())-VOV*VOV);
-    let vE=v0E, vR=v0R, sprd=0, c=0, left=0, bi=0, accE=0, accR=0, k=0, dE=P.dltE, dR=P.dltR;
+    let vE=v0E, vR=v0R, sprd=0, c=0, left=0, bi=0, accE=0, accR=0, k=0;
     let ivE=Math.sqrt(vE)*(diE()/b.dE), ivR=Math.sqrt(vR)*(diR()/b.dR);
     for(let t=0;t<nP;t++){
       if(left===0){bi=Math.floor(rnd()*n);left=BLK;}
@@ -533,17 +535,16 @@ function pastBand(unh){
       if(re<-20)re=-20; else if(re>20)re=20;
       vE=LAM*vE+(1-LAM)*re*re; vR=LAM*vR+(1-LAM)*rr*rr;
       const nivE=Math.sqrt(vE)*(diE()/b.dE), nivR=Math.sqrt(vR)*(diR()/b.dR);
-      const vg=unh?0:(vegEp()*(nivE-ivE)*volB()+vegRp()*(nivR-ivR)*volB()); ivE=nivE; ivR=nivR;
+      const vg=vegEp()*(nivE-ivE)*volB()+vegRp()*(nivR-ivR)*volB(); ivE=nivE; ivR=nivR;
       const ns=0.985*sprd+b.bs/Math.sqrt(N())*gauss()+0.20*(Math.abs(rr)-mAbs);
-      const bs=unh?0:bsExpP()*(ns-sprd); sprd=ns;
+      const bs=bsExpP()*(ns-sprd); sprd=ns;
       const te=P.teAmt*(P.teDft/N()+b.te/Math.sqrt(N())*gauss());
-      let tE=0, tR=0, dlt=0;
-      if(unh){ dlt=uE*dE*re+uR*dR*rr; dE-=P.gamE*re; dR-=P.gamR*rr; }
-      else{ accE+=re; accR+=rr; k++;
-        if(k>=P.rbal){ tE=-uE*100*P.gamE*Math.abs(accE)*P.slipE;
-                       tR=-uR*P.gamR*Math.abs(accR)*P.slipR; accE=0;accR=0;k=0; } }
+      accE+=re; accR+=rr; k++;
+      let tE=0, tR=0;
+      if(k>=P.rbal){ tE=-uE*100*P.gamE*Math.abs(accE)*P.slipE;
+                     tR=-uR*P.gamR*Math.abs(accR)*P.slipR; accE=0;accR=0;k=0; }
       c+=thD-cyD-uE*0.5*P.gamE*re*re*vr(VRE,P.rbal)-uR*0.5*P.gamR*rr*rr*vr(VRR,P.rbal)
-        +vg+bs+te+tE+tR+dlt;
+        +vg+bs+te+tE+tR;
       paths[p*nP+t]=c;
     }
   }
@@ -630,12 +631,12 @@ function dstr(off){
 }
 
 /* ═══ 렌더 ═══ */
-let SCEND=[],UB=null,RZ=null,PB=null,FC=null,HZ=null,W=360,MOB=true,XS=null;
+let SCEND=[],RZ=null,PB=null,FC=null,HZ=null,W=360,MOB=true,XS=null;
 function render(fast){
   if(!S.loaded)return;
   FUT=futLen();
   RZ=realized();
-  PB=pastBand(); UB=SHOW.unh?pastBand(true):null;
+  PB=pastBand();
   FC=forecast(RZ.end, fast?NFAST:NPATH);
   HZ=horizons();
   [drawMain,drawWF,fillMtx,fillHz,drawLimit,fillHero,fillCtx,fillSel,
@@ -659,14 +660,13 @@ function drawMain(){
   const pstep=Math.max(1,Math.round(nP/40)), pts=[]; for(let i=0;i<nP;i+=pstep) pts.push(i);
   if(pts[pts.length-1]!==nP-1) pts.push(nP-1);
   const PQ=pts.map(i=>PB.q(i,[0.10,0.90]));
-  const SC=SCEN.filter(s=>SHOW[s.id]).map(s=>({...s,cum:walkCum(s.o())}));
-  const UQ=UB?pts.map(i=>UB.q(i,[0.10,0.90])):null;
+  const SC=SCEN.filter(s=>SHOW[s.id]).map(s=>({...s,...walkCum(s.o())}));
   SCEND=SC.map(s=>({n:s.n,col:s.col,v:s.cum[s.cum.length-1],
-    rng:s.id==="unh"&&UB?UB.q(nP-1,[0.10,0.90]):null}));
+    mir:s.lo?s.lo[s.lo.length-1]:null}));
   const all=RZ.cum.concat(RZ.bcum).concat([0,slope*(nT-1)]).concat(Q.map(q=>q[0])).concat(Q.map(q=>q[3]))
     .concat(SHOW.band?PQ.map(q=>q[0]).concat(PQ.map(q=>q[1])):[])
     .concat(SC.flatMap(s=>[Math.min.apply(null,s.cum),Math.max.apply(null,s.cum)]))
-    .concat(UQ?UQ.map(q=>q[0]).concat(UQ.map(q=>q[1])):[]);
+    .concat(SC.flatMap(s=>s.lo?[Math.min.apply(null,s.lo),Math.max.apply(null,s.hi)]:[]));
   let lo=Math.min.apply(null,all), hi=Math.max.apply(null,all);
   if(hi-lo<60){const m=(hi+lo)/2;lo=m-30;hi=m+30;}
   const pad=(hi-lo)*0.10; lo-=pad; hi+=pad; if(hi<0)hi=(hi-lo)*0.05;
@@ -695,11 +695,14 @@ function drawMain(){
     const yb=Y(PQ[PQ.length-1][1]);
     g.push(`<text x="${(X(pts[pts.length-1])-4).toFixed(1)}" y="${Math.max(T+10,yb-4).toFixed(1)}" text-anchor="end" font-size="9.5" font-weight="700" fill="#6E7889">기준 밴드 80%</text>`);
   }
-  /* 미헷지 밴드 — 같은 국면에서 델타를 방치했다면 손익이 흩어졌을 범위(80%) */
-  if(UQ){ let ub="M";
-    pts.forEach((i,k)=>{ub+=`${X(i).toFixed(1)},${Y(UQ[k][0]).toFixed(1)} `;});
-    for(let k=pts.length-1;k>=0;k--) ub+=`${X(pts[k]).toFixed(1)},${Y(UQ[k][1]).toFixed(1)} `;
-    g.push(`<path d="${ub}Z" fill="#D6738A" opacity="0.11"/>`); }
+  /* 미헷지 거울 — 방향이 반대였다면 같은 크기로 반대편이었어요 */
+  SC.filter(s=>s.lo).forEach(s=>{ let ub="M";
+    pts.forEach(i=>{ub+=`${X(i).toFixed(1)},${Y(s.lo[i]).toFixed(1)} `;});
+    for(let k=pts.length-1;k>=0;k--) ub+=`${X(pts[k]).toFixed(1)},${Y(s.hi[pts[k]]).toFixed(1)} `;
+    g.push(`<path d="${ub}Z" fill="${s.col}" opacity="0.10"/>`);
+    let ml="M"; pts.forEach(i=>{ml+=`${X(i).toFixed(1)},${Y(s.lo[i]).toFixed(1)} `;});
+    g.push(`<path d="${ml}" fill="none" stroke="${s.col}" stroke-width="1.2" stroke-dasharray="2 4" opacity="0.7"/>`);
+    g.push(`<text x="${(X(nP-1)-6).toFixed(1)}" y="${(Y(s.lo[nP-1])+13).toFixed(1)}" text-anchor="end" font-size="10" font-weight="700" fill="${s.col}" opacity="0.85">반대였다면 ${SE(s.lo[nP-1])}</text>`);});
   /* 갭을 둘로 갈라요 — 장기평균선↔벤치마크선 = 시장 몫 · 벤치마크선↔실적 = 운용 몫 */
   let a1=`M${X(0).toFixed(1)},${Y(0).toFixed(1)}`;
   RZ.bcum.forEach((v,i)=>{a1+=` L${X(i).toFixed(1)},${Y(v).toFixed(1)}`;});
@@ -744,7 +747,7 @@ function resetRd(){
     `<span style="color:var(--sym-ink)">■</span> 시장 몫 <b style="color:${C(mkt)}">${SE(mkt)}</b> · `+
     `<span style="color:var(--pay-ink)">■</span> 운용 몫 <b style="color:${C(ops)}">${SE(ops)}</b>`+
     SCEND.map(s=>` · <span style="color:${s.col}">■</span> ${s.n} <b style="color:${s.col}">${SE(s.v)}</b>`+
-      (s.rng?` <span class="bdg">80% ${won(s.rng[0])}~${SE(s.rng[1])}</span>`:"")).join("");
+      (s.mir!=null?` <span class="bdg">반대였다면 ${SE(s.mir)}</span>`:"")).join("");
 }
 function onMove(ev){
   if(!XS||!RZ)return;

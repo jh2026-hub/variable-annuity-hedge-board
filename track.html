@@ -96,6 +96,11 @@
   .asof .al b{color:var(--ink);font-variant-numeric:tabular-nums}
   .asof .chips{margin-left:auto}
   .asof .chip{min-height:30px;padding:4px 9px;font-size:10px}
+  .vals{display:grid;grid-template-columns:repeat(auto-fit,minmax(88px,1fr));gap:5px;margin:2px 0 7px}
+  .vals div{background:var(--panel2);border-radius:7px;padding:5px 7px;min-width:0}
+  .vals .vn{font-size:9px;font-weight:800;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .vals .vv{font-size:12.5px;font-weight:800;letter-spacing:-.2px}
+  .vals i{display:inline-block;width:7px;height:7px;border-radius:2px;margin-right:4px;vertical-align:0}
   .rd{font-size:11px;color:var(--muted);min-height:19px;padding:1px 2px 5px}
   .rd b{color:var(--ink);font-weight:700}
   table{width:100%;border-collapse:collapse;font-family:inherit;font-size:10px}
@@ -162,6 +167,7 @@
 <div class="panel">
   <div class="cap">누적 헷지손익 <span class="bdg good">실측 경로</span><span id="chartLab"></span></div>
   <div class="chips" id="lineSel" style="margin-bottom:6px"></div>
+  <div class="vals" id="lineVals"></div>
   <div class="rd" id="rdOut"></div>
   <div class="chartwrap"><svg id="mainSvg" role="img" aria-label="누적 헷지손익"></svg></div>
   <div class="rd" id="volCtx"></div>
@@ -611,7 +617,7 @@ function render(fast){
   PB=pastBand();
   FC=forecast(RZ.end, fast?NFAST:NPATH);
   HZ=horizons();
-  [drawMain,drawVol,drawWF,fillMtx,fillHz,drawLimit,fillHero,fillVol,fillCtx,fillSel,
+  [drawMain,drawVol,fillVals,drawWF,fillMtx,fillHz,drawLimit,fillHero,fillVol,fillCtx,fillSel,
    fillBench,fillExp,fillLnk,fillRegTbl,fillNotes].forEach(fn=>{
     try{fn();}catch(e){console.error("render:"+fn.name,e);}
   });
@@ -965,7 +971,7 @@ function fillVol(){
   if(!RZ) return;
   const b=REG("base"), kE=RZ.sdE/b.dE, kR=RZ.sdR/b.dR, f=x=>x.toFixed(2);
   $("volCtx").innerHTML=
-    `실현 일변동 <b>주가 ${RZ.sdE.toFixed(2)}%</b> <span class="bdg${kE>1?" pay":""}">기준 ×${f(kE)} → 감마 ×${f(kE*kE)}</span>`+
+    `구간 평균 일변동 <b>주가 ${RZ.sdE.toFixed(2)}%</b> <span class="bdg${kE>1?" pay":""}">기준 ×${f(kE)} → 감마 ×${f(kE*kE)}</span>`+
     ` · <b>금리 ${RZ.sdR.toFixed(1)}bp</b> <span class="bdg${kR>1?" pay":""}">기준 ×${f(kR)} → 감마 ×${f(kR*kR)}</span>`;
 }
 /* 실현 변동성 서브차트 — 메인과 같은 x축. 감마는 σ² 이라 ×2 면 비용은 ×4 예요 */
@@ -984,11 +990,21 @@ function drawVol(){
   [[kE,"#4A6FC4","주가"],[kR,"#A96A1C","금리"]].forEach(([f,col,nm])=>{
     let d="M"; for(let i=0;i<nP;i++) d+=`${X(i).toFixed(1)},${Y(Math.min(hi,f(i))).toFixed(1)} `;
     g.push(`<path d="${d}" fill="none" stroke="${col}" stroke-width="1.5" stroke-linejoin="round"/>`);
-    g.push(`<text x="${(X(nP-1)+3).toFixed(1)}" y="${(Y(Math.min(hi,f(nP-1)))+3.5).toFixed(1)}" font-size="9.5" font-weight="700" fill="${col}">${nm} ×${f(nP-1).toFixed(1)}</text>`);
+    g.push(`<text x="${(X(nP-1)+3).toFixed(1)}" y="${(Y(Math.min(hi,f(nP-1)))+3.5).toFixed(1)}" font-size="9.5" font-weight="700" fill="${col}">${nm} 현재 ×${f(nP-1).toFixed(1)}</text>`);
   });
   g.push(`<line x1="${X(nP-1).toFixed(1)}" y1="${T}" x2="${X(nP-1).toFixed(1)}" y2="${T+ih}" stroke="#AAB4C6" stroke-width="1"/>`);
-  g.push(`<text x="${L}" y="${H-4}" font-size="9.5" font-weight="700" fill="#8A94A6">실현 변동성 (기준 국면 대비 배수) · 감마는 이 값의 제곱으로</text>`);
+  g.push(`<text x="${L}" y="${H-4}" font-size="9.5" font-weight="700" fill="#8A94A6">일별 변동성 EWMA (기준 국면 대비 배수) · 감마는 이 값의 제곱으로</text>`);
   const el=$("volSvg"); el.setAttribute("viewBox",`0 0 ${W} ${H}`); el.setAttribute("height",H); el.innerHTML=g.join("");
+}
+/* 선 여섯 개를 숫자로 한 번에 — 현재 시점 셋, 연간 기준 셋 */
+function fillVals(){
+  if(!RZ) return;
+  const cur=benchY()/N()*(RZ.n-1), eoy=FC?FC.q(FUT-1,[0.5])[0]:null;
+  const rows=[["실적","#16202F",RZ.end],["벤치마크","#5B4CA8",RZ.bend],["장기평균","#5C82CF",cur],
+              ["연말 전망","#9282DC",eoy],["경영계획","#D6738A",-P.fee],["보증수수료","#337A5F",-gfeeY()]];
+  $("lineVals").innerHTML=rows.filter(r=>r[2]!=null).map(r=>
+    `<div><div class="vn"><i style="background:${r[1]}"></i>${r[0]}</div>`+
+    `<div class="vv" style="color:${C(r[2])}">${SE(r[2])}</div></div>`).join("");
 }
 function fillSel(){
   $("lineSel").innerHTML=[["band","기준 밴드","#8A94A6"],["bench","벤치마크선","#5B4CA8"]]

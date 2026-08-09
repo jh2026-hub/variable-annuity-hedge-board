@@ -293,13 +293,13 @@ const PAR=[
  {g:"규모",tb:"b", id:"bel",  n:"부채 BEL",      u:"조",     v:30,  st:1,   k:"n", s:"부채 전체"},
  {g:"규모",tb:"b", id:"unm",  n:"자산미보유 부채", u:"% BEL",  v:3.8, st:0.1, k:"n", s:"2보기·특약 등"},
  {g:"규모",tb:"b", id:"disc", n:"할인율",        u:"%",      v:3.9, st:0.1, k:"n", s:"자산이자 미상쇄분"},
- {g:"주가",tb:"b", id:"gamE", n:"감마 Γ",        u:"억/1%",  v:1.0, st:0.05,k:"n", s:"미커버 기준 · 세타와 패리티"},
+ {g:"주가",tb:"b", id:"gamE", n:"감마 Γ",        u:"억/1%",  v:0.41,st:0.01,k:"n", s:"7월말 누적 감마 400~500억 기준"},
  {g:"주가",tb:"b", id:"thE",  n:"옵션 세타",      u:"억/년",  v:404, st:10,  k:"n", s:"발행 시점 확정"},
- {g:"주가",tb:"r", id:"vgE",  n:"베가(숏)",      u:"억/1%p", v:200, st:10,  k:"n", s:"내재 1%p↑ 시 손실"},
+ {g:"주가",tb:"r", id:"vgE",  n:"베가(숏)",      u:"억/1%p", v:175, st:5,   k:"n", s:"역사적 변동성 1%p↑ 시 손실"},
  {g:"주가",tb:"b", id:"slipE",n:"델타 슬리피지",  u:"억/1억",  v:0,   st:0.01,k:"n", s:"델타 1억 조정당"},
  {g:"금리",tb:"b", id:"gamR", n:"감마 Γ",        u:"억/bp",  v:0.175,st:0.005,k:"n",s:"1bp당 컨벡시티"},
  {g:"금리",tb:"b", id:"thR",  n:"옵션 세타",      u:"억/년",  v:240, st:10,  k:"n", s:"발행 시점 확정"},
- {g:"금리",tb:"r", id:"vgR",  n:"베가(숏)",      u:"억/1bp", v:10,  st:1,   k:"n", s:"내재 1bp↑ 시 손실"},
+ {g:"금리",tb:"r", id:"vgR",  n:"베가(숏)",      u:"억/1bp", v:10,  st:1,   k:"n", s:"역사적 변동성 1bp↑ 시 손실"},
  {g:"금리",tb:"b", id:"slipR",n:"델타 슬리피지",  u:"억/1억",  v:10,  st:0.5, k:"n", s:"DV01 1억 조정당"},
  {g:"베이시스",tb:"r", id:"bsdv", n:"본드스왑 노출",   u:"억/bp",  v:18.8, st:0.5,k:"n", s:"커버 100% 기준 · IRS20−국고10"},
  {g:"베이시스",tb:"r", id:"teAmt",n:"펀드 베이시스",   u:"억/1%p", v:80, st:10, k:"n", s:"지수 대비 1%p당"},
@@ -308,7 +308,7 @@ const PAR=[
  {g:"한도",tb:"b", id:"gfee", n:"보증수수료",     u:"bp",     v:70,  st:5,   k:"n", s:"적립금 대비 · 연 재원"},
  {g:"커버",tb:"b", id:"covE", n:"주가 커버(계획)", u:"%", v:0,  mn:0,mx:100,st:5,k:"s"},
  {g:"커버",tb:"b", id:"covR", n:"금리 커버(계획)", u:"%", v:0,  mn:0,mx:100,st:5,k:"s"},
- {g:"커버",tb:"r", id:"acovE",n:"주가 커버(실제)", u:"%", v:64, mn:0,mx:100,st:1,k:"s"},
+ {g:"커버",tb:"r", id:"acovE",n:"주가 커버(실제)", u:"%", v:0,  mn:0,mx:100,st:5,k:"s"},
  {g:"커버",tb:"r", id:"acovR",n:"금리 커버(실제)", u:"%", v:80, mn:0,mx:100,st:5,k:"s"},
  {g:"노출",tb:"r", id:"mulE", n:"주가 노출 배수",  u:"×", v:1.0,mn:0.2,mx:3,st:0.05,k:"s"},
  {g:"노출",tb:"r", id:"mulR", n:"금리 노출 배수",  u:"×", v:1.0,mn:0.2,mx:3,st:0.05,k:"s"},
@@ -331,7 +331,6 @@ const unmat=()=>P.bel*1e4*P.unm/100;
 const gYE=(w,d)=>w*0.5*P.gamE*d*d*N()*vr(VRE,P.rbal);
 const gYR=(w,d)=>w*0.5*P.gamR*d*d*N()*vr(VRR,P.rbal);
 const thP=()=>wEp()*P.thE+wRp()*P.thR, thA=()=>wEa()*P.thE+wRa()*P.thR;
-const diE=()=>Math.sqrt(Math.max(0,2*P.thE/(P.gamE*N()))), diR=()=>Math.sqrt(Math.max(0,2*P.thR/(P.gamR*N())));
 const carry=()=>P.disc*unmat()/100;
 const mv=d=>d*Math.sqrt(P.rbal)*Math.sqrt(2/Math.PI);
 /* 슬리피지 — 주가: 캐시델타(100Γ)×명목bp · 금리: 거래DV01(Γ)×호가bp. 두 다리 차원을 맞췄어요 */
@@ -440,7 +439,7 @@ function realized(){
   const thD=thA()/N(), cyD=carry()/N();
   const thDb=thP()/N(), teDb=teDriftY()/N();
   let vE=ewma0(i0,"e"), vR=ewma0(i0,"r");
-  let ivE=Math.sqrt(vE)*(diE()/b.dE), ivR=Math.sqrt(vR)*(diR()/b.dR);
+  let ivE=Math.sqrt(vE), ivR=Math.sqrt(vR);
   let sprd=(d.y30[i0-1]-d.y10[i0-1])*100;   /* 구간 시작 실측 스프레드에서 출발 */
   let c=0, cb=0, accE=0, accR=0, k=0, resid=0, cov=0, sq=0, sqr=0;
   const led=S.pnl? new Map(S.pnl.actual.map(x=>[x.d,x])) : null;
@@ -452,7 +451,7 @@ function realized(){
     o.th=thD; o.carry=-cyD;
     o.gE=-wEa()*0.5*P.gamE*re*re*vr(VRE,P.rbal);
     o.gR=-wRa()*0.5*P.gamR*rr*rr*vr(VRR,P.rbal);
-    const nivE=Math.sqrt(vE)*(diE()/b.dE), nivR=Math.sqrt(vR)*(diR()/b.dR);
+    const nivE=Math.sqrt(vE), nivR=Math.sqrt(vR);
     const ivE0=ivE, ivR0=ivR;
     o.vgE=vegE()*(nivE-ivE)*volB(); o.vgR=vegR()*(nivR-ivR)*volB(); ivE=nivE; ivR=nivR;
     /* 본드스왑 스프레드 = IRS20 − 국고10. IRS20 가 없어 국고30 + 상수로 대용하면
@@ -505,14 +504,14 @@ function pastBand(){
     const z=gauss();
     const me=Math.exp(VOV*(0.4*z+0.92*gauss())-VOV*VOV), mr=Math.exp(VOV*(0.4*z+0.92*gauss())-VOV*VOV);
     let vE=v0E, vR=v0R, sprd=0, c=0, left=0, bi=0, accE=0, accR=0, k=0;
-    let ivE=Math.sqrt(vE)*(diE()/b.dE), ivR=Math.sqrt(vR)*(diR()/b.dR);
+    let ivE=Math.sqrt(vE), ivR=Math.sqrt(vR);
     for(let t=0;t<nP;t++){
       if(left===0){bi=Math.floor(rnd()*n);left=BLK;}
       const j=(bi+(BLK-left))%n; left--;
       let re=S.poolE[j]*(b.dE/(S.sdE||1))*me, rr=S.poolR[j]*(b.dR/(S.sdR||3))*mr;
       if(re<-20)re=-20; else if(re>20)re=20;
       vE=LAM*vE+(1-LAM)*re*re; vR=LAM*vR+(1-LAM)*rr*rr;
-      const nivE=Math.sqrt(vE)*(diE()/b.dE), nivR=Math.sqrt(vR)*(diR()/b.dR);
+      const nivE=Math.sqrt(vE), nivR=Math.sqrt(vR);
       const vg=vegEp()*(nivE-ivE)*volB()+vegRp()*(nivR-ivR)*volB(); ivE=nivE; ivR=nivR;
       const ns=0.988*sprd+b.bs/Math.sqrt(N())*gauss();   /* |Δ금리| 연동 제거 — 실측 상관 0.02 */
       const bs=bsExpP()*(ns-sprd); sprd=ns;
@@ -549,7 +548,7 @@ function forecast(start,np){
     const z=gauss();
     const me=Math.exp(VOV*(0.4*z+0.92*gauss())-VOV*VOV), mr=Math.exp(VOV*(0.4*z+0.92*gauss())-VOV*VOV);
     let vE=v0E, vR=v0R, sprd=s0;
-    let ivE=Math.sqrt(vE)*(diE()/b.dE), ivR=Math.sqrt(vR)*(diR()/b.dR);
+    let ivE=Math.sqrt(vE), ivR=Math.sqrt(vR);
     let c=start, left=0, bi=0, accE=0, accR=0, k=0;
     const Cc={}; KEYS.forEach(x=>Cc[x]=0);
     for(let t=0;t<FUT;t++){
@@ -562,7 +561,7 @@ function forecast(start,np){
       o.th=thD; o.carry=-cyD;
       o.gE=-wEa()*0.5*P.gamE*re*re*vr(VRE,P.rbal);
       o.gR=-wRa()*0.5*P.gamR*rr*rr*vr(VRR,P.rbal);
-      const nivE=Math.sqrt(vE)*(diE()/b.dE), nivR=Math.sqrt(vR)*(diR()/b.dR);
+      const nivE=Math.sqrt(vE), nivR=Math.sqrt(vR);
       o.vgE=vegE()*(nivE-ivE)*volB(); o.vgR=vegR()*(nivR-ivR)*volB(); ivE=nivE; ivR=nivR;
       const ns=0.988*sprd+rg.bs/Math.sqrt(N())*gauss();
       o.bs=bsExp()*(ns-sprd); sprd=ns;
@@ -818,8 +817,8 @@ function fillBench(){
   const b=REG("base");
   const it=[
     ["h",`<span class="bdg good">받는 것</span>`],
-    ["세타 (주가)",  wEp()*P.thE, `내재 ${diE().toFixed(2)}%`],
-    ["세타 (금리)",  wRp()*P.thR, `내재 ${diR().toFixed(2)}bp`],
+    ["세타 (주가)",  wEp()*P.thE, "발행 시점 확정"],
+    ["세타 (금리)",  wRp()*P.thR, "발행 시점 확정"],
     ["h",`<span class="bdg leak">나가는 것</span>`],
     ["주가 감마",    -gYE(wEp(),b.dE), `½Γ×${b.dE}%²×${N()}일×VR${vr(VRE,P.rbal).toFixed(2)}`],
     ["금리 감마",    -gYR(wRp(),b.dR), `½Γ×${b.dR}bp²×${N()}일×VR${vr(VRR,P.rbal).toFixed(2)}`],

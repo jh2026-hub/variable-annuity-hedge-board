@@ -310,8 +310,8 @@ const PAR=[
  {g:"커버",tb:"b", id:"covR", n:"금리 커버(계획)", u:"%", v:0,  mn:0,mx:100,st:5,k:"s"},
  {g:"커버",tb:"r", id:"acovE",n:"주가 커버(실제)", u:"%", v:0,  mn:0,mx:100,st:5,k:"s"},
  {g:"커버",tb:"r", id:"acovR",n:"금리 커버(실제)", u:"%", v:80, mn:0,mx:100,st:5,k:"s"},
- {g:"노출",tb:"r", id:"mulE", n:"주가 노출 배수",  u:"×", v:1.0,mn:0.2,mx:3,st:0.05,k:"s"},
- {g:"노출",tb:"r", id:"mulR", n:"금리 노출 배수",  u:"×", v:1.0,mn:0.2,mx:3,st:0.05,k:"s"},
+ {g:"노출",tb:"r", id:"dltE", n:"주가 델타 노출",  u:"억/1%", v:180,st:10,k:"n", s:"지수 1%당 · 7월말 기준"},
+ {g:"노출",tb:"r", id:"dltR", n:"금리 델타 노출",  u:"억/bp", v:60, st:5, k:"n", s:"DV01 · 7월말 기준"},
  {g:"실행",tb:"b", id:"rbal", n:"리밸런싱 주기",   u:"거래일",v:5,mn:1,mx:21,st:1,k:"s",s:"주기↑ → 슬리피지↓ 감마↑"},
 ];
 const P={}; PAR.forEach(p=>P[p.id]=p.v);
@@ -326,7 +326,10 @@ const C=v=>v>=0?"var(--good-ink)":"var(--bad-ink)";
 
 /* ═══ 이론값 ═══ */
 const wEp=()=>1-P.covE/100, wRp=()=>1-P.covR/100;
-const wEa=()=>P.mulE*(1-P.acovE/100), wRa=()=>P.mulR*(1-P.acovR/100);
+/* 북 규모는 델타 노출로 재요 — 감마·베가·본드스왑은 그 비율만큼 같이 커집니다 */
+const DLT0_E=180, DLT0_R=60;                              /* 배수 1.0 에 해당하는 7월말 델타 */
+const mulE=()=>P.dltE/DLT0_E, mulR=()=>P.dltR/DLT0_R;
+const wEa=()=>mulE()*(1-P.acovE/100), wRa=()=>mulR()*(1-P.acovR/100);
 const unmat=()=>P.bel*1e4*P.unm/100;
 const gYE=(w,d)=>w*0.5*P.gamE*d*d*N()*vr(VRE,P.rbal);
 const gYR=(w,d)=>w*0.5*P.gamR*d*d*N()*vr(VRR,P.rbal);
@@ -338,7 +341,7 @@ const tcE=(w,d)=>(N()/P.rbal)*w*100*P.gamE*mv(d)*P.slipE;   /* 조정 캐시델�
 const tcR=(w,d)=>(N()/P.rbal)*w*P.gamR*mv(d)*P.slipR;       /* 조정 DV01(Γ) × 1억당 단가 */
 const vegE=()=>-wEa()*P.vgE, vegR=()=>-wRa()*P.vgR;
 const vegEp=()=>-wEp()*P.vgE, vegRp=()=>-wRp()*P.vgR;   /* 벤치마크선 = 계획 가중 */
-const bsExp=()=>-(P.acovR/100)*P.mulR*P.bsdv;
+const bsExp=()=>-(P.acovR/100)*mulR()*P.bsdv;
 const bsExpP=()=>-(P.covR/100)*P.bsdv;                    /* 계획 커버율로 생겼을 본드스왑 */
 const volB=()=>Math.sqrt((1/12)/TEFF);
 const BSANCHOR=15;   /* 오늘 국고10−IRS10 ≈ 15bp — 수준 표기용 앵커(Δ 는 불변) */
@@ -843,7 +846,7 @@ function fillExp(){
   const b=REG("base");
   $("expRows").innerHTML=barRows([
     ["h",`<span class="bdg pay">연 기준</span> 실제 가중`],
-    ["세타",         thA(), `노출 주가 ×${P.mulE} · 금리 ×${P.mulR}`],
+    ["세타",         thA(), `노출 주가 ${P.dltE}억/1% · 금리 ${P.dltR}억/bp`],
     ["주가 감마",    -gYE(wEa(),b.dE), `미커버 ${(100-P.acovE).toFixed(0)}%`],
     ["금리 감마",    -gYR(wRa(),b.dR), `미커버 ${(100-P.acovR).toFixed(0)}%`],
     ["h",`<span class="bdg ink">단위당</span> 민감도`],

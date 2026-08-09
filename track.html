@@ -297,16 +297,16 @@ const PAR=[
  {g:"주가",tb:"r", id:"agamE",n:"감마 Γ (실제)", u:"억/1%",  v:0.35,st:0.01,k:"n", s:"26상반기 감마 −240억 기준"},
  {g:"주가",tb:"b", id:"thE",  n:"옵션 세타",      u:"억/년",  v:404, st:10,  k:"n", s:"발행 시점 확정"},
  {g:"주가",tb:"r", id:"vgE",  n:"베가(숏)",      u:"억/1%p", v:325, st:5,   k:"n", s:"26상반기 평가손실 −190억 기준"},
- {g:"주가",tb:"r", id:"dltE", n:"델타 노출",     u:"억원/1%", v:180,st:10,k:"n", s:"지수 1% 움직일 때 · 7월말"},
+ {g:"주가",tb:"r", id:"dltE", n:"주가 델타",     u:"억원/1%", v:180,st:10,k:"n", s:"지수 1% 움직일 때 · 7월말"},
  {g:"주가",tb:"r", id:"dhdE", n:"델타 헤지",     u:"%",      v:100,st:0.5,k:"n",s:"맞춘 비율 · 100=완전헤지"},
- {g:"주가",tb:"b", id:"slipE",n:"델타 슬리피지",  u:"억/1억",  v:0,   st:0.01,k:"n", s:"델타 1억 조정당"},
+ {g:"주가",tb:"b", id:"slipE",n:"슬리피지",  u:"억/1억",  v:0.11,st:0.01,k:"n", s:"델타 1억 조정당 · 26상 −600억 기준"},
  {g:"금리",tb:"b", id:"gamR", n:"감마 Γ (계획)", u:"억/bp",  v:0.175,st:0.005,k:"n",s:"장기평균선 기준"},
  {g:"금리",tb:"b", id:"thR",  n:"옵션 세타",      u:"억/년",  v:240, st:10,  k:"n", s:"발행 시점 확정"},
  {g:"금리",tb:"r", id:"agamR",n:"감마 Γ (실제)", u:"억/bp",  v:0.016,st:0.002,k:"n",s:"실적·벤치마크선"},
  {g:"금리",tb:"r", id:"vgR",  n:"베가(숏)",      u:"억/1bp", v:10,  st:1,   k:"n", s:"역사적 변동성 1bp↑ 시 손실"},
- {g:"금리",tb:"r", id:"dltR", n:"델타 노출",     u:"억원/1bp",v:60, st:5, k:"n", s:"DV01 · 7월말"},
+ {g:"금리",tb:"r", id:"dltR", n:"금리 델타",     u:"억원/1bp",v:60, st:5, k:"n", s:"DV01 · 7월말"},
  {g:"금리",tb:"r", id:"dhdR", n:"델타 헤지",     u:"%",      v:100,st:0.5,k:"n",s:"맞춘 비율 · 100=완전헤지"},
- {g:"금리",tb:"b", id:"slipR",n:"델타 슬리피지",  u:"억/1억",  v:10,  st:0.5, k:"n", s:"DV01 1억 조정당"},
+ {g:"금리",tb:"b", id:"slipR",n:"슬리피지",  u:"억/1억",  v:10,  st:0.5, k:"n", s:"DV01 1억 조정당"},
  {g:"베이시스",tb:"r", id:"bsdv", n:"본드스왑 노출",   u:"억/bp",  v:15,  st:0.5,k:"n", s:"IRS20−국고10 · 26상 −591억 기준"},
  {g:"베이시스",tb:"r", id:"teAmt",n:"펀드 베이시스",   u:"억/1%p", v:80, st:10, k:"n", s:"지수 대비 1%p당"},
  {g:"베이시스",tb:"r", id:"tbeta",n:"펀드 추적 베타",    u:"배",     v:0.93,st:0.01,k:"n",s:"KOSPI200 대비 · 국내 주식형 실측"},
@@ -472,15 +472,15 @@ function realized(){
     const ob={};
     ob.th=thDb; ob.carry=-cyD; ob.te=o.te; ob.dmE=0; ob.dmR=0;   /* 베타 갭은 시장 요인 · 델타 미스매치는 운용 선택 */
     ob.gE=-wEp()*0.5*P.agamE*re*re*vr(VRE,P.rbal);
-    ob.gR=-wRp()*0.5*P.agamR*rr*rr*vr(VRR,P.rbal);
+    ob.gR=-wRp()*0.5*P.gamR*rr*rr*vr(VRR,P.rbal);   /* 금리는 스왑션 없이 계획 Γ 그대로 */
     ob.vgE=vegEp()*(nivE-ivE0)*volB(); ob.vgR=vegRp()*(nivR-ivR0)*volB();
     ob.bs=bsExpP()*(ns-sprd0);
     accE+=re; accR+=rr; k++; o.tE=0; o.tR=0; ob.tE=0; ob.tR=0;
     if(k>=P.rbal||i===i1){
       o.tE=-wEa()*100*P.agamE*Math.abs(accE)*P.slipE;
       o.tR=-wRa()*P.agamR*Math.abs(accR)*P.slipR;
-      ob.tE=-wEp()*100*P.agamE*Math.abs(accE)*P.slipE;
-      ob.tR=-wRp()*P.agamR*Math.abs(accR)*P.slipR;
+      ob.tE=o.tE;                                        /* 주가는 이론대로라 실적과 같아요 */
+      ob.tR=-wRp()*P.gamR*Math.abs(accR)*P.slipR;        /* 금리는 IRS 없이 계획 Γ 로 */
       accE=0; accR=0; k=0;
     }
     KEYS.forEach(x=>{bparts[x]+=ob[x];}); cb+=KEYS.reduce((a,x)=>a+ob[x],0); bcum.push(cb);
@@ -762,20 +762,21 @@ function drawWF(){
   const bySec=(a,c)=>axo(a[0])-axo(c[0])||Math.abs(c[1])-Math.abs(a[1]);
   const mkt=[
     ["주가 감마",    RZ.bparts.gE+gYE(wEp(),b.dE)*f],   /* Γ 차이 + 변동성 차이 합산 */
+    ["주가 슬리피지", RZ.bparts.tE+tcE(wEp(),b.dE)*f],
     ["금리 감마",    RZ.bparts.gR+gYR(wRp(),b.dR)*f],
+    ["금리 슬리피지", RZ.bparts.tR+tcR(wRp(),b.dR)*f],
     ["주가 베가",    RZ.bparts.vgE],
     ["금리 베가",    RZ.bparts.vgR],
-    ["델타비용",     (RZ.bparts.tE+RZ.bparts.tR)+(tcE(wEp(),b.dE)+tcR(wRp(),b.dR))*f],
     ["펀드 추적오차", RZ.bparts.te],          /* 장기평균선은 지수 방향 가정이 없어 0 */
     ["본드스왑",      RZ.bparts.bs],
   ].filter(x=>Math.abs(x[1])>=0.5).sort(bySec);
   /* 운용 몫 = 같은 시장에서 계획과 다르게 운용해서 생긴 것 + 평가 (통제 가능) */
   const ops=[
-    ["본드스왑",       RZ.parts.bs-RZ.bparts.bs],
-    ["실제 델타비용",  (RZ.parts.tE+RZ.parts.tR)-(RZ.bparts.tE+RZ.bparts.tR)],
+    ["본드스왑 (스왑션)", RZ.parts.bs-RZ.bparts.bs],
+    ["슬리피지 (IRS 절감)", (RZ.parts.tE+RZ.parts.tR)-(RZ.bparts.tE+RZ.bparts.tR)],
     ["펀드 추적오차",  RZ.parts.te-RZ.bparts.te],
     ["세타(노출차)",   RZ.parts.th-RZ.bparts.th],
-    ["감마(커버차)",   (RZ.parts.gE+RZ.parts.gR)-(RZ.bparts.gE+RZ.bparts.gR)],
+    ["금리 감마 (스왑션 절감)", (RZ.parts.gE+RZ.parts.gR)-(RZ.bparts.gE+RZ.bparts.gR)],
     ["베가(노출차)",   (RZ.parts.vgE+RZ.parts.vgR)-(RZ.bparts.vgE+RZ.bparts.vgR)],
     ["주가 델타 미스매치", RZ.parts.dmE-RZ.bparts.dmE],
     ["금리 델타 미스매치", RZ.parts.dmR-RZ.bparts.dmR],
@@ -786,9 +787,9 @@ function drawWF(){
     return Math.abs(s)>=0.5? top.concat([[`그 외 ${rest.length}항목`,s]]) : top;};
   const rowsM=pack(mkt,9), rowsO=pack(ops,9);   /* 축별로 묶이니 다 보여요 */   /* 항목이 묶여 사라지지 않게 */
   const seq=[["장기평균선",bench,1]]
-    .concat(rowsM.length?[["h",`<span class="bdg sym">시장 몫</span> 변동성 · 커브 · 추적오차 · 북 Γ 가 기준과 달랐어요`]]:[]).concat(rowsM.map(r=>[r[0],r[1],0]))
+    .concat(rowsM.length?[["h",`<span class="bdg sym">시장 몫</span> 자산−부채 감마·베가·추적오차 (통제 불가)`]]:[]).concat(rowsM.map(r=>[r[0],r[1],0]))
     .concat([["벤치마크선",RZ.bend,1]])
-    .concat(rowsO.length?[["h",`<span class="bdg pay">운용 몫</span> 본드스왑 · 델타 미스매치`]]:[]).concat(rowsO.map(r=>[r[0],r[1],0]));
+    .concat(rowsO.length?[["h",`<span class="bdg pay">운용 몫</span> 스왑션 · 거래비용 · 델타 미스매치 (선택의 결과)`]]:[]).concat(rowsO.map(r=>[r[0],r[1],0]));
   if(Math.abs(RZ.resid)>=0.5) seq.push(["미설명",RZ.resid,0]);
   seq.push(["실적",RZ.end,1]);
   measure();

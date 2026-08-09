@@ -52,15 +52,14 @@
   h1{font-size:25px;font-weight:700;letter-spacing:-.02em;line-height:1.3;margin-bottom:4px}
   h1 em{font-style:normal;color:var(--pay)}
   .sub{color:var(--muted);font-size:13.5px;margin-bottom:16px}
-  .gonav{display:flex;gap:6px;margin:0 0 12px}
-  .gonav a{display:inline-flex;align-items:center;gap:5px;min-height:34px;padding:6px 12px;
-    border-radius:9px;text-decoration:none;font-size:12px;font-weight:800;
-    background:var(--panel);border:1px solid var(--hair);color:var(--sym)}
-  .gonav a:last-child{color:var(--pay)}
-  .gonav a span{font-weight:500;font-size:10px;color:var(--muted)}
+  .gonav{margin-left:auto;display:flex;gap:6px}
+  .gonav a{display:inline-flex;align-items:center;min-height:26px;padding:3px 10px;border-radius:999px;
+    text-decoration:none;font-size:11px;font-weight:800;background:var(--sym);color:#fff;white-space:nowrap}
+  .gonav a:last-child{background:var(--pay)}
   .tabs{display:flex;gap:6px;flex-wrap:wrap;position:sticky;top:0;background:var(--bg);padding:8px 0 10px;z-index:20;border-bottom:1px solid var(--hair);margin-bottom:4px}
-  .tabs button{flex:0 0 auto;min-width:38px;background:var(--panel);border:1px solid var(--hair);color:var(--muted);
-    font-family:inherit;font-size:14px;font-weight:700;padding:7px 9px;border-radius:9px;cursor:pointer;min-height:36px}
+  .tabs button{flex:0 0 auto;background:var(--panel);border:1px solid var(--hair);color:var(--muted);
+    font-family:inherit;font-size:12px;font-weight:700;padding:7px 11px;border-radius:9px;cursor:pointer;
+    min-height:34px;white-space:nowrap}
   .tabnow{font-size:13.5px;font-weight:800;margin:0 0 10px;padding:0 2px}
   .tabnow em{font-style:normal;font-weight:500;font-size:11px;color:var(--muted);margin-left:6px}
   .tabs button.on{background:#E7EFFD;border-color:#9DBBF3;color:var(--pay)}
@@ -408,7 +407,10 @@
 <div class="statusbar">
   <span class="sbitem">👁 방문 <b id="sbVisits">…</b></span>
   <span class="sbitem">💬 의견 <b id="sbFeedback">…</b></span>
-  <span class="sbnote">변액보험 헷지 학습 도구</span>
+  <span class="gonav">
+    <a href="./cases.html">🔒 사례집</a>
+    <a href="./track.html">🔒 헷지손익 관리</a>
+  </span>
 </div>
 
 <div style="display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap;justify-content:space-between">
@@ -420,22 +422,18 @@
 </div>
 
 <div class="tabs" id="tabs">
-  <button data-p="pqa" data-n="Q&A" data-s="쉬운 문답" class="on">❓</button>
-  <button data-p="pbg" data-n="배경" data-s="왜·안하면·사례">①</button>
-  <button data-p="p1" data-n="개념" data-s="수수료·비용·변동성">②</button>
-  <button data-p="p4" data-n="항목별 설명" data-s="요인 원리">③</button>
-  <button data-p="p7" data-n="헷지수단" data-s="비용·효과">④</button>
-  <button data-p="p3" data-n="손익 인식" data-s="완충(CSM)">⑤</button>
-  <button data-p="p2" data-n="시뮬레이션" data-s="선택→결과">⑥</button>
-  <button data-p="p6" data-n="참고자료" data-s="이론">⑦</button>
-  <button data-p="pgame" data-n="게임" data-s="3단계 체험">🎮</button>
-  <button data-p="p8" data-n="입력 가정" data-s="심화·선택">⚙️</button>
+  <button data-p="pqa" data-n="Q&A" data-s="쉬운 문답" class="on">❓ Q&A</button>
+  <button data-p="pbg" data-n="배경" data-s="왜·안하면·사례">① 배경</button>
+  <button data-p="p1" data-n="개념" data-s="수수료·비용·변동성">② 개념</button>
+  <button data-p="p4" data-n="항목별 설명" data-s="요인 원리">③ 항목별</button>
+  <button data-p="p7" data-n="헷지수단" data-s="비용·효과">④ 헷지수단</button>
+  <button data-p="p3" data-n="손익 인식" data-s="완충(CSM)">⑤ 손익인식</button>
+  <button data-p="p2" data-n="시뮬레이션" data-s="선택→결과">⑥ 시뮬</button>
+  <button data-p="p6" data-n="참고자료" data-s="이론">⑦ 참고자료</button>
+  <button data-p="pgame" data-n="게임" data-s="3단계 체험">🎮 게임</button>
+  <button data-p="p8" data-n="입력 가정" data-s="심화·선택">⚙️ 가정</button>
 </div>
 <div class="tabnow" id="tabnow"></div>
-<div class="gonav">
-  <a href="./cases.html">🔒 사례집 <span>30년·5개국</span></a>
-  <a href="./track.html">🔒 헷지손익 관리 <span>실적·전망</span></a>
-</div>
 
 <!-- ① 배경 -->
 <section class="page" id="pbg">

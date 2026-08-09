@@ -862,12 +862,14 @@ function fillExp(){
   const b=REG("base");
   $("expRows").innerHTML=barRows([
     ["h",`<span class="bdg pay">연 기준</span> 실제 가중`],
-    ["세타",         thA(), `델타 노출 ${P.dltE}억/1% · ${P.dltR}억/1bp`],
+    ["세타",         thA(), "발행 시점 확정"],
     ["주가 감마",    -gYE(wEa(),b.dE,P.agamE), `Γ ${P.agamE}억/1%`],
     ["금리 감마",    -gYR(wRa(),b.dR,P.agamR), `Γ ${P.agamR}억/bp`],
     ["h",`<span class="bdg ink">단위당</span> 민감도`],
     ["주가 베가",    vegE(), "내재 일변동 1%p당"],
     ["금리 베가",    vegR(), "내재 일변동 1bp당"],
+    ["주가 델타 (잔여)", -resE(), `노출 ${P.dltE}억/1% × 미헷지 ${(100-P.dhdE).toFixed(1)}%`],
+    ["금리 델타 (잔여)", -resR(), `노출 ${P.dltR}억/1bp × 미헷지 ${(100-P.dhdR).toFixed(1)}%`],
     ["본드스왑 <span class=\"bdg leak\">가정</span>", bsExp()],
     ["펀드 베이시스 <span class=\"bdg leak\">가정</span>", -P.teAmt],
   ]);
@@ -877,8 +879,7 @@ function fillExp(){
   $("expSub").innerHTML=`벤치마크선 ${E(RZ.bend)} → 실적 ${E(RZ.end)}`;
   $("expNote").innerHTML=
     `<b>Γ</b> 계획 ${P.gamE}/${P.gamR} → 실제 <b>${P.agamE}</b>/<b>${P.agamR}</b> · `+
-    `<b>본드스왑</b> ${P.bsdv}억/bp · <b>델타 잔여</b> ${resE().toFixed(1)}억/1% · ${resR().toFixed(1)}억/1bp<br>`+
-    `노출을 직접 넣으므로 커버율은 없어요 — 벤치마크선과의 차이는 본드스왑·델타 미스매치·세타뿐입니다.`;
+    `벤치마크선과의 차이는 <b>금리 감마·슬리피지·본드스왑·델타 미스매치</b>뿐입니다.`;
   $("ledNote").innerHTML=RZ.src==="model"
     ? `실적선 = <b>모형 재구성</b> · <code>data/pnl.json</code> 넣으면 실측으로 바뀌어요`
     : `원장 <b>${RZ.cov}일</b> 반영 · 미설명 <b>${SE(RZ.resid)}</b>`;

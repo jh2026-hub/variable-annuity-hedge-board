@@ -760,6 +760,9 @@ function onLeave(){const ln=$("mainSvg").querySelector("#chx"); if(ln)ln.setAttr
 function drawWF(){
   const f=RZ.n/N(), b=REG("base"), bench=benchY()*f;
   /* 시장 몫 = 실현변동성이 기준과 달라서 생긴 것 (통제 불가) */
+  /* 크기순이 아니라 주가 → 금리 → 나머지 로 읽어요 (같은 축끼리 붙어 있어야 비교됩니다) */
+  const axo=x=>x.startsWith("주가")?0:x.startsWith("금리")?1:2;
+  const bySec=(a,c)=>axo(a[0])-axo(c[0])||Math.abs(c[1])-Math.abs(a[1]);
   const mkt=[
     /* 장기평균선은 Γ 1.0·기준변동성, 벤치마크선은 Γ 실제·실현변동성 — 두 효과를 갈라요 */
     ["주가 Γ(계획→실제)", (gYE(wEp(),b.dE)-gYE(wEp(),b.dE,P.agamE))*f
@@ -773,7 +776,7 @@ function drawWF(){
     ["델타비용",     (RZ.bparts.tE+RZ.bparts.tR)+(tcE(wEp(),b.dE,P.agamE)+tcR(wRp(),b.dR,P.agamR))*f],
     ["펀드 추적오차", RZ.bparts.te],          /* 장기평균선은 지수 방향 가정이 없어 0 */
     ["본드스왑",      RZ.bparts.bs],
-  ].filter(x=>Math.abs(x[1])>=0.5).sort((a,c)=>Math.abs(c[1])-Math.abs(a[1]));
+  ].filter(x=>Math.abs(x[1])>=0.5).sort(bySec);
   /* 운용 몫 = 같은 시장에서 계획과 다르게 운용해서 생긴 것 + 평가 (통제 가능) */
   const ops=[
     ["본드스왑",       RZ.parts.bs-RZ.bparts.bs],
@@ -784,12 +787,12 @@ function drawWF(){
     ["베가(노출차)",   (RZ.parts.vgE+RZ.parts.vgR)-(RZ.bparts.vgE+RZ.bparts.vgR)],
     ["주가 델타 미스매치", RZ.parts.dmE-RZ.bparts.dmE],
     ["금리 델타 미스매치", RZ.parts.dmR-RZ.bparts.dmR],
-  ].filter(x=>Math.abs(x[1])>=0.5).sort((a,c)=>Math.abs(c[1])-Math.abs(a[1]));
+  ].filter(x=>Math.abs(x[1])>=0.5).sort(bySec);
   const worst=[...mkt,...ops].reduce((a,x)=>Math.abs(x[1])>Math.abs(a[1])?x:a,["",0]);
   const pack=(arr,n)=>{const top=arr.slice(0,n), rest=arr.slice(n);
     const s=rest.reduce((a,x)=>a+x[1],0);
     return Math.abs(s)>=0.5? top.concat([[`그 외 ${rest.length}항목`,s]]) : top;};
-  const rowsM=pack(mkt,7), rowsO=pack(ops,7);   /* 항목이 묶여 사라지지 않게 */
+  const rowsM=pack(mkt,9), rowsO=pack(ops,9);   /* 축별로 묶이니 다 보여요 */   /* 항목이 묶여 사라지지 않게 */
   const seq=[["장기평균선",bench,1]]
     .concat(rowsM.length?[["h",`<span class="bdg sym">시장 몫</span> 변동성 · 커브 · 추적오차 · 북 Γ 가 기준과 달랐어요`]]:[]).concat(rowsM.map(r=>[r[0],r[1],0]))
     .concat([["벤치마크선",RZ.bend,1]])

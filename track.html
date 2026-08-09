@@ -101,6 +101,8 @@
   .vals .vn{font-size:9px;font-weight:800;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .vals .vv{font-size:12.5px;font-weight:800;letter-spacing:-.2px}
   .vals i{display:inline-block;width:7px;height:7px;border-radius:2px;margin-right:4px;vertical-align:0}
+  #axSplit td.r,#axSplit th.r{text-align:right}
+  #axSplit table{margin:2px 0 4px}
   .rd{font-size:11px;color:var(--muted);min-height:19px;padding:1px 2px 5px}
   .rd b{color:var(--ink);font-weight:700}
   table{width:100%;border-collapse:collapse;font-family:inherit;font-size:10px}
@@ -172,6 +174,7 @@
   <div class="chartwrap"><svg id="mainSvg" role="img" aria-label="누적 헷지손익"></svg></div>
   <div class="rd" id="volCtx"></div>
   <div class="chartwrap"><svg id="volSvg" role="img" aria-label="실현 변동성"></svg></div>
+  <div id="axSplit"></div>
   <div class="asof">
     <div class="al">기준일 <b id="v_cursor"></b></div>
     <div class="chips" id="curQuick"></div>
@@ -701,8 +704,23 @@ function drawMain(){
   g.push(`<text x="${(X(nP-1)-7).toFixed(1)}" y="${(yl<T+18?yl+15:yl-9).toFixed(1)}" text-anchor="end" font-size="10" font-weight="700" fill="#16202F">실적 ${E(RZ.end)}</text>`);
   g.push(`<text x="${(W-R-2).toFixed(1)}" y="${Math.max(T+11,Y(slope*(nT-1))-6).toFixed(1)}" text-anchor="end" font-size="10" font-weight="700" fill="#4A6FC4">장기평균선</text>`);
   if(SHOW.bench) g.push(`<text x="${(X(nP-1)-7).toFixed(1)}" y="${(Y(RZ.bend)+(RZ.bend>RZ.end?-8:15)).toFixed(1)}" text-anchor="end" font-size="10" font-weight="700" fill="#5B4CA8">벤치마크 ${E(RZ.bend)}</text>`);
-  [[0,VIEW==="ytd"?S.mkt.dates[CURSOR].slice(2,4)+".1월":dstr(-(nP-1))],[nP-1,"오늘"],[nT-1,dstr(FUT-1)]]
-    .forEach(a=>g.push(`<text x="${Math.min(W-R-16,Math.max(L+16,X(a[0]))).toFixed(1)}" y="${H-6}" text-anchor="middle" font-size="10" fill="#98A2B3">${a[1]}</text>`));
+  /* 분기 눈금 — 과거는 실제 날짜, 미래는 영업일 환산(252/365) */
+  let qt=[], pq="";
+  RZ.day.forEach((x,i)=>{const q=x.d.slice(2,4)+".Q"+(Math.floor((+x.d.slice(4,6)-1)/3)+1);
+    if(q!==pq){qt.push([i,q]); pq=q;}});
+  {const s=S.mkt.dates[CURSOR], base=new Date(+s.slice(0,4),+s.slice(4,6)-1,+s.slice(6,8));
+   let qy=+s.slice(0,4), qm=Math.floor((+s.slice(4,6)-1)/3)*3+4; if(qm>12){qm-=12;qy++;}
+   for(let k=0;k<12;k++){
+     const off=Math.round((new Date(qy,qm-1,1)-base)/86400000*252/365);
+     if(off>0&&off<=FUT-1) qt.push([nP-1+off, String(qy).slice(2)+".Q"+((qm-1)/3+1)]);
+     qm+=3; if(qm>12){qm-=12;qy++;}}}
+  if(qt.length>(MOB?5:10)) qt=qt.filter(a=>a[1].endsWith("Q1")).map(a=>[a[0],a[1].slice(0,2)+"년"]);
+  const xToday=X(nP-1);
+  qt.forEach(a=>{const x=X(a[0]);
+    g.push(`<line x1="${x.toFixed(1)}" y1="${T}" x2="${x.toFixed(1)}" y2="${T+ih}" stroke="#EDF0F6" stroke-width="1"/>`);
+    if(Math.abs(x-xToday)<26) return;                         /* '오늘' 과 겹치면 접어요 */
+    g.push(`<text x="${Math.min(W-R-14,Math.max(L+14,x)).toFixed(1)}" y="${H-6}" text-anchor="middle" font-size="9.5" fill="#98A2B3">${a[1]}</text>`);});
+  g.push(`<text x="${xToday.toFixed(1)}" y="${H-6}" text-anchor="middle" font-size="9.5" font-weight="800" fill="#6E7889">오늘</text>`);
   g.push(`<line id="chx" x1="0" y1="${T}" x2="0" y2="${T+ih}" stroke="#16202F" stroke-width="1" opacity="0"/>`);
   const el=$("mainSvg"); el.setAttribute("viewBox",`0 0 ${W} ${H}`); el.setAttribute("height",H); el.innerHTML=g.join("");
   resetRd();
@@ -971,8 +989,19 @@ function fillVol(){
   if(!RZ) return;
   const b=REG("base"), kE=RZ.sdE/b.dE, kR=RZ.sdR/b.dR, f=x=>x.toFixed(2);
   $("volCtx").innerHTML=
-    `구간 평균 일변동 <b>주가 ${RZ.sdE.toFixed(2)}%</b> <span class="bdg${kE>1?" pay":""}">기준 ×${f(kE)} → 감마 ×${f(kE*kE)}</span>`+
-    ` · <b>금리 ${RZ.sdR.toFixed(1)}bp</b> <span class="bdg${kR>1?" pay":""}">기준 ×${f(kR)} → 감마 ×${f(kR*kR)}</span>`;
+    `구간 평균 일변동 <b>주가 ${RZ.sdE.toFixed(2)}%</b> <span class="bdg${kE>1?" pay":""}">기준 ×${f(kE)}</span>`+
+    ` · <b>금리 ${RZ.sdR.toFixed(1)}bp</b> <span class="bdg${kR>1?" pay":""}">기준 ×${f(kR)}</span>`;
+  /* 손실이 변동성 탓인지 포지션 크기 탓인지 — 기준 국면에서도 나갔을 몫과 갈라요 */
+  const fr=RZ.n/N();
+  const row=(nm,base,act)=>{const ex=act-base;
+    return `<tr><td><b>${nm}</b></td><td class="r">${SE(base)}</td><td class="r"><b>${SE(act)}</b></td>`+
+      `<td class="r" style="color:${C(ex)}">${SE(ex)}</td>`+
+      `<td class="r"><span class="bdg${Math.abs(ex)>Math.abs(base)?" pay":" ink"}">${Math.abs(ex)>Math.abs(base)?"변동성":"크기"}</span></td></tr>`;};
+  $("axSplit").innerHTML=`<table><thead><tr><th style="text-align:left">축</th><th class="r">기준 국면</th>`+
+    `<th class="r">실제</th><th class="r">차이</th><th class="r">주원인</th></tr></thead><tbody>`+
+    row("주가", -(gYE(wEa(),b.dE)+tcE(wEa(),b.dE))*fr, RZ.parts.gE+RZ.parts.tE)+
+    row("금리", -(gYR(wRa(),b.dR)+tcR(wRa(),b.dR))*fr, RZ.parts.gR+RZ.parts.tR)+
+    `</tbody></table>`;
 }
 /* 실현 변동성 서브차트 — 메인과 같은 x축. 감마는 σ² 이라 ×2 면 비용은 ×4 예요 */
 function drawVol(){

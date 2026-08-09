@@ -313,7 +313,8 @@ const PAR=[
  {g:"감마 커버",tb:"r", id:"acovR",n:"금리 (실제)", u:"%", v:80, mn:0,mx:100,st:5,k:"s"},
  {g:"델타 노출",tb:"r", id:"dltE", n:"주가", u:"억원/1%", v:180,st:10,k:"n", s:"지수 1% 움직일 때 · 7월말"},
  {g:"델타 노출",tb:"r", id:"dltR", n:"금리", u:"억원/1bp",v:60, st:5, k:"n", s:"1bp 움직일 때(DV01) · 7월말"},
- {g:"델타 노출",tb:"r", id:"dhdg", n:"헤지 비율", u:"%", v:99, mn:90,mx:110,st:0.5,k:"s"},
+ {g:"델타 노출",tb:"r", id:"dhdE", n:"주가 헤지", u:"%", v:99, mn:90,mx:110,st:0.5,k:"s"},
+ {g:"델타 노출",tb:"r", id:"dhdR", n:"금리 헤지", u:"%", v:99, mn:90,mx:110,st:0.5,k:"s"},
  {g:"실행",tb:"b", id:"rbal", n:"리밸런싱 주기",   u:"거래일",v:5,mn:1,mx:21,st:1,k:"s",s:"주기↑ → 슬리피지↓ 감마↑"},
 ];
 const P={}; PAR.forEach(p=>P[p.id]=p.v);
@@ -438,9 +439,9 @@ function ewma0(i0,key){
 }
 
 /* ═══ 실적 — 원장이 있으면 실측, 없으면 모형 재구성 ═══ */
-const KEYS=["th","gE","gR","tE","tR","carry","vgE","vgR","bs","te","dlt"];
+const KEYS=["th","gE","gR","tE","tR","carry","vgE","vgR","bs","te","dmE","dmR"];
 /* 못 맞춘 델타는 방향에 그대로 노출돼요 — 헤지 100% 면 0 */
-const resE=()=>P.dltE*(1-P.dhdg/100), resR=()=>P.dltR*(1-P.dhdg/100);
+const resE=()=>P.dltE*(1-P.dhdE/100), resR=()=>P.dltR*(1-P.dhdR/100);
 function realized(){
   const d=S.mkt, i1=CURSOR, i0=periodStart(), b=REG("base"), rg=regV(RSEL);
   const day=[], cum=[], bcum=[], parts={}, bparts={};
@@ -468,10 +469,10 @@ function realized(){
     const sprd0=sprd, ns=(d.y30[i]-d.y10[i])*100;
     o.bs=bsExp()*(ns-sprd); sprd=ns;
     o.te=P.teAmt*(P.tbeta-1)*re;   /* 펀드가 지수를 베타만큼만 따라가서 생기는 갭 */
-    o.dlt=resE()*re+resR()*rr;
+    o.dmE=resE()*re; o.dmR=resR()*rr;
     /* 벤치마크선 = 장기평균선 세팅(계획 가중)에 실현 변동성·실현 커브만 갈아끼운 선 */
     const ob={};
-    ob.th=thDb; ob.carry=-cyD; ob.te=o.te; ob.dlt=0;   /* 베타 갭은 시장 요인 · 델타 미스매치는 운용 선택 */
+    ob.th=thDb; ob.carry=-cyD; ob.te=o.te; ob.dmE=0; ob.dmR=0;   /* 베타 갭은 시장 요인 · 델타 미스매치는 운용 선택 */
     ob.gE=-wEp()*0.5*P.agamE*re*re*vr(VRE,P.rbal);
     ob.gR=-wRp()*0.5*P.gamR*rr*rr*vr(VRR,P.rbal);
     ob.vgE=vegEp()*(nivE-ivE0)*volB(); ob.vgR=vegRp()*(nivR-ivR0)*volB();
@@ -501,12 +502,13 @@ function realized(){
 }
 
 
-/* ═══ 장기평균선 밴드 — 기준 국면·계획 운용으로 과거를 되돌린 분포 ═══ */
+/* ═══ 기준 밴드 — 같은 북(실제 Γ·실제 커버)에 기준 국면 시장만 다시 뽑은 분포 ═══
+   실적과 같은 세팅이라야 '실적이 이 범위 어디인가' 가 성립해요 */
 const NB=500;
 function pastBand(){
   const b=REG("base"), n=S.poolE.length, nP=RZ.n, i0=periodStart();
-  const uE=wEp(), uR=wRp();
-  const thD=thP()/N(), cyD=carry()/N();
+  const uE=wEa(), uR=wRa();
+  const thD=thA()/N(), cyD=carry()/N();
   const v0E=ewma0(i0,"e"), v0R=ewma0(i0,"r");
   const paths=new Float64Array(NB*nP);
   seed(31337);
@@ -522,16 +524,17 @@ function pastBand(){
       if(re<-20)re=-20; else if(re>20)re=20;
       vE=LAM*vE+(1-LAM)*re*re; vR=LAM*vR+(1-LAM)*rr*rr;
       const nivE=Math.sqrt(vE), nivR=Math.sqrt(vR);
-      const vg=vegEp()*(nivE-ivE)*volB()+vegRp()*(nivR-ivR)*volB(); ivE=nivE; ivR=nivR;
+      const vg=vegE()*(nivE-ivE)*volB()+vegR()*(nivR-ivR)*volB(); ivE=nivE; ivR=nivR;
       const ns=0.988*sprd+b.bs/Math.sqrt(N())*gauss();   /* |Δ금리| 연동 제거 — 실측 상관 0.02 */
-      const bs=bsExpP()*(ns-sprd); sprd=ns;
+      const bs=bsExp()*(ns-sprd); sprd=ns;
       const te=P.teAmt*((P.tbeta-1)*re+b.te/Math.sqrt(N())*gauss());
+      const dl=resE()*re+resR()*rr;
       accE+=re; accR+=rr; k++;
       let tE=0, tR=0;
       if(k>=P.rbal){ tE=-uE*100*P.agamE*Math.abs(accE)*P.slipE;
                      tR=-uR*P.gamR*Math.abs(accR)*P.slipR; accE=0;accR=0;k=0; }
       c+=thD-cyD-uE*0.5*P.agamE*re*re*vr(VRE,P.rbal)-uR*0.5*P.gamR*rr*rr*vr(VRR,P.rbal)
-        +vg+bs+te+tE+tR;
+        +vg+bs+te+tE+tR+dl;
       paths[p*nP+t]=c;
     }
   }
@@ -576,7 +579,7 @@ function forecast(start,np){
       const ns=0.988*sprd+rg.bs/Math.sqrt(N())*gauss();
       o.bs=bsExp()*(ns-sprd); sprd=ns;
       o.te=P.teAmt*((P.tbeta-1)*re+rg.te/Math.sqrt(N())*gauss());
-      o.dlt=resE()*re+resR()*rr;
+      o.dmE=resE()*re; o.dmR=resR()*rr;
       accE+=re; accR+=rr; k++; o.tE=0; o.tR=0;
       if(k>=P.rbal){ o.tE=-wEa()*100*P.agamE*Math.abs(accE)*P.slipE;
                      o.tR=-wRa()*P.gamR*Math.abs(accR)*P.slipR; accE=0;accR=0;k=0; }
@@ -776,7 +779,8 @@ function drawWF(){
     ["세타(노출차)",   RZ.parts.th-RZ.bparts.th],
     ["감마(커버차)",   (RZ.parts.gE+RZ.parts.gR)-(RZ.bparts.gE+RZ.bparts.gR)],
     ["베가(노출차)",   (RZ.parts.vgE+RZ.parts.vgR)-(RZ.bparts.vgE+RZ.bparts.vgR)],
-    ["델타 미스매치",  RZ.parts.dlt-RZ.bparts.dlt],
+    ["주가 델타 미스매치", RZ.parts.dmE-RZ.bparts.dmE],
+    ["금리 델타 미스매치", RZ.parts.dmR-RZ.bparts.dmR],
   ].filter(x=>Math.abs(x[1])>=0.5).sort((a,c)=>Math.abs(c[1])-Math.abs(a[1]));
   const worst=[...mkt,...ops].reduce((a,x)=>Math.abs(x[1])>Math.abs(a[1])?x:a,["",0]);
   const pack=(arr,n)=>{const top=arr.slice(0,n), rest=arr.slice(n);
@@ -874,7 +878,7 @@ function fillExp(){
   $("expNote").innerHTML=
     `<b>감마 커버</b> 주가 ${P.covE}%→<b>${P.acovE}%</b> · 금리 ${P.covR}%→<b>${P.acovR}%</b> (계획→실제) · `+
     `<b>델타 노출</b> 주가 <b>${P.dltE}</b>억/1% · 금리 <b>${P.dltR}</b>억/1bp<br>`+
-    `감마 커버 ↑ → 감마·세타 ↓, 베가·본드스왑 ↑ · 헤지 비율 <b>${P.dhdg}%</b> → 잔여 델타 <b>${(resE()).toFixed(1)}</b>억/1% · <b>${(resR()).toFixed(1)}</b>억/1bp`;
+    `감마 커버 ↑ → 감마·세타 ↓, 베가·본드스왑 ↑ · 델타 헤지 주가 <b>${P.dhdE}%</b>(잔여 ${resE().toFixed(1)}억/1%) · 금리 <b>${P.dhdR}%</b>(잔여 ${resR().toFixed(1)}억/1bp)`;
   $("ledNote").innerHTML=RZ.src==="model"
     ? `실적선 = <b>모형 재구성</b> · <code>data/pnl.json</code> 넣으면 실측으로 바뀌어요`
     : `원장 <b>${RZ.cov}일</b> 반영 · 미설명 <b>${SE(RZ.resid)}</b>`;
@@ -903,12 +907,13 @@ function fillMtx(){
     ["금리 베가",     null, RZ.bparts.vgR, RZ.parts.vgR, a.vgR],
     ["본드스왑",      null, RZ.bparts.bs,  RZ.parts.bs,  a.bs],
     ["펀드 추적오차",  null, RZ.bparts.te,  RZ.parts.te,  a.te],
-    [`델타 미스매치 <span class="bdg leak">가정</span>`, null, RZ.bparts.dlt, RZ.parts.dlt, a.dlt],
+    [`주가 델타 미스매치 <span class="bdg leak">가정</span>`, null, RZ.bparts.dmE, RZ.parts.dmE, a.dmE],
+    [`금리 델타 미스매치 <span class="bdg leak">가정</span>`, null, RZ.bparts.dmR, RZ.parts.dmR, a.dmR],
   ];
   const cell=v=>v===null?`<td style="color:#C7CEDC">—</td>`:`<td style="color:${C(v)}">${sgn(v)}</td>`;
   let sumF=0; KEYS.forEach(k=>sumF+=a[k]);
   /* 확정과 평가를 갈라서 소계 — 평가는 통계적으로 되돌아올 수 있으니 같은 무게로 읽으면 안 돼요 */
-  const FIX=["th","gE","gR","tE","tR","carry"], MTM=["vgE","vgR","bs","te","dlt"];
+  const FIX=["th","gE","gR","tE","tR","carry"], MTM=["vgE","vgR","bs","te","dmE","dmR"];
   const sub=(ks,src)=>ks.reduce((s,k)=>s+(src[k]||0),0);
   const fixNow=sub(FIX,RZ.parts), mtmNow=sub(MTM,RZ.parts), mtmFwd=sub(MTM,a);
   const back=mtmNow<0?Math.max(0,Math.min(1,mtmFwd/-mtmNow)):0;

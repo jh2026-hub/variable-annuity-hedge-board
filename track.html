@@ -146,7 +146,7 @@
   <div class="who" id="ctxWho"></div>
   <div class="seg">
     <button class="on" id="tb_m">메인</button><button id="tb_f">전망</button>
-    <button id="tb_b">벤치마크</button><button id="tb_r">실적</button>
+    <button id="tb_b">장기평균선</button><button id="tb_r">실적</button>
   </div>
 </div>
 
@@ -301,17 +301,18 @@ const PAR=[
  {g:"금리",tb:"b", id:"thR",  n:"옵션 세타",      u:"억/년",  v:240, st:10,  k:"n", s:"발행 시점 확정"},
  {g:"금리",tb:"r", id:"vgR",  n:"베가(숏)",      u:"억/1bp", v:10,  st:1,   k:"n", s:"역사적 변동성 1bp↑ 시 손실"},
  {g:"금리",tb:"b", id:"slipR",n:"델타 슬리피지",  u:"억/1억",  v:10,  st:0.5, k:"n", s:"DV01 1억 조정당"},
- {g:"베이시스",tb:"r", id:"bsdv", n:"본드스왑 노출",   u:"억/bp",  v:18.8, st:0.5,k:"n", s:"커버 100% 기준 · IRS20−국고10"},
+ {g:"베이시스",tb:"r", id:"bsdv", n:"본드스왑 노출",   u:"억/bp",  v:18.8, st:0.5,k:"n", s:"감마 커버 100% 기준 · IRS20−국고10"},
  {g:"베이시스",tb:"r", id:"teAmt",n:"펀드 베이시스",   u:"억/1%p", v:80, st:10, k:"n", s:"지수 대비 1%p당"},
  {g:"베이시스",tb:"r", id:"tbeta",n:"펀드 추적 베타",    u:"배",     v:0.93,st:0.01,k:"n",s:"KOSPI200 대비 · 삼성 실측 0.95"},
  {g:"한도",tb:"b", id:"fee",  n:"연 계획 한도",   u:"억",     v:1500,st:100, k:"n", s:"연간 감내 한도"},
  {g:"한도",tb:"b", id:"gfee", n:"보증수수료",     u:"bp",     v:70,  st:5,   k:"n", s:"적립금 대비 · 연 재원"},
- {g:"커버",tb:"b", id:"covE", n:"주가 커버(계획)", u:"%", v:0,  mn:0,mx:100,st:5,k:"s"},
- {g:"커버",tb:"b", id:"covR", n:"금리 커버(계획)", u:"%", v:0,  mn:0,mx:100,st:5,k:"s"},
- {g:"커버",tb:"r", id:"acovE",n:"주가 커버(실제)", u:"%", v:0,  mn:0,mx:100,st:5,k:"s"},
- {g:"커버",tb:"r", id:"acovR",n:"금리 커버(실제)", u:"%", v:80, mn:0,mx:100,st:5,k:"s"},
- {g:"노출",tb:"r", id:"dltE", n:"주가 델타 노출",  u:"억/1%", v:180,st:10,k:"n", s:"지수 1%당 · 7월말 기준"},
- {g:"노출",tb:"r", id:"dltR", n:"금리 델타 노출",  u:"억/bp", v:60, st:5, k:"n", s:"DV01 · 7월말 기준"},
+ {g:"감마 커버",tb:"b", id:"covE", n:"주가 (계획)", u:"%", v:0,  mn:0,mx:100,st:5,k:"s"},
+ {g:"감마 커버",tb:"b", id:"covR", n:"금리 (계획)", u:"%", v:0,  mn:0,mx:100,st:5,k:"s"},
+ {g:"감마 커버",tb:"r", id:"acovE",n:"주가 (실제)", u:"%", v:0,  mn:0,mx:100,st:5,k:"s"},
+ {g:"감마 커버",tb:"r", id:"acovR",n:"금리 (실제)", u:"%", v:80, mn:0,mx:100,st:5,k:"s"},
+ {g:"델타 노출",tb:"r", id:"dltE", n:"주가", u:"억원/1%", v:180,st:10,k:"n", s:"지수 1% 움직일 때 · 7월말"},
+ {g:"델타 노출",tb:"r", id:"dltR", n:"금리", u:"억원/1bp",v:60, st:5, k:"n", s:"1bp 움직일 때(DV01) · 7월말"},
+ {g:"델타 노출",tb:"r", id:"dhdg", n:"헤지 비율", u:"%", v:99, mn:90,mx:110,st:0.5,k:"s"},
  {g:"실행",tb:"b", id:"rbal", n:"리밸런싱 주기",   u:"거래일",v:5,mn:1,mx:21,st:1,k:"s",s:"주기↑ → 슬리피지↓ 감마↑"},
 ];
 const P={}; PAR.forEach(p=>P[p.id]=p.v);
@@ -436,7 +437,9 @@ function ewma0(i0,key){
 }
 
 /* ═══ 실적 — 원장이 있으면 실측, 없으면 모형 재구성 ═══ */
-const KEYS=["th","gE","gR","tE","tR","carry","vgE","vgR","bs","te"];
+const KEYS=["th","gE","gR","tE","tR","carry","vgE","vgR","bs","te","dlt"];
+/* 못 맞춘 델타는 방향에 그대로 노출돼요 — 헤지 100% 면 0 */
+const resE=()=>P.dltE*(1-P.dhdg/100), resR=()=>P.dltR*(1-P.dhdg/100);
 function realized(){
   const d=S.mkt, i1=CURSOR, i0=periodStart(), b=REG("base"), rg=regV(RSEL);
   const day=[], cum=[], bcum=[], parts={}, bparts={};
@@ -464,9 +467,10 @@ function realized(){
     const sprd0=sprd, ns=(d.y30[i]-d.y10[i])*100;
     o.bs=bsExp()*(ns-sprd); sprd=ns;
     o.te=P.teAmt*(P.tbeta-1)*re;   /* 펀드가 지수를 베타만큼만 따라가서 생기는 갭 */
-    /* 벤치마크선 — 같은 시장에서 '계획대로 운용했다면' (평가 항목 없음) */
+    o.dlt=resE()*re+resR()*rr;
+    /* 벤치마크선 = 장기평균선 세팅(계획 가중)에 실현 변동성·실현 커브만 갈아끼운 선 */
     const ob={};
-    ob.th=thDb; ob.carry=-cyD; ob.te=o.te;   /* 베타 갭은 운용이 못 고르는 시장 요인 */
+    ob.th=thDb; ob.carry=-cyD; ob.te=o.te; ob.dlt=0;   /* 베타 갭은 시장 요인 · 델타 미스매치는 운용 선택 */
     ob.gE=-wEp()*0.5*P.gamE*re*re*vr(VRE,P.rbal);
     ob.gR=-wRp()*0.5*P.gamR*rr*rr*vr(VRR,P.rbal);
     ob.vgE=vegEp()*(nivE-ivE0)*volB(); ob.vgR=vegRp()*(nivR-ivR0)*volB();
@@ -571,6 +575,7 @@ function forecast(start,np){
       const ns=0.988*sprd+rg.bs/Math.sqrt(N())*gauss();
       o.bs=bsExp()*(ns-sprd); sprd=ns;
       o.te=P.teAmt*((P.tbeta-1)*re+rg.te/Math.sqrt(N())*gauss());
+      o.dlt=resE()*re+resR()*rr;
       accE+=re; accR+=rr; k++; o.tE=0; o.tR=0;
       if(k>=P.rbal){ o.tE=-wEa()*100*P.gamE*Math.abs(accE)*P.slipE;
                      o.tR=-wRa()*P.gamR*Math.abs(accR)*P.slipR; accE=0;accR=0;k=0; }
@@ -846,9 +851,9 @@ function fillExp(){
   const b=REG("base");
   $("expRows").innerHTML=barRows([
     ["h",`<span class="bdg pay">연 기준</span> 실제 가중`],
-    ["세타",         thA(), `노출 주가 ${P.dltE}억/1% · 금리 ${P.dltR}억/bp`],
-    ["주가 감마",    -gYE(wEa(),b.dE), `미커버 ${(100-P.acovE).toFixed(0)}%`],
-    ["금리 감마",    -gYR(wRa(),b.dR), `미커버 ${(100-P.acovR).toFixed(0)}%`],
+    ["세타",         thA(), `델타 노출 ${P.dltE}억/1% · ${P.dltR}억/1bp`],
+    ["주가 감마",    -gYE(wEa(),b.dE), `감마 커버 ${P.acovE}% → 잔여 ${100-P.acovE}%`],
+    ["금리 감마",    -gYR(wRa(),b.dR), `감마 커버 ${P.acovR}% → 잔여 ${100-P.acovR}%`],
     ["h",`<span class="bdg ink">단위당</span> 민감도`],
     ["주가 베가",    vegE(), "내재 일변동 1%p당"],
     ["금리 베가",    vegR(), "내재 일변동 1bp당"],
@@ -859,8 +864,10 @@ function fillExp(){
   const opsv=RZ.end-RZ.bend;
   $("expBig").innerHTML=`<span style="color:${C(opsv)}">${sgn(opsv)}</span><small>억 · 운용 몫</small>`;
   $("expSub").innerHTML=`벤치마크선 ${E(RZ.bend)} → 실적 ${E(RZ.end)}`;
-  $("expNote").innerHTML=`커버 주가 <b>${P.covE}%→${P.acovE}%</b> · 금리 <b>${P.covR}%→${P.acovR}%</b> (계획→실제). `+
-    `커버를 올리면 감마·베가는 줄고 <b>본드스왑</b>이 커져요.`;
+  $("expNote").innerHTML=
+    `<b>감마 커버</b> 주가 ${P.covE}%→<b>${P.acovE}%</b> · 금리 ${P.covR}%→<b>${P.acovR}%</b> (계획→실제) · `+
+    `<b>델타 노출</b> 주가 <b>${P.dltE}</b>억/1% · 금리 <b>${P.dltR}</b>억/1bp<br>`+
+    `감마 커버 ↑ → 감마·세타 ↓, 베가·본드스왑 ↑ · 헤지 비율 <b>${P.dhdg}%</b> → 잔여 델타 <b>${(resE()).toFixed(1)}</b>억/1% · <b>${(resR()).toFixed(1)}</b>억/1bp`;
   $("ledNote").innerHTML=RZ.src==="model"
     ? `실적선 = <b>모형 재구성</b> · <code>data/pnl.json</code> 넣으면 실측으로 바뀌어요`
     : `원장 <b>${RZ.cov}일</b> 반영 · 미설명 <b>${SE(RZ.resid)}</b>`;
@@ -889,18 +896,19 @@ function fillMtx(){
     ["금리 베가",     null, RZ.bparts.vgR, RZ.parts.vgR, a.vgR],
     ["본드스왑",      null, RZ.bparts.bs,  RZ.parts.bs,  a.bs],
     ["펀드 추적오차",  null, RZ.bparts.te,  RZ.parts.te,  a.te],
+    [`델타 미스매치 <span class="bdg leak">가정</span>`, null, RZ.bparts.dlt, RZ.parts.dlt, a.dlt],
   ];
   const cell=v=>v===null?`<td style="color:#C7CEDC">—</td>`:`<td style="color:${C(v)}">${sgn(v)}</td>`;
   let sumF=0; KEYS.forEach(k=>sumF+=a[k]);
   /* 확정과 평가를 갈라서 소계 — 평가는 통계적으로 되돌아올 수 있으니 같은 무게로 읽으면 안 돼요 */
-  const FIX=["th","gE","gR","tE","tR","carry"], MTM=["vgE","vgR","bs","te"];
+  const FIX=["th","gE","gR","tE","tR","carry"], MTM=["vgE","vgR","bs","te","dlt"];
   const sub=(ks,src)=>ks.reduce((s,k)=>s+(src[k]||0),0);
   const fixNow=sub(FIX,RZ.parts), mtmNow=sub(MTM,RZ.parts), mtmFwd=sub(MTM,a);
   const back=mtmNow<0?Math.max(0,Math.min(1,mtmFwd/-mtmNow)):0;
   const srow=(nm,bp2,now,fwd,cls)=>`<tr class="sub"><td><b>${nm}</b></td><td>—</td>`+
     `<td style="color:${C(bp2)}"><b>${sgn(bp2)}</b></td><td style="color:${C(now)}"><b>${sgn(now)}</b></td>`+
     `<td style="color:${C(fwd)}"><b>${sgn(fwd)}</b></td></tr>`;
-  $("mtxTbl").innerHTML=`<tr><th>항목 <span style="font-weight:400">억</span></th><th>장기평균선</th><th>벤치마크</th><th>지금까지</th><th>앞으로</th></tr>`+
+  $("mtxTbl").innerHTML=`<tr><th>항목 <span style="font-weight:400">억</span></th><th>장기평균선</th><th>벤치마크선</th><th>지금까지</th><th>앞으로</th></tr>`+
     R.map(r=>r[0]==="g"?`<tr class="grp"><td colspan="5">${r[1]}</td></tr>`
       :`<tr><td>${r[0]}</td>${cell(r[1])}${cell(r[2])}${cell(r[3])}${cell(r[4])}</tr>`)
       .join("").replace('<tr class="grp"><td colspan="5"><span class="bdg sym">',
@@ -986,7 +994,7 @@ function fillHero(){
   const y1=FC.q(FUT-1,[0.5])[0];
   $("flow").innerHTML=
     `<div class="cell"><div class="k">장기평균선</div><div class="v num" style="color:${C(bench)}">${won(bench)}</div><div class="s">연 ${SE(benchY())} · ${bpv(benchY())}</div></div>`+
-    `<div class="cell"><div class="k">벤치마크</div><div class="v num" style="color:${C(RZ.bend)}">${won(RZ.bend)}</div><div class="s">같은 시장·계획 운용</div></div>`+
+    `<div class="cell"><div class="k">벤치마크선</div><div class="v num" style="color:${C(RZ.bend)}">${won(RZ.bend)}</div><div class="s">장기평균선 + 실현 변동성</div></div>`+
     `<div class="cell"><div class="k">실적</div><div class="v num" style="color:${C(RZ.end)}">${won(RZ.end)}</div><div class="s">일변동 ${dE.toFixed(2)}%</div></div>`+
     `<div class="cell"><div class="k">${VIEW==="ytd"?"연말":"1년 뒤"}</div><div class="v num" style="color:${C(y1)}">${won(y1)}</div><div class="s">ES95 ${won(FC.es(FUT-1,0.05))}</div></div>`;
   $("chartLab").textContent=`${VIEW==="ytd"?S.mkt.dates[CURSOR].slice(0,4)+"년":VIEW==="cum"?CUMY+"년~":"12개월"} · ${RZ.n}일`;

@@ -280,8 +280,8 @@ function vr(T,n){const k=[1,2,5,10,21];
 const REGS=[
   {id:"calm",  n:"🌤 평온", dE:1.00, dR:2.4, bs:19, te:2.9, q:"롤링σ p25"},
   {id:"base",  n:"🌥 기준", dE:1.80, dR:3.8, bs:28, te:4.7, q:"무조건부 σ · 주가 6.6년 · 금리 10.6년"},
-  {id:"recent",n:"📈 최근", auto:true, dE:0, dR:0, bs:20, te:4.0, q:"최근 60일 실측"},
-  {id:"storm", n:"⛈ 격변", dE:3.90, dR:8.0, bs:55, te:7.5, q:"롤링σ p99"},
+  {id:"recent",n:"📈 최근", auto:true, dE:0, dR:0, bs:40, te:7.5, q:"최근 60일 실측"},
+  {id:"storm", n:"⛈ 격변", dE:3.90, dR:8.0, bs:55, te:10.0, q:"롤링σ p99"},
 ];
 const REG=id=>REGS.find(r=>r.id===id);
 const VIEWS=[{id:"ytd",n:"당해"},{id:"3y",n:"12개월"},{id:"cum",n:"23년~"}];
@@ -604,7 +604,7 @@ function horizons(){
 function dstr(off){
   const s=S.mkt.dates[CURSOR];
   const dt=new Date(+s.slice(0,4),+s.slice(4,6)-1,+s.slice(6,8));
-  dt.setDate(dt.getDate()+Math.round(off*365/252));
+  dt.setDate(dt.getDate()+Math.floor(off*365/252));   /* 올리면 이달 말이 다음 달로 넘어가요 */
   return String(dt.getFullYear()).slice(2)+"."+(dt.getMonth()+1)+"월";
 }
 
@@ -856,7 +856,7 @@ function fillExp(){
   const opsv=RZ.end-RZ.bend;
   $("expBig").innerHTML=`<span style="color:${C(opsv)}">${sgn(opsv)}</span><small>억 · 운용 몫</small>`;
   $("expSub").innerHTML=`벤치마크선 ${E(RZ.bend)} → 실적 ${E(RZ.end)}`;
-  $("expNote").innerHTML=`계획 대비 주가 <b>${dE>=0?"+":""}${dE.toFixed(0)}%</b> · 금리 <b>${dR>=0?"+":""}${dR.toFixed(0)}%</b>. `+
+  $("expNote").innerHTML=`커버 주가 <b>${P.covE}%→${P.acovE}%</b> · 금리 <b>${P.covR}%→${P.acovR}%</b> (계획→실제). `+
     `커버를 올리면 감마·베가는 줄고 <b>본드스왑</b>이 커져요.`;
   $("ledNote").innerHTML=RZ.src==="model"
     ? `실적선 = <b>모형 재구성</b> · <code>data/pnl.json</code> 넣으면 실측으로 바뀌어요`
@@ -949,7 +949,7 @@ function drawLimit(){
   const px=L+bx(plan);
   g.push(`<line x1="${px.toFixed(1)}" y1="11" x2="${px.toFixed(1)}" y2="39" stroke="#B8455F" stroke-width="2"/>`);
   g.push(`<text x="${Math.min(W-R,px+2).toFixed(1)}" y="9" text-anchor="end" font-size="10" font-weight="700" fill="#B8455F">연 한도 ${E(plan)}</text>`);
-  g.push(`<text x="${L}" y="52" font-size="10" fill="#566275">실적 <tspan font-weight="700" fill="#B8455F">${E(used)}</tspan> · 장기평균선이 미리 먹는 몫 <tspan font-weight="700" fill="#4A6FC4">${E(take)}</tspan></text>`);
+  g.push(`<text x="${L}" y="52" font-size="10" fill="#566275">실적 <tspan font-weight="700" fill="#B8455F">${SE(-used)}</tspan> · 장기평균선이 연 ${E(take)} 선점</text>`);
   const k=stressK();
   g.push(`<text x="${L}" y="69" font-size="10" fill="#566275">한도 소진 임계 = 기준의 <tspan font-weight="700" fill="#16202F">${k.toFixed(2)}배</tspan> (주가 ${(REG("base").dE*k).toFixed(2)}% · 금리 ${(REG("base").dR*k).toFixed(1)}bp)</text>`);
   const el=$("limSvg"); el.setAttribute("viewBox",`0 0 ${W} ${H}`); el.setAttribute("height",H); el.innerHTML=g.join("");
@@ -959,7 +959,7 @@ function drawLimit(){
     lb.className="bdg "+(over?"bad":near?"leak":"good");
     lb.textContent=over?"한도 초과":near?"한도 임박":"여유";}
   $("limNote").innerHTML=`여력 <b>${E(Math.max(0,plan-used))}</b>(${Math.max(0,(1-used/plan)*100).toFixed(0)}%) · `+
-    `최근 60일은 기준의 <b style="color:${ratio>=k?'var(--bad-ink)':'var(--good-ink)'}">${ratio.toFixed(2)}배</b>`+
+    `최근 60일 변동성 기준의 <b style="color:${ratio>=k?'var(--bad-ink)':'var(--good-ink)'}">${ratio.toFixed(2)}배</b>`+
     (ratio>=k?` — <b>임계 초과</b>`:` (임계 ${k.toFixed(2)}배)`);
 }
 
@@ -1061,7 +1061,7 @@ function drawVol(){
     g.push(`<text x="${(X(nP-1)+3).toFixed(1)}" y="${(Y(Math.min(hi,f(nP-1)))+3.5).toFixed(1)}" font-size="9.5" font-weight="700" fill="${col}">${nm} 현재 ×${f(nP-1).toFixed(1)}</text>`);
   });
   g.push(`<line x1="${X(nP-1).toFixed(1)}" y1="${T}" x2="${X(nP-1).toFixed(1)}" y2="${T+ih}" stroke="#AAB4C6" stroke-width="1"/>`);
-  g.push(`<text x="${L}" y="${H-4}" font-size="9.5" font-weight="700" fill="#8A94A6">일별 변동성 EWMA (좌 · 기준 대비 배수) · 본드스왑 수준 (우 · bp)</text>`);
+  g.push(`<text x="${L}" y="${H-4}" font-size="9.5" font-weight="700" fill="#8A94A6">일별 변동성 EWMA — 좌축 기준 대비 배수 · 우축 본드스왑 bp</text>`);
   const el=$("volSvg"); el.setAttribute("viewBox",`0 0 ${W} ${H}`); el.setAttribute("height",H); el.innerHTML=g.join("");
 }
 function fillSel(){

@@ -696,9 +696,9 @@ function drawMain(){
   g.push(`<path d="M${X(0).toFixed(1)},${Y(0).toFixed(1)} L${X(nT-1).toFixed(1)},${Y(slope*(nT-1)).toFixed(1)}" fill="none" stroke="#5C82CF" stroke-width="1.5" stroke-dasharray="6 4"/>`);
   if(SHOW.bench){let bp2="M"; RZ.bcum.forEach((v,i)=>{bp2+=`${X(i).toFixed(1)},${Y(v).toFixed(1)} `;});
     g.push(`<path d="${bp2}" fill="none" stroke="#5B4CA8" stroke-width="1.7" stroke-linejoin="round"/>`);}
-  /* 연 단위 선이라 어느 뷰에서도 구간 길이만큼 그으면 돼요 */
+  /* 수수료는 연 단위라 어느 뷰에서도 긋고, 경영계획은 당해 연도 한도라 당해 뷰만 */
   [["plan",P.fee,"#D6738A","계획"],["gfee",gfeeY(),"#337A5F","수수료"]].forEach(([id,amt,col,nm])=>{
-    if(!SHOW[id]||!(amt>0)) return;
+    if(!SHOW[id]||!(amt>0)||(id==="plan"&&VIEW!=="ytd")) return;
     const iEnd=Math.min(nT-1, (-amt*(nT-1)/N())<lo ? -lo*N()/amt : nT-1);
     if(iEnd<=4) return;
     const ye=Y(-amt*iEnd/N());
@@ -1104,7 +1104,8 @@ function drawVol(){
 }
 function fillSel(){
   $("lineSel").innerHTML=[["band","기준 밴드","#8A94A6"],["bench","벤치마크선","#5B4CA8"]]
-    .concat([["plan","경영계획선","#D6738A"],["gfee","보증수수료선","#337A5F"]])
+    .concat(VIEW==="ytd"?[["plan","경영계획선","#D6738A"]]:[])
+    .concat([["gfee","보증수수료선","#337A5F"]])
     .map(a=>`<button class="chip${SHOW[a[0]]?" on":""}" data-ln="${a[0]}">`+
       `<span style="display:inline-block;width:7px;height:7px;border-radius:2px;background:${a[2]};margin-right:5px"></span>${a[1]}</button>`).join("");
   $("selRow").innerHTML=

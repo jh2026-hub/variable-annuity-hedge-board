@@ -994,7 +994,13 @@ function fillVol(){
    $("rateCtx").innerHTML=`금리 <b>20년 ${d.y20[i1].toFixed(2)}%</b> <span class="bdg${d20>0?" pay":""}">구간 ${sgn(d20)}bp</span>`+
      ` · 커브 <b>20−10</b> <span class="bdg${Math.abs(s21)>10?" leak":""}">${sgn(s21)}bp</span>`+
      ` <b>30−20</b> <span class="bdg${Math.abs(s32)>10?" leak":""}">${sgn(s32)}bp</span>`+
-     ` <span class="bdg ink">방향은 델타가 흡수 · 커브는 미반영</span>`;}
+     ` <span class="bdg ink">방향은 델타가 흡수 · 커브 미반영</span>`;
+   /* 주가와 같이 움직이면 두 감마가 같은 날 터져요 — 전망 밴드는 같은 날짜로 뽑아 이미 반영 */
+   let sa=0,sb=0,sab=0,sa2=0,sb2=0; const nn=RZ.n;
+   RZ.day.forEach(x=>{sa+=x.re;sb+=x.rr;sab+=x.re*x.rr;sa2+=x.re*x.re;sb2+=x.rr*x.rr;});
+   const cor=(nn*sab-sa*sb)/Math.sqrt(Math.max(1e-9,(nn*sa2-sa*sa)*(nn*sb2-sb*sb)));
+   $("rateCtx").innerHTML+=`<br>주가·금리 상관 <b>${cor>=0?"+":"−"}${Math.abs(cor).toFixed(2)}</b>`+
+     `<span class="bdg${cor<-0.25?" leak":" ink"}">${cor<-0.25?"주가 하락 = 금리 상승 · 두 감마 동시":cor>0.25?"동반 상승":"거의 무관"}</span>`;}
   /* 손실이 변동성 탓인지 포지션 크기 탓인지 — 기준 국면에서도 나갔을 몫과 갈라요 */
   const fr=RZ.n/N();
   const row=(nm,base,act)=>{const ex=act-base;

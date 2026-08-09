@@ -761,11 +761,6 @@ function drawWF(){
   const axo=x=>x.startsWith("주가")?0:x.startsWith("금리")?1:2;
   const bySec=(a,c)=>axo(a[0])-axo(c[0])||Math.abs(c[1])-Math.abs(a[1]);
   const mkt=[
-    /* 장기평균선은 Γ 1.0·기준변동성, 벤치마크선은 Γ 실제·실현변동성 — 두 효과를 갈라요 */
-    ["주가 Γ(계획→실제)", (gYE(wEp(),b.dE)-gYE(wEp(),b.dE,P.agamE))*f
-                          +(tcE(wEp(),b.dE)-tcE(wEp(),b.dE,P.agamE))*f],
-    ["금리 Γ(계획→실제)", (gYR(wRp(),b.dR)-gYR(wRp(),b.dR,P.agamR))*f
-                          +(tcR(wRp(),b.dR)-tcR(wRp(),b.dR,P.agamR))*f],
     ["주가 감마",    RZ.bparts.gE+gYE(wEp(),b.dE,P.agamE)*f],
     ["금리 감마",    RZ.bparts.gR+gYR(wRp(),b.dR,P.agamR)*f],
     ["주가 베가",    RZ.bparts.vgE],
@@ -785,13 +780,21 @@ function drawWF(){
     ["주가 델타 미스매치", RZ.parts.dmE-RZ.bparts.dmE],
     ["금리 델타 미스매치", RZ.parts.dmR-RZ.bparts.dmR],
   ].filter(x=>Math.abs(x[1])>=0.5).sort(bySec);
+  /* 북 차이 — 시장이 아니라 포지션이 계획과 다른 것. 변동성 효과와 섞으면 안 돼요 */
+  const gam=[
+    ["주가 Γ", (gYE(wEp(),b.dE)-gYE(wEp(),b.dE,P.agamE))*f+(tcE(wEp(),b.dE)-tcE(wEp(),b.dE,P.agamE))*f],
+    ["금리 Γ", (gYR(wRp(),b.dR)-gYR(wRp(),b.dR,P.agamR))*f+(tcR(wRp(),b.dR)-tcR(wRp(),b.dR,P.agamR))*f],
+  ].filter(x=>Math.abs(x[1])>=0.5).sort(bySec);
+  const mid=bench+gam.reduce((a,x)=>a+x[1],0);
   const worst=[...mkt,...ops].reduce((a,x)=>Math.abs(x[1])>Math.abs(a[1])?x:a,["",0]);
   const pack=(arr,n)=>{const top=arr.slice(0,n), rest=arr.slice(n);
     const s=rest.reduce((a,x)=>a+x[1],0);
     return Math.abs(s)>=0.5? top.concat([[`그 외 ${rest.length}항목`,s]]) : top;};
   const rowsM=pack(mkt,9), rowsO=pack(ops,9);   /* 축별로 묶이니 다 보여요 */   /* 항목이 묶여 사라지지 않게 */
   const seq=[["장기평균선",bench,1]]
-    .concat(rowsM.length?[["h",`<span class="bdg sym">시장 몫</span> 변동성 · 커브 · 추적오차 · 북 Γ 가 기준과 달랐어요`]]:[]).concat(rowsM.map(r=>[r[0],r[1],0]))
+    .concat(gam.length?[["h",`<span class="bdg leak">북 차이</span> Γ 가 계획과 달라요 (변동성은 기준 그대로)`]]:[]).concat(gam.map(r=>[r[0],r[1],0]))
+    .concat(gam.length?[["실제 북 기준선",mid,1]]:[])
+    .concat(rowsM.length?[["h",`<span class="bdg sym">시장 몫</span> 변동성 · 커브 · 추적오차가 기준과 달랐어요`]]:[]).concat(rowsM.map(r=>[r[0],r[1],0]))
     .concat([["벤치마크선",RZ.bend,1]])
     .concat(rowsO.length?[["h",`<span class="bdg pay">운용 몫</span> 본드스왑 · 델타 미스매치`]]:[]).concat(rowsO.map(r=>[r[0],r[1],0]));
   if(Math.abs(RZ.resid)>=0.5) seq.push(["미설명",RZ.resid,0]);

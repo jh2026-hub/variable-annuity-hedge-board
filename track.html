@@ -472,7 +472,7 @@ function realized(){
     /* 벤치마크선 = 장기평균선 세팅(계획 가중)에 실현 변동성·실현 커브만 갈아끼운 선 */
     const ob={};
     ob.th=thDb; ob.carry=-cyD; ob.te=o.te; ob.dlt=0;   /* 베타 갭은 시장 요인 · 델타 미스매치는 운용 선택 */
-    ob.gE=-wEp()*0.5*P.gamE*re*re*vr(VRE,P.rbal);
+    ob.gE=-wEp()*0.5*P.agamE*re*re*vr(VRE,P.rbal);
     ob.gR=-wRp()*0.5*P.gamR*rr*rr*vr(VRR,P.rbal);
     ob.vgE=vegEp()*(nivE-ivE0)*volB(); ob.vgR=vegRp()*(nivR-ivR0)*volB();
     ob.bs=bsExpP()*(ns-sprd0);
@@ -480,7 +480,7 @@ function realized(){
     if(k>=P.rbal||i===i1){
       o.tE=-wEa()*100*P.agamE*Math.abs(accE)*P.slipE;
       o.tR=-wRa()*P.gamR*Math.abs(accR)*P.slipR;
-      ob.tE=-wEp()*100*P.gamE*Math.abs(accE)*P.slipE;
+      ob.tE=-wEp()*100*P.agamE*Math.abs(accE)*P.slipE;
       ob.tR=-wRp()*P.gamR*Math.abs(accR)*P.slipR;
       accE=0; accR=0; k=0;
     }
@@ -528,9 +528,9 @@ function pastBand(){
       const te=P.teAmt*((P.tbeta-1)*re+b.te/Math.sqrt(N())*gauss());
       accE+=re; accR+=rr; k++;
       let tE=0, tR=0;
-      if(k>=P.rbal){ tE=-uE*100*P.gamE*Math.abs(accE)*P.slipE;
+      if(k>=P.rbal){ tE=-uE*100*P.agamE*Math.abs(accE)*P.slipE;
                      tR=-uR*P.gamR*Math.abs(accR)*P.slipR; accE=0;accR=0;k=0; }
-      c+=thD-cyD-uE*0.5*P.gamE*re*re*vr(VRE,P.rbal)-uR*0.5*P.gamR*rr*rr*vr(VRR,P.rbal)
+      c+=thD-cyD-uE*0.5*P.agamE*re*re*vr(VRE,P.rbal)-uR*0.5*P.gamR*rr*rr*vr(VRR,P.rbal)
         +vg+bs+te+tE+tR;
       paths[p*nP+t]=c;
     }
@@ -757,11 +757,14 @@ function drawWF(){
   const f=RZ.n/N(), b=REG("base"), bench=benchY()*f;
   /* 시장 몫 = 실현변동성이 기준과 달라서 생긴 것 (통제 불가) */
   const mkt=[
-    ["주가 감마",    RZ.bparts.gE+gYE(wEp(),b.dE)*f],
+    /* 장기평균선은 Γ 1.0·기준변동성, 벤치마크선은 Γ 실제·실현변동성 — 두 효과를 갈라요 */
+    ["주가 Γ(계획→실제)", (gYE(wEp(),b.dE)-gYE(wEp(),b.dE,P.agamE))*f
+                          +(tcE(wEp(),b.dE)-tcE(wEp(),b.dE,P.agamE))*f],
+    ["주가 감마",    RZ.bparts.gE+gYE(wEp(),b.dE,P.agamE)*f],
     ["금리 감마",    RZ.bparts.gR+gYR(wRp(),b.dR)*f],
     ["주가 베가",    RZ.bparts.vgE],
     ["금리 베가",    RZ.bparts.vgR],
-    ["델타비용",     (RZ.bparts.tE+RZ.bparts.tR)+(tcE(wEp(),b.dE)+tcR(wRp(),b.dR))*f],
+    ["델타비용",     (RZ.bparts.tE+RZ.bparts.tR)+(tcE(wEp(),b.dE,P.agamE)+tcR(wRp(),b.dR))*f],
     ["펀드 추적오차", RZ.bparts.te],          /* 장기평균선은 지수 방향 가정이 없어 0 */
     ["본드스왑",      RZ.bparts.bs],
   ].filter(x=>Math.abs(x[1])>=0.5).sort((a,c)=>Math.abs(c[1])-Math.abs(a[1]));
@@ -771,7 +774,7 @@ function drawWF(){
     ["실제 델타비용",  (RZ.parts.tE+RZ.parts.tR)-(RZ.bparts.tE+RZ.bparts.tR)],
     ["펀드 추적오차",  RZ.parts.te-RZ.bparts.te],
     ["세타(노출차)",   RZ.parts.th-RZ.bparts.th],
-    ["감마(Γ·커버차)", (RZ.parts.gE+RZ.parts.gR)-(RZ.bparts.gE+RZ.bparts.gR)],
+    ["감마(커버차)",   (RZ.parts.gE+RZ.parts.gR)-(RZ.bparts.gE+RZ.bparts.gR)],
     ["베가(노출차)",   (RZ.parts.vgE+RZ.parts.vgR)-(RZ.bparts.vgE+RZ.bparts.vgR)],
     ["델타 미스매치",  RZ.parts.dlt-RZ.bparts.dlt],
   ].filter(x=>Math.abs(x[1])>=0.5).sort((a,c)=>Math.abs(c[1])-Math.abs(a[1]));
@@ -781,9 +784,9 @@ function drawWF(){
     return Math.abs(s)>=0.5? top.concat([[`그 외 ${rest.length}항목`,s]]) : top;};
   const rowsM=pack(mkt,7), rowsO=pack(ops,7);   /* 항목이 묶여 사라지지 않게 */
   const seq=[["장기평균선",bench,1]]
-    .concat(rowsM.length?[["h",`<span class="bdg sym">시장 몫</span> 변동성 · 커브 · 펀드 추적오차가 기준과 달랐어요`]]:[]).concat(rowsM.map(r=>[r[0],r[1],0]))
+    .concat(rowsM.length?[["h",`<span class="bdg sym">시장 몫</span> 변동성 · 커브 · 추적오차 · 북 Γ 가 기준과 달랐어요`]]:[]).concat(rowsM.map(r=>[r[0],r[1],0]))
     .concat([["벤치마크선",RZ.bend,1]])
-    .concat(rowsO.length?[["h",`<span class="bdg pay">운용 몫</span> 본드스왑 · 델타 미스매치 · Γ·커버차`]]:[]).concat(rowsO.map(r=>[r[0],r[1],0]));
+    .concat(rowsO.length?[["h",`<span class="bdg pay">운용 몫</span> 커버 · 본드스왑 · 델타 미스매치`]]:[]).concat(rowsO.map(r=>[r[0],r[1],0]));
   if(Math.abs(RZ.resid)>=0.5) seq.push(["미설명",RZ.resid,0]);
   seq.push(["실적",RZ.end,1]);
   measure();

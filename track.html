@@ -772,11 +772,11 @@ function drawWF(){
   ].filter(x=>Math.abs(x[1])>=0.5).sort(bySec);
   /* 운용 몫 = 같은 시장에서 계획과 다르게 운용해서 생긴 것 + 평가 (통제 가능) */
   const ops=[
-    ["본드스왑 (스왑션)", RZ.parts.bs-RZ.bparts.bs],
-    ["슬리피지 (IRS 절감)", (RZ.parts.tE+RZ.parts.tR)-(RZ.bparts.tE+RZ.bparts.tR)],
+    ["본드스왑",    RZ.parts.bs-RZ.bparts.bs],
+    ["금리 슬리피지", (RZ.parts.tE+RZ.parts.tR)-(RZ.bparts.tE+RZ.bparts.tR)],
     ["펀드 추적오차",  RZ.parts.te-RZ.bparts.te],
     ["세타(노출차)",   RZ.parts.th-RZ.bparts.th],
-    ["금리 감마 (스왑션 절감)", (RZ.parts.gE+RZ.parts.gR)-(RZ.bparts.gE+RZ.bparts.gR)],
+    ["금리 감마",   (RZ.parts.gE+RZ.parts.gR)-(RZ.bparts.gE+RZ.bparts.gR)],
     ["베가(노출차)",   (RZ.parts.vgE+RZ.parts.vgR)-(RZ.bparts.vgE+RZ.bparts.vgR)],
     ["주가 델타 미스매치", RZ.parts.dmE-RZ.bparts.dmE],
     ["금리 델타 미스매치", RZ.parts.dmR-RZ.bparts.dmR],
@@ -787,9 +787,9 @@ function drawWF(){
     return Math.abs(s)>=0.5? top.concat([[`그 외 ${rest.length}항목`,s]]) : top;};
   const rowsM=pack(mkt,9), rowsO=pack(ops,9);   /* 축별로 묶이니 다 보여요 */   /* 항목이 묶여 사라지지 않게 */
   const seq=[["장기평균선",bench,1]]
-    .concat(rowsM.length?[["h",`<span class="bdg sym">시장 몫</span> 자산−부채 감마·베가·추적오차 (통제 불가)`]]:[]).concat(rowsM.map(r=>[r[0],r[1],0]))
+    .concat(rowsM.length?[["h",`<span class="bdg sym">시장 몫</span> 자산−부채 감마 · 베가 · 추적오차`]]:[]).concat(rowsM.map(r=>[r[0],r[1],0]))
     .concat([["벤치마크선",RZ.bend,1]])
-    .concat(rowsO.length?[["h",`<span class="bdg pay">운용 몫</span> 스왑션 · 거래비용 · 델타 미스매치 (선택의 결과)`]]:[]).concat(rowsO.map(r=>[r[0],r[1],0]));
+    .concat(rowsO.length?[["h",`<span class="bdg pay">운용 몫</span> 실제 운용이 이론과 달랐던 부분`]]:[]).concat(rowsO.map(r=>[r[0],r[1],0]));
   if(Math.abs(RZ.resid)>=0.5) seq.push(["미설명",RZ.resid,0]);
   seq.push(["실적",RZ.end,1]);
   measure();

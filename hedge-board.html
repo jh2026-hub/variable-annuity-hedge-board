@@ -402,9 +402,14 @@
   .eftip{box-shadow:0 6px 18px rgba(20,32,55,.14)}
   .tabs button{box-shadow:0 1px 2px rgba(20,32,55,.04)}
   svg.anim,svg.ef,svg.sim{box-shadow:none}
+  /* 키보드 사용자용 — 포커스 전엔 화면에 없어요 */
+  .skip{position:absolute;left:-9999px;top:0}
+  .skip:focus{left:10px;top:10px;z-index:99;background:var(--pay);color:#fff;padding:9px 15px;border-radius:9px;font-size:12.5px;font-weight:700;min-height:44px;display:inline-flex;align-items:center}
 </style>
 </head>
 <body>
+<a class="skip" href="#main">본문 바로가기</a>
+
 
 <div class="statusbar">
   <span class="sbitem">👁 방문 <b id="sbVisits">…</b></span>
@@ -437,6 +442,8 @@
 </div>
 <div class="tabnow" id="tabnow"></div>
 
+<span id="main" tabindex="-1"></span>
+
 <!-- ① 배경 -->
 <section class="page" id="pbg">
 
@@ -444,7 +451,7 @@
     <div class="cap">'변액보험 보증'이 뭔가요?<span class="capb info">💡 개념</span></div>
     <p class="lede" style="font-size:13.5px"><b>① 변액보험</b> = 고객 돈을 <b>펀드에 투자</b>해요. 그래서 계좌가 <b>오르락내리락</b>해요.</p>
     <p style="font-size:13.5px;color:var(--ink);line-height:1.7;margin:8px 0 0"><b>② 보증(최저보증)</b> = 펀드가 아무리 떨어져도 <b>보험금·연금은 "최소 이만큼"은 반드시 지급</b>한다는 약속이에요. 회사는 그 대가로 <b>보증수수료</b>를 받아요.</p>
-    <div class="chartwrap" style="margin-top:8px"><svg viewBox="0 0 560 182" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
+    <div class="chartwrap" style="margin-top:8px"><svg aria-hidden="true" viewBox="0 0 560 182" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
       <text x="14" y="22" font-size="10.5" fill="var(--muted)" font-family="sans-serif">지급액 ↑</text>
       <line x1="56" y1="106" x2="544" y2="106" stroke="var(--good)" stroke-width="2" stroke-dasharray="6 4"/>
       <text x="60" y="100" font-size="11" font-weight="800" fill="#337A5F" font-family="sans-serif">보증선 = 최소 지급액</text>
@@ -464,7 +471,7 @@
       <label class="foot" style="margin:0">주가 충격 <b id="heroShockLab" class="mono" style="color:var(--bad)">−0%</b></label>
       <input type="range" id="heroShock" min="0" max="40" step="1" value="0" style="width:100%">
     </div>
-    <div class="chartwrap"><svg id="heroSvg" viewBox="0 0 520 210" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"></svg></div>
+    <div class="chartwrap"><svg aria-hidden="true" id="heroSvg" viewBox="0 0 520 210" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"></svg></div>
     <div class="leg" style="margin-top:8px">
       <span><i style="background:var(--good)"></i>받은 보증수수료</span>
       <span><i style="background:var(--bad)"></i>치른 보증손실 (수수료 초과분 = 자본 순손실)</span>
@@ -477,7 +484,7 @@
 
     <div style="font-size:12.5px;font-weight:800;color:var(--leak);margin:2px 0 6px">① 손실을 <b>받은 수수료 수준</b>으로 낮춰요 <span style="font-weight:600;color:var(--muted)">— 수수료를 넘는 큰 손실 방지</span></div>
     <p style="font-size:13px;color:var(--muted);line-height:1.7;margin:2px 0 8px"><b>헷지</b>는 위기 손실을 <b style="color:#337A5F">받은 수수료 수준</b>으로 낮춰요 — <b>줄어든 변동성 + 헷지비용</b>을 감당하는 대신이에요.</p>
-    <div class="chartwrap"><svg viewBox="0 0 560 168" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
+    <div class="chartwrap"><svg aria-hidden="true" viewBox="0 0 560 168" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
       <line x1="40" y1="140" x2="520" y2="140" stroke="#CBD2DE" stroke-width="1.2"/>
       <line x1="40" y1="98" x2="520" y2="98" stroke="var(--good)" stroke-width="1.6" stroke-dasharray="6 4"/>
       <text x="516" y="92" text-anchor="end" font-size="10.5" font-weight="800" fill="#337A5F" font-family="sans-serif">받은 보증수수료 수준</text>
@@ -495,7 +502,7 @@
     <div class="callout warn"><span class="ci">⚠️</span><div><span class="clab">핵심</span> 헷지 = <b>수수료를 넘는 큰 손실의 방지</b>. 손실은 대체로 <b>보증수수료 안</b>에 머물러요 — 다만 <b>변동성이 극심한 해</b>엔 초과할 수 있어요.</div></div>
 
     <div style="font-size:12.5px;font-weight:800;color:var(--pay);margin:16px 0 6px;padding-top:14px;border-top:1px solid var(--hair)">② 실측으로도 이렇게 지켜줘요 <span style="font-weight:600;color:var(--muted)">— 헷지 전후, 같은 시장</span></div>
-    <div class="chartwrap"><svg id="conceptLines" viewBox="0 0 640 280" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"><text x="320" y="140" text-anchor="middle" class="eflabel">데이터 불러오는 중…</text></svg></div>
+    <div class="chartwrap"><svg aria-hidden="true" id="conceptLines" viewBox="0 0 640 280" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"><text x="320" y="140" text-anchor="middle" class="eflabel">데이터 불러오는 중…</text></svg></div>
     <div id="conceptLeg" style="display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;font-size:11.5px"></div>
     <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-top:8px"><b style="color:var(--sym)">미헷지(보라)</b>는 크게, <b style="color:var(--good)">헷지(초록)</b>는 좁게 흔들려요. 빨간 점 = <b>최악의 주</b>. 헷지는 <b>없애기가 아니라 크게 줄이기</b>예요.</p>
   </div>
@@ -531,7 +538,7 @@
       <button id="cvPlay" style="flex:0 0 auto;background:var(--sym);color:#fff;border:none;border-radius:9px;padding:8px 15px;font-family:inherit;font-weight:800;font-size:12.5px;cursor:pointer">⏸ 정지</button>
       <span class="foot" style="margin:0;flex:1 1 160px">시장이 자동으로 <b>오르내려요</b> — 아래 <b style="color:var(--sym)">순포지션 선</b>이 흔들리는 걸 보세요</span>
     </div>
-    <div class="chartwrap"><svg id="cvSvg" viewBox="0 0 560 300" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"></svg></div>
+    <div class="chartwrap"><svg aria-hidden="true" id="cvSvg" viewBox="0 0 560 300" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"></svg></div>
     <div class="leg" style="margin-top:8px">
       <span><i style="background:var(--pay)"></i>변액펀드(자산) · 시장 따라 크게</span>
       <span><i style="background:var(--leak)"></i>변액보증(부채) · 더 경직 · 보증 이하로 잘 안 내려감</span>
@@ -542,7 +549,7 @@
 
   <div class="panel">
     <div class="cap">헷지든 미헷지든 → 결국 자본 변동성에<span class="capb info">💡 개념</span><span>길은 달라도 둘 다 자본 변동성으로</span></div>
-    <div class="chartwrap"><svg viewBox="0 0 560 196" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
+    <div class="chartwrap"><svg aria-hidden="true" viewBox="0 0 560 196" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
       <defs><marker id="faR" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#AAB4C6"/></marker></defs>
       <!-- 미헷지 레인(위): 더 큰 파동 → 완충(CSM) → 자본변동성, 넘치면 터짐 -->
       <text x="5" y="56" font-size="11.5" font-weight="800" fill="var(--sym)">미헷지</text>
@@ -579,7 +586,7 @@
   </div>
   <div class="panel concept">
     <div class="cap">헷지방법론 — 파생으로 매칭<span class="capb info">💡 개념</span><span>방향=선물·스왑, 감마·꼬리=옵션</span></div>
-    <div class="chartwrap"><svg viewBox="0 0 560 100" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
+    <div class="chartwrap"><svg aria-hidden="true" viewBox="0 0 560 100" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
       <defs><linearGradient id="riskGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="var(--pay)"/><stop offset="1" stop-color="var(--leak)"/></linearGradient></defs>
       <text x="30" y="22" font-size="10.5" font-weight="800" fill="var(--pay)" font-family="sans-serif">🛡️ 헷지로 제거</text>
       <text x="530" y="22" text-anchor="end" font-size="10.5" font-weight="800" fill="var(--leak)" font-family="sans-serif">🛟 노출(완충)</text>
@@ -601,7 +608,7 @@
     <div class="cap">숫자로 직접 — 헷지 항목을 추가해 보세요<span class="capb live">🖐 조작</span><span>개념 예시값</span></div>
     <p class="lede" style="font-size:13.5px">미헷지 변동성은 <b>방향(주가·금리)</b>이 대부분이에요. 항목을 켤수록 <b>흔들림 ↓ · 비용 ↑</b> — 방향(선물·스왑)은 싸고, 감마·베가(옵션)는 비싸요. 직접 켜 보세요.</p>
     <div id="mechChips" style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px"></div>
-    <div class="chartwrap"><svg id="mechSvg" viewBox="0 0 560 108" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"></svg></div>
+    <div class="chartwrap"><svg aria-hidden="true" id="mechSvg" viewBox="0 0 560 108" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"></svg></div>
     <div class="chartleg">
       <span class="lk"><i style="background:var(--sym)"></i>아직 헷지 전 변동성 (항목 추가로 제거)</span>
       <span class="lk"><i style="background:var(--sym);opacity:0.45"></i>못 막는 잔여(모형·제도 등)</span>
@@ -614,7 +621,7 @@
   <div class="panel concept">
     <div class="cap">변동성이 커지면 — 잔여도, 비용도 커져요<span class="capb info">💡 개념</span><span>시장변동성 ↑ → 헷지 후 변동성·비용 ↑</span></div>
     <p class="lede" style="font-size:13.5px">시장 변동성이 커지면 <b>헷지 후 잔여 변동성</b>도, <b>헷지 비용</b>도 함께 커져요 — 큰 변동성은 피할 수 없는 부담이에요.</p>
-    <div class="chartwrap"><svg viewBox="0 0 640 214" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
+    <div class="chartwrap"><svg aria-hidden="true" viewBox="0 0 640 214" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
       <line x1="62" y1="24" x2="62" y2="182" stroke="#AAB4C6" stroke-width="1.5"/>
       <line x1="62" y1="182" x2="602" y2="182" stroke="#AAB4C6" stroke-width="1.5"/>
       <text x="54" y="34" fill="#566275" font-size="10" text-anchor="end" font-family="sans-serif">크기↑</text>
@@ -642,7 +649,7 @@
     <div class="cap">그 해 적자여도, 전 기간 누적은 흑자<span class="capb info">💡 개념</span><span>한 해만 보면 안 돼요</span></div>
     <p class="lede" style="font-size:13.5px">대부분의 해엔 <b>수수료 &gt; 비용</b>으로 이익(초록), 변동성이 큰 해엔 비용이 수수료를 넘어 <b>적자(빨강)</b>가 나요. 그래서 손익은 <b>계약 전 기간 누적</b>으로 봐요.</p>
     <div style="font-size:12.5px;font-weight:800;color:var(--ink);margin:12px 0 3px">① 해마다 — 대부분 이익, 가끔 적자</div>
-    <div class="chartwrap"><svg viewBox="0 0 560 116" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
+    <div class="chartwrap"><svg aria-hidden="true" viewBox="0 0 560 116" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
       <line x1="20" y1="60" x2="540" y2="60" stroke="#AAB4C6" stroke-width="1.2"/>
       <rect x="38"  y="30" width="34" height="30" fill="var(--good)" rx="2"/>
       <rect x="98"  y="25" width="34" height="35" fill="var(--good)" rx="2"/>
@@ -659,7 +666,7 @@
     </div>
     <p class="foot" style="margin-top:6px"><b>가운데 한 해</b>(빨강, 아래로)만 <b>비용이 수수료를 넘어 적자</b>예요. 나머지 대부분의 해는 <b>이익</b>(초록, 위로)이에요.</p>
     <div style="font-size:12.5px;font-weight:800;color:var(--ink);margin:14px 0 3px">② 쌓으면 — 계속 흑자</div>
-    <div class="chartwrap"><svg viewBox="0 0 560 92" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
+    <div class="chartwrap"><svg aria-hidden="true" viewBox="0 0 560 92" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
       <line x1="20" y1="78" x2="540" y2="78" stroke="#AAB4C6" stroke-width="1.2"/>
       <path d="M55 78 L55 63 L115 47 L175 36 L235 54 L295 41 L355 25 L415 17 L475 14 L475 78 Z" fill="var(--good)" opacity="0.13"/>
       <polyline points="55,63 115,47 175,36 235,54 295,41 355,25 415,17 475,14" fill="none" stroke="#337A5F" stroke-width="2.6" stroke-linejoin="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"><animate attributeName="stroke-dashoffset" from="1" to="0" dur="1.2s" fill="freeze"/></polyline>
@@ -671,7 +678,7 @@
 
   <div class="panel concept">
     <div class="cap">받는 돈과 쓰는 돈 — 회계상 가는 길이 달라요<span class="capb info">🧾 회계</span><span>수수료=CSM→보험손익 상각 · 헷지=투자손익</span></div>
-    <div class="chartwrap" style="margin-top:6px"><svg viewBox="0 0 560 200" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
+    <div class="chartwrap" style="margin-top:6px"><svg aria-hidden="true" viewBox="0 0 560 200" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px">
       <text x="24" y="22" font-size="10.5" font-weight="700" fill="var(--muted)" font-family="sans-serif">위 카드의 한 해 막대(순이익)를 분해하면 —</text>
       <line x1="56" y1="118" x2="540" y2="118" stroke="#CBD2DE" stroke-width="1.2"/>
       <rect x="70" y="118" width="56" height="0" rx="3" fill="var(--good)"><animate attributeName="height" values="0;0;40;40;0" keyTimes="0;0.05;0.18;0.92;1" dur="6s" repeatCount="indefinite"/><animate attributeName="y" values="118;118;78;78;118" keyTimes="0;0.05;0.18;0.92;1" dur="6s" repeatCount="indefinite"/></rect>
@@ -726,7 +733,7 @@
 
   <div class="panel">
     <div class="qah"><div class="qan">Q1</div><div class="qat">헷지를 왜 해야 하나요? 🤔</div></div>
-    <div class="chartwrap"><svg viewBox="0 0 560 164" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
+    <div class="chartwrap"><svg aria-hidden="true" viewBox="0 0 560 164" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
       <text x="280" y="18" text-anchor="middle" font-size="12" font-weight="800" fill="var(--bad)">같은 시장 충격이 오면 ▼</text>
       <line x1="96" y1="138" x2="464" y2="138" stroke="#D6DCE8" stroke-width="1.2"/>
       <text x="150" y="36" text-anchor="middle" font-size="11.5" font-weight="800" fill="var(--bad)">헷지를 안 할 경우</text>
@@ -754,7 +761,7 @@
     <div class="q6flip">
       <div class="q6right" style="text-align:center">❌ "비용 vs 수익" &nbsp;→&nbsp; ⭕ <b>작은 비용 vs 안 막았을 때 큰 손실</b><br><span style="font-weight:800;color:#337A5F">헷지는 <b>보험</b>이에요 — 평소 조금 내고, 위기 때 큰 손실을 막아요.</span></div>
     </div>
-    <div class="chartwrap"><svg viewBox="0 0 560 150" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
+    <div class="chartwrap"><svg aria-hidden="true" viewBox="0 0 560 150" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
       <rect x="150" y="32" width="0" height="24" rx="5" fill="#DCE7FB" stroke="#9DBBF3"><animate attributeName="width" from="0" to="48" dur="0.9s" fill="freeze"/></rect>
       <text x="140" y="49" text-anchor="end" font-size="11" font-weight="700" fill="var(--pay)">헷지 비용</text>
       <text x="206" y="49" font-size="11" font-weight="800" fill="#337A5F">작아요 · 대부분 해 남음</text>
@@ -781,7 +788,7 @@
 
   <div class="panel">
     <div class="qah"><div class="qan">Q3</div><div class="qat">헷지했는데 왜 흔들림이 완전히 0이 아닌가요? 〰️</div></div>
-    <div class="chartwrap"><svg viewBox="0 0 560 130" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
+    <div class="chartwrap"><svg aria-hidden="true" viewBox="0 0 560 130" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
       <line x1="20" y1="65" x2="540" y2="65" stroke="#EAEDF5" stroke-width="1"/>
       <!-- 헷지 전 큰 흔들림(보라 잔상) -->
       <path d="M20 65 L50 34 L90 96 L130 36 L170 92 L210 30 L250 14 L290 98 L330 40 L370 88 L410 44 L450 84 L490 48 L540 65" fill="none" stroke="var(--sym)" stroke-width="1.6" opacity="0.16" stroke-linejoin="round"/>
@@ -805,7 +812,7 @@
 
   <div class="panel">
     <div class="qah"><div class="qan">Q4</div><div class="qat">어떻게 막나요? 무슨 수단으로? 🧰</div></div>
-    <div class="chartwrap"><svg viewBox="0 0 560 226" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
+    <div class="chartwrap"><svg aria-hidden="true" viewBox="0 0 560 226" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
       <text x="280" y="24" text-anchor="middle" font-size="12" font-weight="800" fill="var(--muted)" font-family="sans-serif">예: 주가가 내리면 ▼</text>
       <text x="60" y="98" text-anchor="middle" font-size="13" font-weight="800" fill="var(--ink)" font-family="sans-serif">📉 주가</text>
       <text x="60" y="120" text-anchor="middle" font-size="16" font-weight="800" fill="var(--bad)" font-family="sans-serif">−10%<animate attributeName="opacity" values="0;1;1;1;0" keyTimes="0;0.08;0.1;0.96;1" dur="5s" repeatCount="indefinite"/></text>
@@ -856,7 +863,7 @@
         <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px"><b>완충(CSM)이 대신 버텨요</b> — 소진되면 <b>손익·자본 변동성이 커져요</b>.</div>
       </div>
     </div>
-    <div class="chartwrap" style="margin:0 0 8px"><svg viewBox="0 0 560 160" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
+    <div class="chartwrap" style="margin:0 0 8px"><svg aria-hidden="true" viewBox="0 0 560 160" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
       <line x1="280" y1="30" x2="280" y2="148" stroke="var(--hair)" stroke-dasharray="4 3"/>
       <text x="150" y="20" text-anchor="middle" font-size="12" font-weight="800" fill="#337A5F">🛟 완충이 여유 있을 때</text>
       <rect x="104" y="118" width="92" height="26" rx="4" fill="#DCE7FB" stroke="#9DBBF3"/>
@@ -882,7 +889,7 @@
     <div class="q6flip">
       <div class="q6right" style="text-align:center">핵심은 <b>예산(받은 수수료) 안에서</b> 항목을 골라 <b>가장 덜 흔들리게</b> — 방향부터 싸게, 급변·기타는 완충 봐가며.</div>
     </div>
-    <div class="chartwrap" style="margin-top:10px"><svg viewBox="0 0 560 150" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
+    <div class="chartwrap" style="margin-top:10px"><svg aria-hidden="true" viewBox="0 0 560 150" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px">
       <line x1="54" y1="20" x2="54" y2="120" stroke="#AAB4C6" stroke-width="1.2"/>
       <line x1="54" y1="120" x2="536" y2="120" stroke="#AAB4C6" stroke-width="1.2"/>
       <text x="90" y="138" text-anchor="middle" font-size="9.5" fill="var(--muted)">0개</text>
@@ -930,7 +937,7 @@
     </div>
     <div class="foot" id="g0cost" style="margin:0 0 4px"></div>
     <div class="foot" id="g0Tau" style="margin:0 0 6px"></div>
-    <div class="chartwrap"><svg id="g0Svg" viewBox="0 0 560 240" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px"></svg></div>
+    <div class="chartwrap"><svg aria-hidden="true" id="g0Svg" viewBox="0 0 560 240" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px"></svg></div>
     <div class="foot" id="g0Read" style="margin-top:7px;min-height:2.4em"></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button id="g0Test" class="gbtn" style="margin:0;width:auto;padding:9px 14px;flex:1 1 auto">🌪️ 시장 테스트 ▶ (급락 포함 7이벤트)</button><button id="g0New" class="gbtn" style="margin:0;width:auto;padding:9px 14px;background:var(--ink);flex:0 0 auto">🔀 새 부채</button></div>
     <div id="g0Res" style="margin-top:8px"></div>
@@ -958,7 +965,7 @@
     </div>
     <div style="font-size:11px;color:var(--muted);margin:2px 0 3px;font-weight:700">💰 남은 예산 <span style="font-weight:400">— 0이 되면 게임 끝</span><span id="gProj" style="font-weight:400"></span></div>
     <div class="ggauge"><div id="gBudFill"></div><span id="gBudLab"></span></div>
-    <div class="chartwrap" style="margin-top:12px"><svg id="gCurve" viewBox="0 0 560 235" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px"></svg></div>
+    <div class="chartwrap" style="margin-top:12px"><svg aria-hidden="true" id="gCurve" viewBox="0 0 560 235" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px"></svg></div>
     <div id="gResult"></div>
     <div id="gToday" style="font-size:12.5px;margin-top:10px"></div>
     <div id="gControl" style="margin-top:10px">
@@ -990,7 +997,7 @@
     <div id="g3Stat" class="gstat"></div>
     <div style="font-size:11px;color:var(--muted);margin:9px 0 3px;font-weight:700">🛟 CSM 완충 <span style="font-weight:400">— 0이 되면 자본이 깎여요</span></div>
     <div class="ggauge"><div id="g3CsmFill"></div><span></span></div>
-    <div class="chartwrap" style="margin-top:10px"><svg id="g3Svg" viewBox="0 0 560 190" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px"></svg></div>
+    <div class="chartwrap" style="margin-top:10px"><svg aria-hidden="true" id="g3Svg" viewBox="0 0 560 190" style="width:100%;height:auto;background:#fff;border:1px solid var(--hair);border-radius:8px"></svg></div>
     <p class="foot" id="g3Msg" style="margin-top:8px;min-height:2.6em"></p>
     <div id="g3Log" style="margin-top:6px"></div>
     <div id="g3Final"></div>
@@ -1082,7 +1089,7 @@
   <div class="panel">
     <div class="cap">효율적 프론티어 — 비용과 손익변동성<span class="capb live">🖐 조작</span><span>점 = 헷지 조합</span></div>
     <p class="foot" style="margin-top:0"><b>같은 예산으로 흔들림을 가장 작게</b> 만드는 지점(<b style="color:#337A5F">초록 ✓</b>)을 찾는 도구예요 — 위 선택·프리셋이 반영돼요.</p>
-    <div class="chartwrap"><svg class="ef" id="ef" viewBox="0 0 640 340" preserveAspectRatio="xMidYMid meet"></svg></div>
+    <div class="chartwrap"><svg aria-hidden="true" class="ef" id="ef" viewBox="0 0 640 340" preserveAspectRatio="xMidYMid meet"></svg></div>
     <div class="leg">
       <span><i style="background:var(--pay)"></i>효율적 프론티어</span>
       <span><i style="background:var(--leak)"></i>현재 선택</span>
@@ -1099,7 +1106,7 @@
   <div class="panel">
     <div class="cap">미헷지 손익변동성 vs 헷지<span class="capb data">📊 실측</span><span>주간 손익 (억) · 흔들림은 연 기준</span></div>
     <div class="stat" id="volStat"></div>
-    <div class="chartwrap"><svg class="sim" id="simVol" viewBox="0 0 640 280" preserveAspectRatio="xMidYMid meet"></svg></div>
+    <div class="chartwrap"><svg aria-hidden="true" class="sim" id="simVol" viewBox="0 0 640 280" preserveAspectRatio="xMidYMid meet"></svg></div>
     <div class="leg">
       <span><i style="background:var(--sym)"></i>미헷지 주간손익(방향)</span>
       <span><i style="background:var(--good)"></i>헷지 후(현재 선택 반영)</span>
@@ -1112,7 +1119,7 @@
     <div class="cap">연도별 변동성 · 감마 손실<span class="capb data">📊 실측</span><span>실제 시장 변동성으로 재현</span></div>
     <div class="foot" id="simStrat" style="margin-top:6px"></div>
     <div class="stat" id="simStat"></div>
-    <div class="chartwrap"><svg class="sim" id="sim" viewBox="0 0 640 280" preserveAspectRatio="xMidYMid meet"></svg></div>
+    <div class="chartwrap"><svg aria-hidden="true" class="sim" id="sim" viewBox="0 0 640 280" preserveAspectRatio="xMidYMid meet"></svg></div>
     <div class="leg">
       <span><i style="background:var(--leak)"></i>노출 시 누수(실현변동성)</span>
       <span><i style="background:var(--pay)"></i>헷지 시 옵션 프리미엄(확정 지출)</span>
@@ -1183,7 +1190,7 @@
     </div>
     <div style="margin:10px 0 2px"><label class="foot" style="margin:0">기초자산 변동 <b class="mono" id="poLab" style="color:var(--pay)">0%</b></label>
       <input type="range" id="poX" min="-30" max="30" step="1" value="0"></div>
-    <div class="chartwrap"><svg id="poSvg" viewBox="0 0 560 220" style="width:100%;height:auto"></svg></div>
+    <div class="chartwrap"><svg aria-hidden="true" id="poSvg" viewBox="0 0 560 220" style="width:100%;height:auto"></svg></div>
     <div class="foot" id="poRead" style="margin-top:4px"></div>
     <p class="foot"><b>부채(회색)</b>는 <b>곡선</b>(방향+곡률=감마). <b>선물·스왑</b>은 기울기만 상쇄 → <b>곡률(감마)이 남음</b>. <b>옵션</b>은 곡률까지 잡아 평탄, 대신 <b>프리미엄</b>. <b>미헷지</b> = 곡선 그대로.</p>
   </div>
@@ -1234,7 +1241,7 @@
     <div style="margin-top:2px"><label class="foot" style="margin:0">CSM 완충 두께 <b class="mono" id="bufCsmLab" style="color:var(--good)"></b></label>
       <input type="range" id="bufCsm" min="4" max="100" step="1" value="80"></div>
     <div class="callout tip"><span class="ci">💡</span><div><span class="clab">팁</span> 슬라이더를 <b>얇은 쪽</b>으로 당겨 보세요 — 노출분이 <b>손익으로 전이</b>되며 헷지 압력이 커져요.</div></div>
-    <div class="chartwrap"><svg id="bufSvg" viewBox="0 0 640 200" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"></svg></div>
+    <div class="chartwrap"><svg aria-hidden="true" id="bufSvg" viewBox="0 0 640 200" style="width:100%;height:auto;background:#FFFFFF;border:1px solid var(--hair);border-radius:8px"></svg></div>
     <div class="leg" style="margin-top:8px">
       <span><i style="background:var(--sym);opacity:.5"></i>헷지 안 하면 · 흔들림이 <b>완충 밖</b>(전이)</span>
       <span><i style="background:var(--good)"></i>헷지 후 · 남는 흔들림이 <b>완충 안</b></span>
@@ -1753,7 +1760,7 @@ function drawCasc(){
     <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 11px;border-top:1px solid var(--hair)"><span>자산 충격 <small style="color:var(--muted)">변액 ${won(A0)}→${won(A)}</small></span><b class="mono" style="color:${dCol}">${dA>=0?'+':''}${won(dA)}</b></div>
     <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 11px;border-top:1px solid var(--hair)"><span>CSM 완충 흡수 <small style="color:var(--muted)">${(under||csmUsed>1)?'손익 무영향':'여력 유지'}</small></span><b class="mono" style="color:var(--good)">${csmUsed>1?'+'+won(csmUsed):(shock>0?'적립':'—')}</b></div>
     <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 11px;border-top:1.5px solid var(--hair);background:${plLoss<0?'var(--bad-bg)':'var(--good-bg)'};font-weight:800"><span>당기 보험손익 (PL)</span><b class="mono" style="color:${plCol}">${plLoss<0?won(plLoss):'0'}</b></div></div>`;
-  $("casc").innerHTML=`<div class="chartwrap"><svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto">${g.join("")}</svg></div>
+  $("casc").innerHTML=`<div class="chartwrap"><svg aria-hidden="true" viewBox="0 0 ${W} ${H}" style="width:100%;height:auto">${g.join("")}</svg></div>
     <div class="foot" style="margin-top:6px;text-align:center">B/S · 자산 <b>${won(A)}</b> = 부채 <b>${won(liab)}</b> + 자본 <b style="color:${equity<0?'var(--bad)':'var(--ink)'}">${equity>=0?'+':''}${won(equity)}</b></div>
     ${pl}
     <div class="foot" style="margin-top:8px">${shock>=0
@@ -2183,29 +2190,29 @@ function renderSim(){
 const NATLAB={loss:"미헷지 시 늘 손실 → 헷지 후 완화",two:"양방향(손실·이득)",bear:"이전 불가"};
 const VIZ={
   dir:{
-    b:`<svg class="anim" viewBox="0 0 120 84"><line x1="12" y1="42" x2="108" y2="42" stroke="#AAB4C6" stroke-width="1" stroke-dasharray="3 2"/><line x1="12" y1="66" x2="108" y2="18" stroke="#9282DC" stroke-width="2.5"/><g transform="translate(12,66)"><circle class="a-dot" r="5" fill="#9282DC"/></g><text x="60" y="79" fill="#566275" font-size="8" text-anchor="middle">오르내림 = 손익 ±</text></svg>`,
-    a:`<svg class="anim" viewBox="0 0 120 84"><line x1="12" y1="44" x2="108" y2="44" stroke="#AAB4C6" stroke-width="1" stroke-dasharray="3 2"/><line x1="12" y1="66" x2="96" y2="20" stroke="#9282DC" stroke-width="1.5" opacity="0.5"/><line x1="12" y1="22" x2="96" y2="68" stroke="#5C82CF" stroke-width="1.5" opacity="0.5"/><g transform="translate(12,66)"><circle class="a-dot" r="3.5" fill="#9282DC" opacity="0.75"/></g><g transform="translate(12,22)"><circle class="a-dot-dn" r="3.5" fill="#5C82CF" opacity="0.75"/></g><g transform="translate(12,44)"><circle class="a-dot-flat" r="5" fill="#4FAE8C"/></g><text x="60" y="79" fill="#4FAE8C" font-size="8" text-anchor="middle">부채+헷지 = 손익 0</text></svg>`},
+    b:`<svg aria-hidden="true" class="anim" viewBox="0 0 120 84"><line x1="12" y1="42" x2="108" y2="42" stroke="#AAB4C6" stroke-width="1" stroke-dasharray="3 2"/><line x1="12" y1="66" x2="108" y2="18" stroke="#9282DC" stroke-width="2.5"/><g transform="translate(12,66)"><circle class="a-dot" r="5" fill="#9282DC"/></g><text x="60" y="79" fill="#566275" font-size="8" text-anchor="middle">오르내림 = 손익 ±</text></svg>`,
+    a:`<svg aria-hidden="true" class="anim" viewBox="0 0 120 84"><line x1="12" y1="44" x2="108" y2="44" stroke="#AAB4C6" stroke-width="1" stroke-dasharray="3 2"/><line x1="12" y1="66" x2="96" y2="20" stroke="#9282DC" stroke-width="1.5" opacity="0.5"/><line x1="12" y1="22" x2="96" y2="68" stroke="#5C82CF" stroke-width="1.5" opacity="0.5"/><g transform="translate(12,66)"><circle class="a-dot" r="3.5" fill="#9282DC" opacity="0.75"/></g><g transform="translate(12,22)"><circle class="a-dot-dn" r="3.5" fill="#5C82CF" opacity="0.75"/></g><g transform="translate(12,44)"><circle class="a-dot-flat" r="5" fill="#4FAE8C"/></g><text x="60" y="79" fill="#4FAE8C" font-size="8" text-anchor="middle">부채+헷지 = 손익 0</text></svg>`},
   gamma:{
-    b:`<svg class="anim" viewBox="0 0 120 84"><path d="M10 36 L110 36 L110 66 Q60 6 10 66 Z" fill="#D6738A" opacity="0.16"/><path d="M10 66 Q60 6 110 66" fill="none" stroke="#566275" stroke-width="2"/><line x1="10" y1="36" x2="110" y2="36" stroke="#5C82CF" stroke-width="1.6" stroke-dasharray="4 3"/><text x="13" y="33" fill="#5C82CF" font-size="8.5">곧은 자(헷지)</text><circle r="3.6" fill="#1B2437"><animateMotion dur="2.2s" repeatCount="indefinite" path="M60 36 Q85 36 110 66"/></circle><g transform="translate(110,66)"><circle r="0" fill="none" stroke="#D6738A" stroke-width="2.4"><animate attributeName="r" values="0;17;0" dur="2.2s" begin="1.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0;0" dur="2.2s" begin="1.4s" repeatCount="indefinite"/></circle><text x="0" y="4.5" font-size="14" text-anchor="middle"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.6;0.66;1" dur="2.2s" repeatCount="indefinite"/>💥</text></g><text x="60" y="80" fill="#D6738A" font-size="9" text-anchor="middle" font-weight="700">멀어질수록 손해가 커져요</text></svg>`,
-    a:`<svg class="anim" viewBox="0 0 120 84"><path d="M14 44 L106 44 L106 54 Q60 30 14 54 Z" fill="#4FAE8C" opacity="0.12"/><path d="M14 54 Q60 30 106 54" fill="none" stroke="#566275" stroke-width="2"/><line x1="14" y1="44" x2="106" y2="44" stroke="#5C82CF" stroke-width="1.4" stroke-dasharray="4 3"/><text x="15" y="41" fill="#5C82CF" font-size="8.5">곧은 자(헷지)</text><circle r="3.2" fill="#4FAE8C"><animateMotion dur="2.6s" repeatCount="indefinite" keyPoints="0.5;0;1;0.5" keyTimes="0;0.33;0.66;1" calcMode="linear" path="M14 54 Q60 30 106 54"/></circle><text x="60" y="80" fill="#4FAE8C" font-size="9" text-anchor="middle" font-weight="700">틈 완화 · 폭발 없음(비용 확정)</text></svg>`},
+    b:`<svg aria-hidden="true" class="anim" viewBox="0 0 120 84"><path d="M10 36 L110 36 L110 66 Q60 6 10 66 Z" fill="#D6738A" opacity="0.16"/><path d="M10 66 Q60 6 110 66" fill="none" stroke="#566275" stroke-width="2"/><line x1="10" y1="36" x2="110" y2="36" stroke="#5C82CF" stroke-width="1.6" stroke-dasharray="4 3"/><text x="13" y="33" fill="#5C82CF" font-size="8.5">곧은 자(헷지)</text><circle r="3.6" fill="#1B2437"><animateMotion dur="2.2s" repeatCount="indefinite" path="M60 36 Q85 36 110 66"/></circle><g transform="translate(110,66)"><circle r="0" fill="none" stroke="#D6738A" stroke-width="2.4"><animate attributeName="r" values="0;17;0" dur="2.2s" begin="1.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0;0" dur="2.2s" begin="1.4s" repeatCount="indefinite"/></circle><text x="0" y="4.5" font-size="14" text-anchor="middle"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.6;0.66;1" dur="2.2s" repeatCount="indefinite"/>💥</text></g><text x="60" y="80" fill="#D6738A" font-size="9" text-anchor="middle" font-weight="700">멀어질수록 손해가 커져요</text></svg>`,
+    a:`<svg aria-hidden="true" class="anim" viewBox="0 0 120 84"><path d="M14 44 L106 44 L106 54 Q60 30 14 54 Z" fill="#4FAE8C" opacity="0.12"/><path d="M14 54 Q60 30 106 54" fill="none" stroke="#566275" stroke-width="2"/><line x1="14" y1="44" x2="106" y2="44" stroke="#5C82CF" stroke-width="1.4" stroke-dasharray="4 3"/><text x="15" y="41" fill="#5C82CF" font-size="8.5">곧은 자(헷지)</text><circle r="3.2" fill="#4FAE8C"><animateMotion dur="2.6s" repeatCount="indefinite" keyPoints="0.5;0;1;0.5" keyTimes="0;0.33;0.66;1" calcMode="linear" path="M14 54 Q60 30 106 54"/></circle><text x="60" y="80" fill="#4FAE8C" font-size="9" text-anchor="middle" font-weight="700">틈 완화 · 폭발 없음(비용 확정)</text></svg>`},
   gammaR:{
-    b:`<svg class="anim" viewBox="0 0 120 84"><path d="M10 36 L110 36 L110 66 Q60 6 10 66 Z" fill="#5C82CF" opacity="0.14"/><path d="M10 66 Q60 6 110 66" fill="none" stroke="#566275" stroke-width="2"/><line x1="10" y1="36" x2="110" y2="36" stroke="#5C82CF" stroke-width="1.6" stroke-dasharray="4 3"/><text x="13" y="33" fill="#5C82CF" font-size="8.5">곧은 자(헷지)</text><circle r="3.4" fill="#1B2437"><animateMotion dur="3s" repeatCount="indefinite" keyPoints="0.5;0;1;0.5" keyTimes="0;0.33;0.66;1" calcMode="linear" path="M10 66 Q60 6 110 66"/></circle><g transform="translate(10,66)"><circle r="0" fill="none" stroke="#5C82CF" stroke-width="2.2"><animate attributeName="r" values="0;15;0" dur="3s" begin="0.7s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0;0" dur="3s" begin="0.7s" repeatCount="indefinite"/></circle><text x="0" y="4.5" font-size="13" text-anchor="middle"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.28;0.34;1" dur="3s" repeatCount="indefinite"/>💥</text></g><g transform="translate(110,66)"><circle r="0" fill="none" stroke="#5C82CF" stroke-width="2.2"><animate attributeName="r" values="0;15;0" dur="3s" begin="2.1s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0;0" dur="3s" begin="2.1s" repeatCount="indefinite"/></circle><text x="0" y="4.5" font-size="13" text-anchor="middle"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.66;0.72;1" dur="3s" repeatCount="indefinite"/>💥</text></g><text x="60" y="80" fill="#5C82CF" font-size="9" text-anchor="middle" font-weight="700">금리 급변 → 양끝에서 손해</text></svg>`,
-    a:`<svg class="anim" viewBox="0 0 120 84"><path d="M14 44 L106 44 L106 54 Q60 30 14 54 Z" fill="#5C82CF" opacity="0.12"/><path d="M14 54 Q60 30 106 54" fill="none" stroke="#566275" stroke-width="2"/><line x1="14" y1="44" x2="106" y2="44" stroke="#5C82CF" stroke-width="1.4" stroke-dasharray="4 3"/><text x="15" y="41" fill="#5C82CF" font-size="8.5">곧은 자(헷지)</text><circle r="3.2" fill="#4FAE8C"><animateMotion dur="2.8s" repeatCount="indefinite" keyPoints="0.5;0;1;0.5" keyTimes="0;0.33;0.66;1" calcMode="linear" path="M14 54 Q60 30 106 54"/></circle><text x="60" y="80" fill="#4FAE8C" font-size="9" text-anchor="middle" font-weight="700">틈 완화 · 폭발 없음(스왑션)</text></svg>`},
+    b:`<svg aria-hidden="true" class="anim" viewBox="0 0 120 84"><path d="M10 36 L110 36 L110 66 Q60 6 10 66 Z" fill="#5C82CF" opacity="0.14"/><path d="M10 66 Q60 6 110 66" fill="none" stroke="#566275" stroke-width="2"/><line x1="10" y1="36" x2="110" y2="36" stroke="#5C82CF" stroke-width="1.6" stroke-dasharray="4 3"/><text x="13" y="33" fill="#5C82CF" font-size="8.5">곧은 자(헷지)</text><circle r="3.4" fill="#1B2437"><animateMotion dur="3s" repeatCount="indefinite" keyPoints="0.5;0;1;0.5" keyTimes="0;0.33;0.66;1" calcMode="linear" path="M10 66 Q60 6 110 66"/></circle><g transform="translate(10,66)"><circle r="0" fill="none" stroke="#5C82CF" stroke-width="2.2"><animate attributeName="r" values="0;15;0" dur="3s" begin="0.7s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0;0" dur="3s" begin="0.7s" repeatCount="indefinite"/></circle><text x="0" y="4.5" font-size="13" text-anchor="middle"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.28;0.34;1" dur="3s" repeatCount="indefinite"/>💥</text></g><g transform="translate(110,66)"><circle r="0" fill="none" stroke="#5C82CF" stroke-width="2.2"><animate attributeName="r" values="0;15;0" dur="3s" begin="2.1s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0;0" dur="3s" begin="2.1s" repeatCount="indefinite"/></circle><text x="0" y="4.5" font-size="13" text-anchor="middle"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.66;0.72;1" dur="3s" repeatCount="indefinite"/>💥</text></g><text x="60" y="80" fill="#5C82CF" font-size="9" text-anchor="middle" font-weight="700">금리 급변 → 양끝에서 손해</text></svg>`,
+    a:`<svg aria-hidden="true" class="anim" viewBox="0 0 120 84"><path d="M14 44 L106 44 L106 54 Q60 30 14 54 Z" fill="#5C82CF" opacity="0.12"/><path d="M14 54 Q60 30 106 54" fill="none" stroke="#566275" stroke-width="2"/><line x1="14" y1="44" x2="106" y2="44" stroke="#5C82CF" stroke-width="1.4" stroke-dasharray="4 3"/><text x="15" y="41" fill="#5C82CF" font-size="8.5">곧은 자(헷지)</text><circle r="3.2" fill="#4FAE8C"><animateMotion dur="2.8s" repeatCount="indefinite" keyPoints="0.5;0;1;0.5" keyTimes="0;0.33;0.66;1" calcMode="linear" path="M14 54 Q60 30 106 54"/></circle><text x="60" y="80" fill="#4FAE8C" font-size="9" text-anchor="middle" font-weight="700">틈 완화 · 폭발 없음(스왑션)</text></svg>`},
   rate:{
-    b:`<svg class="anim" viewBox="0 0 120 84"><line x1="14" y1="72" x2="108" y2="72" stroke="#AAB4C6" stroke-width="1"/><text x="16" y="82" fill="#566275" font-size="8.5">단기</text><text x="98" y="82" fill="#566275" font-size="8.5">장기(20·30년)</text><line x1="14" y1="46" x2="108" y2="46" stroke="#AAB4C6" stroke-width="0.8" stroke-dasharray="3 2"/><g class="a-curveshift"><path d="M14 52 Q46 40 108 30" fill="none" stroke="#9282DC" stroke-width="2.6"/><circle cx="30" cy="49" r="2.4" fill="#9282DC" opacity="0.55"/><circle cx="108" cy="30" r="5" fill="#9282DC"/></g><text x="60" y="14" fill="#566275" font-size="8" text-anchor="middle">커브가 위·아래로 → 손익 ±</text><text x="98" y="24" fill="#9282DC" font-size="8.5" text-anchor="end">장기일수록 크게</text></svg>`,
-    a:`<svg class="anim" viewBox="0 0 120 84"><line x1="14" y1="72" x2="108" y2="72" stroke="#AAB4C6" stroke-width="1"/><g class="a-curveshift-sm"><path d="M14 46 Q46 36 108 28" fill="none" stroke="#9282DC" stroke-width="1.6" opacity="0.45"/></g><g class="a-curveshift-opp"><path d="M14 58 Q46 60 108 62" fill="none" stroke="#5C82CF" stroke-width="1.6" opacity="0.45"/></g><line x1="14" y1="52" x2="108" y2="52" stroke="#4FAE8C" stroke-width="3"/><text x="16" y="35" fill="#9282DC" font-size="8.5">부채 커브</text><text x="16" y="68" fill="#5C82CF" font-size="8.5">국채·스왑(반대)</text><text x="60" y="80" fill="#4FAE8C" font-size="8" text-anchor="middle" font-weight="700">합쳐서 손익 0</text></svg>`},
+    b:`<svg aria-hidden="true" class="anim" viewBox="0 0 120 84"><line x1="14" y1="72" x2="108" y2="72" stroke="#AAB4C6" stroke-width="1"/><text x="16" y="82" fill="#566275" font-size="8.5">단기</text><text x="98" y="82" fill="#566275" font-size="8.5">장기(20·30년)</text><line x1="14" y1="46" x2="108" y2="46" stroke="#AAB4C6" stroke-width="0.8" stroke-dasharray="3 2"/><g class="a-curveshift"><path d="M14 52 Q46 40 108 30" fill="none" stroke="#9282DC" stroke-width="2.6"/><circle cx="30" cy="49" r="2.4" fill="#9282DC" opacity="0.55"/><circle cx="108" cy="30" r="5" fill="#9282DC"/></g><text x="60" y="14" fill="#566275" font-size="8" text-anchor="middle">커브가 위·아래로 → 손익 ±</text><text x="98" y="24" fill="#9282DC" font-size="8.5" text-anchor="end">장기일수록 크게</text></svg>`,
+    a:`<svg aria-hidden="true" class="anim" viewBox="0 0 120 84"><line x1="14" y1="72" x2="108" y2="72" stroke="#AAB4C6" stroke-width="1"/><g class="a-curveshift-sm"><path d="M14 46 Q46 36 108 28" fill="none" stroke="#9282DC" stroke-width="1.6" opacity="0.45"/></g><g class="a-curveshift-opp"><path d="M14 58 Q46 60 108 62" fill="none" stroke="#5C82CF" stroke-width="1.6" opacity="0.45"/></g><line x1="14" y1="52" x2="108" y2="52" stroke="#4FAE8C" stroke-width="3"/><text x="16" y="35" fill="#9282DC" font-size="8.5">부채 커브</text><text x="16" y="68" fill="#5C82CF" font-size="8.5">국채·스왑(반대)</text><text x="60" y="80" fill="#4FAE8C" font-size="8" text-anchor="middle" font-weight="700">합쳐서 손익 0</text></svg>`},
   vol:{
-    b:`<svg class="anim" viewBox="0 0 120 84"><g class="a-breathe"><path d="M14 42 Q60 12 106 42" fill="none" stroke="#D6738A" stroke-width="2"/><path d="M14 42 Q60 72 106 42" fill="none" stroke="#4FAE8C" stroke-width="2"/></g><line x1="14" y1="42" x2="106" y2="42" stroke="#AAB4C6" stroke-width="1"/><text x="60" y="20" fill="#D6738A" font-size="8" text-anchor="middle">↑ 부채↑ 손실</text><text x="60" y="70" fill="#4FAE8C" font-size="8" text-anchor="middle">↓ 부채↓ 이득</text></svg>`,
-    a:`<svg class="anim" viewBox="0 0 120 84"><g class="a-breathe-sm"><path d="M14 42 Q60 30 106 42" fill="none" stroke="#5C82CF" stroke-width="2"/><path d="M14 42 Q60 54 106 42" fill="none" stroke="#5C82CF" stroke-width="2"/></g><line x1="14" y1="42" x2="106" y2="42" stroke="#AAB4C6" stroke-width="1"/><text x="60" y="79" fill="#5C82CF" font-size="8" text-anchor="middle">변동폭 축소</text></svg>`},
+    b:`<svg aria-hidden="true" class="anim" viewBox="0 0 120 84"><g class="a-breathe"><path d="M14 42 Q60 12 106 42" fill="none" stroke="#D6738A" stroke-width="2"/><path d="M14 42 Q60 72 106 42" fill="none" stroke="#4FAE8C" stroke-width="2"/></g><line x1="14" y1="42" x2="106" y2="42" stroke="#AAB4C6" stroke-width="1"/><text x="60" y="20" fill="#D6738A" font-size="8" text-anchor="middle">↑ 부채↑ 손실</text><text x="60" y="70" fill="#4FAE8C" font-size="8" text-anchor="middle">↓ 부채↓ 이득</text></svg>`,
+    a:`<svg aria-hidden="true" class="anim" viewBox="0 0 120 84"><g class="a-breathe-sm"><path d="M14 42 Q60 30 106 42" fill="none" stroke="#5C82CF" stroke-width="2"/><path d="M14 42 Q60 54 106 42" fill="none" stroke="#5C82CF" stroke-width="2"/></g><line x1="14" y1="42" x2="106" y2="42" stroke="#AAB4C6" stroke-width="1"/><text x="60" y="79" fill="#5C82CF" font-size="8" text-anchor="middle">변동폭 축소</text></svg>`},
   basis:{
-    b:`<svg class="anim" viewBox="0 0 120 84"><path d="M12 52 L23 47 L34 49 L45 40 L56 43 L67 34 L78 37 L89 28 L108 24" fill="none" stroke="#5C82CF" stroke-width="2.4" stroke-linejoin="round"/><text x="12" y="62" fill="#5C82CF" font-size="9" font-weight="700">수단(지수)</text><g class="a-fundlag"><path d="M12 52 L23 51 L34 45 L45 49 L56 41 L67 43 L78 34 L89 37 L108 32" fill="none" stroke="#D69A55" stroke-width="2.4" stroke-linejoin="round"/><circle r="3" fill="#D69A55"><animateMotion dur="2.6s" repeatCount="indefinite" path="M12 52 L23 51 L34 45 L45 49 L56 41 L67 43 L78 34 L89 37 L108 32"/></circle></g><text x="108" y="47" fill="#D69A55" font-size="9" text-anchor="end" font-weight="700">펀드(따라가려 함)</text><text x="60" y="79" fill="#566275" font-size="9" text-anchor="middle">못 따라가면 손실 · 앞서면 이익</text></svg>`,
-    a:`<svg class="anim" viewBox="0 0 120 84"><path d="M12 52 L23 47 L34 49 L45 40 L56 43 L67 34 L78 37 L89 28 L108 24" fill="none" stroke="#5C82CF" stroke-width="2.4" stroke-linejoin="round"/><text x="12" y="62" fill="#5C82CF" font-size="9" font-weight="700">수단(지수)</text><g class="a-fundlag-sm"><path d="M12 52 L23 48 L34 48 L45 41 L56 42 L67 35 L78 36 L89 29 L108 26" fill="none" stroke="#4FAE8C" stroke-width="2.4" stroke-linejoin="round"/><circle r="2.6" fill="#4FAE8C"><animateMotion dur="2.6s" repeatCount="indefinite" path="M12 52 L23 48 L34 48 L45 41 L56 42 L67 35 L78 36 L89 29 L108 26"/></circle></g><text x="108" y="34" fill="#4FAE8C" font-size="9" text-anchor="end" font-weight="700">펀드(바짝 추적)</text><text x="60" y="79" fill="#566275" font-size="9" text-anchor="middle">맞춤 복제 → 괴리(추적오차) 축소</text></svg>`},
+    b:`<svg aria-hidden="true" class="anim" viewBox="0 0 120 84"><path d="M12 52 L23 47 L34 49 L45 40 L56 43 L67 34 L78 37 L89 28 L108 24" fill="none" stroke="#5C82CF" stroke-width="2.4" stroke-linejoin="round"/><text x="12" y="62" fill="#5C82CF" font-size="9" font-weight="700">수단(지수)</text><g class="a-fundlag"><path d="M12 52 L23 51 L34 45 L45 49 L56 41 L67 43 L78 34 L89 37 L108 32" fill="none" stroke="#D69A55" stroke-width="2.4" stroke-linejoin="round"/><circle r="3" fill="#D69A55"><animateMotion dur="2.6s" repeatCount="indefinite" path="M12 52 L23 51 L34 45 L45 49 L56 41 L67 43 L78 34 L89 37 L108 32"/></circle></g><text x="108" y="47" fill="#D69A55" font-size="9" text-anchor="end" font-weight="700">펀드(따라가려 함)</text><text x="60" y="79" fill="#566275" font-size="9" text-anchor="middle">못 따라가면 손실 · 앞서면 이익</text></svg>`,
+    a:`<svg aria-hidden="true" class="anim" viewBox="0 0 120 84"><path d="M12 52 L23 47 L34 49 L45 40 L56 43 L67 34 L78 37 L89 28 L108 24" fill="none" stroke="#5C82CF" stroke-width="2.4" stroke-linejoin="round"/><text x="12" y="62" fill="#5C82CF" font-size="9" font-weight="700">수단(지수)</text><g class="a-fundlag-sm"><path d="M12 52 L23 48 L34 48 L45 41 L56 42 L67 35 L78 36 L89 29 L108 26" fill="none" stroke="#4FAE8C" stroke-width="2.4" stroke-linejoin="round"/><circle r="2.6" fill="#4FAE8C"><animateMotion dur="2.6s" repeatCount="indefinite" path="M12 52 L23 48 L34 48 L45 41 L56 42 L67 35 L78 36 L89 29 L108 26"/></circle></g><text x="108" y="34" fill="#4FAE8C" font-size="9" text-anchor="end" font-weight="700">펀드(바짝 추적)</text><text x="60" y="79" fill="#566275" font-size="9" text-anchor="middle">맞춤 복제 → 괴리(추적오차) 축소</text></svg>`},
   behav:{
-    b:`<svg class="anim" viewBox="0 0 120 84"><rect x="12" y="32" width="96" height="18" rx="4" fill="#EAEDF5"/><rect class="a-drain" x="12" y="32" width="96" height="18" rx="4" fill="#9282DC"/><text x="60" y="79" fill="#566275" font-size="8" text-anchor="middle">해지 증감 → 노출 변동</text></svg>`,
-    a:`<svg class="anim" viewBox="0 0 120 84"><rect x="12" y="32" width="96" height="18" rx="4" fill="#EAEDF5"/><rect class="a-drain-sm" x="12" y="32" width="96" height="18" rx="4" fill="#5C82CF"/><text x="60" y="79" fill="#5C82CF" font-size="8" text-anchor="middle">재보험으로 완화</text></svg>`},
+    b:`<svg aria-hidden="true" class="anim" viewBox="0 0 120 84"><rect x="12" y="32" width="96" height="18" rx="4" fill="#EAEDF5"/><rect class="a-drain" x="12" y="32" width="96" height="18" rx="4" fill="#9282DC"/><text x="60" y="79" fill="#566275" font-size="8" text-anchor="middle">해지 증감 → 노출 변동</text></svg>`,
+    a:`<svg aria-hidden="true" class="anim" viewBox="0 0 120 84"><rect x="12" y="32" width="96" height="18" rx="4" fill="#EAEDF5"/><rect class="a-drain-sm" x="12" y="32" width="96" height="18" rx="4" fill="#5C82CF"/><text x="60" y="79" fill="#5C82CF" font-size="8" text-anchor="middle">재보험으로 완화</text></svg>`},
   regime:{
-    b:`<svg class="anim" viewBox="0 0 120 84"><g class="a-step"><line x1="14" y1="50" x2="60" y2="50" stroke="#D6738A" stroke-width="2.5"/><line x1="60" y1="28" x2="106" y2="28" stroke="#D6738A" stroke-width="2.5"/><line x1="60" y1="50" x2="60" y2="28" stroke="#D6738A" stroke-width="2" stroke-dasharray="3 2"/></g><text x="60" y="79" fill="#566275" font-size="8" text-anchor="middle">가정·제도 단절</text></svg>`,
-    a:`<svg class="anim" viewBox="0 0 120 84"><rect class="a-pulse" x="32" y="24" width="56" height="30" rx="6" fill="#EEF1F8" stroke="#C9D2E2"/><text x="60" y="43" fill="#566275" font-size="10" text-anchor="middle" font-weight="700">CSM 흡수</text><text x="60" y="79" fill="#566275" font-size="8" text-anchor="middle">이전 시장 없음</text></svg>`},
+    b:`<svg aria-hidden="true" class="anim" viewBox="0 0 120 84"><g class="a-step"><line x1="14" y1="50" x2="60" y2="50" stroke="#D6738A" stroke-width="2.5"/><line x1="60" y1="28" x2="106" y2="28" stroke="#D6738A" stroke-width="2.5"/><line x1="60" y1="50" x2="60" y2="28" stroke="#D6738A" stroke-width="2" stroke-dasharray="3 2"/></g><text x="60" y="79" fill="#566275" font-size="8" text-anchor="middle">가정·제도 단절</text></svg>`,
+    a:`<svg aria-hidden="true" class="anim" viewBox="0 0 120 84"><rect class="a-pulse" x="32" y="24" width="56" height="30" rx="6" fill="#EEF1F8" stroke="#C9D2E2"/><text x="60" y="43" fill="#566275" font-size="10" text-anchor="middle" font-weight="700">CSM 흡수</text><text x="60" y="79" fill="#566275" font-size="8" text-anchor="middle">이전 시장 없음</text></svg>`},
 };
 const FAC={
   delta:{viz:"dir", nat:"two", t:"주가가 오르내리면 보증가치도 같이 흔들려요(오르면 이득·내리면 손실). <b>시소 반대편에 선물</b>을 얹듯 반대 포지션을 잡으면 흔들림이 사라져요."},

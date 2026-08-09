@@ -276,10 +276,10 @@ function vr(T,n){const k=[1,2,5,10,21];
 
 /* ═══ 국면 — 실측 롤링60일 분위 기반 ═══ */
 const REGS=[
-  {id:"calm",  n:"🌤 평온", dE:1.00, dR:2.5, bs:8,  te:1.5, q:"주가 p25"},
-  {id:"base",  n:"🌥 기준", dE:1.80, dR:5.0, bs:15, te:3.3, q:"주가 p90 · 금리 p72"},
+  {id:"calm",  n:"🌤 평온", dE:1.00, dR:2.4, bs:8,  te:1.5, q:"주가 p25 · 금리 p25"},
+  {id:"base",  n:"🌥 기준", dE:1.80, dR:4.0, bs:15, te:3.3, q:"주가 p90(6.6년) · 금리 p72(10.6년)"},
   {id:"recent",n:"📈 최근", auto:true, dE:0, dR:0, bs:20, te:4.0, q:"최근 60일 실측"},
-  {id:"storm", n:"⛈ 격변", dE:3.90, dR:8.5, bs:35, te:6.0, q:"주가 26-05 · 금리 22-11"},
+  {id:"storm", n:"⛈ 격변", dE:3.90, dR:8.0, bs:35, te:6.0, q:"주가 26-05 · 금리 p99"},
 ];
 const REG=id=>REGS.find(r=>r.id===id);
 const VIEWS=[{id:"ytd",n:"당해"},{id:"3y",n:"12개월"},{id:"cum",n:"23년~"}];

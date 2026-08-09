@@ -164,6 +164,7 @@
   <div class="chips" id="lineSel" style="margin-bottom:6px"></div>
   <div class="rd" id="rdOut"></div>
   <div class="chartwrap"><svg id="mainSvg" role="img" aria-label="누적 헷지손익"></svg></div>
+  <div class="rd" id="volCtx"></div>
   <div class="asof">
     <div class="al">기준일 <b id="v_cursor"></b></div>
     <div class="chips" id="curQuick"></div>
@@ -430,7 +431,7 @@ function realized(){
   let vE=ewma0(i0,"e"), vR=ewma0(i0,"r");
   let ivE=Math.sqrt(vE)*(diE()/b.dE), ivR=Math.sqrt(vR)*(diR()/b.dR);
   let sprd=0; const mAbs=rg.dR*S.kAbsR;
-  let c=0, cb=0, accE=0, accR=0, k=0, resid=0, cov=0;
+  let c=0, cb=0, accE=0, accR=0, k=0, resid=0, cov=0, sq=0, sqr=0;
   const led=S.pnl? new Map(S.pnl.actual.map(x=>[x.d,x])) : null;
   for(let i=i0;i<=i1;i++){
     const dt=d.dates[i];
@@ -470,9 +471,11 @@ function realized(){
       resid+=L.total-KEYS.reduce((a,x)=>a+o[x],0); pnl=L.total; cov++;
     }
     KEYS.forEach(x=>{parts[x]+=o[x];});
+    sq+=re*re; sqr+=rr*rr;
     c+=pnl; day.push({d:dt,re,rr,pnl,gm:-(o.gE+o.gR)}); cum.push(c);
   }
   return {day,cum,bcum,parts,bparts,end:c,bend:cb,n:day.length,sprd,resid,cov,
+          sdE:Math.sqrt(sq/day.length), sdR:Math.sqrt(sqr/day.length),
           src:led?(cov===day.length?"real":(cov>0?"mix":"model")):"model"};
 }
 
@@ -603,7 +606,7 @@ function render(fast){
   PB=pastBand();
   FC=forecast(RZ.end, fast?NFAST:NPATH);
   HZ=horizons();
-  [drawMain,drawWF,fillMtx,fillHz,drawLimit,fillHero,fillCtx,fillSel,
+  [drawMain,drawWF,fillMtx,fillHz,drawLimit,fillHero,fillVol,fillCtx,fillSel,
    fillBench,fillExp,fillLnk,fillRegTbl,fillNotes].forEach(fn=>{
     try{fn();}catch(e){console.error("render:"+fn.name,e);}
   });
@@ -671,7 +674,7 @@ function drawMain(){
   g.push(`<path d="M${X(0).toFixed(1)},${Y(0).toFixed(1)} L${X(nT-1).toFixed(1)},${Y(slope*(nT-1)).toFixed(1)}" fill="none" stroke="#5C82CF" stroke-width="1.5" stroke-dasharray="6 4"/>`);
   if(SHOW.bench){let bp2="M"; RZ.bcum.forEach((v,i)=>{bp2+=`${X(i).toFixed(1)},${Y(v).toFixed(1)} `;});
     g.push(`<path d="${bp2}" fill="none" stroke="#5B4CA8" stroke-width="1.7" stroke-linejoin="round"/>`);}
-  if(P.fee>0&&VIEW==="ytd"){
+  if(SHOW.plan&&P.fee>0&&VIEW==="ytd"){
     const iEnd=Math.min(nT-1, (-P.fee*(nT-1)/N())<lo ? -lo*N()/P.fee : nT-1);
     if(iEnd>4) g.push(`<path d="M${X(0).toFixed(1)},${Y(0).toFixed(1)} L${X(iEnd).toFixed(1)},${Y(-P.fee*iEnd/N()).toFixed(1)}" fill="none" stroke="#D6738A" stroke-width="1.5" stroke-dasharray="5 4"/>`);
   }
@@ -947,6 +950,14 @@ function fillCtx(){
             :`<span class="src model">모형 재구성</span>`;
   $("ctxWho").innerHTML=`<b>${fmtd(asof)}</b>`+(asof!==last?`<span class="src assume">과거 재생</span>`:``)+
     `<b>${REG(RSEL).n}</b>${badge}`;
+}
+/* 시장 몫이 어디서 왔는지 — 감마는 변동성의 제곱으로 들어와요 */
+function fillVol(){
+  if(!RZ) return;
+  const b=REG("base"), kE=RZ.sdE/b.dE, kR=RZ.sdR/b.dR, f=x=>x.toFixed(2);
+  $("volCtx").innerHTML=
+    `실현 일변동 <b>주가 ${RZ.sdE.toFixed(2)}%</b> <span class="bdg${kE>1?" pay":""}">기준 ×${f(kE)} → 감마 ×${f(kE*kE)}</span>`+
+    ` · <b>금리 ${RZ.sdR.toFixed(1)}bp</b> <span class="bdg${kR>1?" pay":""}">기준 ×${f(kR)} → 감마 ×${f(kR*kR)}</span>`;
 }
 function fillSel(){
   $("lineSel").innerHTML=[["band","기준 밴드","#8A94A6"],["bench","벤치마크선","#5B4CA8"]]

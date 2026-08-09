@@ -165,6 +165,7 @@
   <div class="rd" id="rdOut"></div>
   <div class="chartwrap"><svg id="mainSvg" role="img" aria-label="누적 헷지손익"></svg></div>
   <div class="rd" id="volCtx"></div>
+  <div class="chartwrap"><svg id="volSvg" role="img" aria-label="실현 변동성"></svg></div>
   <div class="asof">
     <div class="al">기준일 <b id="v_cursor"></b></div>
     <div class="chips" id="curQuick"></div>
@@ -298,6 +299,7 @@ const PAR=[
  {g:"베이시스",tb:"r", id:"teAmt",n:"펀드 베이시스",   u:"억/1%p", v:80, st:10, k:"n", s:"지수 대비 1%p당"},
  {g:"베이시스",tb:"r", id:"teDft",n:"추적오차 드리프트",u:"%/년",  v:-0.3,st:0.1,k:"n",s:"평균 괴리 · 장기평균선 포함"},
  {g:"한도",tb:"b", id:"fee",  n:"연 계획 한도",   u:"억",     v:1500,st:100, k:"n", s:"연간 감내 한도"},
+ {g:"한도",tb:"b", id:"gfee", n:"보증수수료",     u:"bp",     v:70,  st:5,   k:"n", s:"적립금 대비 · 연 재원"},
  {g:"커버",tb:"b", id:"covE", n:"주가 커버(계획)", u:"%", v:0,  mn:0,mx:100,st:5,k:"s"},
  {g:"커버",tb:"b", id:"covR", n:"금리 커버(계획)", u:"%", v:0,  mn:0,mx:100,st:5,k:"s"},
  {g:"커버",tb:"r", id:"acovE",n:"주가 커버(실제)", u:"%", v:0,  mn:0,mx:100,st:5,k:"s"},
@@ -335,6 +337,9 @@ const bsExp=()=>-(P.acovR/100)*P.mulR*P.bsdv;
 const bsExpP=()=>-(P.covR/100)*P.bsdv;                    /* 계획 커버율로 생겼을 본드스왑 */
 const volB=()=>Math.sqrt((1/12)/TEFF);
 const teDriftY=()=>P.teAmt*P.teDft;
+/* 보증수수료(억/년) = 적립금 × bp. 받는 돈이지만 비용과 같은 축에서 읽으려고 아래로 그어요 */
+const gfeeY=()=>P.av*P.gfee;
+
 /* ⭐ 장기평균선 = 세타 − 감마 − 슬리피지 − 캐리 + 추적오차 드리프트(확정) */
 function benchY(k){
   k=k||1; const b=REG("base");
@@ -472,7 +477,7 @@ function realized(){
     }
     KEYS.forEach(x=>{parts[x]+=o[x];});
     sq+=re*re; sqr+=rr*rr;
-    c+=pnl; day.push({d:dt,re,rr,pnl,gm:-(o.gE+o.gR)}); cum.push(c);
+    c+=pnl; day.push({d:dt,re,rr,pnl,gm:-(o.gE+o.gR),sE:Math.sqrt(vE),sR:Math.sqrt(vR)}); cum.push(c);
   }
   return {day,cum,bcum,parts,bparts,end:c,bend:cb,n:day.length,sprd,resid,cov,
           sdE:Math.sqrt(sq/day.length), sdR:Math.sqrt(sqr/day.length),
@@ -597,7 +602,7 @@ function dstr(off){
 }
 
 /* ═══ 렌더 ═══ */
-let SHOW={band:1,bench:1};
+let SHOW={band:1,bench:1,plan:1,gfee:1};
 let RZ=null,PB=null,FC=null,HZ=null,W=360,MOB=true,XS=null;
 function render(fast){
   if(!S.loaded)return;
@@ -606,7 +611,7 @@ function render(fast){
   PB=pastBand();
   FC=forecast(RZ.end, fast?NFAST:NPATH);
   HZ=horizons();
-  [drawMain,drawWF,fillMtx,fillHz,drawLimit,fillHero,fillVol,fillCtx,fillSel,
+  [drawMain,drawVol,drawWF,fillMtx,fillHz,drawLimit,fillHero,fillVol,fillCtx,fillSel,
    fillBench,fillExp,fillLnk,fillRegTbl,fillNotes].forEach(fn=>{
     try{fn();}catch(e){console.error("render:"+fn.name,e);}
   });
@@ -674,10 +679,14 @@ function drawMain(){
   g.push(`<path d="M${X(0).toFixed(1)},${Y(0).toFixed(1)} L${X(nT-1).toFixed(1)},${Y(slope*(nT-1)).toFixed(1)}" fill="none" stroke="#5C82CF" stroke-width="1.5" stroke-dasharray="6 4"/>`);
   if(SHOW.bench){let bp2="M"; RZ.bcum.forEach((v,i)=>{bp2+=`${X(i).toFixed(1)},${Y(v).toFixed(1)} `;});
     g.push(`<path d="${bp2}" fill="none" stroke="#5B4CA8" stroke-width="1.7" stroke-linejoin="round"/>`);}
-  if(SHOW.plan&&P.fee>0&&VIEW==="ytd"){
-    const iEnd=Math.min(nT-1, (-P.fee*(nT-1)/N())<lo ? -lo*N()/P.fee : nT-1);
-    if(iEnd>4) g.push(`<path d="M${X(0).toFixed(1)},${Y(0).toFixed(1)} L${X(iEnd).toFixed(1)},${Y(-P.fee*iEnd/N()).toFixed(1)}" fill="none" stroke="#D6738A" stroke-width="1.5" stroke-dasharray="5 4"/>`);
-  }
+  if(VIEW==="ytd") [["plan",P.fee,"#D6738A","계획"],["gfee",gfeeY(),"#337A5F","수수료"]].forEach(([id,amt,col,nm])=>{
+    if(!SHOW[id]||!(amt>0)) return;
+    const iEnd=Math.min(nT-1, (-amt*(nT-1)/N())<lo ? -lo*N()/amt : nT-1);
+    if(iEnd<=4) return;
+    const ye=Y(-amt*iEnd/N());
+    g.push(`<path d="M${X(0).toFixed(1)},${Y(0).toFixed(1)} L${X(iEnd).toFixed(1)},${ye.toFixed(1)}" fill="none" stroke="${col}" stroke-width="1.5" stroke-dasharray="5 4"/>`);
+    g.push(`<text x="${(X(iEnd)-3).toFixed(1)}" y="${Math.min(T+ih-3,ye+12).toFixed(1)}" text-anchor="end" font-size="9.5" font-weight="700" fill="${col}">${nm} ${won(amt)}억</text>`);
+  });
   let rp="M"; RZ.cum.forEach((v,i)=>{rp+=`${X(i).toFixed(1)},${Y(v).toFixed(1)} `;});
   g.push(`<path d="${rp}" fill="none" stroke="#16202F" stroke-width="2.2" stroke-linejoin="round"/>`);
   g.push(`<line x1="${X(nP-1).toFixed(1)}" y1="${T}" x2="${X(nP-1).toFixed(1)}" y2="${T+ih}" stroke="#AAB4C6" stroke-width="1"/>`);
@@ -959,9 +968,31 @@ function fillVol(){
     `실현 일변동 <b>주가 ${RZ.sdE.toFixed(2)}%</b> <span class="bdg${kE>1?" pay":""}">기준 ×${f(kE)} → 감마 ×${f(kE*kE)}</span>`+
     ` · <b>금리 ${RZ.sdR.toFixed(1)}bp</b> <span class="bdg${kR>1?" pay":""}">기준 ×${f(kR)} → 감마 ×${f(kR*kR)}</span>`;
 }
+/* 실현 변동성 서브차트 — 메인과 같은 x축. 감마는 σ² 이라 ×2 면 비용은 ×4 예요 */
+function drawVol(){
+  if(!RZ||!XS) return;
+  const {X,L,iw,nP}=XS, H=MOB?86:96, T=6, B=16, ih=H-T-B, R=12, b=REG("base"), g=[];
+  const kE=i=>RZ.day[i].sE/b.dE, kR=i=>RZ.day[i].sR/b.dR;
+  let hi=1.2; for(let i=0;i<nP;i++) hi=Math.max(hi,kE(i),kR(i));
+  hi=Math.ceil(hi*2)/2;
+  const Y=v=>T+ih*(1-v/hi);
+  [1,2,3,4,5].filter(v=>v<=hi).forEach(v=>{
+    g.push(`<line x1="${L}" y1="${Y(v).toFixed(1)}" x2="${W-R}" y2="${Y(v).toFixed(1)}" stroke="${v===1?"#AAB4C6":"#EDF0F6"}" stroke-width="1" ${v===1?'stroke-dasharray="4 3"':""}/>`);
+    g.push(MOB?`<text x="${L+2}" y="${(Y(v)-2).toFixed(1)}" font-size="9" fill="#98A2B3">×${v}</text>`
+              :`<text x="${L-6}" y="${(Y(v)+3.5).toFixed(1)}" text-anchor="end" font-size="9.5" fill="#8A94A6">×${v}</text>`);
+  });
+  [[kE,"#4A6FC4","주가"],[kR,"#A96A1C","금리"]].forEach(([f,col,nm])=>{
+    let d="M"; for(let i=0;i<nP;i++) d+=`${X(i).toFixed(1)},${Y(Math.min(hi,f(i))).toFixed(1)} `;
+    g.push(`<path d="${d}" fill="none" stroke="${col}" stroke-width="1.5" stroke-linejoin="round"/>`);
+    g.push(`<text x="${(X(nP-1)+3).toFixed(1)}" y="${(Y(Math.min(hi,f(nP-1)))+3.5).toFixed(1)}" font-size="9.5" font-weight="700" fill="${col}">${nm} ×${f(nP-1).toFixed(1)}</text>`);
+  });
+  g.push(`<line x1="${X(nP-1).toFixed(1)}" y1="${T}" x2="${X(nP-1).toFixed(1)}" y2="${T+ih}" stroke="#AAB4C6" stroke-width="1"/>`);
+  g.push(`<text x="${L}" y="${H-4}" font-size="9.5" font-weight="700" fill="#8A94A6">실현 변동성 (기준 국면 대비 배수) · 감마는 이 값의 제곱으로</text>`);
+  const el=$("volSvg"); el.setAttribute("viewBox",`0 0 ${W} ${H}`); el.setAttribute("height",H); el.innerHTML=g.join("");
+}
 function fillSel(){
   $("lineSel").innerHTML=[["band","기준 밴드","#8A94A6"],["bench","벤치마크선","#5B4CA8"]]
-    .concat(VIEW==="ytd"?[["plan","경영계획선","#D6738A"]]:[])   /* 계획선은 당해 뷰에만 있어요 */
+    .concat(VIEW==="ytd"?[["plan","경영계획선","#D6738A"],["gfee","보증수수료선","#337A5F"]]:[])   /* 계획선은 당해 뷰에만 있어요 */
     .map(a=>`<button class="chip${SHOW[a[0]]?" on":""}" data-ln="${a[0]}">`+
       `<span style="display:inline-block;width:7px;height:7px;border-radius:2px;background:${a[2]};margin-right:5px"></span>${a[1]}</button>`).join("");
   $("selRow").innerHTML=

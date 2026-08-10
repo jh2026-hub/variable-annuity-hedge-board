@@ -405,6 +405,20 @@
   /* 키보드 사용자용 — 포커스 전엔 화면에 없어요 */
   .skip{position:absolute;left:-9999px;top:0}
   .skip:focus{left:10px;top:10px;z-index:99;background:var(--pay);color:#fff;padding:9px 15px;border-radius:9px;font-size:12.5px;font-weight:700;min-height:44px;display:inline-flex;align-items:center}
+  /* 펜 주석 — 화면에 얹히지만 아무것도 저장하지 않아요 */
+  #inkC{position:absolute;left:0;top:0;z-index:60;pointer-events:none;touch-action:pan-y}
+  .inkbar{position:fixed;right:12px;bottom:12px;z-index:61;display:flex;align-items:center;gap:6px;
+    background:var(--panel);border:1px solid var(--hair);border-radius:999px;padding:5px 7px;
+    box-shadow:0 2px 12px rgba(22,32,47,.13)}
+  .inkbar.act{border-color:var(--pay)}
+  .inkbar button{border:0;background:transparent;font-family:inherit;font-size:15px;cursor:pointer;
+    min-width:34px;min-height:34px;border-radius:999px;line-height:1}
+  .inkbar button:hover{background:var(--panel2)}
+  .inkbar #inkTools{display:flex;align-items:center;gap:5px}
+  .inkbar .inkc{min-width:20px;min-height:20px;background:var(--k);border:2px solid transparent}
+  .inkbar .inkc.on{border-color:var(--ink)}
+  .inkbar #inkFin.on{background:var(--pay-bg);color:var(--pay-ink)}
+  @media print{.inkbar{display:none}}
 </style>
 </head>
 <body>
@@ -2608,6 +2622,61 @@ if($("g3Svg")){
 loadMarket();  /* 개념탭 조합차트·시뮬 모두 데이터 필요 → 로드 시 자동 반영 */
 svgPauseSync();
 document.addEventListener("touchstart",e=>{ const t=$("eftip"); if(t&&!e.target.closest(".ef")) t.style.opacity=0; },{passive:true});
+</script>
+<div id="inkBar" class="inkbar">
+  <button id="inkOn" title="펜으로 메모 (새로고침하면 지워져요)">✏️</button>
+  <span id="inkTools" hidden>
+    <button class="inkc on" data-c="#B8455F"></button>
+    <button class="inkc" data-c="#4A6FC4"></button>
+    <button class="inkc" data-c="#337A5F"></button>
+    <button class="inkc" data-c="#16202F"></button>
+    <button id="inkFin" title="손가락으로도 그리기">✋</button>
+    <button id="inkUndo" title="한 획 되돌리기">↩</button>
+    <button id="inkClr" title="모두 지우기">🗑</button>
+  </span>
+</div>
+<canvas id="inkC" hidden></canvas>
+<script>
+/* 펜 주석 — 메모리에만 남아요(새로고침하면 사라짐). 저장·전송 없음.
+   기본은 펜·마우스만 그리고 손가락은 스크롤 — 아이패드에서 읽으며 메모할 수 있게. */
+(function(){
+  const cv=document.getElementById('inkC'), ctx=cv.getContext('2d');
+  const bar=document.getElementById('inkBar'), tools=document.getElementById('inkTools');
+  let on=false, finger=false, col='#B8455F', strokes=[], cur=null, dpr=Math.min(2,devicePixelRatio||1);
+  const size=()=>{
+    const w=document.documentElement.scrollWidth, h=document.documentElement.scrollHeight;
+    cv.width=w*dpr; cv.height=h*dpr; cv.style.width=w+'px'; cv.style.height=h+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0); redraw();
+  };
+  const redraw=()=>{
+    ctx.clearRect(0,0,cv.width,cv.height); ctx.lineCap='round'; ctx.lineJoin='round';
+    for(const s of strokes){ ctx.strokeStyle=s.c; ctx.lineWidth=s.w; ctx.beginPath();
+      s.p.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y)); ctx.stroke(); }
+  };
+  const pt=e=>[e.pageX,e.pageY];
+  const draws=e=>on&&(e.pointerType==='pen'||e.pointerType==='mouse'||(finger&&e.pointerType==='touch'));
+  cv.addEventListener('pointerdown',e=>{ if(!draws(e))return; e.preventDefault();
+    cur={c:col,w:e.pointerType==='pen'?Math.max(1.2,3*(e.pressure||.5)):2.2,p:[pt(e)]};
+    strokes.push(cur); cv.setPointerCapture(e.pointerId); });
+  cv.addEventListener('pointermove',e=>{ if(!cur||!draws(e))return; e.preventDefault();
+    cur.p.push(pt(e)); redraw(); });
+  addEventListener('pointerup',()=>{cur=null;});
+  document.getElementById('inkOn').onclick=()=>{
+    on=!on; cv.hidden=!on; tools.hidden=!on; bar.classList.toggle('act',on);
+    cv.style.pointerEvents=on?'auto':'none'; if(on)size();
+  };
+  tools.querySelectorAll('.inkc').forEach(b=>b.onclick=()=>{
+    col=b.dataset.c; tools.querySelectorAll('.inkc').forEach(x=>x.classList.toggle('on',x===b));
+    b.style.setProperty('--k',col);
+  });
+  document.getElementById('inkFin').onclick=e=>{finger=!finger; e.target.classList.toggle('on',finger);
+    cv.style.touchAction=finger?'none':'pan-y';};
+  document.getElementById('inkUndo').onclick=()=>{strokes.pop();redraw();};
+  document.getElementById('inkClr').onclick=()=>{strokes=[];redraw();};
+  addEventListener('resize',()=>{if(on)size();});
+  new ResizeObserver(()=>{if(on)size();}).observe(document.body);
+  tools.querySelectorAll('.inkc').forEach(b=>b.style.setProperty('--k',b.dataset.c));
+})();
 </script>
 </body>
 </html>

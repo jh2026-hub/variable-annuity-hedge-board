@@ -418,9 +418,8 @@
   .inkbar .inkc{min-width:22px;min-height:22px;background:var(--k);border:2px solid transparent}
   .inkbar .inkc.on{border-color:var(--ink)}
   .inkbar #inkEr.on{background:var(--bad-bg);color:var(--bad-ink)}
-  .inkbar .inkhint{font-size:10px;font-weight:700;color:var(--muted);background:var(--panel2);
+  .inkbar .inkhint{font-size:10px;font-weight:700;color:var(--pay-ink);background:var(--pay-bg);
     border-radius:999px;padding:3px 9px;white-space:nowrap}
-  .inkbar .inkhint.dr{color:var(--pay-ink);background:var(--pay-bg)}
   @media print{.inkbar{display:none}}
 </style>
 </head>
@@ -2637,7 +2636,7 @@ document.addEventListener("touchstart",e=>{ const t=$("eftip"); if(t&&!e.target.
     <button id="inkUndo" title="한 획 되돌리기">↩</button>
     <button id="inkClr" title="모두 지우기">🗑</button>
   </span>
-  <span class="inkhint" id="inkHint">스크롤</span>
+  <span class="inkhint" id="inkHint" hidden>그리기</span>
 </div>
 <canvas id="inkC" hidden></canvas>
 <script>
@@ -2698,9 +2697,7 @@ document.addEventListener("touchstart",e=>{ const t=$("eftip"); if(t&&!e.target.
       cv.hidden=true; cv.style.pointerEvents='none'; cur=null;
     }
     tools.hidden=!on; bar.classList.toggle('act',on);
-    var hint=document.getElementById('inkHint');
-    hint.textContent = on ? '그리기' : '스크롤';       /* 지금 무엇을 하는 모드인지 */
-    hint.classList.toggle('dr', on);
+    document.getElementById('inkHint').hidden=!on;   /* 스크롤 모드에선 연필만 */
   };
   tools.querySelectorAll('.inkc').forEach(function(b){
     b.style.setProperty('--k', b.dataset.c);

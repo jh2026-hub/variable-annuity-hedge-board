@@ -417,6 +417,7 @@
   .inkbar #inkTools{display:flex;align-items:center;gap:5px}
   .inkbar .inkc{min-width:22px;min-height:22px;background:var(--k);border:2px solid transparent}
   .inkbar .inkc.on{border-color:var(--ink)}
+  .inkbar #inkEr.on{background:var(--bad-bg);color:var(--bad-ink)}
   .inkbar .inkhint{font-size:10px;font-weight:700;color:var(--pay-ink);background:var(--pay-bg);border-radius:999px;padding:3px 9px;white-space:nowrap}
   @media print{.inkbar{display:none}}
 </style>
@@ -2630,6 +2631,7 @@ document.addEventListener("touchstart",e=>{ const t=$("eftip"); if(t&&!e.target.
     <button class="inkc" data-c="#4A6FC4"></button>
     <button class="inkc" data-c="#337A5F"></button>
     <button class="inkc" data-c="#16202F"></button>
+    <button id="inkEr" title="지우개 — 지나간 자리만 지워요">🧽</button>
     <button id="inkUndo" title="한 획 되돌리기">↩</button>
     <button id="inkClr" title="모두 지우기">🗑</button>
     <span class="inkhint">화면 고정</span>
@@ -2644,7 +2646,7 @@ document.addEventListener("touchstart",e=>{ const t=$("eftip"); if(t&&!e.target.
 (function(){
   var cv=document.getElementById('inkC'), ctx=cv.getContext('2d');
   var bar=document.getElementById('inkBar'), tools=document.getElementById('inkTools');
-  var on=false, col='#B8455F', strokes=[], cur=null, raf=0, sy=0;
+  var on=false, er=false, col='#B8455F', strokes=[], cur=null, raf=0, sy=0;
   var dpr=Math.min(2, window.devicePixelRatio||1);
   function size(){
     cv.width=Math.round(innerWidth*dpr); cv.height=Math.round(innerHeight*dpr);
@@ -2658,18 +2660,23 @@ document.addEventListener("touchstart",e=>{ const t=$("eftip"); if(t&&!e.target.
     ctx.lineCap='round'; ctx.lineJoin='round';
     for(var i=0;i<strokes.length;i++){
       var s=strokes[i]; if(!s.p.length) continue;
-      ctx.strokeStyle=s.c; ctx.lineWidth=s.w; ctx.beginPath();
+      /* 지우개는 같은 배열에 넣고 destination-out 으로 그려요 — 순서가 보존돼
+         스크롤·크기변경으로 다시 그려도 지운 자리가 그대로 남습니다 */
+      ctx.globalCompositeOperation = s.e ? 'destination-out' : 'source-over';
+      ctx.strokeStyle=s.e?'rgba(0,0,0,1)':s.c; ctx.lineWidth=s.w; ctx.beginPath();
       ctx.moveTo(s.p[0][0],s.p[0][1]);
       for(var j=1;j<s.p.length;j++) ctx.lineTo(s.p[j][0],s.p[j][1]);
       if(s.p.length===1) ctx.lineTo(s.p[0][0]+.1,s.p[0][1]);
       ctx.stroke();
     }
+    ctx.globalCompositeOperation='source-over';
   }
   function req(){ if(!raf) raf=requestAnimationFrame(draw); }
   cv.addEventListener('pointerdown',function(e){
     if(!on) return; e.preventDefault();
-    cur={c:col, w:(e.pointerType==='pen'? Math.max(1.2, 3.4*(e.pressure||0.5)) : 2.4),
-         p:[[e.clientX+scrollX, e.clientY+sy]]};
+    cur = er ? {e:1, w:20, p:[[e.clientX+scrollX, e.clientY+sy]]}
+             : {c:col, w:(e.pointerType==='pen'? Math.max(1.2, 3.4*(e.pressure||0.5)) : 2.4),
+                p:[[e.clientX+scrollX, e.clientY+sy]]};
     strokes.push(cur); try{cv.setPointerCapture(e.pointerId);}catch(_){} req();
   });
   cv.addEventListener('pointermove',function(e){
@@ -2692,9 +2699,17 @@ document.addEventListener("touchstart",e=>{ const t=$("eftip"); if(t&&!e.target.
   };
   tools.querySelectorAll('.inkc').forEach(function(b){
     b.style.setProperty('--k', b.dataset.c);
-    b.onclick=function(){ col=b.dataset.c;
+    b.onclick=function(){ col=b.dataset.c; er=false;
+      document.getElementById('inkEr').classList.remove('on');
+      cv.style.cursor='crosshair';
       tools.querySelectorAll('.inkc').forEach(function(x){x.classList.toggle('on',x===b);}); };
   });
+  document.getElementById('inkEr').onclick=function(e){
+    er=!er; e.currentTarget.classList.toggle('on',er);
+    cv.style.cursor=er?'cell':'crosshair';
+    if(er) tools.querySelectorAll('.inkc').forEach(function(x){x.classList.remove('on');});
+    else { var f=tools.querySelector('.inkc[data-c="'+col+'"]'); if(f) f.classList.add('on'); }
+  };
   document.getElementById('inkUndo').onclick=function(){ strokes.pop(); req(); };
   document.getElementById('inkClr').onclick=function(){ strokes=[]; req(); };
   addEventListener('resize',function(){ if(on) size(); });

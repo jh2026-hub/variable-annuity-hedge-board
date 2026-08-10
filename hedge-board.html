@@ -414,12 +414,15 @@
   .inkbar button{border:0;background:transparent;font-family:inherit;font-size:15px;cursor:pointer;
     min-width:34px;min-height:34px;border-radius:999px;line-height:1;padding:0}
   .inkbar button:hover{background:var(--panel2)}
-  .inkbar #inkTools{display:flex;align-items:center;gap:5px}
+  /* hidden 속성은 display 를 지정한 선택자에 진다 — 표시는 .act 로만 제어 */
+  .inkbar #inkTools{display:none;align-items:center;gap:5px}
+  .inkbar.act #inkTools{display:flex}
   .inkbar .inkc{min-width:22px;min-height:22px;background:var(--k);border:2px solid transparent}
   .inkbar .inkc.on{border-color:var(--ink)}
   .inkbar #inkEr.on{background:var(--bad-bg);color:var(--bad-ink)}
-  .inkbar .inkhint{font-size:10px;font-weight:700;color:var(--pay-ink);background:var(--pay-bg);
+  .inkbar .inkhint{display:none;font-size:10px;font-weight:700;color:var(--pay-ink);background:var(--pay-bg);
     border-radius:999px;padding:3px 9px;white-space:nowrap}
+  .inkbar.act .inkhint{display:inline-block}
   @media print{.inkbar{display:none}}
 </style>
 </head>
@@ -2627,7 +2630,7 @@ document.addEventListener("touchstart",e=>{ const t=$("eftip"); if(t&&!e.target.
 </script>
 <div id="inkBar" class="inkbar">
   <button id="inkOn" title="펜으로 메모 — 켜면 화면이 고정돼요 (새로고침하면 지워짐)">✏️</button>
-  <span id="inkTools" hidden>
+  <span id="inkTools">
     <button class="inkc on" data-c="#B8455F"></button>
     <button class="inkc" data-c="#4A6FC4"></button>
     <button class="inkc" data-c="#337A5F"></button>
@@ -2636,7 +2639,7 @@ document.addEventListener("touchstart",e=>{ const t=$("eftip"); if(t&&!e.target.
     <button id="inkUndo" title="한 획 되돌리기">↩</button>
     <button id="inkClr" title="모두 지우기">🗑</button>
   </span>
-  <span class="inkhint" id="inkHint" hidden>그리기</span>
+  <span class="inkhint" id="inkHint">그리기</span>
 </div>
 <canvas id="inkC" hidden></canvas>
 <script>
@@ -2696,8 +2699,7 @@ document.addEventListener("touchstart",e=>{ const t=$("eftip"); if(t&&!e.target.
       de.style.overflow=''; de.style.overscrollBehavior='';
       cv.hidden=true; cv.style.pointerEvents='none'; cur=null;
     }
-    tools.hidden=!on; bar.classList.toggle('act',on);
-    document.getElementById('inkHint').hidden=!on;   /* 스크롤 모드에선 연필만 */
+    bar.classList.toggle('act',on);   /* 도구·배지 표시는 CSS 가 .act 로 처리 */
   };
   tools.querySelectorAll('.inkc').forEach(function(b){
     b.style.setProperty('--k', b.dataset.c);
